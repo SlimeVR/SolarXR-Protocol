@@ -22,6 +22,8 @@ public class VRCOSCStatusChangeResponseT {
   private Integer oscqueryAdvertisedPort;
   private String oscqueryError;
   private solarxr_protocol.rpc.VRCOSCDiscoveredTargetT[] discoveredTargets;
+  private Long lastReceivedTrackingMillis;
+  private int trackingDataState;
 
   public int getInputState() { return inputState; }
 
@@ -79,6 +81,14 @@ public class VRCOSCStatusChangeResponseT {
 
   public void setDiscoveredTargets(solarxr_protocol.rpc.VRCOSCDiscoveredTargetT[] discoveredTargets) { this.discoveredTargets = discoveredTargets; }
 
+  public Long getLastReceivedTrackingMillis() { return lastReceivedTrackingMillis; }
+
+  public void setLastReceivedTrackingMillis(Long lastReceivedTrackingMillis) { this.lastReceivedTrackingMillis = lastReceivedTrackingMillis; }
+
+  public int getTrackingDataState() { return trackingDataState; }
+
+  public void setTrackingDataState(int trackingDataState) { this.trackingDataState = trackingDataState; }
+
 
   public VRCOSCStatusChangeResponseT() {
     this.inputState = 0;
@@ -95,6 +105,8 @@ public class VRCOSCStatusChangeResponseT {
     this.oscqueryAdvertisedPort = null;
     this.oscqueryError = null;
     this.discoveredTargets = null;
+    this.lastReceivedTrackingMillis = null;
+    this.trackingDataState = 0;
   }
 }
 

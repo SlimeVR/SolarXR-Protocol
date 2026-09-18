@@ -7,6 +7,7 @@ import { VRCOSCInputState } from '../../solarxr-protocol/rpc/vrcoscinput-state.j
 import { VRCOSCOscQueryState } from '../../solarxr-protocol/rpc/vrcoscosc-query-state.js';
 import { VRCOSCOutputState } from '../../solarxr-protocol/rpc/vrcoscoutput-state.js';
 import { VRCOSCTargetSource } from '../../solarxr-protocol/rpc/vrcosctarget-source.js';
+import { VRCOSCTrackingDataState } from '../../solarxr-protocol/rpc/vrcosctracking-data-state.js';
 
 
 export class VRCOSCStatusChangeResponse implements flatbuffers.IUnpackableObject<VRCOSCStatusChangeResponseT> {
@@ -110,8 +111,18 @@ discoveredTargetsLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
+lastReceivedTrackingMillis():bigint|null {
+  const offset = this.bb!.__offset(this.bb_pos, 32);
+  return offset ? this.bb!.readUint64(this.bb_pos + offset) : null;
+}
+
+trackingDataState():VRCOSCTrackingDataState {
+  const offset = this.bb!.__offset(this.bb_pos, 34);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : VRCOSCTrackingDataState.UNKNOWN;
+}
+
 static startVRCOSCStatusChangeResponse(builder:flatbuffers.Builder) {
-  builder.startObject(14);
+  builder.startObject(16);
 }
 
 static addInputState(builder:flatbuffers.Builder, inputState:VRCOSCInputState) {
@@ -182,12 +193,20 @@ static startDiscoveredTargetsVector(builder:flatbuffers.Builder, numElems:number
   builder.startVector(4, numElems, 4);
 }
 
+static addLastReceivedTrackingMillis(builder:flatbuffers.Builder, lastReceivedTrackingMillis:bigint) {
+  builder.addFieldInt64(14, lastReceivedTrackingMillis, BigInt(0));
+}
+
+static addTrackingDataState(builder:flatbuffers.Builder, trackingDataState:VRCOSCTrackingDataState) {
+  builder.addFieldInt8(15, trackingDataState, VRCOSCTrackingDataState.UNKNOWN);
+}
+
 static endVRCOSCStatusChangeResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createVRCOSCStatusChangeResponse(builder:flatbuffers.Builder, inputState:VRCOSCInputState, inputPort:number|null, inputErrorOffset:flatbuffers.Offset, lastReceivedInputMillis:bigint|null, outputState:VRCOSCOutputState, outputErrorOffset:flatbuffers.Offset, targetAddressOffset:flatbuffers.Offset, targetPort:number|null, targetSource:VRCOSCTargetSource, lastFrameSentMillis:bigint|null, oscqueryState:VRCOSCOscQueryState, oscqueryAdvertisedPort:number|null, oscqueryErrorOffset:flatbuffers.Offset, discoveredTargetsOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createVRCOSCStatusChangeResponse(builder:flatbuffers.Builder, inputState:VRCOSCInputState, inputPort:number|null, inputErrorOffset:flatbuffers.Offset, lastReceivedInputMillis:bigint|null, outputState:VRCOSCOutputState, outputErrorOffset:flatbuffers.Offset, targetAddressOffset:flatbuffers.Offset, targetPort:number|null, targetSource:VRCOSCTargetSource, lastFrameSentMillis:bigint|null, oscqueryState:VRCOSCOscQueryState, oscqueryAdvertisedPort:number|null, oscqueryErrorOffset:flatbuffers.Offset, discoveredTargetsOffset:flatbuffers.Offset, lastReceivedTrackingMillis:bigint|null, trackingDataState:VRCOSCTrackingDataState):flatbuffers.Offset {
   VRCOSCStatusChangeResponse.startVRCOSCStatusChangeResponse(builder);
   VRCOSCStatusChangeResponse.addInputState(builder, inputState);
   if (inputPort !== null)
@@ -208,6 +227,9 @@ static createVRCOSCStatusChangeResponse(builder:flatbuffers.Builder, inputState:
     VRCOSCStatusChangeResponse.addOscqueryAdvertisedPort(builder, oscqueryAdvertisedPort);
   VRCOSCStatusChangeResponse.addOscqueryError(builder, oscqueryErrorOffset);
   VRCOSCStatusChangeResponse.addDiscoveredTargets(builder, discoveredTargetsOffset);
+  if (lastReceivedTrackingMillis !== null)
+    VRCOSCStatusChangeResponse.addLastReceivedTrackingMillis(builder, lastReceivedTrackingMillis);
+  VRCOSCStatusChangeResponse.addTrackingDataState(builder, trackingDataState);
   return VRCOSCStatusChangeResponse.endVRCOSCStatusChangeResponse(builder);
 }
 
@@ -226,7 +248,9 @@ unpack(): VRCOSCStatusChangeResponseT {
     this.oscqueryState(),
     this.oscqueryAdvertisedPort(),
     this.oscqueryError(),
-    this.bb!.createObjList<VRCOSCDiscoveredTarget, VRCOSCDiscoveredTargetT>(this.discoveredTargets.bind(this), this.discoveredTargetsLength())
+    this.bb!.createObjList<VRCOSCDiscoveredTarget, VRCOSCDiscoveredTargetT>(this.discoveredTargets.bind(this), this.discoveredTargetsLength()),
+    this.lastReceivedTrackingMillis(),
+    this.trackingDataState()
   );
 }
 
@@ -246,6 +270,8 @@ unpackTo(_o: VRCOSCStatusChangeResponseT): void {
   _o.oscqueryAdvertisedPort = this.oscqueryAdvertisedPort();
   _o.oscqueryError = this.oscqueryError();
   _o.discoveredTargets = this.bb!.createObjList<VRCOSCDiscoveredTarget, VRCOSCDiscoveredTargetT>(this.discoveredTargets.bind(this), this.discoveredTargetsLength());
+  _o.lastReceivedTrackingMillis = this.lastReceivedTrackingMillis();
+  _o.trackingDataState = this.trackingDataState();
 }
 }
 
@@ -264,7 +290,9 @@ constructor(
   public oscqueryState: VRCOSCOscQueryState = VRCOSCOscQueryState.DISABLED,
   public oscqueryAdvertisedPort: number|null = null,
   public oscqueryError: string|Uint8Array|null = null,
-  public discoveredTargets: (VRCOSCDiscoveredTargetT)[] = []
+  public discoveredTargets: (VRCOSCDiscoveredTargetT)[] = [],
+  public lastReceivedTrackingMillis: bigint|null = null,
+  public trackingDataState: VRCOSCTrackingDataState = VRCOSCTrackingDataState.UNKNOWN
 ){}
 
 
@@ -289,7 +317,9 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.oscqueryState,
     this.oscqueryAdvertisedPort,
     oscqueryError,
-    discoveredTargets
+    discoveredTargets,
+    this.lastReceivedTrackingMillis,
+    this.trackingDataState
   );
 }
 }

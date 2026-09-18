@@ -98,6 +98,28 @@ public enum class VRCOSCOscQueryState(
   }
 }
 
+public enum class VRCOSCTrackingDataState(
+  public val `value`: UByte,
+) {
+  /**
+   * VRC OSC is off, or VRChat was not detected, so we cannot tell
+   */
+  UNKNOWN(0.toUByte()),
+  /**
+   * VRChat is reachable but the tracking-data toggle is off
+   */
+  DISABLED_IN_VRCHAT(1.toUByte()),
+  /**
+   * Head/wrist poses are arriving
+   */
+  RECEIVED(2.toUByte()),
+  ;
+
+  public companion object {
+    public fun fromValue(`value`: UByte): VRCOSCTrackingDataState? = entries.firstOrNull { it.value == value }
+  }
+}
+
 public class VRCOSCStatusRequest : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     builder.startTable(0)
@@ -124,6 +146,8 @@ public data class VRCOSCStatusChangeResponse(
   public val oscqueryAdvertisedPort: UShort? = null,
   public val oscqueryError: String? = null,
   public val discoveredTargets: List<VRCOSCDiscoveredTarget>? = null,
+  public val lastReceivedTrackingMillis: ULong? = null,
+  public val trackingDataState: VRCOSCTrackingDataState = VRCOSCTrackingDataState.UNKNOWN,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_inputError = inputError?.let { builder.createString(it) }
@@ -132,7 +156,7 @@ public data class VRCOSCStatusChangeResponse(
     val __off_oscqueryError = oscqueryError?.let { builder.createString(it) }
     val __off_discoveredTargets = discoveredTargets?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
 
-    builder.startTable(14)
+    builder.startTable(16)
     builder.addByte(0, inputState.value.toByte(), 0)
     if (inputPort != null) { builder.forceDefaults(true); builder.addShort(1, inputPort.toShort(), 0); builder.forceDefaults(false) }
     __off_inputError?.let { builder.addOffset(2, it, 0) }
@@ -147,6 +171,8 @@ public data class VRCOSCStatusChangeResponse(
     if (oscqueryAdvertisedPort != null) { builder.forceDefaults(true); builder.addShort(11, oscqueryAdvertisedPort.toShort(), 0); builder.forceDefaults(false) }
     __off_oscqueryError?.let { builder.addOffset(12, it, 0) }
     __off_discoveredTargets?.let { builder.addOffset(13, it, 0) }
+    if (lastReceivedTrackingMillis != null) { builder.forceDefaults(true); builder.addLong(14, lastReceivedTrackingMillis.toLong(), 0L); builder.forceDefaults(false) }
+    builder.addByte(15, trackingDataState.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -169,6 +195,8 @@ public data class VRCOSCStatusChangeResponse(
       val __offset_oscqueryAdvertisedPort = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
       val __offset_oscqueryError = if (vtableSize > 28) bb.getShort(vtableOffset + 28).toInt() else 0
       val __offset_discoveredTargets = if (vtableSize > 30) bb.getShort(vtableOffset + 30).toInt() else 0
+      val __offset_lastReceivedTrackingMillis = if (vtableSize > 32) bb.getShort(vtableOffset + 32).toInt() else 0
+      val __offset_trackingDataState = if (vtableSize > 34) bb.getShort(vtableOffset + 34).toInt() else 0
 
       return VRCOSCStatusChangeResponse(
               inputState = if (__offset_inputState != 0) VRCOSCInputState.fromValue(bb.get(tableOffset + __offset_inputState).toUByte()) ?: VRCOSCInputState.IDLE else VRCOSCInputState.IDLE,
@@ -184,7 +212,9 @@ public data class VRCOSCStatusChangeResponse(
               oscqueryState = if (__offset_oscqueryState != 0) VRCOSCOscQueryState.fromValue(bb.get(tableOffset + __offset_oscqueryState).toUByte()) ?: VRCOSCOscQueryState.DISABLED else VRCOSCOscQueryState.DISABLED,
               oscqueryAdvertisedPort = if (__offset_oscqueryAdvertisedPort != 0) bb.getShort(tableOffset + __offset_oscqueryAdvertisedPort).toUShort() else null,
               oscqueryError = if (__offset_oscqueryError != 0) readFlatBufferString(bb, tableOffset + __offset_oscqueryError) else null,
-              discoveredTargets = if (__offset_discoveredTargets != 0) { val vecOff = tableOffset + __offset_discoveredTargets + bb.getInt(tableOffset + __offset_discoveredTargets); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) VRCOSCDiscoveredTarget.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
+              discoveredTargets = if (__offset_discoveredTargets != 0) { val vecOff = tableOffset + __offset_discoveredTargets + bb.getInt(tableOffset + __offset_discoveredTargets); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) VRCOSCDiscoveredTarget.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null,
+              lastReceivedTrackingMillis = if (__offset_lastReceivedTrackingMillis != 0) bb.getLong(tableOffset + __offset_lastReceivedTrackingMillis).toULong() else null,
+              trackingDataState = if (__offset_trackingDataState != 0) VRCOSCTrackingDataState.fromValue(bb.get(tableOffset + __offset_trackingDataState).toUByte()) ?: VRCOSCTrackingDataState.UNKNOWN else VRCOSCTrackingDataState.UNKNOWN
           )
     }
   }
