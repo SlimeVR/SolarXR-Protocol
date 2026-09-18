@@ -106,7 +106,7 @@ public enum class VRCOSCTrackingDataState(
    */
   UNKNOWN(0.toUByte()),
   /**
-   * VRChat is reachable but the tracking-data toggle is off
+   * VRChat is reachable but the tracking data toggle is off
    */
   DISABLED_IN_VRCHAT(1.toUByte()),
   /**

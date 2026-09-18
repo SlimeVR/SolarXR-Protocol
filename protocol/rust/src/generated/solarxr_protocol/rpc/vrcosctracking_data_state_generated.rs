@@ -28,7 +28,7 @@ pub struct VRCOSCTrackingDataState(pub u8);
 impl VRCOSCTrackingDataState {
   /// VRC OSC is off, or VRChat was not detected, so we cannot tell
   pub const UNKNOWN: Self = Self(0);
-  /// VRChat is reachable but the tracking-data toggle is off
+  /// VRChat is reachable but the tracking data toggle is off
   pub const DISABLED_IN_VRCHAT: Self = Self(1);
   /// Head/wrist poses are arriving
   pub const RECEIVED: Self = Self(2);
