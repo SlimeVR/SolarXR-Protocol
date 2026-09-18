@@ -188,6 +188,7 @@ public data class TrackerInfo(
   public val isImu: Boolean = false,
   public val imuType: ImuType = ImuType.UNKNOWN,
   public val bodyPart: BodyPart = BodyPart.NONE,
+  public val intendedBodyPart: BodyPart = BodyPart.NONE,
   public val mountingOrientation: Quat? = null,
   public val mountingResetOrientation: Quat? = null,
   public val displayName: String? = null,
@@ -200,17 +201,18 @@ public data class TrackerInfo(
     val __off_displayName = displayName?.let { builder.createString(it) }
     val __off_customName = customName?.let { builder.createString(it) }
 
-    builder.startTable(10)
+    builder.startTable(11)
     builder.addBoolean(0, isImu, false)
     builder.addShort(1, imuType.value.toShort(), 0)
     builder.addByte(2, bodyPart.value.toByte(), 0)
-    mountingOrientation?.let { builder.addStruct(3, it.encode(builder), 0) }
-    mountingResetOrientation?.let { builder.addStruct(4, it.encode(builder), 0) }
-    __off_displayName?.let { builder.addOffset(5, it, 0) }
-    __off_customName?.let { builder.addOffset(6, it, 0) }
-    builder.addByte(7, lastMountingMethod.value.toByte(), 0)
-    builder.addByte(8, magnetometer.value.toByte(), 0)
-    builder.addByte(9, dataType.value.toByte(), 0)
+    builder.addByte(3, intendedBodyPart.value.toByte(), 0)
+    mountingOrientation?.let { builder.addStruct(4, it.encode(builder), 0) }
+    mountingResetOrientation?.let { builder.addStruct(5, it.encode(builder), 0) }
+    __off_displayName?.let { builder.addOffset(6, it, 0) }
+    __off_customName?.let { builder.addOffset(7, it, 0) }
+    builder.addByte(8, lastMountingMethod.value.toByte(), 0)
+    builder.addByte(9, magnetometer.value.toByte(), 0)
+    builder.addByte(10, dataType.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -222,18 +224,20 @@ public data class TrackerInfo(
       val __offset_isImu = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_imuType = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_bodyPart = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_mountingOrientation = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_mountingResetOrientation = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_displayName = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_customName = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_lastMountingMethod = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_magnetometer = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
-      val __offset_dataType = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_intendedBodyPart = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_mountingOrientation = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_mountingResetOrientation = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_displayName = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_customName = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_lastMountingMethod = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_magnetometer = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
+      val __offset_dataType = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
 
       return TrackerInfo(
               isImu = if (__offset_isImu != 0) bb.get(tableOffset + __offset_isImu) != 0.toByte() else false,
               imuType = if (__offset_imuType != 0) ImuType.fromValue(bb.getShort(tableOffset + __offset_imuType).toUShort()) ?: ImuType.UNKNOWN else ImuType.UNKNOWN,
               bodyPart = if (__offset_bodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPart).toUByte()) ?: BodyPart.NONE else BodyPart.NONE,
+              intendedBodyPart = if (__offset_intendedBodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_intendedBodyPart).toUByte()) ?: BodyPart.NONE else BodyPart.NONE,
               mountingOrientation = if (__offset_mountingOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingOrientation) else null,
               mountingResetOrientation = if (__offset_mountingResetOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingResetOrientation) else null,
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null,
