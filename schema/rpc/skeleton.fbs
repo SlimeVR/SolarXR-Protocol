@@ -18,8 +18,7 @@ enum SkeletonBone: uint8 {
     SHOULDERS_WIDTH = 14,
     UPPER_ARM = 15,
     LOWER_ARM = 16,
-    HAND_Y = 17,
-    HAND_Z = 18,
+    HAND = 17,
 }
 
 table SkeletonPart {

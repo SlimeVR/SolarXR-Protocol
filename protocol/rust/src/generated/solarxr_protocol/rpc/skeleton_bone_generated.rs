@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_SKELETON_BONE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SKELETON_BONE: u8 = 18;
+pub const ENUM_MAX_SKELETON_BONE: u8 = 17;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 19] = [
+pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 18] = [
   SkeletonBone::NONE,
   SkeletonBone::HEAD,
   SkeletonBone::NECK,
@@ -33,8 +33,7 @@ pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 19] = [
   SkeletonBone::SHOULDERS_WIDTH,
   SkeletonBone::UPPER_ARM,
   SkeletonBone::LOWER_ARM,
-  SkeletonBone::HAND_Y,
-  SkeletonBone::HAND_Z,
+  SkeletonBone::HAND,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -59,11 +58,10 @@ impl SkeletonBone {
   pub const SHOULDERS_WIDTH: Self = Self(14);
   pub const UPPER_ARM: Self = Self(15);
   pub const LOWER_ARM: Self = Self(16);
-  pub const HAND_Y: Self = Self(17);
-  pub const HAND_Z: Self = Self(18);
+  pub const HAND: Self = Self(17);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 18;
+  pub const ENUM_MAX: u8 = 17;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -82,8 +80,7 @@ impl SkeletonBone {
     Self::SHOULDERS_WIDTH,
     Self::UPPER_ARM,
     Self::LOWER_ARM,
-    Self::HAND_Y,
-    Self::HAND_Z,
+    Self::HAND,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -105,8 +102,7 @@ impl SkeletonBone {
       Self::SHOULDERS_WIDTH => Some("SHOULDERS_WIDTH"),
       Self::UPPER_ARM => Some("UPPER_ARM"),
       Self::LOWER_ARM => Some("LOWER_ARM"),
-      Self::HAND_Y => Some("HAND_Y"),
-      Self::HAND_Z => Some("HAND_Z"),
+      Self::HAND => Some("HAND"),
       _ => None,
     }
   }

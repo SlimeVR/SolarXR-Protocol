@@ -28,8 +28,7 @@ public enum class SkeletonBone(
   SHOULDERS_WIDTH(14.toUByte()),
   UPPER_ARM(15.toUByte()),
   LOWER_ARM(16.toUByte()),
-  HAND_Y(17.toUByte()),
-  HAND_Z(18.toUByte()),
+  HAND(17.toUByte()),
   ;
 
   public companion object {

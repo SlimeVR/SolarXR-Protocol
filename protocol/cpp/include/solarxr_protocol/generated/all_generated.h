@@ -2194,13 +2194,12 @@ enum class SkeletonBone : uint8_t {
   SHOULDERS_WIDTH = 14,
   UPPER_ARM = 15,
   LOWER_ARM = 16,
-  HAND_Y = 17,
-  HAND_Z = 18,
+  HAND = 17,
   MIN = NONE,
-  MAX = HAND_Z
+  MAX = HAND
 };
 
-inline const SkeletonBone (&EnumValuesSkeletonBone())[19] {
+inline const SkeletonBone (&EnumValuesSkeletonBone())[18] {
   static const SkeletonBone values[] = {
     SkeletonBone::NONE,
     SkeletonBone::HEAD,
@@ -2219,14 +2218,13 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[19] {
     SkeletonBone::SHOULDERS_WIDTH,
     SkeletonBone::UPPER_ARM,
     SkeletonBone::LOWER_ARM,
-    SkeletonBone::HAND_Y,
-    SkeletonBone::HAND_Z
+    SkeletonBone::HAND
   };
   return values;
 }
 
 inline const char * const *EnumNamesSkeletonBone() {
-  static const char * const names[20] = {
+  static const char * const names[19] = {
     "NONE",
     "HEAD",
     "NECK",
@@ -2244,15 +2242,14 @@ inline const char * const *EnumNamesSkeletonBone() {
     "SHOULDERS_WIDTH",
     "UPPER_ARM",
     "LOWER_ARM",
-    "HAND_Y",
-    "HAND_Z",
+    "HAND",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameSkeletonBone(SkeletonBone e) {
-  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::HAND_Z)) return "";
+  if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::HAND)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesSkeletonBone()[index];
 }
