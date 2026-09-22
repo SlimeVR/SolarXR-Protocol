@@ -22,10 +22,9 @@ public final class SkeletonBone {
   public static final int SHOULDERS_WIDTH = 14;
   public static final int UPPER_ARM = 15;
   public static final int LOWER_ARM = 16;
-  public static final int HAND_Y = 17;
-  public static final int HAND_Z = 18;
+  public static final int HAND = 17;
 
-  public static final String[] names = { "NONE", "HEAD", "NECK", "UPPER_CHEST", "LOWER_CHEST", "UPPER_WAIST", "LOWER_WAIST", "HIP", "HIPS_WIDTH", "UPPER_LEG", "LOWER_LEG", "FOOT_LENGTH", "FOOT_SHIFT", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM", "LOWER_ARM", "HAND_Y", "HAND_Z", };
+  public static final String[] names = { "NONE", "HEAD", "NECK", "UPPER_CHEST", "LOWER_CHEST", "UPPER_WAIST", "LOWER_WAIST", "HIP", "HIPS_WIDTH", "UPPER_LEG", "LOWER_LEG", "FOOT_LENGTH", "FOOT_SHIFT", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM", "LOWER_ARM", "HAND", };
 
   public static String name(int e) { return names[e]; }
 }
