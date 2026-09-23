@@ -18,7 +18,7 @@ public enum class TrackingChecklistStepId(
   FULL_RESET(2.toUByte()),
   VRCHAT_SETTINGS(3.toUByte()),
   STEAMVR_DISCONNECTED(4.toUByte()),
-  UNASSIGNED_HMD(5.toUByte()),
+  UNASSIGNED_RELIABLE_REFERENCE(5.toUByte()),
   TRACKER_ERROR(6.toUByte()),
   NETWORK_PROFILE_PUBLIC(7.toUByte()),
   MOUNTING_CALIBRATION(8.toUByte()),
