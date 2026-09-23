@@ -203,7 +203,7 @@ export { TrackingChecklistStepId } from './solarxr-protocol/rpc/tracking-checkli
 export { TrackingChecklistStepVisibility } from './solarxr-protocol/rpc/tracking-checklist-step-visibility.js';
 export { TrackingChecklistTrackerError, TrackingChecklistTrackerErrorT } from './solarxr-protocol/rpc/tracking-checklist-tracker-error.js';
 export { TrackingChecklistTrackerReset, TrackingChecklistTrackerResetT } from './solarxr-protocol/rpc/tracking-checklist-tracker-reset.js';
-export { TrackingChecklistUnassignedHMD, TrackingChecklistUnassignedHMDT } from './solarxr-protocol/rpc/tracking-checklist-unassigned-hmd.js';
+export { TrackingChecklistUnassignedReliableReference, TrackingChecklistUnassignedReliableReferenceT } from './solarxr-protocol/rpc/tracking-checklist-unassigned-reliable-reference.js';
 export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';

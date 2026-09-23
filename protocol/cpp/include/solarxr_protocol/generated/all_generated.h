@@ -482,8 +482,8 @@ struct TrackingChecklistSteamVRDisconnectedBuilder;
 struct EnableSteamVRDriverRequest;
 struct EnableSteamVRDriverRequestBuilder;
 
-struct TrackingChecklistUnassignedHMD;
-struct TrackingChecklistUnassignedHMDBuilder;
+struct TrackingChecklistUnassignedReliableReference;
+struct TrackingChecklistUnassignedReliableReferenceBuilder;
 
 struct TrackingChecklistPublicNetworks;
 struct TrackingChecklistPublicNetworksBuilder;
@@ -2421,7 +2421,7 @@ enum class TrackingChecklistExtraData : uint8_t {
   TrackingChecklistTrackerReset = 1,
   TrackingChecklistTrackerError = 2,
   TrackingChecklistSteamVRDisconnected = 3,
-  TrackingChecklistUnassignedHMD = 4,
+  TrackingChecklistUnassignedReliableReference = 4,
   TrackingChecklistNeedCalibration = 5,
   TrackingChecklistPublicNetworks = 6,
   MIN = NONE,
@@ -2434,7 +2434,7 @@ inline const TrackingChecklistExtraData (&EnumValuesTrackingChecklistExtraData()
     TrackingChecklistExtraData::TrackingChecklistTrackerReset,
     TrackingChecklistExtraData::TrackingChecklistTrackerError,
     TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected,
-    TrackingChecklistExtraData::TrackingChecklistUnassignedHMD,
+    TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference,
     TrackingChecklistExtraData::TrackingChecklistNeedCalibration,
     TrackingChecklistExtraData::TrackingChecklistPublicNetworks
   };
@@ -2447,7 +2447,7 @@ inline const char * const *EnumNamesTrackingChecklistExtraData() {
     "TrackingChecklistTrackerReset",
     "TrackingChecklistTrackerError",
     "TrackingChecklistSteamVRDisconnected",
-    "TrackingChecklistUnassignedHMD",
+    "TrackingChecklistUnassignedReliableReference",
     "TrackingChecklistNeedCalibration",
     "TrackingChecklistPublicNetworks",
     nullptr
@@ -2477,8 +2477,8 @@ template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::Tracki
   static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected;
 };
 
-template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistUnassignedHMD> {
-  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistUnassignedHMD;
+template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference> {
+  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference;
 };
 
 template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistNeedCalibration> {
@@ -13323,44 +13323,54 @@ inline flatbuffers::Offset<EnableSteamVRDriverRequest> CreateEnableSteamVRDriver
   return builder_.Finish();
 }
 
-struct TrackingChecklistUnassignedHMD FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TrackingChecklistUnassignedHMDBuilder Builder;
+struct TrackingChecklistUnassignedReliableReference FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistUnassignedReliableReferenceBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TRACKER_ID = 4
+    VT_TRACKER_ID = 4,
+    VT_INTENDED_BODY_PART = 6
   };
   uint16_t tracker_id() const {
     return GetField<uint16_t>(VT_TRACKER_ID, 0);
   }
+  solarxr_protocol::datatypes::BodyPart intended_body_part() const {
+    return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_INTENDED_BODY_PART, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
+           VerifyField<uint8_t>(verifier, VT_INTENDED_BODY_PART, 1) &&
            verifier.EndTable();
   }
 };
 
-struct TrackingChecklistUnassignedHMDBuilder {
-  typedef TrackingChecklistUnassignedHMD Table;
+struct TrackingChecklistUnassignedReliableReferenceBuilder {
+  typedef TrackingChecklistUnassignedReliableReference Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_tracker_id(uint16_t tracker_id) {
-    fbb_.AddElement<uint16_t>(TrackingChecklistUnassignedHMD::VT_TRACKER_ID, tracker_id, 0);
+    fbb_.AddElement<uint16_t>(TrackingChecklistUnassignedReliableReference::VT_TRACKER_ID, tracker_id, 0);
   }
-  explicit TrackingChecklistUnassignedHMDBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  void add_intended_body_part(solarxr_protocol::datatypes::BodyPart intended_body_part) {
+    fbb_.AddElement<uint8_t>(TrackingChecklistUnassignedReliableReference::VT_INTENDED_BODY_PART, static_cast<uint8_t>(intended_body_part), 0);
+  }
+  explicit TrackingChecklistUnassignedReliableReferenceBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TrackingChecklistUnassignedHMD> Finish() {
+  flatbuffers::Offset<TrackingChecklistUnassignedReliableReference> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TrackingChecklistUnassignedHMD>(end);
+    auto o = flatbuffers::Offset<TrackingChecklistUnassignedReliableReference>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TrackingChecklistUnassignedHMD> CreateTrackingChecklistUnassignedHMD(
+inline flatbuffers::Offset<TrackingChecklistUnassignedReliableReference> CreateTrackingChecklistUnassignedReliableReference(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t tracker_id = 0) {
-  TrackingChecklistUnassignedHMDBuilder builder_(_fbb);
+    uint16_t tracker_id = 0,
+    solarxr_protocol::datatypes::BodyPart intended_body_part = solarxr_protocol::datatypes::BodyPart::NONE) {
+  TrackingChecklistUnassignedReliableReferenceBuilder builder_(_fbb);
   builder_.add_tracker_id(tracker_id);
+  builder_.add_intended_body_part(intended_body_part);
   return builder_.Finish();
 }
 
@@ -13462,8 +13472,8 @@ struct TrackingChecklistStep FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *extra_data_as_TrackingChecklistSteamVRDisconnected() const {
     return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected ? static_cast<const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *>(extra_data()) : nullptr;
   }
-  const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *extra_data_as_TrackingChecklistUnassignedHMD() const {
-    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistUnassignedHMD ? static_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *>(extra_data()) : nullptr;
+  const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *extra_data_as_TrackingChecklistUnassignedReliableReference() const {
+    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference ? static_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *>(extra_data()) : nullptr;
   }
   const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *extra_data_as_TrackingChecklistNeedCalibration() const {
     return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistNeedCalibration ? static_cast<const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *>(extra_data()) : nullptr;
@@ -13498,8 +13508,8 @@ template<> inline const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnec
   return extra_data_as_TrackingChecklistSteamVRDisconnected();
 }
 
-template<> inline const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistUnassignedHMD>() const {
-  return extra_data_as_TrackingChecklistUnassignedHMD();
+template<> inline const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference>() const {
+  return extra_data_as_TrackingChecklistUnassignedReliableReference();
 }
 
 template<> inline const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistNeedCalibration>() const {
@@ -17798,8 +17808,8 @@ inline bool VerifyTrackingChecklistExtraData(flatbuffers::Verifier &verifier, co
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case TrackingChecklistExtraData::TrackingChecklistUnassignedHMD: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *>(obj);
+    case TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case TrackingChecklistExtraData::TrackingChecklistNeedCalibration: {

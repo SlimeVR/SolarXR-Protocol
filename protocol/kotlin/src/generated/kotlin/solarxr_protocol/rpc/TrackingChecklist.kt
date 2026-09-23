@@ -9,6 +9,7 @@ import kotlin.String
 import kotlin.UByte
 import kotlin.UShort
 import kotlin.collections.List
+import solarxr_protocol.datatypes.BodyPart
 
 public enum class TrackingChecklistStepId(
   public val `value`: UByte,
@@ -175,25 +176,29 @@ public class EnableSteamVRDriverRequest : RpcMessage {
   }
 }
 
-public data class TrackingChecklistUnassignedHMD(
+public data class TrackingChecklistUnassignedReliableReference(
   public val trackerId: UShort = 0.toUShort(),
+  public val intendedBodyPart: BodyPart = BodyPart.NONE,
 ) : TrackingChecklistExtraData {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(1)
+    builder.startTable(2)
     builder.addShort(0, trackerId.toShort(), 0)
+    builder.addByte(1, intendedBodyPart.value.toByte(), 0)
     return builder.endTable()
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): TrackingChecklistUnassignedHMD {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): TrackingChecklistUnassignedReliableReference {
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
       val __offset_trackerId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_intendedBodyPart = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
-      return TrackingChecklistUnassignedHMD(
-              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else 0.toUShort()
+      return TrackingChecklistUnassignedReliableReference(
+              trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else 0.toUShort(),
+              intendedBodyPart = if (__offset_intendedBodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_intendedBodyPart).toUByte()) ?: BodyPart.NONE else BodyPart.NONE
           )
     }
   }
@@ -234,7 +239,7 @@ public sealed interface TrackingChecklistExtraData {
       1 -> TrackingChecklistTrackerReset.decode(bb, offset)
       2 -> TrackingChecklistTrackerError.decode(bb, offset)
       3 -> TrackingChecklistSteamVRDisconnected.decode(bb, offset)
-      4 -> TrackingChecklistUnassignedHMD.decode(bb, offset)
+      4 -> TrackingChecklistUnassignedReliableReference.decode(bb, offset)
       5 -> TrackingChecklistNeedCalibration.decode(bb, offset)
       6 -> TrackingChecklistPublicNetworks.decode(bb, offset)
       else -> null
@@ -244,7 +249,7 @@ public sealed interface TrackingChecklistExtraData {
       is TrackingChecklistTrackerReset -> 1.toUByte()
       is TrackingChecklistTrackerError -> 2.toUByte()
       is TrackingChecklistSteamVRDisconnected -> 3.toUByte()
-      is TrackingChecklistUnassignedHMD -> 4.toUByte()
+      is TrackingChecklistUnassignedReliableReference -> 4.toUByte()
       is TrackingChecklistNeedCalibration -> 5.toUByte()
       is TrackingChecklistPublicNetworks -> 6.toUByte()
     }
@@ -253,7 +258,7 @@ public sealed interface TrackingChecklistExtraData {
       is TrackingChecklistTrackerReset -> value.encode(builder)
       is TrackingChecklistTrackerError -> value.encode(builder)
       is TrackingChecklistSteamVRDisconnected -> value.encode(builder)
-      is TrackingChecklistUnassignedHMD -> value.encode(builder)
+      is TrackingChecklistUnassignedReliableReference -> value.encode(builder)
       is TrackingChecklistNeedCalibration -> value.encode(builder)
       is TrackingChecklistPublicNetworks -> value.encode(builder)
     }
