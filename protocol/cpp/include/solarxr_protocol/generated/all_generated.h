@@ -4719,7 +4719,7 @@ struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ORIENTATION);
   }
   /// The head of a bone is the extremity of the bone touching the parent bone.
-  /// The parent is defined as the bone closer to the HMD.
+  /// The parent is defined as the bone closer to the head.
   const solarxr_protocol::datatypes::math::Vec3f *head_position() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_HEAD_POSITION);
   }
@@ -4982,8 +4982,8 @@ struct TrackerData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_LINEAR_ACCELERATION);
   }
-  /// Reference-adjusted rotation for IMU-only trackers (VR HMD yaw is used as a reset reference).
-  /// In other words, a rotation that is aligned to a reliable source of rotation (0, HMD YAW, 0),
+  /// Reference-adjusted rotation for IMU-only trackers (Reference's yaw is used as a reset reference).
+  /// In other words, a rotation that is aligned to a reliable source of rotation (0, Reference yaw, 0),
   /// triggered after user input (using reset buttons).
   /// This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
   /// Includes: mounting orientation, full, quick and mounting reset adjustments.
@@ -8380,18 +8380,18 @@ inline flatbuffers::Offset<CancelUserHeightCalibration> CreateCancelUserHeightCa
 struct UserHeightRecordingStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UserHeightRecordingStatusResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_HMD_HEIGHT = 4,
+    VT_HEAD_HEIGHT = 4,
     VT_STATUS = 6
   };
-  float hmd_height() const {
-    return GetField<float>(VT_HMD_HEIGHT, 0.0f);
+  float head_height() const {
+    return GetField<float>(VT_HEAD_HEIGHT, 0.0f);
   }
   solarxr_protocol::rpc::UserHeightCalibrationStatus status() const {
     return static_cast<solarxr_protocol::rpc::UserHeightCalibrationStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_HEAD_HEIGHT, 4) &&
            VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
            verifier.EndTable();
   }
@@ -8401,8 +8401,8 @@ struct UserHeightRecordingStatusResponseBuilder {
   typedef UserHeightRecordingStatusResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_hmd_height(float hmd_height) {
-    fbb_.AddElement<float>(UserHeightRecordingStatusResponse::VT_HMD_HEIGHT, hmd_height, 0.0f);
+  void add_head_height(float head_height) {
+    fbb_.AddElement<float>(UserHeightRecordingStatusResponse::VT_HEAD_HEIGHT, head_height, 0.0f);
   }
   void add_status(solarxr_protocol::rpc::UserHeightCalibrationStatus status) {
     fbb_.AddElement<uint8_t>(UserHeightRecordingStatusResponse::VT_STATUS, static_cast<uint8_t>(status), 0);
@@ -8420,10 +8420,10 @@ struct UserHeightRecordingStatusResponseBuilder {
 
 inline flatbuffers::Offset<UserHeightRecordingStatusResponse> CreateUserHeightRecordingStatusResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    float hmd_height = 0.0f,
+    float head_height = 0.0f,
     solarxr_protocol::rpc::UserHeightCalibrationStatus status = solarxr_protocol::rpc::UserHeightCalibrationStatus::NONE) {
   UserHeightRecordingStatusResponseBuilder builder_(_fbb);
-  builder_.add_hmd_height(hmd_height);
+  builder_.add_head_height(head_height);
   builder_.add_status(status);
   return builder_.Finish();
 }
@@ -9638,7 +9638,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_ARMS_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_HMD_ATTITUDE = 12
+    VT_RESET_RELIABLE_REFERENCE_ATTITUDE = 12
   };
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
   bool reset_mounting_feet() const {
@@ -9656,8 +9656,8 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
   /// Reset VR headset's pitch and roll
-  bool reset_hmd_attitude() const {
-    return GetField<uint8_t>(VT_RESET_HMD_ATTITUDE, 0) != 0;
+  bool reset_reliable_reference_attitude() const {
+    return GetField<uint8_t>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -9665,7 +9665,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            VerifyField<uint8_t>(verifier, VT_ARMS_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_HMD_ATTITUDE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 1) &&
            verifier.EndTable();
   }
 };
@@ -9686,8 +9686,8 @@ struct ResetsSettingsResponseBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
-  void add_reset_hmd_attitude(bool reset_hmd_attitude) {
-    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_HMD_ATTITUDE, static_cast<uint8_t>(reset_hmd_attitude), 0);
+  void add_reset_reliable_reference_attitude(bool reset_reliable_reference_attitude) {
+    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, static_cast<uint8_t>(reset_reliable_reference_attitude), 0);
   }
   explicit ResetsSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -9706,10 +9706,10 @@ inline flatbuffers::Offset<ResetsSettingsResponse> CreateResetsSettingsResponse(
     solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_hmd_attitude = false) {
+    bool reset_reliable_reference_attitude = false) {
   ResetsSettingsResponseBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
-  builder_.add_reset_hmd_attitude(reset_hmd_attitude);
+  builder_.add_reset_reliable_reference_attitude(reset_reliable_reference_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_reset_mode(arms_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
@@ -9723,7 +9723,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
     VT_ARMS_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_HMD_ATTITUDE = 12
+    VT_RESET_RELIABLE_REFERENCE_ATTITUDE = 12
   };
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
   bool reset_mounting_feet() const {
@@ -9741,8 +9741,8 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
   /// Reset VR headset's pitch and roll
-  bool reset_hmd_attitude() const {
-    return GetField<uint8_t>(VT_RESET_HMD_ATTITUDE, 0) != 0;
+  bool reset_reliable_reference_attitude() const {
+    return GetField<uint8_t>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -9750,7 +9750,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
            VerifyField<uint8_t>(verifier, VT_ARMS_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_HMD_ATTITUDE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 1) &&
            verifier.EndTable();
   }
 };
@@ -9771,8 +9771,8 @@ struct ChangeResetsSettingsRequestBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
-  void add_reset_hmd_attitude(bool reset_hmd_attitude) {
-    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_HMD_ATTITUDE, static_cast<uint8_t>(reset_hmd_attitude), 0);
+  void add_reset_reliable_reference_attitude(bool reset_reliable_reference_attitude) {
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, static_cast<uint8_t>(reset_reliable_reference_attitude), 0);
   }
   explicit ChangeResetsSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -9791,10 +9791,10 @@ inline flatbuffers::Offset<ChangeResetsSettingsRequest> CreateChangeResetsSettin
     solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_hmd_attitude = false) {
+    bool reset_reliable_reference_attitude = false) {
   ChangeResetsSettingsRequestBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
-  builder_.add_reset_hmd_attitude(reset_hmd_attitude);
+  builder_.add_reset_reliable_reference_attitude(reset_reliable_reference_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_reset_mode(arms_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
@@ -11378,18 +11378,18 @@ inline flatbuffers::Offset<UserHeightRequest> CreateUserHeightRequest(
 struct UserHeightResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UserHeightResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_HMD_HEIGHT = 4,
+    VT_HEAD_HEIGHT = 4,
     VT_FLOOR_HEIGHT = 6
   };
-  flatbuffers::Optional<float> hmd_height() const {
-    return GetOptional<float, float>(VT_HMD_HEIGHT);
+  flatbuffers::Optional<float> head_height() const {
+    return GetOptional<float, float>(VT_HEAD_HEIGHT);
   }
   flatbuffers::Optional<float> floor_height() const {
     return GetOptional<float, float>(VT_FLOOR_HEIGHT);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_HEAD_HEIGHT, 4) &&
            VerifyField<float>(verifier, VT_FLOOR_HEIGHT, 4) &&
            verifier.EndTable();
   }
@@ -11399,8 +11399,8 @@ struct UserHeightResponseBuilder {
   typedef UserHeightResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_hmd_height(float hmd_height) {
-    fbb_.AddElement<float>(UserHeightResponse::VT_HMD_HEIGHT, hmd_height);
+  void add_head_height(float head_height) {
+    fbb_.AddElement<float>(UserHeightResponse::VT_HEAD_HEIGHT, head_height);
   }
   void add_floor_height(float floor_height) {
     fbb_.AddElement<float>(UserHeightResponse::VT_FLOOR_HEIGHT, floor_height);
@@ -11418,29 +11418,29 @@ struct UserHeightResponseBuilder {
 
 inline flatbuffers::Offset<UserHeightResponse> CreateUserHeightResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt,
+    flatbuffers::Optional<float> head_height = flatbuffers::nullopt,
     flatbuffers::Optional<float> floor_height = flatbuffers::nullopt) {
   UserHeightResponseBuilder builder_(_fbb);
   if(floor_height) { builder_.add_floor_height(*floor_height); }
-  if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
+  if(head_height) { builder_.add_head_height(*head_height); }
   return builder_.Finish();
 }
 
 struct ChangeUserHeightRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ChangeUserHeightRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_HMD_HEIGHT = 4,
+    VT_HEAD_HEIGHT = 4,
     VT_FLOOR_HEIGHT = 6
   };
-  flatbuffers::Optional<float> hmd_height() const {
-    return GetOptional<float, float>(VT_HMD_HEIGHT);
+  flatbuffers::Optional<float> head_height() const {
+    return GetOptional<float, float>(VT_HEAD_HEIGHT);
   }
   flatbuffers::Optional<float> floor_height() const {
     return GetOptional<float, float>(VT_FLOOR_HEIGHT);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_HMD_HEIGHT, 4) &&
+           VerifyField<float>(verifier, VT_HEAD_HEIGHT, 4) &&
            VerifyField<float>(verifier, VT_FLOOR_HEIGHT, 4) &&
            verifier.EndTable();
   }
@@ -11450,8 +11450,8 @@ struct ChangeUserHeightRequestBuilder {
   typedef ChangeUserHeightRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_hmd_height(float hmd_height) {
-    fbb_.AddElement<float>(ChangeUserHeightRequest::VT_HMD_HEIGHT, hmd_height);
+  void add_head_height(float head_height) {
+    fbb_.AddElement<float>(ChangeUserHeightRequest::VT_HEAD_HEIGHT, head_height);
   }
   void add_floor_height(float floor_height) {
     fbb_.AddElement<float>(ChangeUserHeightRequest::VT_FLOOR_HEIGHT, floor_height);
@@ -11469,11 +11469,11 @@ struct ChangeUserHeightRequestBuilder {
 
 inline flatbuffers::Offset<ChangeUserHeightRequest> CreateChangeUserHeightRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<float> hmd_height = flatbuffers::nullopt,
+    flatbuffers::Optional<float> head_height = flatbuffers::nullopt,
     flatbuffers::Optional<float> floor_height = flatbuffers::nullopt) {
   ChangeUserHeightRequestBuilder builder_(_fbb);
   if(floor_height) { builder_.add_floor_height(*floor_height); }
-  if(hmd_height) { builder_.add_hmd_height(*hmd_height); }
+  if(head_height) { builder_.add_head_height(*head_height); }
   return builder_.Finish();
 }
 

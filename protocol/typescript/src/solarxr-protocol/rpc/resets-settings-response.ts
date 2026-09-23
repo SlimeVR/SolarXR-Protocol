@@ -55,7 +55,7 @@ saveMountingReset():boolean {
 /**
  * Reset VR headset's pitch and roll
  */
-resetHmdAttitude():boolean {
+resetReliableReferenceAttitude():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
@@ -80,8 +80,8 @@ static addSaveMountingReset(builder:flatbuffers.Builder, saveMountingReset:boole
   builder.addFieldInt8(3, +saveMountingReset, +false);
 }
 
-static addResetHmdAttitude(builder:flatbuffers.Builder, resetHmdAttitude:boolean) {
-  builder.addFieldInt8(4, +resetHmdAttitude, +false);
+static addResetReliableReferenceAttitude(builder:flatbuffers.Builder, resetReliableReferenceAttitude:boolean) {
+  builder.addFieldInt8(4, +resetReliableReferenceAttitude, +false);
 }
 
 static endResetsSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -89,13 +89,13 @@ static endResetsSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset
   return offset;
 }
 
-static createResetsSettingsResponse(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsResetMode:ArmsResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetHmdAttitude:boolean):flatbuffers.Offset {
+static createResetsSettingsResponse(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsResetMode:ArmsResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetReliableReferenceAttitude:boolean):flatbuffers.Offset {
   ResetsSettingsResponse.startResetsSettingsResponse(builder);
   ResetsSettingsResponse.addResetMountingFeet(builder, resetMountingFeet);
   ResetsSettingsResponse.addArmsResetMode(builder, armsResetMode);
   ResetsSettingsResponse.addYawResetSmoothTime(builder, yawResetSmoothTime);
   ResetsSettingsResponse.addSaveMountingReset(builder, saveMountingReset);
-  ResetsSettingsResponse.addResetHmdAttitude(builder, resetHmdAttitude);
+  ResetsSettingsResponse.addResetReliableReferenceAttitude(builder, resetReliableReferenceAttitude);
   return ResetsSettingsResponse.endResetsSettingsResponse(builder);
 }
 
@@ -105,7 +105,7 @@ unpack(): ResetsSettingsResponseT {
     this.armsResetMode(),
     this.yawResetSmoothTime(),
     this.saveMountingReset(),
-    this.resetHmdAttitude()
+    this.resetReliableReferenceAttitude()
   );
 }
 
@@ -115,7 +115,7 @@ unpackTo(_o: ResetsSettingsResponseT): void {
   _o.armsResetMode = this.armsResetMode();
   _o.yawResetSmoothTime = this.yawResetSmoothTime();
   _o.saveMountingReset = this.saveMountingReset();
-  _o.resetHmdAttitude = this.resetHmdAttitude();
+  _o.resetReliableReferenceAttitude = this.resetReliableReferenceAttitude();
 }
 }
 
@@ -125,7 +125,7 @@ constructor(
   public armsResetMode: ArmsResetMode = ArmsResetMode.BACK,
   public yawResetSmoothTime: number = 0.0,
   public saveMountingReset: boolean = false,
-  public resetHmdAttitude: boolean = false
+  public resetReliableReferenceAttitude: boolean = false
 ){}
 
 
@@ -135,7 +135,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.armsResetMode,
     this.yawResetSmoothTime,
     this.saveMountingReset,
-    this.resetHmdAttitude
+    this.resetReliableReferenceAttitude
   );
 }
 }

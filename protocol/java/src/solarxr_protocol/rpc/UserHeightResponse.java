@@ -15,22 +15,22 @@ public final class UserHeightResponse extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public UserHeightResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean hasHmdHeight() { return 0 != __offset(4); }
-  public float hmdHeight() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasHeadHeight() { return 0 != __offset(4); }
+  public float headHeight() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
   public boolean hasFloorHeight() { return 0 != __offset(6); }
   public float floorHeight() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
 
   public static int createUserHeightResponse(FlatBufferBuilder builder,
-      float hmdHeight,
+      float headHeight,
       float floorHeight) {
     builder.startTable(2);
     UserHeightResponse.addFloorHeight(builder, floorHeight);
-    UserHeightResponse.addHmdHeight(builder, hmdHeight);
+    UserHeightResponse.addHeadHeight(builder, headHeight);
     return UserHeightResponse.endUserHeightResponse(builder);
   }
 
   public static void startUserHeightResponse(FlatBufferBuilder builder) { builder.startTable(2); }
-  public static void addHmdHeight(FlatBufferBuilder builder, float hmdHeight) { builder.addFloat(0, hmdHeight, 0f); }
+  public static void addHeadHeight(FlatBufferBuilder builder, float headHeight) { builder.addFloat(0, headHeight, 0f); }
   public static void addFloorHeight(FlatBufferBuilder builder, float floorHeight) { builder.addFloat(1, floorHeight, 0f); }
   public static int endUserHeightResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
@@ -49,8 +49,8 @@ public final class UserHeightResponse extends Table {
     return _o;
   }
   public void unpackTo(UserHeightResponseT _o) {
-    Float _oHmdHeight = hasHmdHeight() ? hmdHeight() : null;
-    _o.setHmdHeight(_oHmdHeight);
+    Float _oHeadHeight = hasHeadHeight() ? headHeight() : null;
+    _o.setHeadHeight(_oHeadHeight);
     Float _oFloorHeight = hasFloorHeight() ? floorHeight() : null;
     _o.setFloorHeight(_oFloorHeight);
   }
@@ -58,7 +58,7 @@ public final class UserHeightResponse extends Table {
     if (_o == null) return 0;
     return createUserHeightResponse(
       builder,
-      _o.getHmdHeight(),
+      _o.getHeadHeight(),
       _o.getFloorHeight());
   }
 }

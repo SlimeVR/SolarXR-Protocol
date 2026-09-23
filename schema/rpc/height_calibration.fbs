@@ -18,6 +18,6 @@ enum UserHeightCalibrationStatus: uint8 {
 }
 
 table UserHeightRecordingStatusResponse {
-    hmd_height: float;
+    head_height: float;
     status: UserHeightCalibrationStatus;
 }

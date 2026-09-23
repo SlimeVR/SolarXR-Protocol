@@ -37,7 +37,7 @@ public final class Bone extends Table {
   public solarxr_protocol.datatypes.math.Quat orientation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
    * The head of a bone is the extremity of the bone touching the parent bone.
-   * The parent is defined as the bone closer to the HMD.
+   * The parent is defined as the bone closer to the head.
    */
   public solarxr_protocol.datatypes.math.Vec3f headPosition() { return headPosition(new solarxr_protocol.datatypes.math.Vec3f()); }
   public solarxr_protocol.datatypes.math.Vec3f headPosition(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }

@@ -49,13 +49,13 @@ public enum class UserHeightCalibrationStatus(
 }
 
 public data class UserHeightRecordingStatusResponse(
-  public val hmdHeight: Float = 0.0f,
+  public val headHeight: Float = 0.0f,
   public val status: UserHeightCalibrationStatus = UserHeightCalibrationStatus.NONE,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    builder.addFloat(0, hmdHeight, 0.0)
+    builder.addFloat(0, headHeight, 0.0)
     builder.addByte(1, status.value.toByte(), 0)
     return builder.endTable()
   }
@@ -65,11 +65,11 @@ public data class UserHeightRecordingStatusResponse(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_hmdHeight = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_headHeight = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_status = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return UserHeightRecordingStatusResponse(
-              hmdHeight = if (__offset_hmdHeight != 0) bb.getFloat(tableOffset + __offset_hmdHeight) else 0.0f,
+              headHeight = if (__offset_headHeight != 0) bb.getFloat(tableOffset + __offset_headHeight) else 0.0f,
               status = if (__offset_status != 0) UserHeightCalibrationStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: UserHeightCalibrationStatus.NONE else UserHeightCalibrationStatus.NONE
           )
     }

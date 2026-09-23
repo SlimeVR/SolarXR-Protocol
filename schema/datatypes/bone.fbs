@@ -14,7 +14,7 @@ table Bone {
     /// that is 90 degrees forward).
     orientation: solarxr_protocol.datatypes.math.Quat;
     /// The head of a bone is the extremity of the bone touching the parent bone.
-    /// The parent is defined as the bone closer to the HMD.
+    /// The parent is defined as the bone closer to the head.
     head_position: solarxr_protocol.datatypes.math.Vec3f;
     /// The tail of a bone is where the bone ends.
     /// It can also be computed from its head_position, orientation and bone_length.

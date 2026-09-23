@@ -22,7 +22,7 @@ static getSizePrefixedRootAsUserHeightResponse(bb:flatbuffers.ByteBuffer, obj?:U
   return (obj || new UserHeightResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-hmdHeight():number|null {
+headHeight():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
@@ -36,8 +36,8 @@ static startUserHeightResponse(builder:flatbuffers.Builder) {
   builder.startObject(2);
 }
 
-static addHmdHeight(builder:flatbuffers.Builder, hmdHeight:number) {
-  builder.addFieldFloat32(0, hmdHeight, 0);
+static addHeadHeight(builder:flatbuffers.Builder, headHeight:number) {
+  builder.addFieldFloat32(0, headHeight, 0);
 }
 
 static addFloorHeight(builder:flatbuffers.Builder, floorHeight:number) {
@@ -49,10 +49,10 @@ static endUserHeightResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createUserHeightResponse(builder:flatbuffers.Builder, hmdHeight:number|null, floorHeight:number|null):flatbuffers.Offset {
+static createUserHeightResponse(builder:flatbuffers.Builder, headHeight:number|null, floorHeight:number|null):flatbuffers.Offset {
   UserHeightResponse.startUserHeightResponse(builder);
-  if (hmdHeight !== null)
-    UserHeightResponse.addHmdHeight(builder, hmdHeight);
+  if (headHeight !== null)
+    UserHeightResponse.addHeadHeight(builder, headHeight);
   if (floorHeight !== null)
     UserHeightResponse.addFloorHeight(builder, floorHeight);
   return UserHeightResponse.endUserHeightResponse(builder);
@@ -60,28 +60,28 @@ static createUserHeightResponse(builder:flatbuffers.Builder, hmdHeight:number|nu
 
 unpack(): UserHeightResponseT {
   return new UserHeightResponseT(
-    this.hmdHeight(),
+    this.headHeight(),
     this.floorHeight()
   );
 }
 
 
 unpackTo(_o: UserHeightResponseT): void {
-  _o.hmdHeight = this.hmdHeight();
+  _o.headHeight = this.headHeight();
   _o.floorHeight = this.floorHeight();
 }
 }
 
 export class UserHeightResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public hmdHeight: number|null = null,
+  public headHeight: number|null = null,
   public floorHeight: number|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return UserHeightResponse.createUserHeightResponse(builder,
-    this.hmdHeight,
+    this.headHeight,
     this.floorHeight
   );
 }

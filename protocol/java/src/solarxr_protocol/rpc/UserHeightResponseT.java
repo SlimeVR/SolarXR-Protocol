@@ -8,12 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class UserHeightResponseT {
-  private Float hmdHeight;
+  private Float headHeight;
   private Float floorHeight;
 
-  public Float getHmdHeight() { return hmdHeight; }
+  public Float getHeadHeight() { return headHeight; }
 
-  public void setHmdHeight(Float hmdHeight) { this.hmdHeight = hmdHeight; }
+  public void setHeadHeight(Float headHeight) { this.headHeight = headHeight; }
 
   public Float getFloorHeight() { return floorHeight; }
 
@@ -21,7 +21,7 @@ public class UserHeightResponseT {
 
 
   public UserHeightResponseT() {
-    this.hmdHeight = null;
+    this.headHeight = null;
     this.floorHeight = null;
   }
 }
