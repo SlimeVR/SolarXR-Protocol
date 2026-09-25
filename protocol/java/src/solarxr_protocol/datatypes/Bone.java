@@ -25,7 +25,7 @@ public final class Bone extends Table {
   public float boneLength() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
   /**
    * A bone's default rotation is the identity rotation, where a bone's tail is towards -y
-   * (given that the head of the bone is the origin)
+   * (given that the head of the bone is the origin).
    */
   public solarxr_protocol.datatypes.math.Quat rotation() { return rotation(new solarxr_protocol.datatypes.math.Quat()); }
   public solarxr_protocol.datatypes.math.Quat rotation(solarxr_protocol.datatypes.math.Quat obj) { int o = __offset(8); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
@@ -48,17 +48,22 @@ public final class Bone extends Table {
   public solarxr_protocol.datatypes.math.Vec3f tailPosition() { return tailPosition(new solarxr_protocol.datatypes.math.Vec3f()); }
   public solarxr_protocol.datatypes.math.Vec3f tailPosition(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(14); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
-   * Linear velocity in meters/s
+   * Linear velocity in meters/s.
    */
   public solarxr_protocol.datatypes.math.Vec3f linearVelocity() { return linearVelocity(new solarxr_protocol.datatypes.math.Vec3f()); }
   public solarxr_protocol.datatypes.math.Vec3f linearVelocity(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(16); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   /**
-   * Angular velocity in rad/s
+   * Angular velocity in rad/s.
    */
   public solarxr_protocol.datatypes.math.Vec3f angularVelocity() { return angularVelocity(new solarxr_protocol.datatypes.math.Vec3f()); }
   public solarxr_protocol.datatypes.math.Vec3f angularVelocity(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(18); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  /**
+   * Similar to TrackerInfo.position_offset, position offset from the head of the bone to the tracker.
+   */
+  public solarxr_protocol.datatypes.math.Vec3f trackerOffset() { return trackerOffset(new solarxr_protocol.datatypes.math.Vec3f()); }
+  public solarxr_protocol.datatypes.math.Vec3f trackerOffset(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(20); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
-  public static void startBone(FlatBufferBuilder builder) { builder.startTable(8); }
+  public static void startBone(FlatBufferBuilder builder) { builder.startTable(9); }
   public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(0, (byte) bodyPart, (byte) 0); }
   public static void addBoneLength(FlatBufferBuilder builder, float boneLength) { builder.addFloat(1, boneLength, 0.0f); }
   public static void addRotation(FlatBufferBuilder builder, int rotationOffset) { builder.addStruct(2, rotationOffset, 0); }
@@ -67,6 +72,7 @@ public final class Bone extends Table {
   public static void addTailPosition(FlatBufferBuilder builder, int tailPositionOffset) { builder.addStruct(5, tailPositionOffset, 0); }
   public static void addLinearVelocity(FlatBufferBuilder builder, int linearVelocityOffset) { builder.addStruct(6, linearVelocityOffset, 0); }
   public static void addAngularVelocity(FlatBufferBuilder builder, int angularVelocityOffset) { builder.addStruct(7, angularVelocityOffset, 0); }
+  public static void addTrackerOffset(FlatBufferBuilder builder, int trackerOffsetOffset) { builder.addStruct(8, trackerOffsetOffset, 0); }
   public static int endBone(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -100,6 +106,8 @@ public final class Bone extends Table {
     else _o.setLinearVelocity(null);
     if (angularVelocity() != null) angularVelocity().unpackTo(_o.getAngularVelocity());
     else _o.setAngularVelocity(null);
+    if (trackerOffset() != null) trackerOffset().unpackTo(_o.getTrackerOffset());
+    else _o.setTrackerOffset(null);
   }
   public static int pack(FlatBufferBuilder builder, BoneT _o) {
     if (_o == null) return 0;
@@ -112,6 +120,7 @@ public final class Bone extends Table {
     addTailPosition(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getTailPosition()));
     addLinearVelocity(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getLinearVelocity()));
     addAngularVelocity(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getAngularVelocity()));
+    addTrackerOffset(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getTrackerOffset()));
     return endBone(builder);
   }
 }

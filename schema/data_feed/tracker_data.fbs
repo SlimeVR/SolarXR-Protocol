@@ -88,6 +88,8 @@ table TrackerInfo {
     magnetometer: solarxr_protocol.datatypes.MagnetometerStatus;
     /// Indicates what type of data the physical tracker sends before it gets transformed into a rotation
     data_type: solarxr_protocol.datatypes.hardware_info.TrackerDataType;
+    /// (for positional trackers) Offset from the head of the bone to the tracker. Ex: for a HMD this is around (0, 0, 0.1)
+    bone_offset: solarxr_protocol.datatypes.math.Vec3f;
 }
 
 table StayAlignedTracker {

@@ -65,8 +65,13 @@ public final class TrackerInfo extends Table {
    * Indicates what type of data the physical tracker sends before it gets transformed into a rotation
    */
   public int dataType() { int o = __offset(24); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  /**
+   * (for positional trackers) Offset from the head of the bone to the tracker. Ex: for a HMD this is around (0, 0, 0.1)
+   */
+  public solarxr_protocol.datatypes.math.Vec3f boneOffset() { return boneOffset(new solarxr_protocol.datatypes.math.Vec3f()); }
+  public solarxr_protocol.datatypes.math.Vec3f boneOffset(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(26); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
-  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(11); }
+  public static void startTrackerInfo(FlatBufferBuilder builder) { builder.startTable(12); }
   public static void addIsImu(FlatBufferBuilder builder, boolean isImu) { builder.addBoolean(0, isImu, false); }
   public static void addImuType(FlatBufferBuilder builder, int imuType) { builder.addShort(1, (short) imuType, (short) 0); }
   public static void addBodyPart(FlatBufferBuilder builder, int bodyPart) { builder.addByte(2, (byte) bodyPart, (byte) 0); }
@@ -78,6 +83,7 @@ public final class TrackerInfo extends Table {
   public static void addLastMountingMethod(FlatBufferBuilder builder, int lastMountingMethod) { builder.addByte(8, (byte) lastMountingMethod, (byte) 0); }
   public static void addMagnetometer(FlatBufferBuilder builder, int magnetometer) { builder.addByte(9, (byte) magnetometer, (byte) 0); }
   public static void addDataType(FlatBufferBuilder builder, int dataType) { builder.addByte(10, (byte) dataType, (byte) 0); }
+  public static void addBoneOffset(FlatBufferBuilder builder, int boneOffsetOffset) { builder.addStruct(11, boneOffsetOffset, 0); }
   public static int endTrackerInfo(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -117,6 +123,8 @@ public final class TrackerInfo extends Table {
     _o.setMagnetometer(_oMagnetometer);
     int _oDataType = dataType();
     _o.setDataType(_oDataType);
+    if (boneOffset() != null) boneOffset().unpackTo(_o.getBoneOffset());
+    else _o.setBoneOffset(null);
   }
   public static int pack(FlatBufferBuilder builder, TrackerInfoT _o) {
     if (_o == null) return 0;
@@ -134,6 +142,7 @@ public final class TrackerInfo extends Table {
     addLastMountingMethod(builder, _o.getLastMountingMethod());
     addMagnetometer(builder, _o.getMagnetometer());
     addDataType(builder, _o.getDataType());
+    addBoneOffset(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getBoneOffset()));
     return endTrackerInfo(builder);
   }
 }

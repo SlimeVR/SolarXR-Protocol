@@ -428,8 +428,8 @@ struct TelemetryGapEventBuilder;
 struct TelemetryGapResponse;
 struct TelemetryGapResponseBuilder;
 
-struct AssignTrackerRequest;
-struct AssignTrackerRequestBuilder;
+struct UpdateTrackerRequest;
+struct UpdateTrackerRequestBuilder;
 
 struct ResetTrackerAssignments;
 struct ResetTrackerAssignmentsBuilder;
@@ -2178,31 +2178,29 @@ inline const char *EnumNameSerialDeviceType(SerialDeviceType e) {
 
 enum class SkeletonBone : uint8_t {
   NONE = 0,
-  HEAD = 1,
-  NECK = 2,
-  UPPER_CHEST = 3,
-  LOWER_CHEST = 4,
-  UPPER_WAIST = 5,
-  LOWER_WAIST = 6,
-  HIP = 7,
-  HIPS_WIDTH = 8,
-  UPPER_LEG = 9,
-  LOWER_LEG = 10,
-  FOOT_LENGTH = 11,
-  FOOT_SHIFT = 12,
-  SHOULDERS_DISTANCE = 13,
-  SHOULDERS_WIDTH = 14,
-  UPPER_ARM = 15,
-  LOWER_ARM = 16,
-  HAND = 17,
+  NECK = 1,
+  UPPER_CHEST = 2,
+  LOWER_CHEST = 3,
+  UPPER_WAIST = 4,
+  LOWER_WAIST = 5,
+  HIP = 6,
+  HIPS_WIDTH = 7,
+  UPPER_LEG = 8,
+  LOWER_LEG = 9,
+  FOOT_LENGTH = 10,
+  FOOT_SHIFT = 11,
+  SHOULDERS_DISTANCE = 12,
+  SHOULDERS_WIDTH = 13,
+  UPPER_ARM = 14,
+  LOWER_ARM = 15,
+  HAND = 16,
   MIN = NONE,
   MAX = HAND
 };
 
-inline const SkeletonBone (&EnumValuesSkeletonBone())[18] {
+inline const SkeletonBone (&EnumValuesSkeletonBone())[17] {
   static const SkeletonBone values[] = {
     SkeletonBone::NONE,
-    SkeletonBone::HEAD,
     SkeletonBone::NECK,
     SkeletonBone::UPPER_CHEST,
     SkeletonBone::LOWER_CHEST,
@@ -2224,9 +2222,8 @@ inline const SkeletonBone (&EnumValuesSkeletonBone())[18] {
 }
 
 inline const char * const *EnumNamesSkeletonBone() {
-  static const char * const names[19] = {
+  static const char * const names[18] = {
     "NONE",
-    "HEAD",
     "NECK",
     "UPPER_CHEST",
     "LOWER_CHEST",
@@ -2876,7 +2873,7 @@ enum class RpcMessage : uint8_t {
   HeartbeatResponse = 2,
   ResetRequest = 3,
   ResetResponse = 4,
-  AssignTrackerRequest = 5,
+  UpdateTrackerRequest = 5,
   ResetTrackerAssignments = 6,
   VMCOSCSettingsRequest = 7,
   VMCOSCSettingsResponse = 8,
@@ -3012,7 +3009,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[130] {
     RpcMessage::HeartbeatResponse,
     RpcMessage::ResetRequest,
     RpcMessage::ResetResponse,
-    RpcMessage::AssignTrackerRequest,
+    RpcMessage::UpdateTrackerRequest,
     RpcMessage::ResetTrackerAssignments,
     RpcMessage::VMCOSCSettingsRequest,
     RpcMessage::VMCOSCSettingsResponse,
@@ -3148,7 +3145,7 @@ inline const char * const *EnumNamesRpcMessage() {
     "HeartbeatResponse",
     "ResetRequest",
     "ResetResponse",
-    "AssignTrackerRequest",
+    "UpdateTrackerRequest",
     "ResetTrackerAssignments",
     "VMCOSCSettingsRequest",
     "VMCOSCSettingsResponse",
@@ -3304,8 +3301,8 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetResponse> {
   static const RpcMessage enum_value = RpcMessage::ResetResponse;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::AssignTrackerRequest> {
-  static const RpcMessage enum_value = RpcMessage::AssignTrackerRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UpdateTrackerRequest> {
+  static const RpcMessage enum_value = RpcMessage::UpdateTrackerRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetTrackerAssignments> {
@@ -4699,7 +4696,8 @@ struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HEAD_POSITION = 12,
     VT_TAIL_POSITION = 14,
     VT_LINEAR_VELOCITY = 16,
-    VT_ANGULAR_VELOCITY = 18
+    VT_ANGULAR_VELOCITY = 18,
+    VT_TRACKER_OFFSET = 20
   };
   solarxr_protocol::datatypes::BodyPart body_part() const {
     return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
@@ -4709,7 +4707,7 @@ struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetField<float>(VT_BONE_LENGTH, 0.0f);
   }
   /// A bone's default rotation is the identity rotation, where a bone's tail is towards -y
-  /// (given that the head of the bone is the origin)
+  /// (given that the head of the bone is the origin).
   const solarxr_protocol::datatypes::math::Quat *rotation() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION);
   }
@@ -4728,13 +4726,17 @@ struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::math::Vec3f *tail_position() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_TAIL_POSITION);
   }
-  /// Linear velocity in meters/s
+  /// Linear velocity in meters/s.
   const solarxr_protocol::datatypes::math::Vec3f *linear_velocity() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_LINEAR_VELOCITY);
   }
-  /// Angular velocity in rad/s
+  /// Angular velocity in rad/s.
   const solarxr_protocol::datatypes::math::Vec3f *angular_velocity() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_ANGULAR_VELOCITY);
+  }
+  /// Similar to TrackerInfo.position_offset, position offset from the head of the bone to the tracker.
+  const solarxr_protocol::datatypes::math::Vec3f *tracker_offset() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_TRACKER_OFFSET);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -4746,6 +4748,7 @@ struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_TAIL_POSITION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_VELOCITY, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_ANGULAR_VELOCITY, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_TRACKER_OFFSET, 4) &&
            verifier.EndTable();
   }
 };
@@ -4778,6 +4781,9 @@ struct BoneBuilder {
   void add_angular_velocity(const solarxr_protocol::datatypes::math::Vec3f *angular_velocity) {
     fbb_.AddStruct(Bone::VT_ANGULAR_VELOCITY, angular_velocity);
   }
+  void add_tracker_offset(const solarxr_protocol::datatypes::math::Vec3f *tracker_offset) {
+    fbb_.AddStruct(Bone::VT_TRACKER_OFFSET, tracker_offset);
+  }
   explicit BoneBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4798,8 +4804,10 @@ inline flatbuffers::Offset<Bone> CreateBone(
     const solarxr_protocol::datatypes::math::Vec3f *head_position = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *tail_position = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *linear_velocity = nullptr,
-    const solarxr_protocol::datatypes::math::Vec3f *angular_velocity = nullptr) {
+    const solarxr_protocol::datatypes::math::Vec3f *angular_velocity = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *tracker_offset = nullptr) {
   BoneBuilder builder_(_fbb);
+  builder_.add_tracker_offset(tracker_offset);
   builder_.add_angular_velocity(angular_velocity);
   builder_.add_linear_velocity(linear_velocity);
   builder_.add_tail_position(tail_position);
@@ -4821,7 +4829,8 @@ struct BoneMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HEAD_POSITION = 12,
     VT_TAIL_POSITION = 14,
     VT_LINEAR_VELOCITY = 16,
-    VT_ANGULAR_VELOCITY = 18
+    VT_ANGULAR_VELOCITY = 18,
+    VT_TRACKER_OFFSET = 20
   };
   bool body_part() const {
     return GetField<uint8_t>(VT_BODY_PART, 0) != 0;
@@ -4847,6 +4856,9 @@ struct BoneMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool angular_velocity() const {
     return GetField<uint8_t>(VT_ANGULAR_VELOCITY, 0) != 0;
   }
+  bool tracker_offset() const {
+    return GetField<uint8_t>(VT_TRACKER_OFFSET, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
@@ -4857,6 +4869,7 @@ struct BoneMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_TAIL_POSITION, 1) &&
            VerifyField<uint8_t>(verifier, VT_LINEAR_VELOCITY, 1) &&
            VerifyField<uint8_t>(verifier, VT_ANGULAR_VELOCITY, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TRACKER_OFFSET, 1) &&
            verifier.EndTable();
   }
 };
@@ -4889,6 +4902,9 @@ struct BoneMaskBuilder {
   void add_angular_velocity(bool angular_velocity) {
     fbb_.AddElement<uint8_t>(BoneMask::VT_ANGULAR_VELOCITY, static_cast<uint8_t>(angular_velocity), 0);
   }
+  void add_tracker_offset(bool tracker_offset) {
+    fbb_.AddElement<uint8_t>(BoneMask::VT_TRACKER_OFFSET, static_cast<uint8_t>(tracker_offset), 0);
+  }
   explicit BoneMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4909,8 +4925,10 @@ inline flatbuffers::Offset<BoneMask> CreateBoneMask(
     bool head_position = false,
     bool tail_position = false,
     bool linear_velocity = false,
-    bool angular_velocity = false) {
+    bool angular_velocity = false,
+    bool tracker_offset = false) {
   BoneMaskBuilder builder_(_fbb);
+  builder_.add_tracker_offset(tracker_offset);
   builder_.add_angular_velocity(angular_velocity);
   builder_.add_linear_velocity(linear_velocity);
   builder_.add_tail_position(tail_position);
@@ -5311,7 +5329,8 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_CUSTOM_NAME = 18,
     VT_LAST_MOUNTING_METHOD = 20,
     VT_MAGNETOMETER = 22,
-    VT_DATA_TYPE = 24
+    VT_DATA_TYPE = 24,
+    VT_BONE_OFFSET = 26
   };
   /// Indicates if the tracker is using an IMU for its tracking data
   bool is_imu() const {
@@ -5356,6 +5375,10 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type() const {
     return static_cast<solarxr_protocol::datatypes::hardware_info::TrackerDataType>(GetField<uint8_t>(VT_DATA_TYPE, 0));
   }
+  /// (for positional trackers) Offset from the head of the bone to the tracker. Ex: for a HMD this is around (0, 0, 0.1)
+  const solarxr_protocol::datatypes::math::Vec3f *bone_offset() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_BONE_OFFSET);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_IS_IMU, 1) &&
@@ -5371,6 +5394,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_LAST_MOUNTING_METHOD, 1) &&
            VerifyField<uint8_t>(verifier, VT_MAGNETOMETER, 1) &&
            VerifyField<uint8_t>(verifier, VT_DATA_TYPE, 1) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_BONE_OFFSET, 4) &&
            verifier.EndTable();
   }
 };
@@ -5412,6 +5436,9 @@ struct TrackerInfoBuilder {
   void add_data_type(solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_DATA_TYPE, static_cast<uint8_t>(data_type), 0);
   }
+  void add_bone_offset(const solarxr_protocol::datatypes::math::Vec3f *bone_offset) {
+    fbb_.AddStruct(TrackerInfo::VT_BONE_OFFSET, bone_offset);
+  }
   explicit TrackerInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5435,8 +5462,10 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
+    const solarxr_protocol::datatypes::math::Vec3f *bone_offset = nullptr) {
   TrackerInfoBuilder builder_(_fbb);
+  builder_.add_bone_offset(bone_offset);
   builder_.add_custom_name(custom_name);
   builder_.add_display_name(display_name);
   builder_.add_mounting_reset_orientation(mounting_reset_orientation);
@@ -5463,7 +5492,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     const char *custom_name = nullptr,
     solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION) {
+    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
+    const solarxr_protocol::datatypes::math::Vec3f *bone_offset = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
   return solarxr_protocol::data_feed::tracker_data::CreateTrackerInfo(
@@ -5478,7 +5508,8 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       custom_name__,
       last_mounting_method,
       magnetometer,
-      data_type);
+      data_type,
+      bone_offset);
 }
 
 struct StayAlignedTracker FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -12239,13 +12270,14 @@ inline flatbuffers::Offset<TelemetryGapResponse> CreateTelemetryGapResponseDirec
       events__);
 }
 
-struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef AssignTrackerRequestBuilder Builder;
+struct UpdateTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UpdateTrackerRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKER_ID = 4,
     VT_BODY_POSITION = 6,
     VT_MOUNTING_ORIENTATION = 8,
-    VT_DISPLAY_NAME = 10
+    VT_DISPLAY_NAME = 10,
+    VT_BONE_OFFSET = 12
   };
   uint16_t tracker_id() const {
     return GetField<uint16_t>(VT_TRACKER_ID, 0);
@@ -12259,6 +12291,9 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   const flatbuffers::String *display_name() const {
     return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
   }
+  const solarxr_protocol::datatypes::math::Vec3f *bone_offset() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_BONE_OFFSET);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
@@ -12266,44 +12301,50 @@ struct AssignTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
            VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_MOUNTING_ORIENTATION, 4) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
            verifier.VerifyString(display_name()) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_BONE_OFFSET, 4) &&
            verifier.EndTable();
   }
 };
 
-struct AssignTrackerRequestBuilder {
-  typedef AssignTrackerRequest Table;
+struct UpdateTrackerRequestBuilder {
+  typedef UpdateTrackerRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_tracker_id(uint16_t tracker_id) {
-    fbb_.AddElement<uint16_t>(AssignTrackerRequest::VT_TRACKER_ID, tracker_id, 0);
+    fbb_.AddElement<uint16_t>(UpdateTrackerRequest::VT_TRACKER_ID, tracker_id, 0);
   }
   void add_body_position(solarxr_protocol::datatypes::BodyPart body_position) {
-    fbb_.AddElement<uint8_t>(AssignTrackerRequest::VT_BODY_POSITION, static_cast<uint8_t>(body_position), 0);
+    fbb_.AddElement<uint8_t>(UpdateTrackerRequest::VT_BODY_POSITION, static_cast<uint8_t>(body_position), 0);
   }
   void add_mounting_orientation(const solarxr_protocol::datatypes::math::Quat *mounting_orientation) {
-    fbb_.AddStruct(AssignTrackerRequest::VT_MOUNTING_ORIENTATION, mounting_orientation);
+    fbb_.AddStruct(UpdateTrackerRequest::VT_MOUNTING_ORIENTATION, mounting_orientation);
   }
   void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
-    fbb_.AddOffset(AssignTrackerRequest::VT_DISPLAY_NAME, display_name);
+    fbb_.AddOffset(UpdateTrackerRequest::VT_DISPLAY_NAME, display_name);
   }
-  explicit AssignTrackerRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  void add_bone_offset(const solarxr_protocol::datatypes::math::Vec3f *bone_offset) {
+    fbb_.AddStruct(UpdateTrackerRequest::VT_BONE_OFFSET, bone_offset);
+  }
+  explicit UpdateTrackerRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<AssignTrackerRequest> Finish() {
+  flatbuffers::Offset<UpdateTrackerRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<AssignTrackerRequest>(end);
+    auto o = flatbuffers::Offset<UpdateTrackerRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequest(
+inline flatbuffers::Offset<UpdateTrackerRequest> CreateUpdateTrackerRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t tracker_id = 0,
     solarxr_protocol::datatypes::BodyPart body_position = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
-    flatbuffers::Offset<flatbuffers::String> display_name = 0) {
-  AssignTrackerRequestBuilder builder_(_fbb);
+    flatbuffers::Offset<flatbuffers::String> display_name = 0,
+    const solarxr_protocol::datatypes::math::Vec3f *bone_offset = nullptr) {
+  UpdateTrackerRequestBuilder builder_(_fbb);
+  builder_.add_bone_offset(bone_offset);
   builder_.add_display_name(display_name);
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_tracker_id(tracker_id);
@@ -12311,19 +12352,21 @@ inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequest(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<AssignTrackerRequest> CreateAssignTrackerRequestDirect(
+inline flatbuffers::Offset<UpdateTrackerRequest> CreateUpdateTrackerRequestDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t tracker_id = 0,
     solarxr_protocol::datatypes::BodyPart body_position = solarxr_protocol::datatypes::BodyPart::NONE,
     const solarxr_protocol::datatypes::math::Quat *mounting_orientation = nullptr,
-    const char *display_name = nullptr) {
+    const char *display_name = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *bone_offset = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
-  return solarxr_protocol::rpc::CreateAssignTrackerRequest(
+  return solarxr_protocol::rpc::CreateUpdateTrackerRequest(
       _fbb,
       tracker_id,
       body_position,
       mounting_orientation,
-      display_name__);
+      display_name__,
+      bone_offset);
 }
 
 struct ResetTrackerAssignments FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -15500,8 +15543,8 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ResetResponse *message_as_ResetResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ResetResponse ? static_cast<const solarxr_protocol::rpc::ResetResponse *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::AssignTrackerRequest *message_as_AssignTrackerRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::AssignTrackerRequest ? static_cast<const solarxr_protocol::rpc::AssignTrackerRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::UpdateTrackerRequest *message_as_UpdateTrackerRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UpdateTrackerRequest ? static_cast<const solarxr_protocol::rpc::UpdateTrackerRequest *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::ResetTrackerAssignments *message_as_ResetTrackerAssignments() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ResetTrackerAssignments ? static_cast<const solarxr_protocol::rpc::ResetTrackerAssignments *>(message()) : nullptr;
@@ -15902,8 +15945,8 @@ template<> inline const solarxr_protocol::rpc::ResetResponse *RpcMessageHeader::
   return message_as_ResetResponse();
 }
 
-template<> inline const solarxr_protocol::rpc::AssignTrackerRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AssignTrackerRequest>() const {
-  return message_as_AssignTrackerRequest();
+template<> inline const solarxr_protocol::rpc::UpdateTrackerRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::UpdateTrackerRequest>() const {
+  return message_as_UpdateTrackerRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::ResetTrackerAssignments *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetTrackerAssignments>() const {
@@ -17857,8 +17900,8 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ResetResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::AssignTrackerRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::AssignTrackerRequest *>(obj);
+    case RpcMessage::UpdateTrackerRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UpdateTrackerRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::ResetTrackerAssignments: {

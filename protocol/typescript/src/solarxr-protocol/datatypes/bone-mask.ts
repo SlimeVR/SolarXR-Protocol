@@ -62,8 +62,13 @@ angularVelocity():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+trackerOffset():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 20);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+}
+
 static startBoneMask(builder:flatbuffers.Builder) {
-  builder.startObject(8);
+  builder.startObject(9);
 }
 
 static addBodyPart(builder:flatbuffers.Builder, bodyPart:boolean) {
@@ -98,12 +103,16 @@ static addAngularVelocity(builder:flatbuffers.Builder, angularVelocity:boolean) 
   builder.addFieldInt8(7, +angularVelocity, +false);
 }
 
+static addTrackerOffset(builder:flatbuffers.Builder, trackerOffset:boolean) {
+  builder.addFieldInt8(8, +trackerOffset, +false);
+}
+
 static endBoneMask(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createBoneMask(builder:flatbuffers.Builder, bodyPart:boolean, boneLength:boolean, rotation:boolean, orientation:boolean, headPosition:boolean, tailPosition:boolean, linearVelocity:boolean, angularVelocity:boolean):flatbuffers.Offset {
+static createBoneMask(builder:flatbuffers.Builder, bodyPart:boolean, boneLength:boolean, rotation:boolean, orientation:boolean, headPosition:boolean, tailPosition:boolean, linearVelocity:boolean, angularVelocity:boolean, trackerOffset:boolean):flatbuffers.Offset {
   BoneMask.startBoneMask(builder);
   BoneMask.addBodyPart(builder, bodyPart);
   BoneMask.addBoneLength(builder, boneLength);
@@ -113,6 +122,7 @@ static createBoneMask(builder:flatbuffers.Builder, bodyPart:boolean, boneLength:
   BoneMask.addTailPosition(builder, tailPosition);
   BoneMask.addLinearVelocity(builder, linearVelocity);
   BoneMask.addAngularVelocity(builder, angularVelocity);
+  BoneMask.addTrackerOffset(builder, trackerOffset);
   return BoneMask.endBoneMask(builder);
 }
 
@@ -125,7 +135,8 @@ unpack(): BoneMaskT {
     this.headPosition(),
     this.tailPosition(),
     this.linearVelocity(),
-    this.angularVelocity()
+    this.angularVelocity(),
+    this.trackerOffset()
   );
 }
 
@@ -139,6 +150,7 @@ unpackTo(_o: BoneMaskT): void {
   _o.tailPosition = this.tailPosition();
   _o.linearVelocity = this.linearVelocity();
   _o.angularVelocity = this.angularVelocity();
+  _o.trackerOffset = this.trackerOffset();
 }
 }
 
@@ -151,7 +163,8 @@ constructor(
   public headPosition: boolean = false,
   public tailPosition: boolean = false,
   public linearVelocity: boolean = false,
-  public angularVelocity: boolean = false
+  public angularVelocity: boolean = false,
+  public trackerOffset: boolean = false
 ){}
 
 
@@ -164,7 +177,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.headPosition,
     this.tailPosition,
     this.linearVelocity,
-    this.angularVelocity
+    this.angularVelocity,
+    this.trackerOffset
   );
 }
 }

@@ -25,7 +25,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.HeartbeatResponseT asHeartbeatResponse() { return (solarxr_protocol.rpc.HeartbeatResponseT) value; }
   public solarxr_protocol.rpc.ResetRequestT asResetRequest() { return (solarxr_protocol.rpc.ResetRequestT) value; }
   public solarxr_protocol.rpc.ResetResponseT asResetResponse() { return (solarxr_protocol.rpc.ResetResponseT) value; }
-  public solarxr_protocol.rpc.AssignTrackerRequestT asAssignTrackerRequest() { return (solarxr_protocol.rpc.AssignTrackerRequestT) value; }
+  public solarxr_protocol.rpc.UpdateTrackerRequestT asUpdateTrackerRequest() { return (solarxr_protocol.rpc.UpdateTrackerRequestT) value; }
   public solarxr_protocol.rpc.ResetTrackerAssignmentsT asResetTrackerAssignments() { return (solarxr_protocol.rpc.ResetTrackerAssignmentsT) value; }
   public solarxr_protocol.rpc.VMCOSCSettingsRequestT asVMCOSCSettingsRequest() { return (solarxr_protocol.rpc.VMCOSCSettingsRequestT) value; }
   public solarxr_protocol.rpc.VMCOSCSettingsResponseT asVMCOSCSettingsResponse() { return (solarxr_protocol.rpc.VMCOSCSettingsResponseT) value; }
@@ -157,7 +157,7 @@ public class RpcMessageUnion {
       case RpcMessage.HeartbeatResponse: return solarxr_protocol.rpc.HeartbeatResponse.pack(builder, _o.asHeartbeatResponse());
       case RpcMessage.ResetRequest: return solarxr_protocol.rpc.ResetRequest.pack(builder, _o.asResetRequest());
       case RpcMessage.ResetResponse: return solarxr_protocol.rpc.ResetResponse.pack(builder, _o.asResetResponse());
-      case RpcMessage.AssignTrackerRequest: return solarxr_protocol.rpc.AssignTrackerRequest.pack(builder, _o.asAssignTrackerRequest());
+      case RpcMessage.UpdateTrackerRequest: return solarxr_protocol.rpc.UpdateTrackerRequest.pack(builder, _o.asUpdateTrackerRequest());
       case RpcMessage.ResetTrackerAssignments: return solarxr_protocol.rpc.ResetTrackerAssignments.pack(builder, _o.asResetTrackerAssignments());
       case RpcMessage.VMCOSCSettingsRequest: return solarxr_protocol.rpc.VMCOSCSettingsRequest.pack(builder, _o.asVMCOSCSettingsRequest());
       case RpcMessage.VMCOSCSettingsResponse: return solarxr_protocol.rpc.VMCOSCSettingsResponse.pack(builder, _o.asVMCOSCSettingsResponse());

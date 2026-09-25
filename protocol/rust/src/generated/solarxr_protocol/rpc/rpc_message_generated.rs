@@ -21,7 +21,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 130] = [
   RpcMessage::HeartbeatResponse,
   RpcMessage::ResetRequest,
   RpcMessage::ResetResponse,
-  RpcMessage::AssignTrackerRequest,
+  RpcMessage::UpdateTrackerRequest,
   RpcMessage::ResetTrackerAssignments,
   RpcMessage::VMCOSCSettingsRequest,
   RpcMessage::VMCOSCSettingsResponse,
@@ -158,7 +158,7 @@ impl RpcMessage {
   pub const HeartbeatResponse: Self = Self(2);
   pub const ResetRequest: Self = Self(3);
   pub const ResetResponse: Self = Self(4);
-  pub const AssignTrackerRequest: Self = Self(5);
+  pub const UpdateTrackerRequest: Self = Self(5);
   pub const ResetTrackerAssignments: Self = Self(6);
   pub const VMCOSCSettingsRequest: Self = Self(7);
   pub const VMCOSCSettingsResponse: Self = Self(8);
@@ -292,7 +292,7 @@ impl RpcMessage {
     Self::HeartbeatResponse,
     Self::ResetRequest,
     Self::ResetResponse,
-    Self::AssignTrackerRequest,
+    Self::UpdateTrackerRequest,
     Self::ResetTrackerAssignments,
     Self::VMCOSCSettingsRequest,
     Self::VMCOSCSettingsResponse,
@@ -426,7 +426,7 @@ impl RpcMessage {
       Self::HeartbeatResponse => Some("HeartbeatResponse"),
       Self::ResetRequest => Some("ResetRequest"),
       Self::ResetResponse => Some("ResetResponse"),
-      Self::AssignTrackerRequest => Some("AssignTrackerRequest"),
+      Self::UpdateTrackerRequest => Some("UpdateTrackerRequest"),
       Self::ResetTrackerAssignments => Some("ResetTrackerAssignments"),
       Self::VMCOSCSettingsRequest => Some("VMCOSCSettingsRequest"),
       Self::VMCOSCSettingsResponse => Some("VMCOSCSettingsResponse"),

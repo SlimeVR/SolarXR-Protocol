@@ -52,7 +52,6 @@ export { UpdateTrackerPosition, UpdateTrackerPositionT } from './solarxr-protoco
 export { UpdateTrackerStatus, UpdateTrackerStatusT } from './solarxr-protocol/driver-protocol/update-tracker-status.js';
 export { AddUnknownDeviceRequest, AddUnknownDeviceRequestT } from './solarxr-protocol/rpc/add-unknown-device-request.js';
 export { ArmsResetMode } from './solarxr-protocol/rpc/arms-reset-mode.js';
-export { AssignTrackerRequest, AssignTrackerRequestT } from './solarxr-protocol/rpc/assign-tracker-request.js';
 export { AutoBoneApplyRequest, AutoBoneApplyRequestT } from './solarxr-protocol/rpc/auto-bone-apply-request.js';
 export { AutoBoneCancelRecordingRequest, AutoBoneCancelRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-cancel-recording-request.js';
 export { AutoBoneEpochResponse, AutoBoneEpochResponseT } from './solarxr-protocol/rpc/auto-bone-epoch-response.js';
@@ -207,6 +206,7 @@ export { TrackingChecklistUnassignedReliableReference, TrackingChecklistUnassign
 export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
+export { UpdateTrackerRequest, UpdateTrackerRequestT } from './solarxr-protocol/rpc/update-tracker-request.js';
 export { UserHeightCalibrationStatus } from './solarxr-protocol/rpc/user-height-calibration-status.js';
 export { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from './solarxr-protocol/rpc/user-height-recording-status-response.js';
 export { UserHeightRequest, UserHeightRequestT } from './solarxr-protocol/rpc/user-height-request.js';

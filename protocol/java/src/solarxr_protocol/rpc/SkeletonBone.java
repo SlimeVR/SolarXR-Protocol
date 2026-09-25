@@ -6,25 +6,24 @@ package solarxr_protocol.rpc;
 public final class SkeletonBone {
   private SkeletonBone() { }
   public static final int NONE = 0;
-  public static final int HEAD = 1;
-  public static final int NECK = 2;
-  public static final int UPPER_CHEST = 3;
-  public static final int LOWER_CHEST = 4;
-  public static final int UPPER_WAIST = 5;
-  public static final int LOWER_WAIST = 6;
-  public static final int HIP = 7;
-  public static final int HIPS_WIDTH = 8;
-  public static final int UPPER_LEG = 9;
-  public static final int LOWER_LEG = 10;
-  public static final int FOOT_LENGTH = 11;
-  public static final int FOOT_SHIFT = 12;
-  public static final int SHOULDERS_DISTANCE = 13;
-  public static final int SHOULDERS_WIDTH = 14;
-  public static final int UPPER_ARM = 15;
-  public static final int LOWER_ARM = 16;
-  public static final int HAND = 17;
+  public static final int NECK = 1;
+  public static final int UPPER_CHEST = 2;
+  public static final int LOWER_CHEST = 3;
+  public static final int UPPER_WAIST = 4;
+  public static final int LOWER_WAIST = 5;
+  public static final int HIP = 6;
+  public static final int HIPS_WIDTH = 7;
+  public static final int UPPER_LEG = 8;
+  public static final int LOWER_LEG = 9;
+  public static final int FOOT_LENGTH = 10;
+  public static final int FOOT_SHIFT = 11;
+  public static final int SHOULDERS_DISTANCE = 12;
+  public static final int SHOULDERS_WIDTH = 13;
+  public static final int UPPER_ARM = 14;
+  public static final int LOWER_ARM = 15;
+  public static final int HAND = 16;
 
-  public static final String[] names = { "NONE", "HEAD", "NECK", "UPPER_CHEST", "LOWER_CHEST", "UPPER_WAIST", "LOWER_WAIST", "HIP", "HIPS_WIDTH", "UPPER_LEG", "LOWER_LEG", "FOOT_LENGTH", "FOOT_SHIFT", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM", "LOWER_ARM", "HAND", };
+  public static final String[] names = { "NONE", "NECK", "UPPER_CHEST", "LOWER_CHEST", "UPPER_WAIST", "LOWER_WAIST", "HIP", "HIPS_WIDTH", "UPPER_LEG", "LOWER_LEG", "FOOT_LENGTH", "FOOT_SHIFT", "SHOULDERS_DISTANCE", "SHOULDERS_WIDTH", "UPPER_ARM", "LOWER_ARM", "HAND", };
 
   public static String name(int e) { return names[e]; }
 }
