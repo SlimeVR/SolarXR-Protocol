@@ -29,7 +29,7 @@ impl<'a> ResetsSettingsResponse<'a> {
   pub const VT_ARMS_RESET_MODE: flatbuffers::VOffsetT = 6;
   pub const VT_YAW_RESET_SMOOTH_TIME: flatbuffers::VOffsetT = 8;
   pub const VT_SAVE_MOUNTING_RESET: flatbuffers::VOffsetT = 10;
-  pub const VT_RESET_HMD_ATTITUDE: flatbuffers::VOffsetT = 12;
+  pub const VT_RESET_RELIABLE_REFERENCE_ATTITUDE: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -42,7 +42,7 @@ impl<'a> ResetsSettingsResponse<'a> {
   ) -> flatbuffers::WIPOffset<ResetsSettingsResponse<'bldr>> {
     let mut builder = ResetsSettingsResponseBuilder::new(_fbb);
     builder.add_yaw_reset_smooth_time(args.yaw_reset_smooth_time);
-    builder.add_reset_hmd_attitude(args.reset_hmd_attitude);
+    builder.add_reset_reliable_reference_attitude(args.reset_reliable_reference_attitude);
     builder.add_save_mounting_reset(args.save_mounting_reset);
     builder.add_arms_reset_mode(args.arms_reset_mode);
     builder.add_reset_mounting_feet(args.reset_mounting_feet);
@@ -83,11 +83,11 @@ impl<'a> ResetsSettingsResponse<'a> {
   }
   /// Reset VR headset's pitch and roll
   #[inline]
-  pub fn reset_hmd_attitude(&self) -> bool {
+  pub fn reset_reliable_reference_attitude(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ResetsSettingsResponse::VT_RESET_HMD_ATTITUDE, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(ResetsSettingsResponse::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, Some(false)).unwrap()}
   }
 }
 
@@ -102,7 +102,7 @@ impl flatbuffers::Verifiable for ResetsSettingsResponse<'_> {
      .visit_field::<ArmsResetMode>("arms_reset_mode", Self::VT_ARMS_RESET_MODE, false)?
      .visit_field::<f32>("yaw_reset_smooth_time", Self::VT_YAW_RESET_SMOOTH_TIME, false)?
      .visit_field::<bool>("save_mounting_reset", Self::VT_SAVE_MOUNTING_RESET, false)?
-     .visit_field::<bool>("reset_hmd_attitude", Self::VT_RESET_HMD_ATTITUDE, false)?
+     .visit_field::<bool>("reset_reliable_reference_attitude", Self::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, false)?
      .finish();
     Ok(())
   }
@@ -112,7 +112,7 @@ pub struct ResetsSettingsResponseArgs {
     pub arms_reset_mode: ArmsResetMode,
     pub yaw_reset_smooth_time: f32,
     pub save_mounting_reset: bool,
-    pub reset_hmd_attitude: bool,
+    pub reset_reliable_reference_attitude: bool,
 }
 impl<'a> Default for ResetsSettingsResponseArgs {
   #[inline]
@@ -122,7 +122,7 @@ impl<'a> Default for ResetsSettingsResponseArgs {
       arms_reset_mode: ArmsResetMode::BACK,
       yaw_reset_smooth_time: 0.0,
       save_mounting_reset: false,
-      reset_hmd_attitude: false,
+      reset_reliable_reference_attitude: false,
     }
   }
 }
@@ -149,8 +149,8 @@ impl<'a: 'b, 'b> ResetsSettingsResponseBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(ResetsSettingsResponse::VT_SAVE_MOUNTING_RESET, save_mounting_reset, false);
   }
   #[inline]
-  pub fn add_reset_hmd_attitude(&mut self, reset_hmd_attitude: bool) {
-    self.fbb_.push_slot::<bool>(ResetsSettingsResponse::VT_RESET_HMD_ATTITUDE, reset_hmd_attitude, false);
+  pub fn add_reset_reliable_reference_attitude(&mut self, reset_reliable_reference_attitude: bool) {
+    self.fbb_.push_slot::<bool>(ResetsSettingsResponse::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, reset_reliable_reference_attitude, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ResetsSettingsResponseBuilder<'a, 'b> {
@@ -174,7 +174,7 @@ impl core::fmt::Debug for ResetsSettingsResponse<'_> {
       ds.field("arms_reset_mode", &self.arms_reset_mode());
       ds.field("yaw_reset_smooth_time", &self.yaw_reset_smooth_time());
       ds.field("save_mounting_reset", &self.save_mounting_reset());
-      ds.field("reset_hmd_attitude", &self.reset_hmd_attitude());
+      ds.field("reset_reliable_reference_attitude", &self.reset_reliable_reference_attitude());
       ds.finish()
   }
 }

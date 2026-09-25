@@ -22,7 +22,7 @@ static getSizePrefixedRootAsChangeUserHeightRequest(bb:flatbuffers.ByteBuffer, o
   return (obj || new ChangeUserHeightRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-hmdHeight():number|null {
+headHeight():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
 }
@@ -36,8 +36,8 @@ static startChangeUserHeightRequest(builder:flatbuffers.Builder) {
   builder.startObject(2);
 }
 
-static addHmdHeight(builder:flatbuffers.Builder, hmdHeight:number) {
-  builder.addFieldFloat32(0, hmdHeight, 0);
+static addHeadHeight(builder:flatbuffers.Builder, headHeight:number) {
+  builder.addFieldFloat32(0, headHeight, 0);
 }
 
 static addFloorHeight(builder:flatbuffers.Builder, floorHeight:number) {
@@ -49,10 +49,10 @@ static endChangeUserHeightRequest(builder:flatbuffers.Builder):flatbuffers.Offse
   return offset;
 }
 
-static createChangeUserHeightRequest(builder:flatbuffers.Builder, hmdHeight:number|null, floorHeight:number|null):flatbuffers.Offset {
+static createChangeUserHeightRequest(builder:flatbuffers.Builder, headHeight:number|null, floorHeight:number|null):flatbuffers.Offset {
   ChangeUserHeightRequest.startChangeUserHeightRequest(builder);
-  if (hmdHeight !== null)
-    ChangeUserHeightRequest.addHmdHeight(builder, hmdHeight);
+  if (headHeight !== null)
+    ChangeUserHeightRequest.addHeadHeight(builder, headHeight);
   if (floorHeight !== null)
     ChangeUserHeightRequest.addFloorHeight(builder, floorHeight);
   return ChangeUserHeightRequest.endChangeUserHeightRequest(builder);
@@ -60,28 +60,28 @@ static createChangeUserHeightRequest(builder:flatbuffers.Builder, hmdHeight:numb
 
 unpack(): ChangeUserHeightRequestT {
   return new ChangeUserHeightRequestT(
-    this.hmdHeight(),
+    this.headHeight(),
     this.floorHeight()
   );
 }
 
 
 unpackTo(_o: ChangeUserHeightRequestT): void {
-  _o.hmdHeight = this.hmdHeight();
+  _o.headHeight = this.headHeight();
   _o.floorHeight = this.floorHeight();
 }
 }
 
 export class ChangeUserHeightRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public hmdHeight: number|null = null,
+  public headHeight: number|null = null,
   public floorHeight: number|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ChangeUserHeightRequest.createChangeUserHeightRequest(builder,
-    this.hmdHeight,
+    this.headHeight,
     this.floorHeight
   );
 }

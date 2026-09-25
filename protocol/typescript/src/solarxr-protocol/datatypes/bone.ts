@@ -61,7 +61,7 @@ orientation(obj?:Quat):Quat|null {
 
 /**
  * The head of a bone is the extremity of the bone touching the parent bone.
- * The parent is defined as the bone closer to the HMD.
+ * The parent is defined as the bone closer to the head.
  */
 headPosition(obj?:Vec3f):Vec3f|null {
   const offset = this.bb!.__offset(this.bb_pos, 12);

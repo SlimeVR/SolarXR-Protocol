@@ -142,8 +142,8 @@ impl<'a> TrackerData<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::math::Vec3f>(TrackerData::VT_LINEAR_ACCELERATION, None)}
   }
-  /// Reference-adjusted rotation for IMU-only trackers (VR HMD yaw is used as a reset reference).
-  /// In other words, a rotation that is aligned to a reliable source of rotation (0, HMD YAW, 0),
+  /// Reference-adjusted rotation for IMU-only trackers (Reference's yaw is used as a reset reference).
+  /// In other words, a rotation that is aligned to a reliable source of rotation (0, Reference yaw, 0),
   /// triggered after user input (using reset buttons).
   /// This is a SlimeVR-specific field and computed exclusively by SlimeVR server.
   /// Includes: mounting orientation, full, quick and mounting reset adjustments.

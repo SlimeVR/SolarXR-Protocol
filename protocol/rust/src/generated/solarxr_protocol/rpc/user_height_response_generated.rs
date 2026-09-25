@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for UserHeightResponse<'a> {
 }
 
 impl<'a> UserHeightResponse<'a> {
-  pub const VT_HMD_HEIGHT: flatbuffers::VOffsetT = 4;
+  pub const VT_HEAD_HEIGHT: flatbuffers::VOffsetT = 4;
   pub const VT_FLOOR_HEIGHT: flatbuffers::VOffsetT = 6;
 
   #[inline]
@@ -39,17 +39,17 @@ impl<'a> UserHeightResponse<'a> {
   ) -> flatbuffers::WIPOffset<UserHeightResponse<'bldr>> {
     let mut builder = UserHeightResponseBuilder::new(_fbb);
     if let Some(x) = args.floor_height { builder.add_floor_height(x); }
-    if let Some(x) = args.hmd_height { builder.add_hmd_height(x); }
+    if let Some(x) = args.head_height { builder.add_head_height(x); }
     builder.finish()
   }
 
 
   #[inline]
-  pub fn hmd_height(&self) -> Option<f32> {
+  pub fn head_height(&self) -> Option<f32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(UserHeightResponse::VT_HMD_HEIGHT, None)}
+    unsafe { self._tab.get::<f32>(UserHeightResponse::VT_HEAD_HEIGHT, None)}
   }
   #[inline]
   pub fn floor_height(&self) -> Option<f32> {
@@ -67,21 +67,21 @@ impl flatbuffers::Verifiable for UserHeightResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<f32>("hmd_height", Self::VT_HMD_HEIGHT, false)?
+     .visit_field::<f32>("head_height", Self::VT_HEAD_HEIGHT, false)?
      .visit_field::<f32>("floor_height", Self::VT_FLOOR_HEIGHT, false)?
      .finish();
     Ok(())
   }
 }
 pub struct UserHeightResponseArgs {
-    pub hmd_height: Option<f32>,
+    pub head_height: Option<f32>,
     pub floor_height: Option<f32>,
 }
 impl<'a> Default for UserHeightResponseArgs {
   #[inline]
   fn default() -> Self {
     UserHeightResponseArgs {
-      hmd_height: None,
+      head_height: None,
       floor_height: None,
     }
   }
@@ -93,8 +93,8 @@ pub struct UserHeightResponseBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> UserHeightResponseBuilder<'a, 'b> {
   #[inline]
-  pub fn add_hmd_height(&mut self, hmd_height: f32) {
-    self.fbb_.push_slot_always::<f32>(UserHeightResponse::VT_HMD_HEIGHT, hmd_height);
+  pub fn add_head_height(&mut self, head_height: f32) {
+    self.fbb_.push_slot_always::<f32>(UserHeightResponse::VT_HEAD_HEIGHT, head_height);
   }
   #[inline]
   pub fn add_floor_height(&mut self, floor_height: f32) {
@@ -118,7 +118,7 @@ impl<'a: 'b, 'b> UserHeightResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for UserHeightResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("UserHeightResponse");
-      ds.field("hmd_height", &self.hmd_height());
+      ds.field("head_height", &self.head_height());
       ds.field("floor_height", &self.floor_height());
       ds.finish()
   }

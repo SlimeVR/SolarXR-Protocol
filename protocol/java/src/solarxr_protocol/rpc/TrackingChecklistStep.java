@@ -100,9 +100,9 @@ public final class TrackingChecklistStep extends Table {
         _oExtraDataValue = extraData(new solarxr_protocol.rpc.TrackingChecklistSteamVRDisconnected());
         _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.TrackingChecklistSteamVRDisconnected) _oExtraDataValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.TrackingChecklistExtraData.TrackingChecklistUnassignedHMD:
-        _oExtraDataValue = extraData(new solarxr_protocol.rpc.TrackingChecklistUnassignedHMD());
-        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.TrackingChecklistUnassignedHMD) _oExtraDataValue).unpack() : null);
+      case solarxr_protocol.rpc.TrackingChecklistExtraData.TrackingChecklistUnassignedReliableReference:
+        _oExtraDataValue = extraData(new solarxr_protocol.rpc.TrackingChecklistUnassignedReliableReference());
+        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.TrackingChecklistUnassignedReliableReference) _oExtraDataValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.TrackingChecklistExtraData.TrackingChecklistNeedCalibration:
         _oExtraDataValue = extraData(new solarxr_protocol.rpc.TrackingChecklistNeedCalibration());

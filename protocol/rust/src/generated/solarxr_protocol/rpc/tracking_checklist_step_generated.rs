@@ -159,13 +159,13 @@ impl<'a> TrackingChecklistStep<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn extra_data_as_tracking_checklist_unassigned_hmd(&self) -> Option<TrackingChecklistUnassignedHMD<'a>> {
-    if self.extra_data_type() == TrackingChecklistExtraData::TrackingChecklistUnassignedHMD {
+  pub fn extra_data_as_tracking_checklist_unassigned_reliable_reference(&self) -> Option<TrackingChecklistUnassignedReliableReference<'a>> {
+    if self.extra_data_type() == TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference {
       self.extra_data().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { TrackingChecklistUnassignedHMD::init_from_table(t) }
+       unsafe { TrackingChecklistUnassignedReliableReference::init_from_table(t) }
      })
     } else {
       None
@@ -222,7 +222,7 @@ impl flatbuffers::Verifiable for TrackingChecklistStep<'_> {
           TrackingChecklistExtraData::TrackingChecklistTrackerReset => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistTrackerReset>>("TrackingChecklistExtraData::TrackingChecklistTrackerReset", pos),
           TrackingChecklistExtraData::TrackingChecklistTrackerError => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistTrackerError>>("TrackingChecklistExtraData::TrackingChecklistTrackerError", pos),
           TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistSteamVRDisconnected>>("TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected", pos),
-          TrackingChecklistExtraData::TrackingChecklistUnassignedHMD => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistUnassignedHMD>>("TrackingChecklistExtraData::TrackingChecklistUnassignedHMD", pos),
+          TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistUnassignedReliableReference>>("TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference", pos),
           TrackingChecklistExtraData::TrackingChecklistNeedCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistNeedCalibration>>("TrackingChecklistExtraData::TrackingChecklistNeedCalibration", pos),
           TrackingChecklistExtraData::TrackingChecklistPublicNetworks => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistPublicNetworks>>("TrackingChecklistExtraData::TrackingChecklistPublicNetworks", pos),
           _ => Ok(()),
@@ -342,8 +342,8 @@ impl core::fmt::Debug for TrackingChecklistStep<'_> {
             ds.field("extra_data", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        TrackingChecklistExtraData::TrackingChecklistUnassignedHMD => {
-          if let Some(x) = self.extra_data_as_tracking_checklist_unassigned_hmd() {
+        TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference => {
+          if let Some(x) = self.extra_data_as_tracking_checklist_unassigned_reliable_reference() {
             ds.field("extra_data", &x)
           } else {
             ds.field("extra_data", &"InvalidFlatbuffer: Union discriminant does not match value.")

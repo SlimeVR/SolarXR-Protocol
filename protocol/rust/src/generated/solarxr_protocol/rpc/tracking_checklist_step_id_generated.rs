@@ -21,7 +21,7 @@ pub const ENUM_VALUES_TRACKING_CHECKLIST_STEP_ID: [TrackingChecklistStepId; 14] 
   TrackingChecklistStepId::FULL_RESET,
   TrackingChecklistStepId::VRCHAT_SETTINGS,
   TrackingChecklistStepId::STEAMVR_DISCONNECTED,
-  TrackingChecklistStepId::UNASSIGNED_HMD,
+  TrackingChecklistStepId::UNASSIGNED_RELIABLE_REFERENCE,
   TrackingChecklistStepId::TRACKER_ERROR,
   TrackingChecklistStepId::NETWORK_PROFILE_PUBLIC,
   TrackingChecklistStepId::MOUNTING_CALIBRATION,
@@ -42,7 +42,7 @@ impl TrackingChecklistStepId {
   pub const FULL_RESET: Self = Self(2);
   pub const VRCHAT_SETTINGS: Self = Self(3);
   pub const STEAMVR_DISCONNECTED: Self = Self(4);
-  pub const UNASSIGNED_HMD: Self = Self(5);
+  pub const UNASSIGNED_RELIABLE_REFERENCE: Self = Self(5);
   pub const TRACKER_ERROR: Self = Self(6);
   pub const NETWORK_PROFILE_PUBLIC: Self = Self(7);
   pub const MOUNTING_CALIBRATION: Self = Self(8);
@@ -60,7 +60,7 @@ impl TrackingChecklistStepId {
     Self::FULL_RESET,
     Self::VRCHAT_SETTINGS,
     Self::STEAMVR_DISCONNECTED,
-    Self::UNASSIGNED_HMD,
+    Self::UNASSIGNED_RELIABLE_REFERENCE,
     Self::TRACKER_ERROR,
     Self::NETWORK_PROFILE_PUBLIC,
     Self::MOUNTING_CALIBRATION,
@@ -78,7 +78,7 @@ impl TrackingChecklistStepId {
       Self::FULL_RESET => Some("FULL_RESET"),
       Self::VRCHAT_SETTINGS => Some("VRCHAT_SETTINGS"),
       Self::STEAMVR_DISCONNECTED => Some("STEAMVR_DISCONNECTED"),
-      Self::UNASSIGNED_HMD => Some("UNASSIGNED_HMD"),
+      Self::UNASSIGNED_RELIABLE_REFERENCE => Some("UNASSIGNED_RELIABLE_REFERENCE"),
       Self::TRACKER_ERROR => Some("TRACKER_ERROR"),
       Self::NETWORK_PROFILE_PUBLIC => Some("NETWORK_PROFILE_PUBLIC"),
       Self::MOUNTING_CALIBRATION => Some("MOUNTING_CALIBRATION"),

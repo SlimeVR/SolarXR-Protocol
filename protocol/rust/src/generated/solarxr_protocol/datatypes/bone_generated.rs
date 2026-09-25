@@ -91,7 +91,7 @@ impl<'a> Bone<'a> {
     unsafe { self._tab.get::<math::Quat>(Bone::VT_ORIENTATION, None)}
   }
   /// The head of a bone is the extremity of the bone touching the parent bone.
-  /// The parent is defined as the bone closer to the HMD.
+  /// The parent is defined as the bone closer to the head.
   #[inline]
   pub fn head_position(&self) -> Option<&'a math::Vec3f> {
     // Safety:

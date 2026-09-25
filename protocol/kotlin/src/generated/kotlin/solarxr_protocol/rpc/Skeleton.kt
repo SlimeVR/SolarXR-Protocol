@@ -520,13 +520,13 @@ public class UserHeightRequest : RpcMessage {
 }
 
 public data class UserHeightResponse(
-  public val hmdHeight: Float? = null,
+  public val headHeight: Float? = null,
   public val floorHeight: Float? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (hmdHeight != null) { builder.forceDefaults(true); builder.addFloat(0, hmdHeight, 0.0); builder.forceDefaults(false) }
+    if (headHeight != null) { builder.forceDefaults(true); builder.addFloat(0, headHeight, 0.0); builder.forceDefaults(false) }
     if (floorHeight != null) { builder.forceDefaults(true); builder.addFloat(1, floorHeight, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
@@ -536,11 +536,11 @@ public data class UserHeightResponse(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_hmdHeight = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_headHeight = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_floorHeight = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return UserHeightResponse(
-              hmdHeight = if (__offset_hmdHeight != 0) bb.getFloat(tableOffset + __offset_hmdHeight) else null,
+              headHeight = if (__offset_headHeight != 0) bb.getFloat(tableOffset + __offset_headHeight) else null,
               floorHeight = if (__offset_floorHeight != 0) bb.getFloat(tableOffset + __offset_floorHeight) else null
           )
     }
@@ -548,13 +548,13 @@ public data class UserHeightResponse(
 }
 
 public data class ChangeUserHeightRequest(
-  public val hmdHeight: Float? = null,
+  public val headHeight: Float? = null,
   public val floorHeight: Float? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(2)
-    if (hmdHeight != null) { builder.forceDefaults(true); builder.addFloat(0, hmdHeight, 0.0); builder.forceDefaults(false) }
+    if (headHeight != null) { builder.forceDefaults(true); builder.addFloat(0, headHeight, 0.0); builder.forceDefaults(false) }
     if (floorHeight != null) { builder.forceDefaults(true); builder.addFloat(1, floorHeight, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
@@ -564,11 +564,11 @@ public data class ChangeUserHeightRequest(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_hmdHeight = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_headHeight = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_floorHeight = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
 
       return ChangeUserHeightRequest(
-              hmdHeight = if (__offset_hmdHeight != 0) bb.getFloat(tableOffset + __offset_hmdHeight) else null,
+              headHeight = if (__offset_headHeight != 0) bb.getFloat(tableOffset + __offset_headHeight) else null,
               floorHeight = if (__offset_floorHeight != 0) bb.getFloat(tableOffset + __offset_floorHeight) else null
           )
     }
