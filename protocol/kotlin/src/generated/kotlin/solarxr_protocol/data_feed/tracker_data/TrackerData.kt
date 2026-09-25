@@ -196,12 +196,13 @@ public data class TrackerInfo(
   public val lastMountingMethod: MountingMethod = MountingMethod.MANUAL,
   public val magnetometer: MagnetometerStatus = MagnetometerStatus.NOT_SUPPORTED,
   public val dataType: TrackerDataType = TrackerDataType.ROTATION,
+  public val boneOffset: Vec3f? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_displayName = displayName?.let { builder.createString(it) }
     val __off_customName = customName?.let { builder.createString(it) }
 
-    builder.startTable(11)
+    builder.startTable(12)
     builder.addBoolean(0, isImu, false)
     builder.addShort(1, imuType.value.toShort(), 0)
     builder.addByte(2, bodyPart.value.toByte(), 0)
@@ -213,6 +214,7 @@ public data class TrackerInfo(
     builder.addByte(8, lastMountingMethod.value.toByte(), 0)
     builder.addByte(9, magnetometer.value.toByte(), 0)
     builder.addByte(10, dataType.value.toByte(), 0)
+    boneOffset?.let { builder.addStruct(11, it.encode(builder), 0) }
     return builder.endTable()
   }
 
@@ -232,6 +234,7 @@ public data class TrackerInfo(
       val __offset_lastMountingMethod = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
       val __offset_magnetometer = if (vtableSize > 22) bb.getShort(vtableOffset + 22).toInt() else 0
       val __offset_dataType = if (vtableSize > 24) bb.getShort(vtableOffset + 24).toInt() else 0
+      val __offset_boneOffset = if (vtableSize > 26) bb.getShort(vtableOffset + 26).toInt() else 0
 
       return TrackerInfo(
               isImu = if (__offset_isImu != 0) bb.get(tableOffset + __offset_isImu) != 0.toByte() else false,
@@ -244,7 +247,8 @@ public data class TrackerInfo(
               customName = if (__offset_customName != 0) readFlatBufferString(bb, tableOffset + __offset_customName) else null,
               lastMountingMethod = if (__offset_lastMountingMethod != 0) MountingMethod.fromValue(bb.get(tableOffset + __offset_lastMountingMethod).toUByte()) ?: MountingMethod.MANUAL else MountingMethod.MANUAL,
               magnetometer = if (__offset_magnetometer != 0) MagnetometerStatus.fromValue(bb.get(tableOffset + __offset_magnetometer).toUByte()) ?: MagnetometerStatus.NOT_SUPPORTED else MagnetometerStatus.NOT_SUPPORTED,
-              dataType = if (__offset_dataType != 0) TrackerDataType.fromValue(bb.get(tableOffset + __offset_dataType).toUByte()) ?: TrackerDataType.ROTATION else TrackerDataType.ROTATION
+              dataType = if (__offset_dataType != 0) TrackerDataType.fromValue(bb.get(tableOffset + __offset_dataType).toUByte()) ?: TrackerDataType.ROTATION else TrackerDataType.ROTATION,
+              boneOffset = if (__offset_boneOffset != 0) Vec3f.decode(bb, tableOffset + __offset_boneOffset) else null
           )
     }
   }

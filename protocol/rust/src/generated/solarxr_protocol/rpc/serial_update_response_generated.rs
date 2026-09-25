@@ -25,9 +25,9 @@ impl<'a> flatbuffers::Follow<'a> for SerialUpdateResponse<'a> {
 }
 
 impl<'a> SerialUpdateResponse<'a> {
-  pub const VT_LOG: flatbuffers::VOffsetT = 4;
-  pub const VT_CLOSED: flatbuffers::VOffsetT = 6;
-  pub const VT_DEVICE: flatbuffers::VOffsetT = 8;
+  pub const VT_STATUS: flatbuffers::VOffsetT = 4;
+  pub const VT_DEVICE: flatbuffers::VOffsetT = 6;
+  pub const VT_LOG: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,33 +39,35 @@ impl<'a> SerialUpdateResponse<'a> {
     args: &'args SerialUpdateResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<SerialUpdateResponse<'bldr>> {
     let mut builder = SerialUpdateResponseBuilder::new(_fbb);
-    if let Some(x) = args.device { builder.add_device(x); }
     if let Some(x) = args.log { builder.add_log(x); }
-    builder.add_closed(args.closed);
+    if let Some(x) = args.device { builder.add_device(x); }
+    builder.add_status(args.status);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn log(&self) -> Option<&'a str> {
+  pub fn status(&self) -> SerialConsoleStatus {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SerialUpdateResponse::VT_LOG, None)}
+    unsafe { self._tab.get::<SerialConsoleStatus>(SerialUpdateResponse::VT_STATUS, Some(SerialConsoleStatus::OPEN)).unwrap()}
   }
-  #[inline]
-  pub fn closed(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(SerialUpdateResponse::VT_CLOSED, Some(false)).unwrap()}
-  }
+  /// The port this console is on, null while the port is not present
   #[inline]
   pub fn device(&self) -> Option<SerialDevice<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<SerialDevice>>(SerialUpdateResponse::VT_DEVICE, None)}
+  }
+  /// Newline terminated log lines, one or more per message
+  #[inline]
+  pub fn log(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SerialUpdateResponse::VT_LOG, None)}
   }
 }
 
@@ -76,25 +78,25 @@ impl flatbuffers::Verifiable for SerialUpdateResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("log", Self::VT_LOG, false)?
-     .visit_field::<bool>("closed", Self::VT_CLOSED, false)?
+     .visit_field::<SerialConsoleStatus>("status", Self::VT_STATUS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<SerialDevice>>("device", Self::VT_DEVICE, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("log", Self::VT_LOG, false)?
      .finish();
     Ok(())
   }
 }
 pub struct SerialUpdateResponseArgs<'a> {
-    pub log: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub closed: bool,
+    pub status: SerialConsoleStatus,
     pub device: Option<flatbuffers::WIPOffset<SerialDevice<'a>>>,
+    pub log: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for SerialUpdateResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
     SerialUpdateResponseArgs {
-      log: None,
-      closed: false,
+      status: SerialConsoleStatus::OPEN,
       device: None,
+      log: None,
     }
   }
 }
@@ -105,16 +107,16 @@ pub struct SerialUpdateResponseBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> SerialUpdateResponseBuilder<'a, 'b> {
   #[inline]
-  pub fn add_log(&mut self, log: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialUpdateResponse::VT_LOG, log);
-  }
-  #[inline]
-  pub fn add_closed(&mut self, closed: bool) {
-    self.fbb_.push_slot::<bool>(SerialUpdateResponse::VT_CLOSED, closed, false);
+  pub fn add_status(&mut self, status: SerialConsoleStatus) {
+    self.fbb_.push_slot::<SerialConsoleStatus>(SerialUpdateResponse::VT_STATUS, status, SerialConsoleStatus::OPEN);
   }
   #[inline]
   pub fn add_device(&mut self, device: flatbuffers::WIPOffset<SerialDevice<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<SerialDevice>>(SerialUpdateResponse::VT_DEVICE, device);
+  }
+  #[inline]
+  pub fn add_log(&mut self, log: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialUpdateResponse::VT_LOG, log);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialUpdateResponseBuilder<'a, 'b> {
@@ -134,9 +136,9 @@ impl<'a: 'b, 'b> SerialUpdateResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for SerialUpdateResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("SerialUpdateResponse");
-      ds.field("log", &self.log());
-      ds.field("closed", &self.closed());
+      ds.field("status", &self.status());
       ds.field("device", &self.device());
+      ds.field("log", &self.log());
       ds.finish()
   }
 }

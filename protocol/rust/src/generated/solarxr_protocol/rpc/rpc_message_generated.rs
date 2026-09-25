@@ -12,16 +12,16 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 132;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 131;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 133] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 132] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
   RpcMessage::ResetRequest,
   RpcMessage::ResetResponse,
-  RpcMessage::AssignTrackerRequest,
+  RpcMessage::UpdateTrackerRequest,
   RpcMessage::ResetTrackerAssignments,
   RpcMessage::VMCOSCSettingsRequest,
   RpcMessage::VMCOSCSettingsResponse,
@@ -71,7 +71,6 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 133] = [
   RpcMessage::SerialTrackerFactoryResetRequest,
   RpcMessage::SerialDevicesRequest,
   RpcMessage::SerialDevicesResponse,
-  RpcMessage::NewSerialDeviceResponse,
   RpcMessage::StartWifiProvisioningRequest,
   RpcMessage::StopWifiProvisioningRequest,
   RpcMessage::WifiProvisioningStatusResponse,
@@ -161,7 +160,7 @@ impl RpcMessage {
   pub const HeartbeatResponse: Self = Self(2);
   pub const ResetRequest: Self = Self(3);
   pub const ResetResponse: Self = Self(4);
-  pub const AssignTrackerRequest: Self = Self(5);
+  pub const UpdateTrackerRequest: Self = Self(5);
   pub const ResetTrackerAssignments: Self = Self(6);
   pub const VMCOSCSettingsRequest: Self = Self(7);
   pub const VMCOSCSettingsResponse: Self = Self(8);
@@ -211,94 +210,93 @@ impl RpcMessage {
   pub const SerialTrackerFactoryResetRequest: Self = Self(52);
   pub const SerialDevicesRequest: Self = Self(53);
   pub const SerialDevicesResponse: Self = Self(54);
-  pub const NewSerialDeviceResponse: Self = Self(55);
-  pub const StartWifiProvisioningRequest: Self = Self(56);
-  pub const StopWifiProvisioningRequest: Self = Self(57);
-  pub const WifiProvisioningStatusResponse: Self = Self(58);
-  pub const StartWifiScanRequest: Self = Self(59);
-  pub const StopWifiScanRequest: Self = Self(60);
-  pub const WifiScanStatusResponse: Self = Self(61);
-  pub const ServerInfosRequest: Self = Self(62);
-  pub const ServerInfosResponse: Self = Self(63);
-  pub const LegTweaksTmpChange: Self = Self(64);
-  pub const LegTweaksTmpClear: Self = Self(65);
-  pub const TapDetectionSetupNotification: Self = Self(66);
-  pub const SetPauseTrackingRequest: Self = Self(67);
-  pub const ClearMountingResetRequest: Self = Self(68);
-  pub const AutoBoneApplyRequest: Self = Self(69);
-  pub const AutoBoneStopRecordingRequest: Self = Self(70);
-  pub const AutoBoneCancelRecordingRequest: Self = Self(71);
-  pub const SaveFileNotification: Self = Self(72);
-  pub const TrackingPauseStateRequest: Self = Self(73);
-  pub const TrackingPauseStateResponse: Self = Self(74);
-  pub const SerialTrackerGetWifiScanRequest: Self = Self(75);
-  pub const UnknownDeviceHandshakeNotification: Self = Self(76);
-  pub const AddUnknownDeviceRequest: Self = Self(77);
-  pub const ForgetDeviceRequest: Self = Self(78);
-  pub const FirmwareUpdateRequest: Self = Self(79);
-  pub const FirmwareUpdateStatusResponse: Self = Self(80);
-  pub const FirmwareUpdateStopQueuesRequest: Self = Self(81);
-  pub const SettingsResetRequest: Self = Self(82);
-  pub const MagToggleRequest: Self = Self(83);
-  pub const MagToggleResponse: Self = Self(84);
-  pub const ChangeMagToggleRequest: Self = Self(85);
-  pub const RecordBVHStatusRequest: Self = Self(86);
-  pub const VRCConfigStateRequest: Self = Self(87);
-  pub const VRCConfigStateChangeResponse: Self = Self(88);
-  pub const SerialTrackerCustomCommandRequest: Self = Self(89);
-  pub const VRCConfigSettingToggleMute: Self = Self(90);
-  pub const TrackingChecklistRequest: Self = Self(91);
-  pub const TrackingChecklistResponse: Self = Self(92);
-  pub const IgnoreTrackingChecklistStepRequest: Self = Self(93);
-  pub const StartUserHeightCalibration: Self = Self(94);
-  pub const CancelUserHeightCalibration: Self = Self(95);
-  pub const UserHeightRecordingStatusResponse: Self = Self(96);
-  pub const VRCOSCSettingsRequest: Self = Self(97);
-  pub const VRCOSCSettingsResponse: Self = Self(98);
-  pub const ChangeVRCOSCSettingsRequest: Self = Self(99);
-  pub const VRCOSCStatusRequest: Self = Self(100);
-  pub const VRCOSCStatusChangeResponse: Self = Self(101);
-  pub const KeybindRequest: Self = Self(102);
-  pub const ChangeKeybindRequest: Self = Self(103);
-  pub const KeybindResponse: Self = Self(104);
-  pub const InstalledInfoRequest: Self = Self(105);
-  pub const InstalledInfoResponse: Self = Self(106);
-  pub const OpenKeybindSettingsRequest: Self = Self(107);
-  pub const OpenKeybindSettingsResponse: Self = Self(108);
-  pub const EnableSteamVRDriverRequest: Self = Self(109);
-  pub const SetKeybindRecordingRequest: Self = Self(110);
-  pub const KeybindActivatedResponse: Self = Self(111);
-  pub const BoneRoutingSettingsRequest: Self = Self(112);
-  pub const BoneRoutingSettingsResponse: Self = Self(113);
-  pub const ChangeBoneRoutingSettingsRequest: Self = Self(114);
-  pub const DriverSettingsRequest: Self = Self(115);
-  pub const DriverSettingsResponse: Self = Self(116);
-  pub const ChangeDriverSettingsRequest: Self = Self(117);
-  pub const VMCOSCStatusRequest: Self = Self(118);
-  pub const VMCOSCStatusChangeResponse: Self = Self(119);
-  pub const DriverStatusRequest: Self = Self(120);
-  pub const DriverStatusChangeResponse: Self = Self(121);
-  pub const ChangeDongleSettingsRequest: Self = Self(122);
-  pub const TimeoutSettingsRequest: Self = Self(123);
-  pub const TimeoutSettingsResponse: Self = Self(124);
-  pub const ChangeTimeoutSettingsRequest: Self = Self(125);
-  pub const StartTelemetryRequest: Self = Self(126);
-  pub const StopTelemetryRequest: Self = Self(127);
-  pub const TelemetryUpdateResponse: Self = Self(128);
-  pub const TelemetryGapResponse: Self = Self(129);
-  pub const CustomOSCSettingsRequest: Self = Self(130);
-  pub const CustomOSCSettingsResponse: Self = Self(131);
-  pub const ChangeCustomOSCSettingsRequest: Self = Self(132);
+  pub const StartWifiProvisioningRequest: Self = Self(55);
+  pub const StopWifiProvisioningRequest: Self = Self(56);
+  pub const WifiProvisioningStatusResponse: Self = Self(57);
+  pub const StartWifiScanRequest: Self = Self(58);
+  pub const StopWifiScanRequest: Self = Self(59);
+  pub const WifiScanStatusResponse: Self = Self(60);
+  pub const ServerInfosRequest: Self = Self(61);
+  pub const ServerInfosResponse: Self = Self(62);
+  pub const LegTweaksTmpChange: Self = Self(63);
+  pub const LegTweaksTmpClear: Self = Self(64);
+  pub const TapDetectionSetupNotification: Self = Self(65);
+  pub const SetPauseTrackingRequest: Self = Self(66);
+  pub const ClearMountingResetRequest: Self = Self(67);
+  pub const AutoBoneApplyRequest: Self = Self(68);
+  pub const AutoBoneStopRecordingRequest: Self = Self(69);
+  pub const AutoBoneCancelRecordingRequest: Self = Self(70);
+  pub const SaveFileNotification: Self = Self(71);
+  pub const TrackingPauseStateRequest: Self = Self(72);
+  pub const TrackingPauseStateResponse: Self = Self(73);
+  pub const SerialTrackerGetWifiScanRequest: Self = Self(74);
+  pub const UnknownDeviceHandshakeNotification: Self = Self(75);
+  pub const AddUnknownDeviceRequest: Self = Self(76);
+  pub const ForgetDeviceRequest: Self = Self(77);
+  pub const FirmwareUpdateRequest: Self = Self(78);
+  pub const FirmwareUpdateStatusResponse: Self = Self(79);
+  pub const FirmwareUpdateStopQueuesRequest: Self = Self(80);
+  pub const SettingsResetRequest: Self = Self(81);
+  pub const MagToggleRequest: Self = Self(82);
+  pub const MagToggleResponse: Self = Self(83);
+  pub const ChangeMagToggleRequest: Self = Self(84);
+  pub const RecordBVHStatusRequest: Self = Self(85);
+  pub const VRCConfigStateRequest: Self = Self(86);
+  pub const VRCConfigStateChangeResponse: Self = Self(87);
+  pub const SerialTrackerCustomCommandRequest: Self = Self(88);
+  pub const VRCConfigSettingToggleMute: Self = Self(89);
+  pub const TrackingChecklistRequest: Self = Self(90);
+  pub const TrackingChecklistResponse: Self = Self(91);
+  pub const IgnoreTrackingChecklistStepRequest: Self = Self(92);
+  pub const StartUserHeightCalibration: Self = Self(93);
+  pub const CancelUserHeightCalibration: Self = Self(94);
+  pub const UserHeightRecordingStatusResponse: Self = Self(95);
+  pub const VRCOSCSettingsRequest: Self = Self(96);
+  pub const VRCOSCSettingsResponse: Self = Self(97);
+  pub const ChangeVRCOSCSettingsRequest: Self = Self(98);
+  pub const VRCOSCStatusRequest: Self = Self(99);
+  pub const VRCOSCStatusChangeResponse: Self = Self(100);
+  pub const KeybindRequest: Self = Self(101);
+  pub const ChangeKeybindRequest: Self = Self(102);
+  pub const KeybindResponse: Self = Self(103);
+  pub const InstalledInfoRequest: Self = Self(104);
+  pub const InstalledInfoResponse: Self = Self(105);
+  pub const OpenKeybindSettingsRequest: Self = Self(106);
+  pub const OpenKeybindSettingsResponse: Self = Self(107);
+  pub const EnableSteamVRDriverRequest: Self = Self(108);
+  pub const SetKeybindRecordingRequest: Self = Self(109);
+  pub const KeybindActivatedResponse: Self = Self(110);
+  pub const BoneRoutingSettingsRequest: Self = Self(111);
+  pub const BoneRoutingSettingsResponse: Self = Self(112);
+  pub const ChangeBoneRoutingSettingsRequest: Self = Self(113);
+  pub const DriverSettingsRequest: Self = Self(114);
+  pub const DriverSettingsResponse: Self = Self(115);
+  pub const ChangeDriverSettingsRequest: Self = Self(116);
+  pub const VMCOSCStatusRequest: Self = Self(117);
+  pub const VMCOSCStatusChangeResponse: Self = Self(118);
+  pub const DriverStatusRequest: Self = Self(119);
+  pub const DriverStatusChangeResponse: Self = Self(120);
+  pub const ChangeDongleSettingsRequest: Self = Self(121);
+  pub const TimeoutSettingsRequest: Self = Self(122);
+  pub const TimeoutSettingsResponse: Self = Self(123);
+  pub const ChangeTimeoutSettingsRequest: Self = Self(124);
+  pub const StartTelemetryRequest: Self = Self(125);
+  pub const StopTelemetryRequest: Self = Self(126);
+  pub const TelemetryUpdateResponse: Self = Self(127);
+  pub const TelemetryGapResponse: Self = Self(128);
+  pub const CustomOSCSettingsRequest: Self = Self(129);
+  pub const CustomOSCSettingsResponse: Self = Self(130);
+  pub const ChangeCustomOSCSettingsRequest: Self = Self(131);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 132;
+  pub const ENUM_MAX: u8 = 131;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
     Self::HeartbeatResponse,
     Self::ResetRequest,
     Self::ResetResponse,
-    Self::AssignTrackerRequest,
+    Self::UpdateTrackerRequest,
     Self::ResetTrackerAssignments,
     Self::VMCOSCSettingsRequest,
     Self::VMCOSCSettingsResponse,
@@ -348,7 +346,6 @@ impl RpcMessage {
     Self::SerialTrackerFactoryResetRequest,
     Self::SerialDevicesRequest,
     Self::SerialDevicesResponse,
-    Self::NewSerialDeviceResponse,
     Self::StartWifiProvisioningRequest,
     Self::StopWifiProvisioningRequest,
     Self::WifiProvisioningStatusResponse,
@@ -435,7 +432,7 @@ impl RpcMessage {
       Self::HeartbeatResponse => Some("HeartbeatResponse"),
       Self::ResetRequest => Some("ResetRequest"),
       Self::ResetResponse => Some("ResetResponse"),
-      Self::AssignTrackerRequest => Some("AssignTrackerRequest"),
+      Self::UpdateTrackerRequest => Some("UpdateTrackerRequest"),
       Self::ResetTrackerAssignments => Some("ResetTrackerAssignments"),
       Self::VMCOSCSettingsRequest => Some("VMCOSCSettingsRequest"),
       Self::VMCOSCSettingsResponse => Some("VMCOSCSettingsResponse"),
@@ -485,7 +482,6 @@ impl RpcMessage {
       Self::SerialTrackerFactoryResetRequest => Some("SerialTrackerFactoryResetRequest"),
       Self::SerialDevicesRequest => Some("SerialDevicesRequest"),
       Self::SerialDevicesResponse => Some("SerialDevicesResponse"),
-      Self::NewSerialDeviceResponse => Some("NewSerialDeviceResponse"),
       Self::StartWifiProvisioningRequest => Some("StartWifiProvisioningRequest"),
       Self::StopWifiProvisioningRequest => Some("StopWifiProvisioningRequest"),
       Self::WifiProvisioningStatusResponse => Some("WifiProvisioningStatusResponse"),

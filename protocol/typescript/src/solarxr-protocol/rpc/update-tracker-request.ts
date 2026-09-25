@@ -4,24 +4,25 @@ import * as flatbuffers from 'flatbuffers';
 
 import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
 import { Quat, QuatT } from '../../solarxr-protocol/datatypes/math/quat.js';
+import { Vec3f, Vec3fT } from '../../solarxr-protocol/datatypes/math/vec3f.js';
 
 
-export class AssignTrackerRequest implements flatbuffers.IUnpackableObject<AssignTrackerRequestT> {
+export class UpdateTrackerRequest implements flatbuffers.IUnpackableObject<UpdateTrackerRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-  __init(i:number, bb:flatbuffers.ByteBuffer):AssignTrackerRequest {
+  __init(i:number, bb:flatbuffers.ByteBuffer):UpdateTrackerRequest {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsAssignTrackerRequest(bb:flatbuffers.ByteBuffer, obj?:AssignTrackerRequest):AssignTrackerRequest {
-  return (obj || new AssignTrackerRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsUpdateTrackerRequest(bb:flatbuffers.ByteBuffer, obj?:UpdateTrackerRequest):UpdateTrackerRequest {
+  return (obj || new UpdateTrackerRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsAssignTrackerRequest(bb:flatbuffers.ByteBuffer, obj?:AssignTrackerRequest):AssignTrackerRequest {
+static getSizePrefixedRootAsUpdateTrackerRequest(bb:flatbuffers.ByteBuffer, obj?:UpdateTrackerRequest):UpdateTrackerRequest {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new AssignTrackerRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new UpdateTrackerRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
 trackerId():number {
@@ -46,8 +47,13 @@ displayName(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-static startAssignTrackerRequest(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+boneOffset(obj?:Vec3f):Vec3f|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
+static startUpdateTrackerRequest(builder:flatbuffers.Builder) {
+  builder.startObject(5);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerId:number) {
@@ -66,48 +72,56 @@ static addDisplayName(builder:flatbuffers.Builder, displayNameOffset:flatbuffers
   builder.addFieldOffset(3, displayNameOffset, 0);
 }
 
-static endAssignTrackerRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
+static addBoneOffset(builder:flatbuffers.Builder, boneOffsetOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(4, boneOffsetOffset, 0);
+}
+
+static endUpdateTrackerRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
 
-unpack(): AssignTrackerRequestT {
-  return new AssignTrackerRequestT(
+unpack(): UpdateTrackerRequestT {
+  return new UpdateTrackerRequestT(
     this.trackerId(),
     this.bodyPosition(),
     (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null),
-    this.displayName()
+    this.displayName(),
+    (this.boneOffset() !== null ? this.boneOffset()!.unpack() : null)
   );
 }
 
 
-unpackTo(_o: AssignTrackerRequestT): void {
+unpackTo(_o: UpdateTrackerRequestT): void {
   _o.trackerId = this.trackerId();
   _o.bodyPosition = this.bodyPosition();
   _o.mountingOrientation = (this.mountingOrientation() !== null ? this.mountingOrientation()!.unpack() : null);
   _o.displayName = this.displayName();
+  _o.boneOffset = (this.boneOffset() !== null ? this.boneOffset()!.unpack() : null);
 }
 }
 
-export class AssignTrackerRequestT implements flatbuffers.IGeneratedObject {
+export class UpdateTrackerRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public trackerId: number = 0,
   public bodyPosition: BodyPart = BodyPart.NONE,
   public mountingOrientation: QuatT|null = null,
-  public displayName: string|Uint8Array|null = null
+  public displayName: string|Uint8Array|null = null,
+  public boneOffset: Vec3fT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const displayName = (this.displayName !== null ? builder.createString(this.displayName!) : 0);
 
-  AssignTrackerRequest.startAssignTrackerRequest(builder);
-  AssignTrackerRequest.addTrackerId(builder, this.trackerId);
-  AssignTrackerRequest.addBodyPosition(builder, this.bodyPosition);
-  AssignTrackerRequest.addMountingOrientation(builder, (this.mountingOrientation !== null ? this.mountingOrientation!.pack(builder) : 0));
-  AssignTrackerRequest.addDisplayName(builder, displayName);
+  UpdateTrackerRequest.startUpdateTrackerRequest(builder);
+  UpdateTrackerRequest.addTrackerId(builder, this.trackerId);
+  UpdateTrackerRequest.addBodyPosition(builder, this.bodyPosition);
+  UpdateTrackerRequest.addMountingOrientation(builder, (this.mountingOrientation !== null ? this.mountingOrientation!.pack(builder) : 0));
+  UpdateTrackerRequest.addDisplayName(builder, displayName);
+  UpdateTrackerRequest.addBoneOffset(builder, (this.boneOffset !== null ? this.boneOffset!.pack(builder) : 0));
 
-  return AssignTrackerRequest.endAssignTrackerRequest(builder);
+  return UpdateTrackerRequest.endUpdateTrackerRequest(builder);
 }
 }

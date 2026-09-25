@@ -20,10 +20,11 @@ public data class Bone(
   public val tailPosition: Vec3f? = null,
   public val linearVelocity: Vec3f? = null,
   public val angularVelocity: Vec3f? = null,
+  public val trackerOffset: Vec3f? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(8)
+    builder.startTable(9)
     builder.addByte(0, bodyPart.value.toByte(), 0)
     builder.addFloat(1, boneLength, 0.0)
     rotation?.let { builder.addStruct(2, it.encode(builder), 0) }
@@ -32,6 +33,7 @@ public data class Bone(
     tailPosition?.let { builder.addStruct(5, it.encode(builder), 0) }
     linearVelocity?.let { builder.addStruct(6, it.encode(builder), 0) }
     angularVelocity?.let { builder.addStruct(7, it.encode(builder), 0) }
+    trackerOffset?.let { builder.addStruct(8, it.encode(builder), 0) }
     return builder.endTable()
   }
 
@@ -48,6 +50,7 @@ public data class Bone(
       val __offset_tailPosition = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
       val __offset_linearVelocity = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
       val __offset_angularVelocity = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_trackerOffset = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return Bone(
               bodyPart = if (__offset_bodyPart != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPart).toUByte()) ?: BodyPart.NONE else BodyPart.NONE,
@@ -57,7 +60,8 @@ public data class Bone(
               headPosition = if (__offset_headPosition != 0) Vec3f.decode(bb, tableOffset + __offset_headPosition) else null,
               tailPosition = if (__offset_tailPosition != 0) Vec3f.decode(bb, tableOffset + __offset_tailPosition) else null,
               linearVelocity = if (__offset_linearVelocity != 0) Vec3f.decode(bb, tableOffset + __offset_linearVelocity) else null,
-              angularVelocity = if (__offset_angularVelocity != 0) Vec3f.decode(bb, tableOffset + __offset_angularVelocity) else null
+              angularVelocity = if (__offset_angularVelocity != 0) Vec3f.decode(bb, tableOffset + __offset_angularVelocity) else null,
+              trackerOffset = if (__offset_trackerOffset != 0) Vec3f.decode(bb, tableOffset + __offset_trackerOffset) else null
           )
     }
   }
@@ -72,10 +76,11 @@ public data class BoneMask(
   public val tailPosition: Boolean = false,
   public val linearVelocity: Boolean = false,
   public val angularVelocity: Boolean = false,
+  public val trackerOffset: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(8)
+    builder.startTable(9)
     builder.addBoolean(0, bodyPart, false)
     builder.addBoolean(1, boneLength, false)
     builder.addBoolean(2, rotation, false)
@@ -84,6 +89,7 @@ public data class BoneMask(
     builder.addBoolean(5, tailPosition, false)
     builder.addBoolean(6, linearVelocity, false)
     builder.addBoolean(7, angularVelocity, false)
+    builder.addBoolean(8, trackerOffset, false)
     return builder.endTable()
   }
 
@@ -100,6 +106,7 @@ public data class BoneMask(
       val __offset_tailPosition = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
       val __offset_linearVelocity = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
       val __offset_angularVelocity = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
+      val __offset_trackerOffset = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return BoneMask(
               bodyPart = if (__offset_bodyPart != 0) bb.get(tableOffset + __offset_bodyPart) != 0.toByte() else false,
@@ -109,7 +116,8 @@ public data class BoneMask(
               headPosition = if (__offset_headPosition != 0) bb.get(tableOffset + __offset_headPosition) != 0.toByte() else false,
               tailPosition = if (__offset_tailPosition != 0) bb.get(tableOffset + __offset_tailPosition) != 0.toByte() else false,
               linearVelocity = if (__offset_linearVelocity != 0) bb.get(tableOffset + __offset_linearVelocity) != 0.toByte() else false,
-              angularVelocity = if (__offset_angularVelocity != 0) bb.get(tableOffset + __offset_angularVelocity) != 0.toByte() else false
+              angularVelocity = if (__offset_angularVelocity != 0) bb.get(tableOffset + __offset_angularVelocity) != 0.toByte() else false,
+              trackerOffset = if (__offset_trackerOffset != 0) bb.get(tableOffset + __offset_trackerOffset) != 0.toByte() else false
           )
     }
   }

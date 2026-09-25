@@ -52,7 +52,6 @@ export { UpdateTrackerPosition, UpdateTrackerPositionT } from './solarxr-protoco
 export { UpdateTrackerStatus, UpdateTrackerStatusT } from './solarxr-protocol/driver-protocol/update-tracker-status.js';
 export { AddUnknownDeviceRequest, AddUnknownDeviceRequestT } from './solarxr-protocol/rpc/add-unknown-device-request.js';
 export { ArmsResetMode } from './solarxr-protocol/rpc/arms-reset-mode.js';
-export { AssignTrackerRequest, AssignTrackerRequestT } from './solarxr-protocol/rpc/assign-tracker-request.js';
 export { AutoBoneApplyRequest, AutoBoneApplyRequestT } from './solarxr-protocol/rpc/auto-bone-apply-request.js';
 export { AutoBoneCancelRecordingRequest, AutoBoneCancelRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-cancel-recording-request.js';
 export { AutoBoneEpochResponse, AutoBoneEpochResponseT } from './solarxr-protocol/rpc/auto-bone-epoch-response.js';
@@ -125,7 +124,6 @@ export { LegTweaksTmpChange, LegTweaksTmpChangeT } from './solarxr-protocol/rpc/
 export { LegTweaksTmpClear, LegTweaksTmpClearT } from './solarxr-protocol/rpc/leg-tweaks-tmp-clear.js';
 export { MagToggleRequest, MagToggleRequestT } from './solarxr-protocol/rpc/mag-toggle-request.js';
 export { MagToggleResponse, MagToggleResponseT } from './solarxr-protocol/rpc/mag-toggle-response.js';
-export { NewSerialDeviceResponse, NewSerialDeviceResponseT } from './solarxr-protocol/rpc/new-serial-device-response.js';
 export { OTAFirmwareUpdate, OTAFirmwareUpdateT } from './solarxr-protocol/rpc/otafirmware-update.js';
 export { OpenKeybindSettingsRequest, OpenKeybindSettingsRequestT } from './solarxr-protocol/rpc/open-keybind-settings-request.js';
 export { OpenKeybindSettingsResponse, OpenKeybindSettingsResponseT } from './solarxr-protocol/rpc/open-keybind-settings-response.js';
@@ -150,6 +148,7 @@ export { RoutingOutputStatus, RoutingOutputStatusT } from './solarxr-protocol/rp
 export { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from './solarxr-protocol/rpc/rpc-message.js';
 export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-message-header.js';
 export { SaveFileNotification, SaveFileNotificationT } from './solarxr-protocol/rpc/save-file-notification.js';
+export { SerialConsoleStatus } from './solarxr-protocol/rpc/serial-console-status.js';
 export { SerialDevice, SerialDeviceT } from './solarxr-protocol/rpc/serial-device.js';
 export { SerialDevicePort, SerialDevicePortT } from './solarxr-protocol/rpc/serial-device-port.js';
 export { SerialDeviceType } from './solarxr-protocol/rpc/serial-device-type.js';
@@ -214,6 +213,7 @@ export { TrackingChecklistUnassignedReliableReference, TrackingChecklistUnassign
 export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
 export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
+export { UpdateTrackerRequest, UpdateTrackerRequestT } from './solarxr-protocol/rpc/update-tracker-request.js';
 export { UserHeightCalibrationStatus } from './solarxr-protocol/rpc/user-height-calibration-status.js';
 export { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from './solarxr-protocol/rpc/user-height-recording-status-response.js';
 export { UserHeightRequest, UserHeightRequestT } from './solarxr-protocol/rpc/user-height-request.js';

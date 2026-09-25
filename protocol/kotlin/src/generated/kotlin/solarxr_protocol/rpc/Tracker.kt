@@ -11,26 +11,29 @@ import kotlin.UByte
 import kotlin.UShort
 import solarxr_protocol.datatypes.BodyPart
 import solarxr_protocol.datatypes.math.Quat
+import solarxr_protocol.datatypes.math.Vec3f
 
-public data class AssignTrackerRequest(
+public data class UpdateTrackerRequest(
   public val trackerId: UShort = 0.toUShort(),
   public val bodyPosition: BodyPart = BodyPart.NONE,
   public val mountingOrientation: Quat? = null,
   public val displayName: String? = null,
+  public val boneOffset: Vec3f? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_displayName = displayName?.let { builder.createString(it) }
 
-    builder.startTable(4)
+    builder.startTable(5)
     builder.addShort(0, trackerId.toShort(), 0)
     builder.addByte(1, bodyPosition.value.toByte(), 0)
     mountingOrientation?.let { builder.addStruct(2, it.encode(builder), 0) }
     __off_displayName?.let { builder.addOffset(3, it, 0) }
+    boneOffset?.let { builder.addStruct(4, it.encode(builder), 0) }
     return builder.endTable()
   }
 
   public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): AssignTrackerRequest {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): UpdateTrackerRequest {
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
@@ -38,12 +41,14 @@ public data class AssignTrackerRequest(
       val __offset_bodyPosition = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_mountingOrientation = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_displayName = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_boneOffset = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
 
-      return AssignTrackerRequest(
+      return UpdateTrackerRequest(
               trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else 0.toUShort(),
               bodyPosition = if (__offset_bodyPosition != 0) BodyPart.fromValue(bb.get(tableOffset + __offset_bodyPosition).toUByte()) ?: BodyPart.NONE else BodyPart.NONE,
               mountingOrientation = if (__offset_mountingOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingOrientation) else null,
-              displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null
+              displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null,
+              boneOffset = if (__offset_boneOffset != 0) Vec3f.decode(bb, tableOffset + __offset_boneOffset) else null
           )
     }
   }

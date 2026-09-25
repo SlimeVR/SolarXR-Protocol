@@ -34,6 +34,7 @@ impl<'a> Bone<'a> {
   pub const VT_TAIL_POSITION: flatbuffers::VOffsetT = 14;
   pub const VT_LINEAR_VELOCITY: flatbuffers::VOffsetT = 16;
   pub const VT_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 18;
+  pub const VT_TRACKER_OFFSET: flatbuffers::VOffsetT = 20;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -45,6 +46,7 @@ impl<'a> Bone<'a> {
     args: &'args BoneArgs<'args>
   ) -> flatbuffers::WIPOffset<Bone<'bldr>> {
     let mut builder = BoneBuilder::new(_fbb);
+    if let Some(x) = args.tracker_offset { builder.add_tracker_offset(x); }
     if let Some(x) = args.angular_velocity { builder.add_angular_velocity(x); }
     if let Some(x) = args.linear_velocity { builder.add_linear_velocity(x); }
     if let Some(x) = args.tail_position { builder.add_tail_position(x); }
@@ -73,7 +75,7 @@ impl<'a> Bone<'a> {
     unsafe { self._tab.get::<f32>(Bone::VT_BONE_LENGTH, Some(0.0)).unwrap()}
   }
   /// A bone's default rotation is the identity rotation, where a bone's tail is towards -y
-  /// (given that the head of the bone is the origin)
+  /// (given that the head of the bone is the origin).
   #[inline]
   pub fn rotation(&self) -> Option<&'a math::Quat> {
     // Safety:
@@ -108,7 +110,7 @@ impl<'a> Bone<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<math::Vec3f>(Bone::VT_TAIL_POSITION, None)}
   }
-  /// Linear velocity in meters/s
+  /// Linear velocity in meters/s.
   #[inline]
   pub fn linear_velocity(&self) -> Option<&'a math::Vec3f> {
     // Safety:
@@ -116,13 +118,21 @@ impl<'a> Bone<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<math::Vec3f>(Bone::VT_LINEAR_VELOCITY, None)}
   }
-  /// Angular velocity in rad/s
+  /// Angular velocity in rad/s.
   #[inline]
   pub fn angular_velocity(&self) -> Option<&'a math::Vec3f> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<math::Vec3f>(Bone::VT_ANGULAR_VELOCITY, None)}
+  }
+  /// Similar to TrackerInfo.position_offset, position offset from the head of the bone to the tracker.
+  #[inline]
+  pub fn tracker_offset(&self) -> Option<&'a math::Vec3f> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<math::Vec3f>(Bone::VT_TRACKER_OFFSET, None)}
   }
 }
 
@@ -141,6 +151,7 @@ impl flatbuffers::Verifiable for Bone<'_> {
      .visit_field::<math::Vec3f>("tail_position", Self::VT_TAIL_POSITION, false)?
      .visit_field::<math::Vec3f>("linear_velocity", Self::VT_LINEAR_VELOCITY, false)?
      .visit_field::<math::Vec3f>("angular_velocity", Self::VT_ANGULAR_VELOCITY, false)?
+     .visit_field::<math::Vec3f>("tracker_offset", Self::VT_TRACKER_OFFSET, false)?
      .finish();
     Ok(())
   }
@@ -154,6 +165,7 @@ pub struct BoneArgs<'a> {
     pub tail_position: Option<&'a math::Vec3f>,
     pub linear_velocity: Option<&'a math::Vec3f>,
     pub angular_velocity: Option<&'a math::Vec3f>,
+    pub tracker_offset: Option<&'a math::Vec3f>,
 }
 impl<'a> Default for BoneArgs<'a> {
   #[inline]
@@ -167,6 +179,7 @@ impl<'a> Default for BoneArgs<'a> {
       tail_position: None,
       linear_velocity: None,
       angular_velocity: None,
+      tracker_offset: None,
     }
   }
 }
@@ -209,6 +222,10 @@ impl<'a: 'b, 'b> BoneBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<&math::Vec3f>(Bone::VT_ANGULAR_VELOCITY, angular_velocity);
   }
   #[inline]
+  pub fn add_tracker_offset(&mut self, tracker_offset: &math::Vec3f) {
+    self.fbb_.push_slot_always::<&math::Vec3f>(Bone::VT_TRACKER_OFFSET, tracker_offset);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> BoneBuilder<'a, 'b> {
     let start = _fbb.start_table();
     BoneBuilder {
@@ -234,6 +251,7 @@ impl core::fmt::Debug for Bone<'_> {
       ds.field("tail_position", &self.tail_position());
       ds.field("linear_velocity", &self.linear_velocity());
       ds.field("angular_velocity", &self.angular_velocity());
+      ds.field("tracker_offset", &self.tracker_offset());
       ds.finish()
   }
 }

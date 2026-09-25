@@ -163,6 +163,8 @@ pub mod solarxr_protocol {
     pub use self::arms_reset_mode_generated::*;
     mod serial_device_type_generated;
     pub use self::serial_device_type_generated::*;
+    mod serial_console_status_generated;
+    pub use self::serial_console_status_generated::*;
     mod skeleton_bone_generated;
     pub use self::skeleton_bone_generated::*;
     mod filtering_type_generated;
@@ -341,8 +343,6 @@ pub mod solarxr_protocol {
     pub use self::serial_devices_request_generated::*;
     mod serial_devices_response_generated;
     pub use self::serial_devices_response_generated::*;
-    mod new_serial_device_response_generated;
-    pub use self::new_serial_device_response_generated::*;
     mod serial_tracker_get_wifi_scan_request_generated;
     pub use self::serial_tracker_get_wifi_scan_request_generated::*;
     mod hidsettings_request_generated;
@@ -413,8 +413,8 @@ pub mod solarxr_protocol {
     pub use self::telemetry_gap_event_generated::*;
     mod telemetry_gap_response_generated;
     pub use self::telemetry_gap_response_generated::*;
-    mod assign_tracker_request_generated;
-    pub use self::assign_tracker_request_generated::*;
+    mod update_tracker_request_generated;
+    pub use self::update_tracker_request_generated::*;
     mod reset_tracker_assignments_generated;
     pub use self::reset_tracker_assignments_generated::*;
     mod tap_detection_settings_request_generated;

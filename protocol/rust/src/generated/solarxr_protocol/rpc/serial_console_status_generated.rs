@@ -10,49 +10,58 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_SERIAL_DEVICE_TYPE: u8 = 0;
+pub const ENUM_MIN_SERIAL_CONSOLE_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SERIAL_DEVICE_TYPE: u8 = 3;
+pub const ENUM_MAX_SERIAL_CONSOLE_STATUS: u8 = 4;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SERIAL_DEVICE_TYPE: [SerialDeviceType; 4] = [
-  SerialDeviceType::UNKNOWN,
-  SerialDeviceType::ESP_TRACKER,
-  SerialDeviceType::HID_RECEIVER,
-  SerialDeviceType::HID_TRACKER,
+pub const ENUM_VALUES_SERIAL_CONSOLE_STATUS: [SerialConsoleStatus; 5] = [
+  SerialConsoleStatus::OPEN,
+  SerialConsoleStatus::WAITING,
+  SerialConsoleStatus::BUSY,
+  SerialConsoleStatus::OPENING,
+  SerialConsoleStatus::OPEN_FAILED,
 ];
 
+/// State of the console the server keeps on a serial port
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct SerialDeviceType(pub u8);
+pub struct SerialConsoleStatus(pub u8);
 #[allow(non_upper_case_globals)]
-impl SerialDeviceType {
-  /// A USB serial port whose vendor and product id are not recognized
-  pub const UNKNOWN: Self = Self(0);
-  pub const ESP_TRACKER: Self = Self(1);
-  pub const HID_RECEIVER: Self = Self(2);
-  pub const HID_TRACKER: Self = Self(3);
+impl SerialConsoleStatus {
+  /// The port is open and logs are streaming
+  pub const OPEN: Self = Self(0);
+  /// The port is not present, the console resumes when it appears
+  pub const WAITING: Self = Self(1);
+  /// The port is in use by a firmware flash, the console resumes afterwards
+  pub const BUSY: Self = Self(2);
+  /// The port is present and the server is opening it
+  pub const OPENING: Self = Self(3);
+  /// The port is present but could not be opened
+  pub const OPEN_FAILED: Self = Self(4);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 3;
+  pub const ENUM_MAX: u8 = 4;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::UNKNOWN,
-    Self::ESP_TRACKER,
-    Self::HID_RECEIVER,
-    Self::HID_TRACKER,
+    Self::OPEN,
+    Self::WAITING,
+    Self::BUSY,
+    Self::OPENING,
+    Self::OPEN_FAILED,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::UNKNOWN => Some("UNKNOWN"),
-      Self::ESP_TRACKER => Some("ESP_TRACKER"),
-      Self::HID_RECEIVER => Some("HID_RECEIVER"),
-      Self::HID_TRACKER => Some("HID_TRACKER"),
+      Self::OPEN => Some("OPEN"),
+      Self::WAITING => Some("WAITING"),
+      Self::BUSY => Some("BUSY"),
+      Self::OPENING => Some("OPENING"),
+      Self::OPEN_FAILED => Some("OPEN_FAILED"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for SerialDeviceType {
+impl core::fmt::Debug for SerialConsoleStatus {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -61,7 +70,7 @@ impl core::fmt::Debug for SerialDeviceType {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for SerialDeviceType {
+impl<'a> flatbuffers::Follow<'a> for SerialConsoleStatus {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -70,15 +79,15 @@ impl<'a> flatbuffers::Follow<'a> for SerialDeviceType {
   }
 }
 
-impl flatbuffers::Push for SerialDeviceType {
-    type Output = SerialDeviceType;
+impl flatbuffers::Push for SerialConsoleStatus {
+    type Output = SerialConsoleStatus;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for SerialDeviceType {
+impl flatbuffers::EndianScalar for SerialConsoleStatus {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -92,7 +101,7 @@ impl flatbuffers::EndianScalar for SerialDeviceType {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for SerialDeviceType {
+impl<'a> flatbuffers::Verifiable for SerialConsoleStatus {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -102,4 +111,4 @@ impl<'a> flatbuffers::Verifiable for SerialDeviceType {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for SerialDeviceType {}
+impl flatbuffers::SimpleToVerifyInSlice for SerialConsoleStatus {}

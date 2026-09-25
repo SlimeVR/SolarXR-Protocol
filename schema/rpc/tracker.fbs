@@ -2,11 +2,12 @@ include "../datatypes/datatypes.fbs";
 
 namespace solarxr_protocol.rpc;
 
-table AssignTrackerRequest {
+table UpdateTrackerRequest {
     tracker_id: uint16;
     body_position: solarxr_protocol.datatypes.BodyPart;
     mounting_orientation: solarxr_protocol.datatypes.math.Quat;
     display_name: string;
+    bone_offset: solarxr_protocol.datatypes.math.Vec3f;
 }
 
 table ResetTrackerAssignments {}

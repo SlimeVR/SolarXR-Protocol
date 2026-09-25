@@ -7,11 +7,12 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class AssignTrackerRequestT {
+public class UpdateTrackerRequestT {
   private int trackerId;
   private int bodyPosition;
   private solarxr_protocol.datatypes.math.QuatT mountingOrientation;
   private String displayName;
+  private solarxr_protocol.datatypes.math.Vec3fT boneOffset;
 
   public int getTrackerId() { return trackerId; }
 
@@ -29,12 +30,17 @@ public class AssignTrackerRequestT {
 
   public void setDisplayName(String displayName) { this.displayName = displayName; }
 
+  public solarxr_protocol.datatypes.math.Vec3fT getBoneOffset() { return boneOffset; }
 
-  public AssignTrackerRequestT() {
+  public void setBoneOffset(solarxr_protocol.datatypes.math.Vec3fT boneOffset) { this.boneOffset = boneOffset; }
+
+
+  public UpdateTrackerRequestT() {
     this.trackerId = 0;
     this.bodyPosition = 0;
     this.mountingOrientation = new solarxr_protocol.datatypes.math.QuatT();
     this.displayName = null;
+    this.boneOffset = new solarxr_protocol.datatypes.math.Vec3fT();
   }
 }
 

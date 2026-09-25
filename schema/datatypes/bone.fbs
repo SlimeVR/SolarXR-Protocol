@@ -8,7 +8,7 @@ table Bone {
     /// The length of the bone in meters.
     bone_length: float32;
     /// A bone's default rotation is the identity rotation, where a bone's tail is towards -y
-    /// (given that the head of the bone is the origin)
+    /// (given that the head of the bone is the origin).
     rotation: solarxr_protocol.datatypes.math.Quat;
     /// A bone's default orientation is its rest pose (for example, for the feet,
     /// that is 90 degrees forward).
@@ -19,10 +19,12 @@ table Bone {
     /// The tail of a bone is where the bone ends.
     /// It can also be computed from its head_position, orientation and bone_length.
     tail_position: solarxr_protocol.datatypes.math.Vec3f;
-    /// Linear velocity in meters/s
+    /// Linear velocity in meters/s.
     linear_velocity: solarxr_protocol.datatypes.math.Vec3f;
-    /// Angular velocity in rad/s
+    /// Angular velocity in rad/s.
     angular_velocity: solarxr_protocol.datatypes.math.Vec3f;
+    /// Similar to TrackerInfo.position_offset, position offset from the head of the bone to the tracker.
+    tracker_offset: solarxr_protocol.datatypes.math.Vec3f;
 }
 
 table BoneMask {
@@ -34,4 +36,5 @@ table BoneMask {
     tail_position: bool;
     linear_velocity: bool;
     angular_velocity: bool;
+    tracker_offset: bool;
 }

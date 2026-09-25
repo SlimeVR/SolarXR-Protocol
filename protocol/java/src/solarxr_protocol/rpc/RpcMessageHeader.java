@@ -87,9 +87,9 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ResetResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.AssignTrackerRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.AssignTrackerRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.AssignTrackerRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.UpdateTrackerRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.UpdateTrackerRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UpdateTrackerRequest) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.ResetTrackerAssignments:
         _oMessageValue = message(new solarxr_protocol.rpc.ResetTrackerAssignments());
@@ -286,10 +286,6 @@ public final class RpcMessageHeader extends Table {
       case solarxr_protocol.rpc.RpcMessage.SerialDevicesResponse:
         _oMessageValue = message(new solarxr_protocol.rpc.SerialDevicesResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialDevicesResponse) _oMessageValue).unpack() : null);
-        break;
-      case solarxr_protocol.rpc.RpcMessage.NewSerialDeviceResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.NewSerialDeviceResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.NewSerialDeviceResponse) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.StartWifiProvisioningRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.StartWifiProvisioningRequest());

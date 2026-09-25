@@ -12,12 +12,11 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_SKELETON_BONE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SKELETON_BONE: u8 = 17;
+pub const ENUM_MAX_SKELETON_BONE: u8 = 16;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 18] = [
+pub const ENUM_VALUES_SKELETON_BONE: [SkeletonBone; 17] = [
   SkeletonBone::NONE,
-  SkeletonBone::HEAD,
   SkeletonBone::NECK,
   SkeletonBone::UPPER_CHEST,
   SkeletonBone::LOWER_CHEST,
@@ -42,29 +41,27 @@ pub struct SkeletonBone(pub u8);
 #[allow(non_upper_case_globals)]
 impl SkeletonBone {
   pub const NONE: Self = Self(0);
-  pub const HEAD: Self = Self(1);
-  pub const NECK: Self = Self(2);
-  pub const UPPER_CHEST: Self = Self(3);
-  pub const LOWER_CHEST: Self = Self(4);
-  pub const UPPER_WAIST: Self = Self(5);
-  pub const LOWER_WAIST: Self = Self(6);
-  pub const HIP: Self = Self(7);
-  pub const HIPS_WIDTH: Self = Self(8);
-  pub const UPPER_LEG: Self = Self(9);
-  pub const LOWER_LEG: Self = Self(10);
-  pub const FOOT_LENGTH: Self = Self(11);
-  pub const FOOT_SHIFT: Self = Self(12);
-  pub const SHOULDERS_DISTANCE: Self = Self(13);
-  pub const SHOULDERS_WIDTH: Self = Self(14);
-  pub const UPPER_ARM: Self = Self(15);
-  pub const LOWER_ARM: Self = Self(16);
-  pub const HAND: Self = Self(17);
+  pub const NECK: Self = Self(1);
+  pub const UPPER_CHEST: Self = Self(2);
+  pub const LOWER_CHEST: Self = Self(3);
+  pub const UPPER_WAIST: Self = Self(4);
+  pub const LOWER_WAIST: Self = Self(5);
+  pub const HIP: Self = Self(6);
+  pub const HIPS_WIDTH: Self = Self(7);
+  pub const UPPER_LEG: Self = Self(8);
+  pub const LOWER_LEG: Self = Self(9);
+  pub const FOOT_LENGTH: Self = Self(10);
+  pub const FOOT_SHIFT: Self = Self(11);
+  pub const SHOULDERS_DISTANCE: Self = Self(12);
+  pub const SHOULDERS_WIDTH: Self = Self(13);
+  pub const UPPER_ARM: Self = Self(14);
+  pub const LOWER_ARM: Self = Self(15);
+  pub const HAND: Self = Self(16);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 17;
+  pub const ENUM_MAX: u8 = 16;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
-    Self::HEAD,
     Self::NECK,
     Self::UPPER_CHEST,
     Self::LOWER_CHEST,
@@ -86,7 +83,6 @@ impl SkeletonBone {
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
-      Self::HEAD => Some("HEAD"),
       Self::NECK => Some("NECK"),
       Self::UPPER_CHEST => Some("UPPER_CHEST"),
       Self::LOWER_CHEST => Some("LOWER_CHEST"),

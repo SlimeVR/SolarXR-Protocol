@@ -15,28 +15,34 @@ public final class SerialUpdateResponse extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public SerialUpdateResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public String log() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer logAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
-  public ByteBuffer logInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
-  public boolean closed() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public int status() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  /**
+   * The port this console is on, null while the port is not present
+   */
   public solarxr_protocol.rpc.SerialDevice device() { return device(new solarxr_protocol.rpc.SerialDevice()); }
-  public solarxr_protocol.rpc.SerialDevice device(solarxr_protocol.rpc.SerialDevice obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.SerialDevice device(solarxr_protocol.rpc.SerialDevice obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  /**
+   * Newline terminated log lines, one or more per message
+   */
+  public String log() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer logAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
+  public ByteBuffer logInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
 
   public static int createSerialUpdateResponse(FlatBufferBuilder builder,
-      int logOffset,
-      boolean closed,
-      int deviceOffset) {
+      int status,
+      int deviceOffset,
+      int logOffset) {
     builder.startTable(3);
-    SerialUpdateResponse.addDevice(builder, deviceOffset);
     SerialUpdateResponse.addLog(builder, logOffset);
-    SerialUpdateResponse.addClosed(builder, closed);
+    SerialUpdateResponse.addDevice(builder, deviceOffset);
+    SerialUpdateResponse.addStatus(builder, status);
     return SerialUpdateResponse.endSerialUpdateResponse(builder);
   }
 
   public static void startSerialUpdateResponse(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addLog(FlatBufferBuilder builder, int logOffset) { builder.addOffset(0, logOffset, 0); }
-  public static void addClosed(FlatBufferBuilder builder, boolean closed) { builder.addBoolean(1, closed, false); }
-  public static void addDevice(FlatBufferBuilder builder, int deviceOffset) { builder.addOffset(2, deviceOffset, 0); }
+  public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(0, (byte) status, (byte) 0); }
+  public static void addDevice(FlatBufferBuilder builder, int deviceOffset) { builder.addOffset(1, deviceOffset, 0); }
+  public static void addLog(FlatBufferBuilder builder, int logOffset) { builder.addOffset(2, logOffset, 0); }
   public static int endSerialUpdateResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -54,22 +60,22 @@ public final class SerialUpdateResponse extends Table {
     return _o;
   }
   public void unpackTo(SerialUpdateResponseT _o) {
-    String _oLog = log();
-    _o.setLog(_oLog);
-    boolean _oClosed = closed();
-    _o.setClosed(_oClosed);
+    int _oStatus = status();
+    _o.setStatus(_oStatus);
     if (device() != null) _o.setDevice(device().unpack());
     else _o.setDevice(null);
+    String _oLog = log();
+    _o.setLog(_oLog);
   }
   public static int pack(FlatBufferBuilder builder, SerialUpdateResponseT _o) {
     if (_o == null) return 0;
-    int _log = _o.getLog() == null ? 0 : builder.createString(_o.getLog());
     int _device = _o.getDevice() == null ? 0 : solarxr_protocol.rpc.SerialDevice.pack(builder, _o.getDevice());
+    int _log = _o.getLog() == null ? 0 : builder.createString(_o.getLog());
     return createSerialUpdateResponse(
       builder,
-      _log,
-      _o.getClosed(),
-      _device);
+      _o.getStatus(),
+      _device,
+      _log);
   }
 }
 

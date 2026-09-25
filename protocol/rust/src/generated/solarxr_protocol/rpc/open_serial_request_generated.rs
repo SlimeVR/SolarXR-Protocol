@@ -25,8 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for OpenSerialRequest<'a> {
 }
 
 impl<'a> OpenSerialRequest<'a> {
-  pub const VT_AUTO: flatbuffers::VOffsetT = 4;
-  pub const VT_PORT: flatbuffers::VOffsetT = 6;
+  pub const VT_PORT: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,19 +38,11 @@ impl<'a> OpenSerialRequest<'a> {
   ) -> flatbuffers::WIPOffset<OpenSerialRequest<'bldr>> {
     let mut builder = OpenSerialRequestBuilder::new(_fbb);
     if let Some(x) = args.port { builder.add_port(x); }
-    builder.add_auto(args.auto);
     builder.finish()
   }
 
 
-  /// Automatically pick the first serial device available
-  #[inline]
-  pub fn auto(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(OpenSerialRequest::VT_AUTO, Some(false)).unwrap()}
-  }
+  /// Location of the port to open, as listed in SerialDevicesResponse
   #[inline]
   pub fn port(&self) -> Option<&'a str> {
     // Safety:
@@ -68,21 +59,18 @@ impl flatbuffers::Verifiable for OpenSerialRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("auto", Self::VT_AUTO, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("port", Self::VT_PORT, false)?
      .finish();
     Ok(())
   }
 }
 pub struct OpenSerialRequestArgs<'a> {
-    pub auto: bool,
     pub port: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for OpenSerialRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
     OpenSerialRequestArgs {
-      auto: false,
       port: None,
     }
   }
@@ -93,10 +81,6 @@ pub struct OpenSerialRequestBuilder<'a: 'b, 'b> {
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
 impl<'a: 'b, 'b> OpenSerialRequestBuilder<'a, 'b> {
-  #[inline]
-  pub fn add_auto(&mut self, auto: bool) {
-    self.fbb_.push_slot::<bool>(OpenSerialRequest::VT_AUTO, auto, false);
-  }
   #[inline]
   pub fn add_port(&mut self, port: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(OpenSerialRequest::VT_PORT, port);
@@ -119,7 +103,6 @@ impl<'a: 'b, 'b> OpenSerialRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for OpenSerialRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("OpenSerialRequest");
-      ds.field("auto", &self.auto());
       ds.field("port", &self.port());
       ds.finish()
   }
