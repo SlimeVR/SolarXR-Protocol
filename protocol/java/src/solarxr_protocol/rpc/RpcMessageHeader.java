@@ -583,6 +583,18 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.TelemetryGapResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TelemetryGapResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.CustomOSCSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.CustomOSCSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.CustomOSCSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.CustomOSCSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.CustomOSCSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.CustomOSCSettingsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ChangeCustomOSCSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeCustomOSCSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeCustomOSCSettingsRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

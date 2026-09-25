@@ -149,6 +149,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StopTelemetryRequestT asStopTelemetryRequest() { return (solarxr_protocol.rpc.StopTelemetryRequestT) value; }
   public solarxr_protocol.rpc.TelemetryUpdateResponseT asTelemetryUpdateResponse() { return (solarxr_protocol.rpc.TelemetryUpdateResponseT) value; }
   public solarxr_protocol.rpc.TelemetryGapResponseT asTelemetryGapResponse() { return (solarxr_protocol.rpc.TelemetryGapResponseT) value; }
+  public solarxr_protocol.rpc.CustomOSCSettingsRequestT asCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.CustomOSCSettingsRequestT) value; }
+  public solarxr_protocol.rpc.CustomOSCSettingsResponseT asCustomOSCSettingsResponse() { return (solarxr_protocol.rpc.CustomOSCSettingsResponseT) value; }
+  public solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT asChangeCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -280,6 +283,9 @@ public class RpcMessageUnion {
       case RpcMessage.StopTelemetryRequest: return solarxr_protocol.rpc.StopTelemetryRequest.pack(builder, _o.asStopTelemetryRequest());
       case RpcMessage.TelemetryUpdateResponse: return solarxr_protocol.rpc.TelemetryUpdateResponse.pack(builder, _o.asTelemetryUpdateResponse());
       case RpcMessage.TelemetryGapResponse: return solarxr_protocol.rpc.TelemetryGapResponse.pack(builder, _o.asTelemetryGapResponse());
+      case RpcMessage.CustomOSCSettingsRequest: return solarxr_protocol.rpc.CustomOSCSettingsRequest.pack(builder, _o.asCustomOSCSettingsRequest());
+      case RpcMessage.CustomOSCSettingsResponse: return solarxr_protocol.rpc.CustomOSCSettingsResponse.pack(builder, _o.asCustomOSCSettingsResponse());
+      case RpcMessage.ChangeCustomOSCSettingsRequest: return solarxr_protocol.rpc.ChangeCustomOSCSettingsRequest.pack(builder, _o.asChangeCustomOSCSettingsRequest());
       default: return 0;
     }
   }

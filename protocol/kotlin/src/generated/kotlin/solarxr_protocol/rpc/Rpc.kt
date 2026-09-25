@@ -145,6 +145,9 @@ public sealed interface RpcMessage {
       126 -> StopTelemetryRequest.decode(bb, offset)
       127 -> TelemetryUpdateResponse.decode(bb, offset)
       128 -> TelemetryGapResponse.decode(bb, offset)
+      129 -> CustomOSCSettingsRequest.decode(bb, offset)
+      130 -> CustomOSCSettingsResponse.decode(bb, offset)
+      131 -> ChangeCustomOSCSettingsRequest.decode(bb, offset)
       else -> null
     }
 
@@ -277,6 +280,9 @@ public sealed interface RpcMessage {
       is StopTelemetryRequest -> 126.toUByte()
       is TelemetryUpdateResponse -> 127.toUByte()
       is TelemetryGapResponse -> 128.toUByte()
+      is CustomOSCSettingsRequest -> 129.toUByte()
+      is CustomOSCSettingsResponse -> 130.toUByte()
+      is ChangeCustomOSCSettingsRequest -> 131.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -408,6 +414,9 @@ public sealed interface RpcMessage {
       is StopTelemetryRequest -> value.encode(builder)
       is TelemetryUpdateResponse -> value.encode(builder)
       is TelemetryGapResponse -> value.encode(builder)
+      is CustomOSCSettingsRequest -> value.encode(builder)
+      is CustomOSCSettingsResponse -> value.encode(builder)
+      is ChangeCustomOSCSettingsRequest -> value.encode(builder)
     }
   }
 }
