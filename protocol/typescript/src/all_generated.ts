@@ -117,7 +117,6 @@ export { LegTweaksTmpChange, LegTweaksTmpChangeT } from './solarxr-protocol/rpc/
 export { LegTweaksTmpClear, LegTweaksTmpClearT } from './solarxr-protocol/rpc/leg-tweaks-tmp-clear.js';
 export { MagToggleRequest, MagToggleRequestT } from './solarxr-protocol/rpc/mag-toggle-request.js';
 export { MagToggleResponse, MagToggleResponseT } from './solarxr-protocol/rpc/mag-toggle-response.js';
-export { NewSerialDeviceResponse, NewSerialDeviceResponseT } from './solarxr-protocol/rpc/new-serial-device-response.js';
 export { OTAFirmwareUpdate, OTAFirmwareUpdateT } from './solarxr-protocol/rpc/otafirmware-update.js';
 export { OpenKeybindSettingsRequest, OpenKeybindSettingsRequestT } from './solarxr-protocol/rpc/open-keybind-settings-request.js';
 export { OpenKeybindSettingsResponse, OpenKeybindSettingsResponseT } from './solarxr-protocol/rpc/open-keybind-settings-response.js';
@@ -142,6 +141,7 @@ export { RoutingOutputStatus, RoutingOutputStatusT } from './solarxr-protocol/rp
 export { RpcMessage, unionToRpcMessage, unionListToRpcMessage } from './solarxr-protocol/rpc/rpc-message.js';
 export { RpcMessageHeader, RpcMessageHeaderT } from './solarxr-protocol/rpc/rpc-message-header.js';
 export { SaveFileNotification, SaveFileNotificationT } from './solarxr-protocol/rpc/save-file-notification.js';
+export { SerialConsoleStatus } from './solarxr-protocol/rpc/serial-console-status.js';
 export { SerialDevice, SerialDeviceT } from './solarxr-protocol/rpc/serial-device.js';
 export { SerialDevicePort, SerialDevicePortT } from './solarxr-protocol/rpc/serial-device-port.js';
 export { SerialDeviceType } from './solarxr-protocol/rpc/serial-device-type.js';

@@ -75,7 +75,6 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.SerialTrackerFactoryResetRequestT asSerialTrackerFactoryResetRequest() { return (solarxr_protocol.rpc.SerialTrackerFactoryResetRequestT) value; }
   public solarxr_protocol.rpc.SerialDevicesRequestT asSerialDevicesRequest() { return (solarxr_protocol.rpc.SerialDevicesRequestT) value; }
   public solarxr_protocol.rpc.SerialDevicesResponseT asSerialDevicesResponse() { return (solarxr_protocol.rpc.SerialDevicesResponseT) value; }
-  public solarxr_protocol.rpc.NewSerialDeviceResponseT asNewSerialDeviceResponse() { return (solarxr_protocol.rpc.NewSerialDeviceResponseT) value; }
   public solarxr_protocol.rpc.StartWifiProvisioningRequestT asStartWifiProvisioningRequest() { return (solarxr_protocol.rpc.StartWifiProvisioningRequestT) value; }
   public solarxr_protocol.rpc.StopWifiProvisioningRequestT asStopWifiProvisioningRequest() { return (solarxr_protocol.rpc.StopWifiProvisioningRequestT) value; }
   public solarxr_protocol.rpc.WifiProvisioningStatusResponseT asWifiProvisioningStatusResponse() { return (solarxr_protocol.rpc.WifiProvisioningStatusResponseT) value; }
@@ -207,7 +206,6 @@ public class RpcMessageUnion {
       case RpcMessage.SerialTrackerFactoryResetRequest: return solarxr_protocol.rpc.SerialTrackerFactoryResetRequest.pack(builder, _o.asSerialTrackerFactoryResetRequest());
       case RpcMessage.SerialDevicesRequest: return solarxr_protocol.rpc.SerialDevicesRequest.pack(builder, _o.asSerialDevicesRequest());
       case RpcMessage.SerialDevicesResponse: return solarxr_protocol.rpc.SerialDevicesResponse.pack(builder, _o.asSerialDevicesResponse());
-      case RpcMessage.NewSerialDeviceResponse: return solarxr_protocol.rpc.NewSerialDeviceResponse.pack(builder, _o.asNewSerialDeviceResponse());
       case RpcMessage.StartWifiProvisioningRequest: return solarxr_protocol.rpc.StartWifiProvisioningRequest.pack(builder, _o.asStartWifiProvisioningRequest());
       case RpcMessage.StopWifiProvisioningRequest: return solarxr_protocol.rpc.StopWifiProvisioningRequest.pack(builder, _o.asStopWifiProvisioningRequest());
       case RpcMessage.WifiProvisioningStatusResponse: return solarxr_protocol.rpc.WifiProvisioningStatusResponse.pack(builder, _o.asWifiProvisioningStatusResponse());

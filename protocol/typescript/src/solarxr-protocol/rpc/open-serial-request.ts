@@ -23,30 +23,21 @@ static getSizePrefixedRootAsOpenSerialRequest(bb:flatbuffers.ByteBuffer, obj?:Op
 }
 
 /**
- * Automatically pick the first serial device available
+ * Location of the port to open, as listed in SerialDevicesResponse
  */
-auto():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 port():string|null
 port(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 port(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 static startOpenSerialRequest(builder:flatbuffers.Builder) {
-  builder.startObject(2);
-}
-
-static addAuto(builder:flatbuffers.Builder, auto:boolean) {
-  builder.addFieldInt8(0, +auto, +false);
+  builder.startObject(1);
 }
 
 static addPort(builder:flatbuffers.Builder, portOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, portOffset, 0);
+  builder.addFieldOffset(0, portOffset, 0);
 }
 
 static endOpenSerialRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -54,30 +45,26 @@ static endOpenSerialRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createOpenSerialRequest(builder:flatbuffers.Builder, auto:boolean, portOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createOpenSerialRequest(builder:flatbuffers.Builder, portOffset:flatbuffers.Offset):flatbuffers.Offset {
   OpenSerialRequest.startOpenSerialRequest(builder);
-  OpenSerialRequest.addAuto(builder, auto);
   OpenSerialRequest.addPort(builder, portOffset);
   return OpenSerialRequest.endOpenSerialRequest(builder);
 }
 
 unpack(): OpenSerialRequestT {
   return new OpenSerialRequestT(
-    this.auto(),
     this.port()
   );
 }
 
 
 unpackTo(_o: OpenSerialRequestT): void {
-  _o.auto = this.auto();
   _o.port = this.port();
 }
 }
 
 export class OpenSerialRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public auto: boolean = false,
   public port: string|Uint8Array|null = null
 ){}
 
@@ -86,7 +73,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const port = (this.port !== null ? builder.createString(this.port!) : 0);
 
   return OpenSerialRequest.createOpenSerialRequest(builder,
-    this.auto,
     port
   );
 }

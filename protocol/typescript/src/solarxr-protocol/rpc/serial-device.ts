@@ -39,11 +39,28 @@ name(optionalEncoding?:any):string|Uint8Array|null {
 
 type():SerialDeviceType {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : SerialDeviceType.ESP_TRACKER;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : SerialDeviceType.UNKNOWN;
+}
+
+vendorId():number {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
+}
+
+productId():number {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.readUint16(this.bb_pos + offset) : 0;
+}
+
+serialNumber():string|null
+serialNumber(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+serialNumber(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 static startSerialDevice(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(6);
 }
 
 static addPort(builder:flatbuffers.Builder, portOffset:flatbuffers.Offset) {
@@ -55,7 +72,19 @@ static addName(builder:flatbuffers.Builder, nameOffset:flatbuffers.Offset) {
 }
 
 static addType(builder:flatbuffers.Builder, type:SerialDeviceType) {
-  builder.addFieldInt8(2, type, SerialDeviceType.ESP_TRACKER);
+  builder.addFieldInt8(2, type, SerialDeviceType.UNKNOWN);
+}
+
+static addVendorId(builder:flatbuffers.Builder, vendorId:number) {
+  builder.addFieldInt16(3, vendorId, 0);
+}
+
+static addProductId(builder:flatbuffers.Builder, productId:number) {
+  builder.addFieldInt16(4, productId, 0);
+}
+
+static addSerialNumber(builder:flatbuffers.Builder, serialNumberOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(5, serialNumberOffset, 0);
 }
 
 static endSerialDevice(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -63,11 +92,14 @@ static endSerialDevice(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createSerialDevice(builder:flatbuffers.Builder, portOffset:flatbuffers.Offset, nameOffset:flatbuffers.Offset, type:SerialDeviceType):flatbuffers.Offset {
+static createSerialDevice(builder:flatbuffers.Builder, portOffset:flatbuffers.Offset, nameOffset:flatbuffers.Offset, type:SerialDeviceType, vendorId:number, productId:number, serialNumberOffset:flatbuffers.Offset):flatbuffers.Offset {
   SerialDevice.startSerialDevice(builder);
   SerialDevice.addPort(builder, portOffset);
   SerialDevice.addName(builder, nameOffset);
   SerialDevice.addType(builder, type);
+  SerialDevice.addVendorId(builder, vendorId);
+  SerialDevice.addProductId(builder, productId);
+  SerialDevice.addSerialNumber(builder, serialNumberOffset);
   return SerialDevice.endSerialDevice(builder);
 }
 
@@ -75,7 +107,10 @@ unpack(): SerialDeviceT {
   return new SerialDeviceT(
     this.port(),
     this.name(),
-    this.type()
+    this.type(),
+    this.vendorId(),
+    this.productId(),
+    this.serialNumber()
   );
 }
 
@@ -84,6 +119,9 @@ unpackTo(_o: SerialDeviceT): void {
   _o.port = this.port();
   _o.name = this.name();
   _o.type = this.type();
+  _o.vendorId = this.vendorId();
+  _o.productId = this.productId();
+  _o.serialNumber = this.serialNumber();
 }
 }
 
@@ -91,18 +129,25 @@ export class SerialDeviceT implements flatbuffers.IGeneratedObject {
 constructor(
   public port: string|Uint8Array|null = null,
   public name: string|Uint8Array|null = null,
-  public type: SerialDeviceType = SerialDeviceType.ESP_TRACKER
+  public type: SerialDeviceType = SerialDeviceType.UNKNOWN,
+  public vendorId: number = 0,
+  public productId: number = 0,
+  public serialNumber: string|Uint8Array|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const port = (this.port !== null ? builder.createString(this.port!) : 0);
   const name = (this.name !== null ? builder.createString(this.name!) : 0);
+  const serialNumber = (this.serialNumber !== null ? builder.createString(this.serialNumber!) : 0);
 
   return SerialDevice.createSerialDevice(builder,
     port,
     name,
-    this.type
+    this.type,
+    this.vendorId,
+    this.productId,
+    serialNumber
   );
 }
 }

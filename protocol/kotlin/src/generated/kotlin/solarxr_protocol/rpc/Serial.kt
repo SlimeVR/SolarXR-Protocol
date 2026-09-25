@@ -7,14 +7,19 @@ import kotlin.Boolean
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
+import kotlin.UShort
 import kotlin.collections.List
 
 public enum class SerialDeviceType(
   public val `value`: UByte,
 ) {
-  ESP_TRACKER(0.toUByte()),
-  HID_RECEIVER(1.toUByte()),
-  HID_TRACKER(2.toUByte()),
+  /**
+   * A USB serial port whose vendor and product id are not recognized
+   */
+  UNKNOWN(0.toUByte()),
+  ESP_TRACKER(1.toUByte()),
+  HID_RECEIVER(2.toUByte()),
+  HID_TRACKER(3.toUByte()),
   ;
 
   public companion object {
@@ -22,19 +27,59 @@ public enum class SerialDeviceType(
   }
 }
 
+/**
+ * State of the console the server keeps on a serial port
+ */
+public enum class SerialConsoleStatus(
+  public val `value`: UByte,
+) {
+  /**
+   * The port is open and logs are streaming
+   */
+  OPEN(0.toUByte()),
+  /**
+   * The port is not present, the console resumes when it appears
+   */
+  WAITING(1.toUByte()),
+  /**
+   * The port is in use by a firmware flash, the console resumes afterwards
+   */
+  BUSY(2.toUByte()),
+  /**
+   * The port is present and the server is opening it
+   */
+  OPENING(3.toUByte()),
+  /**
+   * The port is present but could not be opened
+   */
+  OPEN_FAILED(4.toUByte()),
+  ;
+
+  public companion object {
+    public fun fromValue(`value`: UByte): SerialConsoleStatus? = entries.firstOrNull { it.value == value }
+  }
+}
+
 public data class SerialDevice(
   public val port: String? = null,
   public val name: String? = null,
-  public val type: SerialDeviceType = SerialDeviceType.ESP_TRACKER,
+  public val type: SerialDeviceType = SerialDeviceType.UNKNOWN,
+  public val vendorId: UShort = 0.toUShort(),
+  public val productId: UShort = 0.toUShort(),
+  public val serialNumber: String? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_port = port?.let { builder.createString(it) }
     val __off_name = name?.let { builder.createString(it) }
+    val __off_serialNumber = serialNumber?.let { builder.createString(it) }
 
-    builder.startTable(3)
+    builder.startTable(6)
     __off_port?.let { builder.addOffset(0, it, 0) }
     __off_name?.let { builder.addOffset(1, it, 0) }
     builder.addByte(2, type.value.toByte(), 0)
+    builder.addShort(3, vendorId.toShort(), 0)
+    builder.addShort(4, productId.toShort(), 0)
+    __off_serialNumber?.let { builder.addOffset(5, it, 0) }
     return builder.endTable()
   }
 
@@ -46,26 +91,30 @@ public data class SerialDevice(
       val __offset_port = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_name = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_type = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_vendorId = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_productId = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_serialNumber = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return SerialDevice(
               port = if (__offset_port != 0) readFlatBufferString(bb, tableOffset + __offset_port) else null,
               name = if (__offset_name != 0) readFlatBufferString(bb, tableOffset + __offset_name) else null,
-              type = if (__offset_type != 0) SerialDeviceType.fromValue(bb.get(tableOffset + __offset_type).toUByte()) ?: SerialDeviceType.ESP_TRACKER else SerialDeviceType.ESP_TRACKER
+              type = if (__offset_type != 0) SerialDeviceType.fromValue(bb.get(tableOffset + __offset_type).toUByte()) ?: SerialDeviceType.UNKNOWN else SerialDeviceType.UNKNOWN,
+              vendorId = if (__offset_vendorId != 0) bb.getShort(tableOffset + __offset_vendorId).toUShort() else 0.toUShort(),
+              productId = if (__offset_productId != 0) bb.getShort(tableOffset + __offset_productId).toUShort() else 0.toUShort(),
+              serialNumber = if (__offset_serialNumber != 0) readFlatBufferString(bb, tableOffset + __offset_serialNumber) else null
           )
     }
   }
 }
 
 public data class OpenSerialRequest(
-  public val auto: Boolean = false,
   public val port: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_port = port?.let { builder.createString(it) }
 
-    builder.startTable(2)
-    builder.addBoolean(0, auto, false)
-    __off_port?.let { builder.addOffset(1, it, 0) }
+    builder.startTable(1)
+    __off_port?.let { builder.addOffset(0, it, 0) }
     return builder.endTable()
   }
 
@@ -74,11 +123,9 @@ public data class OpenSerialRequest(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_auto = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_port = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_port = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return OpenSerialRequest(
-              auto = if (__offset_auto != 0) bb.get(tableOffset + __offset_auto) != 0.toByte() else false,
               port = if (__offset_port != 0) readFlatBufferString(bb, tableOffset + __offset_port) else null
           )
     }
@@ -97,18 +144,18 @@ public class CloseSerialRequest : RpcMessage {
 }
 
 public data class SerialUpdateResponse(
-  public val log: String? = null,
-  public val closed: Boolean = false,
+  public val status: SerialConsoleStatus = SerialConsoleStatus.OPEN,
   public val device: SerialDevice? = null,
+  public val log: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_log = log?.let { builder.createString(it) }
     val __off_device = device?.encode(builder)
+    val __off_log = log?.let { builder.createString(it) }
 
     builder.startTable(3)
-    __off_log?.let { builder.addOffset(0, it, 0) }
-    builder.addBoolean(1, closed, false)
-    __off_device?.let { builder.addOffset(2, it, 0) }
+    builder.addByte(0, status.value.toByte(), 0)
+    __off_device?.let { builder.addOffset(1, it, 0) }
+    __off_log?.let { builder.addOffset(2, it, 0) }
     return builder.endTable()
   }
 
@@ -117,14 +164,14 @@ public data class SerialUpdateResponse(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_log = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_closed = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_device = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_status = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_device = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_log = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return SerialUpdateResponse(
-              log = if (__offset_log != 0) readFlatBufferString(bb, tableOffset + __offset_log) else null,
-              closed = if (__offset_closed != 0) bb.get(tableOffset + __offset_closed) != 0.toByte() else false,
-              device = if (__offset_device != 0) SerialDevice.decode(bb, tableOffset + __offset_device + bb.getInt(tableOffset + __offset_device)) else null
+              status = if (__offset_status != 0) SerialConsoleStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: SerialConsoleStatus.OPEN else SerialConsoleStatus.OPEN,
+              device = if (__offset_device != 0) SerialDevice.decode(bb, tableOffset + __offset_device + bb.getInt(tableOffset + __offset_device)) else null,
+              log = if (__offset_log != 0) readFlatBufferString(bb, tableOffset + __offset_log) else null
           )
     }
   }
@@ -231,31 +278,6 @@ public data class SerialDevicesResponse(
 
       return SerialDevicesResponse(
               devices = if (__offset_devices != 0) { val vecOff = tableOffset + __offset_devices + bb.getInt(tableOffset + __offset_devices); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) SerialDevice.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
-          )
-    }
-  }
-}
-
-public data class NewSerialDeviceResponse(
-  public val device: SerialDevice? = null,
-) : RpcMessage {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_device = device?.encode(builder)
-
-    builder.startTable(1)
-    __off_device?.let { builder.addOffset(0, it, 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): NewSerialDeviceResponse {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_device = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-
-      return NewSerialDeviceResponse(
-              device = if (__offset_device != 0) SerialDevice.decode(bb, tableOffset + __offset_device + bb.getInt(tableOffset + __offset_device)) else null
           )
     }
   }
