@@ -27,6 +27,8 @@ impl<'a> flatbuffers::Follow<'a> for SkeletonPart<'a> {
 impl<'a> SkeletonPart<'a> {
   pub const VT_BONE: flatbuffers::VOffsetT = 4;
   pub const VT_VALUE: flatbuffers::VOffsetT = 6;
+  pub const VT_MIN_VALUE: flatbuffers::VOffsetT = 8;
+  pub const VT_MAX_VALUE: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,6 +40,8 @@ impl<'a> SkeletonPart<'a> {
     args: &'args SkeletonPartArgs
   ) -> flatbuffers::WIPOffset<SkeletonPart<'bldr>> {
     let mut builder = SkeletonPartBuilder::new(_fbb);
+    builder.add_max_value(args.max_value);
+    builder.add_min_value(args.min_value);
     builder.add_value(args.value);
     builder.add_bone(args.bone);
     builder.finish()
@@ -58,6 +62,20 @@ impl<'a> SkeletonPart<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(SkeletonPart::VT_VALUE, Some(0.0)).unwrap()}
   }
+  #[inline]
+  pub fn min_value(&self) -> f32 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<f32>(SkeletonPart::VT_MIN_VALUE, Some(0.0)).unwrap()}
+  }
+  #[inline]
+  pub fn max_value(&self) -> f32 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<f32>(SkeletonPart::VT_MAX_VALUE, Some(0.0)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for SkeletonPart<'_> {
@@ -69,6 +87,8 @@ impl flatbuffers::Verifiable for SkeletonPart<'_> {
     v.visit_table(pos)?
      .visit_field::<SkeletonBone>("bone", Self::VT_BONE, false)?
      .visit_field::<f32>("value", Self::VT_VALUE, false)?
+     .visit_field::<f32>("min_value", Self::VT_MIN_VALUE, false)?
+     .visit_field::<f32>("max_value", Self::VT_MAX_VALUE, false)?
      .finish();
     Ok(())
   }
@@ -76,6 +96,8 @@ impl flatbuffers::Verifiable for SkeletonPart<'_> {
 pub struct SkeletonPartArgs {
     pub bone: SkeletonBone,
     pub value: f32,
+    pub min_value: f32,
+    pub max_value: f32,
 }
 impl<'a> Default for SkeletonPartArgs {
   #[inline]
@@ -83,6 +105,8 @@ impl<'a> Default for SkeletonPartArgs {
     SkeletonPartArgs {
       bone: SkeletonBone::NONE,
       value: 0.0,
+      min_value: 0.0,
+      max_value: 0.0,
     }
   }
 }
@@ -99,6 +123,14 @@ impl<'a: 'b, 'b> SkeletonPartBuilder<'a, 'b> {
   #[inline]
   pub fn add_value(&mut self, value: f32) {
     self.fbb_.push_slot::<f32>(SkeletonPart::VT_VALUE, value, 0.0);
+  }
+  #[inline]
+  pub fn add_min_value(&mut self, min_value: f32) {
+    self.fbb_.push_slot::<f32>(SkeletonPart::VT_MIN_VALUE, min_value, 0.0);
+  }
+  #[inline]
+  pub fn add_max_value(&mut self, max_value: f32) {
+    self.fbb_.push_slot::<f32>(SkeletonPart::VT_MAX_VALUE, max_value, 0.0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SkeletonPartBuilder<'a, 'b> {
@@ -120,6 +152,8 @@ impl core::fmt::Debug for SkeletonPart<'_> {
     let mut ds = f.debug_struct("SkeletonPart");
       ds.field("bone", &self.bone());
       ds.field("value", &self.value());
+      ds.field("min_value", &self.min_value());
+      ds.field("max_value", &self.max_value());
       ds.finish()
   }
 }

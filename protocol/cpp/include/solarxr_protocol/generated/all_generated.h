@@ -10513,7 +10513,9 @@ struct SkeletonPart FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SkeletonPartBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_BONE = 4,
-    VT_VALUE = 6
+    VT_VALUE = 6,
+    VT_MIN_VALUE = 8,
+    VT_MAX_VALUE = 10
   };
   solarxr_protocol::rpc::SkeletonBone bone() const {
     return static_cast<solarxr_protocol::rpc::SkeletonBone>(GetField<uint8_t>(VT_BONE, 0));
@@ -10521,10 +10523,18 @@ struct SkeletonPart FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   float value() const {
     return GetField<float>(VT_VALUE, 0.0f);
   }
+  float min_value() const {
+    return GetField<float>(VT_MIN_VALUE, 0.0f);
+  }
+  float max_value() const {
+    return GetField<float>(VT_MAX_VALUE, 0.0f);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_BONE, 1) &&
            VerifyField<float>(verifier, VT_VALUE, 4) &&
+           VerifyField<float>(verifier, VT_MIN_VALUE, 4) &&
+           VerifyField<float>(verifier, VT_MAX_VALUE, 4) &&
            verifier.EndTable();
   }
 };
@@ -10538,6 +10548,12 @@ struct SkeletonPartBuilder {
   }
   void add_value(float value) {
     fbb_.AddElement<float>(SkeletonPart::VT_VALUE, value, 0.0f);
+  }
+  void add_min_value(float min_value) {
+    fbb_.AddElement<float>(SkeletonPart::VT_MIN_VALUE, min_value, 0.0f);
+  }
+  void add_max_value(float max_value) {
+    fbb_.AddElement<float>(SkeletonPart::VT_MAX_VALUE, max_value, 0.0f);
   }
   explicit SkeletonPartBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -10553,8 +10569,12 @@ struct SkeletonPartBuilder {
 inline flatbuffers::Offset<SkeletonPart> CreateSkeletonPart(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::SkeletonBone bone = solarxr_protocol::rpc::SkeletonBone::NONE,
-    float value = 0.0f) {
+    float value = 0.0f,
+    float min_value = 0.0f,
+    float max_value = 0.0f) {
   SkeletonPartBuilder builder_(_fbb);
+  builder_.add_max_value(max_value);
+  builder_.add_min_value(min_value);
   builder_.add_value(value);
   builder_.add_bone(bone);
   return builder_.Finish();

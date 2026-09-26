@@ -38,12 +38,16 @@ public enum class SkeletonBone(
 public data class SkeletonPart(
   public val bone: SkeletonBone = SkeletonBone.NONE,
   public val `value`: Float = 0.0f,
+  public val minValue: Float = 0.0f,
+  public val maxValue: Float = 0.0f,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(2)
+    builder.startTable(4)
     builder.addByte(0, bone.value.toByte(), 0)
     builder.addFloat(1, value, 0.0)
+    builder.addFloat(2, minValue, 0.0)
+    builder.addFloat(3, maxValue, 0.0)
     return builder.endTable()
   }
 
@@ -54,10 +58,14 @@ public data class SkeletonPart(
 
       val __offset_bone = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_value = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_minValue = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_maxValue = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return SkeletonPart(
               bone = if (__offset_bone != 0) SkeletonBone.fromValue(bb.get(tableOffset + __offset_bone).toUByte()) ?: SkeletonBone.NONE else SkeletonBone.NONE,
-              value = if (__offset_value != 0) bb.getFloat(tableOffset + __offset_value) else 0.0f
+              value = if (__offset_value != 0) bb.getFloat(tableOffset + __offset_value) else 0.0f,
+              minValue = if (__offset_minValue != 0) bb.getFloat(tableOffset + __offset_minValue) else 0.0f,
+              maxValue = if (__offset_maxValue != 0) bb.getFloat(tableOffset + __offset_maxValue) else 0.0f
           )
     }
   }
