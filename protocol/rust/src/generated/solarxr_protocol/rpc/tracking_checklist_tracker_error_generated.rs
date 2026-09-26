@@ -44,11 +44,11 @@ impl<'a> TrackingChecklistTrackerError<'a> {
 
 
   #[inline]
-  pub fn trackers_id(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'a>>>> {
+  pub fn trackers_id(&self) -> Option<flatbuffers::Vector<'a, u16>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>>>(TrackingChecklistTrackerError::VT_TRACKERS_ID, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, u16>>>(TrackingChecklistTrackerError::VT_TRACKERS_ID, None)}
   }
 }
 
@@ -59,13 +59,13 @@ impl flatbuffers::Verifiable for TrackingChecklistTrackerError<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>>>("trackers_id", Self::VT_TRACKERS_ID, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, u16>>>("trackers_id", Self::VT_TRACKERS_ID, false)?
      .finish();
     Ok(())
   }
 }
 pub struct TrackingChecklistTrackerErrorArgs<'a> {
-    pub trackers_id: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'a>>>>>,
+    pub trackers_id: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u16>>>,
 }
 impl<'a> Default for TrackingChecklistTrackerErrorArgs<'a> {
   #[inline]
@@ -82,7 +82,7 @@ pub struct TrackingChecklistTrackerErrorBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> TrackingChecklistTrackerErrorBuilder<'a, 'b> {
   #[inline]
-  pub fn add_trackers_id(&mut self, trackers_id: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::datatypes::TrackerId<'b >>>>) {
+  pub fn add_trackers_id(&mut self, trackers_id: flatbuffers::WIPOffset<flatbuffers::Vector<'b , u16>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(TrackingChecklistTrackerError::VT_TRACKERS_ID, trackers_id);
   }
   #[inline]

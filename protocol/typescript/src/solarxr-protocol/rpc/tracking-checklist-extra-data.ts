@@ -5,7 +5,7 @@ import { TrackingChecklistPublicNetworks, TrackingChecklistPublicNetworksT } fro
 import { TrackingChecklistSteamVRDisconnected, TrackingChecklistSteamVRDisconnectedT } from '../../solarxr-protocol/rpc/tracking-checklist-steam-vrdisconnected.js';
 import { TrackingChecklistTrackerError, TrackingChecklistTrackerErrorT } from '../../solarxr-protocol/rpc/tracking-checklist-tracker-error.js';
 import { TrackingChecklistTrackerReset, TrackingChecklistTrackerResetT } from '../../solarxr-protocol/rpc/tracking-checklist-tracker-reset.js';
-import { TrackingChecklistUnassignedHMD, TrackingChecklistUnassignedHMDT } from '../../solarxr-protocol/rpc/tracking-checklist-unassigned-hmd.js';
+import { TrackingChecklistUnassignedReliableReference, TrackingChecklistUnassignedReliableReferenceT } from '../../solarxr-protocol/rpc/tracking-checklist-unassigned-reliable-reference.js';
 
 
 export enum TrackingChecklistExtraData {
@@ -13,21 +13,21 @@ export enum TrackingChecklistExtraData {
   TrackingChecklistTrackerReset = 1,
   TrackingChecklistTrackerError = 2,
   TrackingChecklistSteamVRDisconnected = 3,
-  TrackingChecklistUnassignedHMD = 4,
+  TrackingChecklistUnassignedReliableReference = 4,
   TrackingChecklistNeedCalibration = 5,
   TrackingChecklistPublicNetworks = 6
 }
 
 export function unionToTrackingChecklistExtraData(
   type: TrackingChecklistExtraData,
-  accessor: (obj:TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedHMD) => TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedHMD|null
-): TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedHMD|null {
+  accessor: (obj:TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedReliableReference) => TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedReliableReference|null
+): TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedReliableReference|null {
   switch(TrackingChecklistExtraData[type]) {
     case 'NONE': return null; 
     case 'TrackingChecklistTrackerReset': return accessor(new TrackingChecklistTrackerReset())! as TrackingChecklistTrackerReset;
     case 'TrackingChecklistTrackerError': return accessor(new TrackingChecklistTrackerError())! as TrackingChecklistTrackerError;
     case 'TrackingChecklistSteamVRDisconnected': return accessor(new TrackingChecklistSteamVRDisconnected())! as TrackingChecklistSteamVRDisconnected;
-    case 'TrackingChecklistUnassignedHMD': return accessor(new TrackingChecklistUnassignedHMD())! as TrackingChecklistUnassignedHMD;
+    case 'TrackingChecklistUnassignedReliableReference': return accessor(new TrackingChecklistUnassignedReliableReference())! as TrackingChecklistUnassignedReliableReference;
     case 'TrackingChecklistNeedCalibration': return accessor(new TrackingChecklistNeedCalibration())! as TrackingChecklistNeedCalibration;
     case 'TrackingChecklistPublicNetworks': return accessor(new TrackingChecklistPublicNetworks())! as TrackingChecklistPublicNetworks;
     default: return null;
@@ -36,15 +36,15 @@ export function unionToTrackingChecklistExtraData(
 
 export function unionListToTrackingChecklistExtraData(
   type: TrackingChecklistExtraData, 
-  accessor: (index: number, obj:TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedHMD) => TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedHMD|null, 
+  accessor: (index: number, obj:TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedReliableReference) => TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedReliableReference|null, 
   index: number
-): TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedHMD|null {
+): TrackingChecklistNeedCalibration|TrackingChecklistPublicNetworks|TrackingChecklistSteamVRDisconnected|TrackingChecklistTrackerError|TrackingChecklistTrackerReset|TrackingChecklistUnassignedReliableReference|null {
   switch(TrackingChecklistExtraData[type]) {
     case 'NONE': return null; 
     case 'TrackingChecklistTrackerReset': return accessor(index, new TrackingChecklistTrackerReset())! as TrackingChecklistTrackerReset;
     case 'TrackingChecklistTrackerError': return accessor(index, new TrackingChecklistTrackerError())! as TrackingChecklistTrackerError;
     case 'TrackingChecklistSteamVRDisconnected': return accessor(index, new TrackingChecklistSteamVRDisconnected())! as TrackingChecklistSteamVRDisconnected;
-    case 'TrackingChecklistUnassignedHMD': return accessor(index, new TrackingChecklistUnassignedHMD())! as TrackingChecklistUnassignedHMD;
+    case 'TrackingChecklistUnassignedReliableReference': return accessor(index, new TrackingChecklistUnassignedReliableReference())! as TrackingChecklistUnassignedReliableReference;
     case 'TrackingChecklistNeedCalibration': return accessor(index, new TrackingChecklistNeedCalibration())! as TrackingChecklistNeedCalibration;
     case 'TrackingChecklistPublicNetworks': return accessor(index, new TrackingChecklistPublicNetworks())! as TrackingChecklistPublicNetworks;
     default: return null;

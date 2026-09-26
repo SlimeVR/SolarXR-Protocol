@@ -7,6 +7,9 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
+/**
+ * Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
+ */
 @SuppressWarnings("unused")
 public final class KeybindRequest extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

@@ -3,7 +3,7 @@
 package solarxr_protocol.datatypes.hardware_info;
 
 /**
- * What kind of data the tracker supports.The received data gets computed into a Quaternion rotation in any case.
+ * What kind of data the tracker supports. The received data gets transformed into a Quaternion rotation in any case.
  */
 @SuppressWarnings("unused")
 public final class TrackerDataType {

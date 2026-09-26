@@ -12,10 +12,11 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_SERIAL_DEVICE_TYPE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_SERIAL_DEVICE_TYPE: u8 = 2;
+pub const ENUM_MAX_SERIAL_DEVICE_TYPE: u8 = 3;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_SERIAL_DEVICE_TYPE: [SerialDeviceType; 3] = [
+pub const ENUM_VALUES_SERIAL_DEVICE_TYPE: [SerialDeviceType; 4] = [
+  SerialDeviceType::UNKNOWN,
   SerialDeviceType::ESP_TRACKER,
   SerialDeviceType::HID_RECEIVER,
   SerialDeviceType::HID_TRACKER,
@@ -26,13 +27,16 @@ pub const ENUM_VALUES_SERIAL_DEVICE_TYPE: [SerialDeviceType; 3] = [
 pub struct SerialDeviceType(pub u8);
 #[allow(non_upper_case_globals)]
 impl SerialDeviceType {
-  pub const ESP_TRACKER: Self = Self(0);
-  pub const HID_RECEIVER: Self = Self(1);
-  pub const HID_TRACKER: Self = Self(2);
+  /// A USB serial port whose vendor and product id are not recognized
+  pub const UNKNOWN: Self = Self(0);
+  pub const ESP_TRACKER: Self = Self(1);
+  pub const HID_RECEIVER: Self = Self(2);
+  pub const HID_TRACKER: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 2;
+  pub const ENUM_MAX: u8 = 3;
   pub const ENUM_VALUES: &'static [Self] = &[
+    Self::UNKNOWN,
     Self::ESP_TRACKER,
     Self::HID_RECEIVER,
     Self::HID_TRACKER,
@@ -40,6 +44,7 @@ impl SerialDeviceType {
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
+      Self::UNKNOWN => Some("UNKNOWN"),
       Self::ESP_TRACKER => Some("ESP_TRACKER"),
       Self::HID_RECEIVER => Some("HID_RECEIVER"),
       Self::HID_TRACKER => Some("HID_TRACKER"),

@@ -20,7 +20,7 @@ pub const ENUM_VALUES_TRACKING_CHECKLIST_EXTRA_DATA: [TrackingChecklistExtraData
   TrackingChecklistExtraData::TrackingChecklistTrackerReset,
   TrackingChecklistExtraData::TrackingChecklistTrackerError,
   TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected,
-  TrackingChecklistExtraData::TrackingChecklistUnassignedHMD,
+  TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference,
   TrackingChecklistExtraData::TrackingChecklistNeedCalibration,
   TrackingChecklistExtraData::TrackingChecklistPublicNetworks,
 ];
@@ -34,7 +34,7 @@ impl TrackingChecklistExtraData {
   pub const TrackingChecklistTrackerReset: Self = Self(1);
   pub const TrackingChecklistTrackerError: Self = Self(2);
   pub const TrackingChecklistSteamVRDisconnected: Self = Self(3);
-  pub const TrackingChecklistUnassignedHMD: Self = Self(4);
+  pub const TrackingChecklistUnassignedReliableReference: Self = Self(4);
   pub const TrackingChecklistNeedCalibration: Self = Self(5);
   pub const TrackingChecklistPublicNetworks: Self = Self(6);
 
@@ -45,7 +45,7 @@ impl TrackingChecklistExtraData {
     Self::TrackingChecklistTrackerReset,
     Self::TrackingChecklistTrackerError,
     Self::TrackingChecklistSteamVRDisconnected,
-    Self::TrackingChecklistUnassignedHMD,
+    Self::TrackingChecklistUnassignedReliableReference,
     Self::TrackingChecklistNeedCalibration,
     Self::TrackingChecklistPublicNetworks,
   ];
@@ -56,7 +56,7 @@ impl TrackingChecklistExtraData {
       Self::TrackingChecklistTrackerReset => Some("TrackingChecklistTrackerReset"),
       Self::TrackingChecklistTrackerError => Some("TrackingChecklistTrackerError"),
       Self::TrackingChecklistSteamVRDisconnected => Some("TrackingChecklistSteamVRDisconnected"),
-      Self::TrackingChecklistUnassignedHMD => Some("TrackingChecklistUnassignedHMD"),
+      Self::TrackingChecklistUnassignedReliableReference => Some("TrackingChecklistUnassignedReliableReference"),
       Self::TrackingChecklistNeedCalibration => Some("TrackingChecklistNeedCalibration"),
       Self::TrackingChecklistPublicNetworks => Some("TrackingChecklistPublicNetworks"),
       _ => None,

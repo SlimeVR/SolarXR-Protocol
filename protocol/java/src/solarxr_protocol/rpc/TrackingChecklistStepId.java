@@ -10,7 +10,7 @@ public final class TrackingChecklistStepId {
   public static final int FULL_RESET = 2;
   public static final int VRCHAT_SETTINGS = 3;
   public static final int STEAMVR_DISCONNECTED = 4;
-  public static final int UNASSIGNED_HMD = 5;
+  public static final int UNASSIGNED_RELIABLE_REFERENCE = 5;
   public static final int TRACKER_ERROR = 6;
   public static final int NETWORK_PROFILE_PUBLIC = 7;
   public static final int MOUNTING_CALIBRATION = 8;
@@ -18,8 +18,9 @@ public final class TrackingChecklistStepId {
   public static final int STAY_ALIGNED_CONFIGURED = 10;
   public static final int STEAMVR_HANDS_ENABLED = 11;
   public static final int STANDABLE_INSTALLED = 12;
+  public static final int VRCHAT_OSC_TRACKING_DISABLED = 13;
 
-  public static final String[] names = { "UNKNOWN", "TRACKERS_REST_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_HMD", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION", "FEET_MOUNTING_CALIBRATION", "STAY_ALIGNED_CONFIGURED", "STEAMVR_HANDS_ENABLED", "STANDABLE_INSTALLED", };
+  public static final String[] names = { "UNKNOWN", "TRACKERS_REST_CALIBRATION", "FULL_RESET", "VRCHAT_SETTINGS", "STEAMVR_DISCONNECTED", "UNASSIGNED_RELIABLE_REFERENCE", "TRACKER_ERROR", "NETWORK_PROFILE_PUBLIC", "MOUNTING_CALIBRATION", "FEET_MOUNTING_CALIBRATION", "STAY_ALIGNED_CONFIGURED", "STEAMVR_HANDS_ENABLED", "STANDABLE_INSTALLED", "VRCHAT_OSC_TRACKING_DISABLED", };
 
   public static String name(int e) { return names[e]; }
 }
