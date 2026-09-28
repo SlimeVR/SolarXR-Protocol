@@ -23,6 +23,8 @@ enum SkeletonBone: uint8 {
 table SkeletonPart {
     bone: SkeletonBone;
     value: float;
+    min_value: float32;
+    max_value: float32;
 }
 
 table SkeletonProportionsRequest {}
