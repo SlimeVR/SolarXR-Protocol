@@ -145,6 +145,9 @@ public sealed interface RpcMessage {
       126 -> StopTelemetryRequest.decode(bb, offset)
       127 -> TelemetryUpdateResponse.decode(bb, offset)
       128 -> TelemetryGapResponse.decode(bb, offset)
+      129 -> ErrorReportingSettingsRequest.decode(bb, offset)
+      130 -> ErrorReportingSettingsResponse.decode(bb, offset)
+      131 -> ChangeErrorReportingSettingsRequest.decode(bb, offset)
       else -> null
     }
 
@@ -277,6 +280,9 @@ public sealed interface RpcMessage {
       is StopTelemetryRequest -> 126.toUByte()
       is TelemetryUpdateResponse -> 127.toUByte()
       is TelemetryGapResponse -> 128.toUByte()
+      is ErrorReportingSettingsRequest -> 129.toUByte()
+      is ErrorReportingSettingsResponse -> 130.toUByte()
+      is ChangeErrorReportingSettingsRequest -> 131.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -408,6 +414,9 @@ public sealed interface RpcMessage {
       is StopTelemetryRequest -> value.encode(builder)
       is TelemetryUpdateResponse -> value.encode(builder)
       is TelemetryGapResponse -> value.encode(builder)
+      is ErrorReportingSettingsRequest -> value.encode(builder)
+      is ErrorReportingSettingsResponse -> value.encode(builder)
+      is ChangeErrorReportingSettingsRequest -> value.encode(builder)
     }
   }
 }

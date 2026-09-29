@@ -66,6 +66,7 @@ export { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from './sol
 export { ChangeBoneRoutingSettingsRequest, ChangeBoneRoutingSettingsRequestT } from './solarxr-protocol/rpc/change-bone-routing-settings-request.js';
 export { ChangeDongleSettingsRequest, ChangeDongleSettingsRequestT } from './solarxr-protocol/rpc/change-dongle-settings-request.js';
 export { ChangeDriverSettingsRequest, ChangeDriverSettingsRequestT } from './solarxr-protocol/rpc/change-driver-settings-request.js';
+export { ChangeErrorReportingSettingsRequest, ChangeErrorReportingSettingsRequestT } from './solarxr-protocol/rpc/change-error-reporting-settings-request.js';
 export { ChangeHIDSettingsRequest, ChangeHIDSettingsRequestT } from './solarxr-protocol/rpc/change-hidsettings-request.js';
 export { ChangeKeybindRequest, ChangeKeybindRequestT } from './solarxr-protocol/rpc/change-keybind-request.js';
 export { ChangeMagToggleRequest, ChangeMagToggleRequestT } from './solarxr-protocol/rpc/change-mag-toggle-request.js';
@@ -90,6 +91,9 @@ export { DriverSettingsResponse, DriverSettingsResponseT } from './solarxr-proto
 export { DriverStatusChangeResponse, DriverStatusChangeResponseT } from './solarxr-protocol/rpc/driver-status-change-response.js';
 export { DriverStatusRequest, DriverStatusRequestT } from './solarxr-protocol/rpc/driver-status-request.js';
 export { EnableSteamVRDriverRequest, EnableSteamVRDriverRequestT } from './solarxr-protocol/rpc/enable-steam-vrdriver-request.js';
+export { ErrorReportingConsent } from './solarxr-protocol/rpc/error-reporting-consent.js';
+export { ErrorReportingSettingsRequest, ErrorReportingSettingsRequestT } from './solarxr-protocol/rpc/error-reporting-settings-request.js';
+export { ErrorReportingSettingsResponse, ErrorReportingSettingsResponseT } from './solarxr-protocol/rpc/error-reporting-settings-response.js';
 export { FilteringType } from './solarxr-protocol/rpc/filtering-type.js';
 export { FirmwareDeviceIdTable, FirmwareDeviceIdTableT } from './solarxr-protocol/rpc/firmware-device-id-table.js';
 export { FirmwarePart, FirmwarePartT } from './solarxr-protocol/rpc/firmware-part.js';
