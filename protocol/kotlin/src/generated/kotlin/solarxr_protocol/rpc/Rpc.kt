@@ -148,6 +148,9 @@ public sealed interface RpcMessage {
       129 -> ErrorReportingSettingsRequest.decode(bb, offset)
       130 -> ErrorReportingSettingsResponse.decode(bb, offset)
       131 -> ChangeErrorReportingSettingsRequest.decode(bb, offset)
+      132 -> CustomOSCSettingsRequest.decode(bb, offset)
+      133 -> CustomOSCSettingsResponse.decode(bb, offset)
+      134 -> ChangeCustomOSCSettingsRequest.decode(bb, offset)
       else -> null
     }
 
@@ -283,6 +286,9 @@ public sealed interface RpcMessage {
       is ErrorReportingSettingsRequest -> 129.toUByte()
       is ErrorReportingSettingsResponse -> 130.toUByte()
       is ChangeErrorReportingSettingsRequest -> 131.toUByte()
+      is CustomOSCSettingsRequest -> 132.toUByte()
+      is CustomOSCSettingsResponse -> 133.toUByte()
+      is ChangeCustomOSCSettingsRequest -> 134.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -417,6 +423,9 @@ public sealed interface RpcMessage {
       is ErrorReportingSettingsRequest -> value.encode(builder)
       is ErrorReportingSettingsResponse -> value.encode(builder)
       is ChangeErrorReportingSettingsRequest -> value.encode(builder)
+      is CustomOSCSettingsRequest -> value.encode(builder)
+      is CustomOSCSettingsResponse -> value.encode(builder)
+      is ChangeCustomOSCSettingsRequest -> value.encode(builder)
     }
   }
 }

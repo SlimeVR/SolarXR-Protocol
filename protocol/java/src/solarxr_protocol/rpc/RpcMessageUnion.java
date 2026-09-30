@@ -152,6 +152,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.ErrorReportingSettingsRequestT asErrorReportingSettingsRequest() { return (solarxr_protocol.rpc.ErrorReportingSettingsRequestT) value; }
   public solarxr_protocol.rpc.ErrorReportingSettingsResponseT asErrorReportingSettingsResponse() { return (solarxr_protocol.rpc.ErrorReportingSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeErrorReportingSettingsRequestT asChangeErrorReportingSettingsRequest() { return (solarxr_protocol.rpc.ChangeErrorReportingSettingsRequestT) value; }
+  public solarxr_protocol.rpc.CustomOSCSettingsRequestT asCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.CustomOSCSettingsRequestT) value; }
+  public solarxr_protocol.rpc.CustomOSCSettingsResponseT asCustomOSCSettingsResponse() { return (solarxr_protocol.rpc.CustomOSCSettingsResponseT) value; }
+  public solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT asChangeCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -286,6 +289,9 @@ public class RpcMessageUnion {
       case RpcMessage.ErrorReportingSettingsRequest: return solarxr_protocol.rpc.ErrorReportingSettingsRequest.pack(builder, _o.asErrorReportingSettingsRequest());
       case RpcMessage.ErrorReportingSettingsResponse: return solarxr_protocol.rpc.ErrorReportingSettingsResponse.pack(builder, _o.asErrorReportingSettingsResponse());
       case RpcMessage.ChangeErrorReportingSettingsRequest: return solarxr_protocol.rpc.ChangeErrorReportingSettingsRequest.pack(builder, _o.asChangeErrorReportingSettingsRequest());
+      case RpcMessage.CustomOSCSettingsRequest: return solarxr_protocol.rpc.CustomOSCSettingsRequest.pack(builder, _o.asCustomOSCSettingsRequest());
+      case RpcMessage.CustomOSCSettingsResponse: return solarxr_protocol.rpc.CustomOSCSettingsResponse.pack(builder, _o.asCustomOSCSettingsResponse());
+      case RpcMessage.ChangeCustomOSCSettingsRequest: return solarxr_protocol.rpc.ChangeCustomOSCSettingsRequest.pack(builder, _o.asChangeCustomOSCSettingsRequest());
       default: return 0;
     }
   }

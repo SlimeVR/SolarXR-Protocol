@@ -16,10 +16,13 @@ internal fun buildEnumType(decl: EnumDecl): TypeSpec {
         )
         .addProperty(PropertySpec.builder("value", valueType).initializer("value").build())
 
-    var nextValue = 0L
+    // With bit_flags, declared/auto-incremented values are bit *positions*; the stored
+    // constant is 1 shl position (Red=0 -> 1, Green=1 -> 2, Blue=2 -> 4, ...).
+    var nextPosition = 0L
     decl.values.forEach { v ->
-        val actualValue = v.value ?: nextValue
-        nextValue = actualValue + 1
+        val position = v.value ?: nextPosition
+        val actualValue = if (decl.bitFlags) 1L shl position.toInt() else position
+        nextPosition = position + 1
         val literal = when (decl.baseType) {
             ScalarKind.UINT8 -> "${actualValue}.toUByte()"
             ScalarKind.UINT16 -> "${actualValue}.toUShort()"
