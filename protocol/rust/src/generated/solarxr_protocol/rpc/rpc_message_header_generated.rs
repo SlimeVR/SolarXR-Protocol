@@ -2001,6 +2001,51 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_error_reporting_settings_request(&self) -> Option<ErrorReportingSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ErrorReportingSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ErrorReportingSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_error_reporting_settings_response(&self) -> Option<ErrorReportingSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::ErrorReportingSettingsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ErrorReportingSettingsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_change_error_reporting_settings_request(&self) -> Option<ChangeErrorReportingSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeErrorReportingSettingsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ChangeErrorReportingSettingsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_custom_oscsettings_request(&self) -> Option<CustomOSCSettingsRequest<'a>> {
     if self.message_type() == RpcMessage::CustomOSCSettingsRequest {
       self.message().map(|t| {
@@ -2185,6 +2230,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StopTelemetryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopTelemetryRequest>>("RpcMessage::StopTelemetryRequest", pos),
           RpcMessage::TelemetryUpdateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TelemetryUpdateResponse>>("RpcMessage::TelemetryUpdateResponse", pos),
           RpcMessage::TelemetryGapResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TelemetryGapResponse>>("RpcMessage::TelemetryGapResponse", pos),
+          RpcMessage::ErrorReportingSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ErrorReportingSettingsRequest>>("RpcMessage::ErrorReportingSettingsRequest", pos),
+          RpcMessage::ErrorReportingSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ErrorReportingSettingsResponse>>("RpcMessage::ErrorReportingSettingsResponse", pos),
+          RpcMessage::ChangeErrorReportingSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeErrorReportingSettingsRequest>>("RpcMessage::ChangeErrorReportingSettingsRequest", pos),
           RpcMessage::CustomOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CustomOSCSettingsRequest>>("RpcMessage::CustomOSCSettingsRequest", pos),
           RpcMessage::CustomOSCSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CustomOSCSettingsResponse>>("RpcMessage::CustomOSCSettingsResponse", pos),
           RpcMessage::ChangeCustomOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeCustomOSCSettingsRequest>>("RpcMessage::ChangeCustomOSCSettingsRequest", pos),
@@ -3147,6 +3195,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::TelemetryGapResponse => {
           if let Some(x) = self.message_as_telemetry_gap_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ErrorReportingSettingsRequest => {
+          if let Some(x) = self.message_as_error_reporting_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ErrorReportingSettingsResponse => {
+          if let Some(x) = self.message_as_error_reporting_settings_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ChangeErrorReportingSettingsRequest => {
+          if let Some(x) = self.message_as_change_error_reporting_settings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -167,6 +167,15 @@ struct ForgetDeviceRequestBuilder;
 struct ChangeDongleSettingsRequest;
 struct ChangeDongleSettingsRequestBuilder;
 
+struct ErrorReportingSettingsRequest;
+struct ErrorReportingSettingsRequestBuilder;
+
+struct ErrorReportingSettingsResponse;
+struct ErrorReportingSettingsResponseBuilder;
+
+struct ChangeErrorReportingSettingsRequest;
+struct ChangeErrorReportingSettingsRequestBuilder;
+
 struct DriverSettingsRequest;
 struct DriverSettingsRequestBuilder;
 
@@ -1573,6 +1582,41 @@ inline const char *EnumNameRoutingOutputState(RoutingOutputState e) {
   if (flatbuffers::IsOutRange(e, RoutingOutputState::UNSUPPORTED, RoutingOutputState::ENABLED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRoutingOutputState()[index];
+}
+
+/// Whether the user agreed to send error reports and diagnostics.
+/// The server owns this value and every layer (server, gui, electron) follows it.
+enum class ErrorReportingConsent : uint8_t {
+  UNDECIDED = 0,
+  ALLOWED = 1,
+  DENIED = 2,
+  MIN = UNDECIDED,
+  MAX = DENIED
+};
+
+inline const ErrorReportingConsent (&EnumValuesErrorReportingConsent())[3] {
+  static const ErrorReportingConsent values[] = {
+    ErrorReportingConsent::UNDECIDED,
+    ErrorReportingConsent::ALLOWED,
+    ErrorReportingConsent::DENIED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesErrorReportingConsent() {
+  static const char * const names[4] = {
+    "UNDECIDED",
+    "ALLOWED",
+    "DENIED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameErrorReportingConsent(ErrorReportingConsent e) {
+  if (flatbuffers::IsOutRange(e, ErrorReportingConsent::UNDECIDED, ErrorReportingConsent::DENIED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesErrorReportingConsent()[index];
 }
 
 enum class DriverConnectionState : uint8_t {
@@ -3148,14 +3192,17 @@ enum class RpcMessage : uint8_t {
   StopTelemetryRequest = 126,
   TelemetryUpdateResponse = 127,
   TelemetryGapResponse = 128,
-  CustomOSCSettingsRequest = 129,
-  CustomOSCSettingsResponse = 130,
-  ChangeCustomOSCSettingsRequest = 131,
+  ErrorReportingSettingsRequest = 129,
+  ErrorReportingSettingsResponse = 130,
+  ChangeErrorReportingSettingsRequest = 131,
+  CustomOSCSettingsRequest = 132,
+  CustomOSCSettingsResponse = 133,
+  ChangeCustomOSCSettingsRequest = 134,
   MIN = NONE,
   MAX = ChangeCustomOSCSettingsRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[132] {
+inline const RpcMessage (&EnumValuesRpcMessage())[135] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -3286,6 +3333,9 @@ inline const RpcMessage (&EnumValuesRpcMessage())[132] {
     RpcMessage::StopTelemetryRequest,
     RpcMessage::TelemetryUpdateResponse,
     RpcMessage::TelemetryGapResponse,
+    RpcMessage::ErrorReportingSettingsRequest,
+    RpcMessage::ErrorReportingSettingsResponse,
+    RpcMessage::ChangeErrorReportingSettingsRequest,
     RpcMessage::CustomOSCSettingsRequest,
     RpcMessage::CustomOSCSettingsResponse,
     RpcMessage::ChangeCustomOSCSettingsRequest
@@ -3294,7 +3344,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[132] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[133] = {
+  static const char * const names[136] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -3424,6 +3474,9 @@ inline const char * const *EnumNamesRpcMessage() {
     "StopTelemetryRequest",
     "TelemetryUpdateResponse",
     "TelemetryGapResponse",
+    "ErrorReportingSettingsRequest",
+    "ErrorReportingSettingsResponse",
+    "ChangeErrorReportingSettingsRequest",
     "CustomOSCSettingsRequest",
     "CustomOSCSettingsResponse",
     "ChangeCustomOSCSettingsRequest",
@@ -3952,6 +4005,18 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::TelemetryUpdateRespons
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::TelemetryGapResponse> {
   static const RpcMessage enum_value = RpcMessage::TelemetryGapResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ErrorReportingSettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::ErrorReportingSettingsRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ErrorReportingSettingsResponse> {
+  static const RpcMessage enum_value = RpcMessage::ErrorReportingSettingsResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::ChangeErrorReportingSettingsRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::CustomOSCSettingsRequest> {
@@ -7790,6 +7855,155 @@ inline flatbuffers::Offset<ChangeDongleSettingsRequest> CreateChangeDongleSettin
       _fbb,
       dongle_id,
       display_name__);
+}
+
+struct ErrorReportingSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ErrorReportingSettingsRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ErrorReportingSettingsRequestBuilder {
+  typedef ErrorReportingSettingsRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit ErrorReportingSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ErrorReportingSettingsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ErrorReportingSettingsRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ErrorReportingSettingsRequest> CreateErrorReportingSettingsRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  ErrorReportingSettingsRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct ErrorReportingSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ErrorReportingSettingsResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CONSENT = 4,
+    VT_USER_ID = 6,
+    VT_SESSION_ID = 8
+  };
+  solarxr_protocol::rpc::ErrorReportingConsent consent() const {
+    return static_cast<solarxr_protocol::rpc::ErrorReportingConsent>(GetField<uint8_t>(VT_CONSENT, 0));
+  }
+  /// Random id reports are attached to, not tied to the user's identity.
+  const flatbuffers::String *user_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_USER_ID);
+  }
+  /// Random id of this server run, so gui and server reports of one run can be matched.
+  const flatbuffers::String *session_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_SESSION_ID);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_CONSENT, 1) &&
+           VerifyOffset(verifier, VT_USER_ID) &&
+           verifier.VerifyString(user_id()) &&
+           VerifyOffset(verifier, VT_SESSION_ID) &&
+           verifier.VerifyString(session_id()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ErrorReportingSettingsResponseBuilder {
+  typedef ErrorReportingSettingsResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_consent(solarxr_protocol::rpc::ErrorReportingConsent consent) {
+    fbb_.AddElement<uint8_t>(ErrorReportingSettingsResponse::VT_CONSENT, static_cast<uint8_t>(consent), 0);
+  }
+  void add_user_id(flatbuffers::Offset<flatbuffers::String> user_id) {
+    fbb_.AddOffset(ErrorReportingSettingsResponse::VT_USER_ID, user_id);
+  }
+  void add_session_id(flatbuffers::Offset<flatbuffers::String> session_id) {
+    fbb_.AddOffset(ErrorReportingSettingsResponse::VT_SESSION_ID, session_id);
+  }
+  explicit ErrorReportingSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ErrorReportingSettingsResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ErrorReportingSettingsResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ErrorReportingSettingsResponse> CreateErrorReportingSettingsResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ErrorReportingConsent consent = solarxr_protocol::rpc::ErrorReportingConsent::UNDECIDED,
+    flatbuffers::Offset<flatbuffers::String> user_id = 0,
+    flatbuffers::Offset<flatbuffers::String> session_id = 0) {
+  ErrorReportingSettingsResponseBuilder builder_(_fbb);
+  builder_.add_session_id(session_id);
+  builder_.add_user_id(user_id);
+  builder_.add_consent(consent);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ErrorReportingSettingsResponse> CreateErrorReportingSettingsResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ErrorReportingConsent consent = solarxr_protocol::rpc::ErrorReportingConsent::UNDECIDED,
+    const char *user_id = nullptr,
+    const char *session_id = nullptr) {
+  auto user_id__ = user_id ? _fbb.CreateString(user_id) : 0;
+  auto session_id__ = session_id ? _fbb.CreateString(session_id) : 0;
+  return solarxr_protocol::rpc::CreateErrorReportingSettingsResponse(
+      _fbb,
+      consent,
+      user_id__,
+      session_id__);
+}
+
+struct ChangeErrorReportingSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeErrorReportingSettingsRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CONSENT = 4
+  };
+  solarxr_protocol::rpc::ErrorReportingConsent consent() const {
+    return static_cast<solarxr_protocol::rpc::ErrorReportingConsent>(GetField<uint8_t>(VT_CONSENT, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_CONSENT, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct ChangeErrorReportingSettingsRequestBuilder {
+  typedef ChangeErrorReportingSettingsRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_consent(solarxr_protocol::rpc::ErrorReportingConsent consent) {
+    fbb_.AddElement<uint8_t>(ChangeErrorReportingSettingsRequest::VT_CONSENT, static_cast<uint8_t>(consent), 0);
+  }
+  explicit ChangeErrorReportingSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ChangeErrorReportingSettingsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ChangeErrorReportingSettingsRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ChangeErrorReportingSettingsRequest> CreateChangeErrorReportingSettingsRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ErrorReportingConsent consent = solarxr_protocol::rpc::ErrorReportingConsent::UNDECIDED) {
+  ChangeErrorReportingSettingsRequestBuilder builder_(_fbb);
+  builder_.add_consent(consent);
+  return builder_.Finish();
 }
 
 struct DriverSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -16488,6 +16702,15 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::TelemetryGapResponse *message_as_TelemetryGapResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::TelemetryGapResponse ? static_cast<const solarxr_protocol::rpc::TelemetryGapResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::ErrorReportingSettingsRequest *message_as_ErrorReportingSettingsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ErrorReportingSettingsRequest ? static_cast<const solarxr_protocol::rpc::ErrorReportingSettingsRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ErrorReportingSettingsResponse *message_as_ErrorReportingSettingsResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ErrorReportingSettingsResponse ? static_cast<const solarxr_protocol::rpc::ErrorReportingSettingsResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest *message_as_ChangeErrorReportingSettingsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeErrorReportingSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest *>(message()) : nullptr;
+  }
   const solarxr_protocol::rpc::CustomOSCSettingsRequest *message_as_CustomOSCSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::CustomOSCSettingsRequest ? static_cast<const solarxr_protocol::rpc::CustomOSCSettingsRequest *>(message()) : nullptr;
   }
@@ -17018,6 +17241,18 @@ template<> inline const solarxr_protocol::rpc::TelemetryUpdateResponse *RpcMessa
 
 template<> inline const solarxr_protocol::rpc::TelemetryGapResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TelemetryGapResponse>() const {
   return message_as_TelemetryGapResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ErrorReportingSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ErrorReportingSettingsRequest>() const {
+  return message_as_ErrorReportingSettingsRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::ErrorReportingSettingsResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ErrorReportingSettingsResponse>() const {
+  return message_as_ErrorReportingSettingsResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest>() const {
+  return message_as_ChangeErrorReportingSettingsRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::CustomOSCSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::CustomOSCSettingsRequest>() const {
@@ -18981,6 +19216,18 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::TelemetryGapResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TelemetryGapResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ErrorReportingSettingsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ErrorReportingSettingsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ErrorReportingSettingsResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ErrorReportingSettingsResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ChangeErrorReportingSettingsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::CustomOSCSettingsRequest: {

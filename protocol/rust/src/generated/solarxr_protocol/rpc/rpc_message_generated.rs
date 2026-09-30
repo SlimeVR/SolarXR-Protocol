@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 131;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 134;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 132] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 135] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -145,6 +145,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 132] = [
   RpcMessage::StopTelemetryRequest,
   RpcMessage::TelemetryUpdateResponse,
   RpcMessage::TelemetryGapResponse,
+  RpcMessage::ErrorReportingSettingsRequest,
+  RpcMessage::ErrorReportingSettingsResponse,
+  RpcMessage::ChangeErrorReportingSettingsRequest,
   RpcMessage::CustomOSCSettingsRequest,
   RpcMessage::CustomOSCSettingsResponse,
   RpcMessage::ChangeCustomOSCSettingsRequest,
@@ -284,12 +287,15 @@ impl RpcMessage {
   pub const StopTelemetryRequest: Self = Self(126);
   pub const TelemetryUpdateResponse: Self = Self(127);
   pub const TelemetryGapResponse: Self = Self(128);
-  pub const CustomOSCSettingsRequest: Self = Self(129);
-  pub const CustomOSCSettingsResponse: Self = Self(130);
-  pub const ChangeCustomOSCSettingsRequest: Self = Self(131);
+  pub const ErrorReportingSettingsRequest: Self = Self(129);
+  pub const ErrorReportingSettingsResponse: Self = Self(130);
+  pub const ChangeErrorReportingSettingsRequest: Self = Self(131);
+  pub const CustomOSCSettingsRequest: Self = Self(132);
+  pub const CustomOSCSettingsResponse: Self = Self(133);
+  pub const ChangeCustomOSCSettingsRequest: Self = Self(134);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 131;
+  pub const ENUM_MAX: u8 = 134;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -420,6 +426,9 @@ impl RpcMessage {
     Self::StopTelemetryRequest,
     Self::TelemetryUpdateResponse,
     Self::TelemetryGapResponse,
+    Self::ErrorReportingSettingsRequest,
+    Self::ErrorReportingSettingsResponse,
+    Self::ChangeErrorReportingSettingsRequest,
     Self::CustomOSCSettingsRequest,
     Self::CustomOSCSettingsResponse,
     Self::ChangeCustomOSCSettingsRequest,
@@ -556,6 +565,9 @@ impl RpcMessage {
       Self::StopTelemetryRequest => Some("StopTelemetryRequest"),
       Self::TelemetryUpdateResponse => Some("TelemetryUpdateResponse"),
       Self::TelemetryGapResponse => Some("TelemetryGapResponse"),
+      Self::ErrorReportingSettingsRequest => Some("ErrorReportingSettingsRequest"),
+      Self::ErrorReportingSettingsResponse => Some("ErrorReportingSettingsResponse"),
+      Self::ChangeErrorReportingSettingsRequest => Some("ChangeErrorReportingSettingsRequest"),
       Self::CustomOSCSettingsRequest => Some("CustomOSCSettingsRequest"),
       Self::CustomOSCSettingsResponse => Some("CustomOSCSettingsResponse"),
       Self::ChangeCustomOSCSettingsRequest => Some("ChangeCustomOSCSettingsRequest"),

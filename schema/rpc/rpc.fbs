@@ -11,6 +11,7 @@ include "bone_routing.fbs";
 include "bvh.fbs";
 include "device.fbs";
 include "dongle.fbs";
+include "error_reporting.fbs";
 include "driver.fbs";
 include "firmware.fbs";
 include "height_calibration.fbs";
@@ -160,6 +161,9 @@ union RpcMessage {
     StopTelemetryRequest,
     TelemetryUpdateResponse,
     TelemetryGapResponse,
+    ErrorReportingSettingsRequest,
+    ErrorReportingSettingsResponse,
+    ChangeErrorReportingSettingsRequest,
     CustomOSCSettingsRequest,
     CustomOSCSettingsResponse,
     ChangeCustomOSCSettingsRequest,
