@@ -14,11 +14,11 @@ public final class ResetType {
    */
   public static final int FULL = 1;
   /**
-   * Second pose for calibrating mounting rotation
+   * Calibrates the mounting rotation with the configured MountingMethod
    */
-  public static final int POSE_MOUNTING = 2;
+  public static final int MOUNTING = 2;
 
-  public static final String[] names = { "YAW", "FULL", "POSE_MOUNTING", };
+  public static final String[] names = { "YAW", "FULL", "MOUNTING", };
 
   public static String name(int e) { return names[e]; }
 }

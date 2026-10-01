@@ -284,8 +284,17 @@ struct WifiProvisioningStatusResponseBuilder;
 struct ResetRequest;
 struct ResetRequestBuilder;
 
-struct ResetResponse;
-struct ResetResponseBuilder;
+struct CountdownDetail;
+struct CountdownDetailBuilder;
+
+struct StepMountingDetail;
+struct StepMountingDetailBuilder;
+
+struct ResetStatusResponse;
+struct ResetStatusResponseBuilder;
+
+struct CancelResetRequest;
+struct CancelResetRequestBuilder;
 
 struct ClearMountingResetRequest;
 struct ClearMountingResetRequestBuilder;
@@ -970,29 +979,32 @@ inline const char *EnumNameMagnetometerStatus(MagnetometerStatus e) {
 enum class MountingMethod : uint8_t {
   MANUAL = 0,
   POSE = 1,
+  STEP = 2,
   MIN = MANUAL,
-  MAX = POSE
+  MAX = STEP
 };
 
-inline const MountingMethod (&EnumValuesMountingMethod())[2] {
+inline const MountingMethod (&EnumValuesMountingMethod())[3] {
   static const MountingMethod values[] = {
     MountingMethod::MANUAL,
-    MountingMethod::POSE
+    MountingMethod::POSE,
+    MountingMethod::STEP
   };
   return values;
 }
 
 inline const char * const *EnumNamesMountingMethod() {
-  static const char * const names[3] = {
+  static const char * const names[4] = {
     "MANUAL",
     "POSE",
+    "STEP",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameMountingMethod(MountingMethod e) {
-  if (flatbuffers::IsOutRange(e, MountingMethod::MANUAL, MountingMethod::POSE)) return "";
+  if (flatbuffers::IsOutRange(e, MountingMethod::MANUAL, MountingMethod::STEP)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMountingMethod()[index];
 }
@@ -1354,6 +1366,46 @@ inline const char *EnumNameDongleStatus(DongleStatus e) {
 }
 
 }  // namespace dongle_data
+
+namespace server {
+
+enum class ResetAvailability : uint8_t {
+  AVAILABLE = 0,
+  NEEDS_FULL_RESET = 1,
+  NEEDS_POSITIONAL_HEAD = 2,
+  NO_TRACKERS = 3,
+  MIN = AVAILABLE,
+  MAX = NO_TRACKERS
+};
+
+inline const ResetAvailability (&EnumValuesResetAvailability())[4] {
+  static const ResetAvailability values[] = {
+    ResetAvailability::AVAILABLE,
+    ResetAvailability::NEEDS_FULL_RESET,
+    ResetAvailability::NEEDS_POSITIONAL_HEAD,
+    ResetAvailability::NO_TRACKERS
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesResetAvailability() {
+  static const char * const names[5] = {
+    "AVAILABLE",
+    "NEEDS_FULL_RESET",
+    "NEEDS_POSITIONAL_HEAD",
+    "NO_TRACKERS",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameResetAvailability(ResetAvailability e) {
+  if (flatbuffers::IsOutRange(e, ResetAvailability::AVAILABLE, ResetAvailability::NO_TRACKERS)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesResetAvailability()[index];
+}
+
+}  // namespace server
 
 enum class DataFeedMessage : uint8_t {
   NONE = 0,
@@ -2083,17 +2135,17 @@ enum class ResetType : uint8_t {
   YAW = 0,
   /// Resets all axes
   FULL = 1,
-  /// Second pose for calibrating mounting rotation
-  POSE_MOUNTING = 2,
+  /// Calibrates the mounting rotation with the configured MountingMethod
+  MOUNTING = 2,
   MIN = YAW,
-  MAX = POSE_MOUNTING
+  MAX = MOUNTING
 };
 
 inline const ResetType (&EnumValuesResetType())[3] {
   static const ResetType values[] = {
     ResetType::YAW,
     ResetType::FULL,
-    ResetType::POSE_MOUNTING
+    ResetType::MOUNTING
   };
   return values;
 }
@@ -2102,47 +2154,140 @@ inline const char * const *EnumNamesResetType() {
   static const char * const names[4] = {
     "YAW",
     "FULL",
-    "POSE_MOUNTING",
+    "MOUNTING",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameResetType(ResetType e) {
-  if (flatbuffers::IsOutRange(e, ResetType::YAW, ResetType::POSE_MOUNTING)) return "";
+  if (flatbuffers::IsOutRange(e, ResetType::YAW, ResetType::MOUNTING)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResetType()[index];
 }
 
-enum class ResetStatus : uint8_t {
-  STARTED = 0,
-  FINISHED = 1,
-  MIN = STARTED,
-  MAX = FINISHED
+enum class ResetLifecycle : uint8_t {
+  RUNNING = 0,
+  DONE = 1,
+  CANCELED = 2,
+  FAILED = 3,
+  MIN = RUNNING,
+  MAX = FAILED
 };
 
-inline const ResetStatus (&EnumValuesResetStatus())[2] {
-  static const ResetStatus values[] = {
-    ResetStatus::STARTED,
-    ResetStatus::FINISHED
+inline const ResetLifecycle (&EnumValuesResetLifecycle())[4] {
+  static const ResetLifecycle values[] = {
+    ResetLifecycle::RUNNING,
+    ResetLifecycle::DONE,
+    ResetLifecycle::CANCELED,
+    ResetLifecycle::FAILED
   };
   return values;
 }
 
-inline const char * const *EnumNamesResetStatus() {
-  static const char * const names[3] = {
-    "STARTED",
-    "FINISHED",
+inline const char * const *EnumNamesResetLifecycle() {
+  static const char * const names[5] = {
+    "RUNNING",
+    "DONE",
+    "CANCELED",
+    "FAILED",
     nullptr
   };
   return names;
 }
 
-inline const char *EnumNameResetStatus(ResetStatus e) {
-  if (flatbuffers::IsOutRange(e, ResetStatus::STARTED, ResetStatus::FINISHED)) return "";
+inline const char *EnumNameResetLifecycle(ResetLifecycle e) {
+  if (flatbuffers::IsOutRange(e, ResetLifecycle::RUNNING, ResetLifecycle::FAILED)) return "";
   const size_t index = static_cast<size_t>(e);
-  return EnumNamesResetStatus()[index];
+  return EnumNamesResetLifecycle()[index];
 }
+
+enum class StepMountingStatus : uint8_t {
+  WAITING_FOR_MOVEMENT = 0,
+  RECORDING = 1,
+  PROCESSING = 2,
+  ERROR_NO_DATA = 3,
+  ERROR_TIMEOUT = 4,
+  MIN = WAITING_FOR_MOVEMENT,
+  MAX = ERROR_TIMEOUT
+};
+
+inline const StepMountingStatus (&EnumValuesStepMountingStatus())[5] {
+  static const StepMountingStatus values[] = {
+    StepMountingStatus::WAITING_FOR_MOVEMENT,
+    StepMountingStatus::RECORDING,
+    StepMountingStatus::PROCESSING,
+    StepMountingStatus::ERROR_NO_DATA,
+    StepMountingStatus::ERROR_TIMEOUT
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesStepMountingStatus() {
+  static const char * const names[6] = {
+    "WAITING_FOR_MOVEMENT",
+    "RECORDING",
+    "PROCESSING",
+    "ERROR_NO_DATA",
+    "ERROR_TIMEOUT",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameStepMountingStatus(StepMountingStatus e) {
+  if (flatbuffers::IsOutRange(e, StepMountingStatus::WAITING_FOR_MOVEMENT, StepMountingStatus::ERROR_TIMEOUT)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesStepMountingStatus()[index];
+}
+
+enum class ResetDetail : uint8_t {
+  NONE = 0,
+  CountdownDetail = 1,
+  StepMountingDetail = 2,
+  MIN = NONE,
+  MAX = StepMountingDetail
+};
+
+inline const ResetDetail (&EnumValuesResetDetail())[3] {
+  static const ResetDetail values[] = {
+    ResetDetail::NONE,
+    ResetDetail::CountdownDetail,
+    ResetDetail::StepMountingDetail
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesResetDetail() {
+  static const char * const names[4] = {
+    "NONE",
+    "CountdownDetail",
+    "StepMountingDetail",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameResetDetail(ResetDetail e) {
+  if (flatbuffers::IsOutRange(e, ResetDetail::NONE, ResetDetail::StepMountingDetail)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesResetDetail()[index];
+}
+
+template<typename T> struct ResetDetailTraits {
+  static const ResetDetail enum_value = ResetDetail::NONE;
+};
+
+template<> struct ResetDetailTraits<solarxr_protocol::rpc::CountdownDetail> {
+  static const ResetDetail enum_value = ResetDetail::CountdownDetail;
+};
+
+template<> struct ResetDetailTraits<solarxr_protocol::rpc::StepMountingDetail> {
+  static const ResetDetail enum_value = ResetDetail::StepMountingDetail;
+};
+
+bool VerifyResetDetail(flatbuffers::Verifier &verifier, const void *obj, ResetDetail type);
+bool VerifyResetDetailVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<ResetDetail> *types);
 
 enum class ArmsResetMode : uint8_t {
   /// Down to the sides for full. Upper arm going back and forearm going forward for mounting.
@@ -2962,7 +3107,7 @@ enum class RpcMessage : uint8_t {
   HeartbeatRequest = 1,
   HeartbeatResponse = 2,
   ResetRequest = 3,
-  ResetResponse = 4,
+  ResetStatusResponse = 4,
   UpdateTrackerRequest = 5,
   ResetTrackerAssignments = 6,
   VMCOSCSettingsRequest = 7,
@@ -3090,17 +3235,18 @@ enum class RpcMessage : uint8_t {
   ErrorReportingSettingsRequest = 129,
   ErrorReportingSettingsResponse = 130,
   ChangeErrorReportingSettingsRequest = 131,
+  CancelResetRequest = 132,
   MIN = NONE,
-  MAX = ChangeErrorReportingSettingsRequest
+  MAX = CancelResetRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[132] {
+inline const RpcMessage (&EnumValuesRpcMessage())[133] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
     RpcMessage::HeartbeatResponse,
     RpcMessage::ResetRequest,
-    RpcMessage::ResetResponse,
+    RpcMessage::ResetStatusResponse,
     RpcMessage::UpdateTrackerRequest,
     RpcMessage::ResetTrackerAssignments,
     RpcMessage::VMCOSCSettingsRequest,
@@ -3227,18 +3373,19 @@ inline const RpcMessage (&EnumValuesRpcMessage())[132] {
     RpcMessage::TelemetryGapResponse,
     RpcMessage::ErrorReportingSettingsRequest,
     RpcMessage::ErrorReportingSettingsResponse,
-    RpcMessage::ChangeErrorReportingSettingsRequest
+    RpcMessage::ChangeErrorReportingSettingsRequest,
+    RpcMessage::CancelResetRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[133] = {
+  static const char * const names[134] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
     "ResetRequest",
-    "ResetResponse",
+    "ResetStatusResponse",
     "UpdateTrackerRequest",
     "ResetTrackerAssignments",
     "VMCOSCSettingsRequest",
@@ -3366,13 +3513,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "ErrorReportingSettingsRequest",
     "ErrorReportingSettingsResponse",
     "ChangeErrorReportingSettingsRequest",
+    "CancelResetRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ChangeErrorReportingSettingsRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::CancelResetRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -3393,8 +3541,8 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetRequest> {
   static const RpcMessage enum_value = RpcMessage::ResetRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetResponse> {
-  static const RpcMessage enum_value = RpcMessage::ResetResponse;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetStatusResponse> {
+  static const RpcMessage enum_value = RpcMessage::ResetStatusResponse;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::UpdateTrackerRequest> {
@@ -3903,6 +4051,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ErrorReportingSettings
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest> {
   static const RpcMessage enum_value = RpcMessage::ChangeErrorReportingSettingsRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::CancelResetRequest> {
+  static const RpcMessage enum_value = RpcMessage::CancelResetRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -6240,23 +6392,23 @@ namespace server {
 struct ServerGuards FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ServerGuardsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CAN_DO_MOUNTING_RESET = 4,
-    VT_CAN_DO_YAW_RESET = 6,
+    VT_YAW_RESET = 4,
+    VT_MOUNTING_RESET = 6,
     VT_CAN_DO_USER_HEIGHT_CALIBRATION = 8
   };
-  bool can_do_mounting_reset() const {
-    return GetField<uint8_t>(VT_CAN_DO_MOUNTING_RESET, 0) != 0;
+  solarxr_protocol::data_feed::server::ResetAvailability yaw_reset() const {
+    return static_cast<solarxr_protocol::data_feed::server::ResetAvailability>(GetField<uint8_t>(VT_YAW_RESET, 0));
   }
-  bool can_do_yaw_reset() const {
-    return GetField<uint8_t>(VT_CAN_DO_YAW_RESET, 0) != 0;
+  solarxr_protocol::data_feed::server::ResetAvailability mounting_reset() const {
+    return static_cast<solarxr_protocol::data_feed::server::ResetAvailability>(GetField<uint8_t>(VT_MOUNTING_RESET, 0));
   }
   bool can_do_user_height_calibration() const {
     return GetField<uint8_t>(VT_CAN_DO_USER_HEIGHT_CALIBRATION, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_CAN_DO_MOUNTING_RESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_CAN_DO_YAW_RESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_YAW_RESET, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET, 1) &&
            VerifyField<uint8_t>(verifier, VT_CAN_DO_USER_HEIGHT_CALIBRATION, 1) &&
            verifier.EndTable();
   }
@@ -6266,11 +6418,11 @@ struct ServerGuardsBuilder {
   typedef ServerGuards Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_can_do_mounting_reset(bool can_do_mounting_reset) {
-    fbb_.AddElement<uint8_t>(ServerGuards::VT_CAN_DO_MOUNTING_RESET, static_cast<uint8_t>(can_do_mounting_reset), 0);
+  void add_yaw_reset(solarxr_protocol::data_feed::server::ResetAvailability yaw_reset) {
+    fbb_.AddElement<uint8_t>(ServerGuards::VT_YAW_RESET, static_cast<uint8_t>(yaw_reset), 0);
   }
-  void add_can_do_yaw_reset(bool can_do_yaw_reset) {
-    fbb_.AddElement<uint8_t>(ServerGuards::VT_CAN_DO_YAW_RESET, static_cast<uint8_t>(can_do_yaw_reset), 0);
+  void add_mounting_reset(solarxr_protocol::data_feed::server::ResetAvailability mounting_reset) {
+    fbb_.AddElement<uint8_t>(ServerGuards::VT_MOUNTING_RESET, static_cast<uint8_t>(mounting_reset), 0);
   }
   void add_can_do_user_height_calibration(bool can_do_user_height_calibration) {
     fbb_.AddElement<uint8_t>(ServerGuards::VT_CAN_DO_USER_HEIGHT_CALIBRATION, static_cast<uint8_t>(can_do_user_height_calibration), 0);
@@ -6288,13 +6440,13 @@ struct ServerGuardsBuilder {
 
 inline flatbuffers::Offset<ServerGuards> CreateServerGuards(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool can_do_mounting_reset = false,
-    bool can_do_yaw_reset = false,
+    solarxr_protocol::data_feed::server::ResetAvailability yaw_reset = solarxr_protocol::data_feed::server::ResetAvailability::AVAILABLE,
+    solarxr_protocol::data_feed::server::ResetAvailability mounting_reset = solarxr_protocol::data_feed::server::ResetAvailability::AVAILABLE,
     bool can_do_user_height_calibration = false) {
   ServerGuardsBuilder builder_(_fbb);
   builder_.add_can_do_user_height_calibration(can_do_user_height_calibration);
-  builder_.add_can_do_yaw_reset(can_do_yaw_reset);
-  builder_.add_can_do_mounting_reset(can_do_mounting_reset);
+  builder_.add_mounting_reset(mounting_reset);
+  builder_.add_yaw_reset(yaw_reset);
   return builder_.Finish();
 }
 
@@ -9754,27 +9906,14 @@ inline flatbuffers::Offset<ResetRequest> CreateResetRequestDirect(
       delay);
 }
 
-struct ResetResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ResetResponseBuilder Builder;
+/// A reset that runs after a delay (full, yaw and pose mounting)
+struct CountdownDetail FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CountdownDetailBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RESET_TYPE = 4,
-    VT_STATUS = 6,
-    VT_BODY_PARTS = 8,
-    VT_PROGRESS = 10,
-    VT_DURATION = 12
+    VT_PROGRESS = 4,
+    VT_DURATION = 6
   };
-  solarxr_protocol::rpc::ResetType reset_type() const {
-    return static_cast<solarxr_protocol::rpc::ResetType>(GetField<uint8_t>(VT_RESET_TYPE, 0));
-  }
-  solarxr_protocol::rpc::ResetStatus status() const {
-    return static_cast<solarxr_protocol::rpc::ResetStatus>(GetField<uint8_t>(VT_STATUS, 0));
-  }
-  /// Should return the body parts reset / being reset
-  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *body_parts() const {
-    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_BODY_PARTS);
-  }
-  /// gives the time in seconds passed since the start of the reset
-  /// Starts at 0. Should be equal to 'duration' when status == FINISHED
+  /// Seconds passed since the start of the reset, equal to 'duration' when it is done
   int32_t progress() const {
     return GetField<int32_t>(VT_PROGRESS, 0);
   }
@@ -9783,77 +9922,229 @@ struct ResetResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_TYPE, 1) &&
-           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
-           VerifyOffset(verifier, VT_BODY_PARTS) &&
-           verifier.VerifyVector(body_parts()) &&
            VerifyField<int32_t>(verifier, VT_PROGRESS, 4) &&
            VerifyField<int32_t>(verifier, VT_DURATION, 4) &&
            verifier.EndTable();
   }
 };
 
-struct ResetResponseBuilder {
-  typedef ResetResponse Table;
+struct CountdownDetailBuilder {
+  typedef CountdownDetail Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_reset_type(solarxr_protocol::rpc::ResetType reset_type) {
-    fbb_.AddElement<uint8_t>(ResetResponse::VT_RESET_TYPE, static_cast<uint8_t>(reset_type), 0);
-  }
-  void add_status(solarxr_protocol::rpc::ResetStatus status) {
-    fbb_.AddElement<uint8_t>(ResetResponse::VT_STATUS, static_cast<uint8_t>(status), 0);
-  }
-  void add_body_parts(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts) {
-    fbb_.AddOffset(ResetResponse::VT_BODY_PARTS, body_parts);
-  }
   void add_progress(int32_t progress) {
-    fbb_.AddElement<int32_t>(ResetResponse::VT_PROGRESS, progress, 0);
+    fbb_.AddElement<int32_t>(CountdownDetail::VT_PROGRESS, progress, 0);
   }
   void add_duration(int32_t duration) {
-    fbb_.AddElement<int32_t>(ResetResponse::VT_DURATION, duration, 0);
+    fbb_.AddElement<int32_t>(CountdownDetail::VT_DURATION, duration, 0);
   }
-  explicit ResetResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit CountdownDetailBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ResetResponse> Finish() {
+  flatbuffers::Offset<CountdownDetail> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ResetResponse>(end);
+    auto o = flatbuffers::Offset<CountdownDetail>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ResetResponse> CreateResetResponse(
+inline flatbuffers::Offset<CountdownDetail> CreateCountdownDetail(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::YAW,
-    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED,
-    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts = 0,
     int32_t progress = 0,
     int32_t duration = 0) {
-  ResetResponseBuilder builder_(_fbb);
+  CountdownDetailBuilder builder_(_fbb);
   builder_.add_duration(duration);
   builder_.add_progress(progress);
-  builder_.add_body_parts(body_parts);
+  return builder_.Finish();
+}
+
+/// A step mounting session
+struct StepMountingDetail FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StepMountingDetailBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_STATUS = 4
+  };
+  solarxr_protocol::rpc::StepMountingStatus status() const {
+    return static_cast<solarxr_protocol::rpc::StepMountingStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct StepMountingDetailBuilder {
+  typedef StepMountingDetail Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_status(solarxr_protocol::rpc::StepMountingStatus status) {
+    fbb_.AddElement<uint8_t>(StepMountingDetail::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  explicit StepMountingDetailBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StepMountingDetail> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StepMountingDetail>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StepMountingDetail> CreateStepMountingDetail(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::StepMountingStatus status = solarxr_protocol::rpc::StepMountingStatus::WAITING_FOR_MOVEMENT) {
+  StepMountingDetailBuilder builder_(_fbb);
   builder_.add_status(status);
+  return builder_.Finish();
+}
+
+struct ResetStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ResetStatusResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESET_TYPE = 4,
+    VT_LIFECYCLE = 6,
+    VT_BODY_PARTS = 8,
+    VT_DETAIL_TYPE = 10,
+    VT_DETAIL = 12
+  };
+  solarxr_protocol::rpc::ResetType reset_type() const {
+    return static_cast<solarxr_protocol::rpc::ResetType>(GetField<uint8_t>(VT_RESET_TYPE, 0));
+  }
+  solarxr_protocol::rpc::ResetLifecycle lifecycle() const {
+    return static_cast<solarxr_protocol::rpc::ResetLifecycle>(GetField<uint8_t>(VT_LIFECYCLE, 0));
+  }
+  /// The body parts reset / being reset
+  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *body_parts() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_BODY_PARTS);
+  }
+  solarxr_protocol::rpc::ResetDetail detail_type() const {
+    return static_cast<solarxr_protocol::rpc::ResetDetail>(GetField<uint8_t>(VT_DETAIL_TYPE, 0));
+  }
+  const void *detail() const {
+    return GetPointer<const void *>(VT_DETAIL);
+  }
+  template<typename T> const T *detail_as() const;
+  const solarxr_protocol::rpc::CountdownDetail *detail_as_CountdownDetail() const {
+    return detail_type() == solarxr_protocol::rpc::ResetDetail::CountdownDetail ? static_cast<const solarxr_protocol::rpc::CountdownDetail *>(detail()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StepMountingDetail *detail_as_StepMountingDetail() const {
+    return detail_type() == solarxr_protocol::rpc::ResetDetail::StepMountingDetail ? static_cast<const solarxr_protocol::rpc::StepMountingDetail *>(detail()) : nullptr;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_TYPE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LIFECYCLE, 1) &&
+           VerifyOffset(verifier, VT_BODY_PARTS) &&
+           verifier.VerifyVector(body_parts()) &&
+           VerifyField<uint8_t>(verifier, VT_DETAIL_TYPE, 1) &&
+           VerifyOffset(verifier, VT_DETAIL) &&
+           VerifyResetDetail(verifier, detail(), detail_type()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::rpc::CountdownDetail *ResetStatusResponse::detail_as<solarxr_protocol::rpc::CountdownDetail>() const {
+  return detail_as_CountdownDetail();
+}
+
+template<> inline const solarxr_protocol::rpc::StepMountingDetail *ResetStatusResponse::detail_as<solarxr_protocol::rpc::StepMountingDetail>() const {
+  return detail_as_StepMountingDetail();
+}
+
+struct ResetStatusResponseBuilder {
+  typedef ResetStatusResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_reset_type(solarxr_protocol::rpc::ResetType reset_type) {
+    fbb_.AddElement<uint8_t>(ResetStatusResponse::VT_RESET_TYPE, static_cast<uint8_t>(reset_type), 0);
+  }
+  void add_lifecycle(solarxr_protocol::rpc::ResetLifecycle lifecycle) {
+    fbb_.AddElement<uint8_t>(ResetStatusResponse::VT_LIFECYCLE, static_cast<uint8_t>(lifecycle), 0);
+  }
+  void add_body_parts(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts) {
+    fbb_.AddOffset(ResetStatusResponse::VT_BODY_PARTS, body_parts);
+  }
+  void add_detail_type(solarxr_protocol::rpc::ResetDetail detail_type) {
+    fbb_.AddElement<uint8_t>(ResetStatusResponse::VT_DETAIL_TYPE, static_cast<uint8_t>(detail_type), 0);
+  }
+  void add_detail(flatbuffers::Offset<void> detail) {
+    fbb_.AddOffset(ResetStatusResponse::VT_DETAIL, detail);
+  }
+  explicit ResetStatusResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ResetStatusResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ResetStatusResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ResetStatusResponse> CreateResetStatusResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::YAW,
+    solarxr_protocol::rpc::ResetLifecycle lifecycle = solarxr_protocol::rpc::ResetLifecycle::RUNNING,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> body_parts = 0,
+    solarxr_protocol::rpc::ResetDetail detail_type = solarxr_protocol::rpc::ResetDetail::NONE,
+    flatbuffers::Offset<void> detail = 0) {
+  ResetStatusResponseBuilder builder_(_fbb);
+  builder_.add_detail(detail);
+  builder_.add_body_parts(body_parts);
+  builder_.add_detail_type(detail_type);
+  builder_.add_lifecycle(lifecycle);
   builder_.add_reset_type(reset_type);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<ResetResponse> CreateResetResponseDirect(
+inline flatbuffers::Offset<ResetStatusResponse> CreateResetStatusResponseDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     solarxr_protocol::rpc::ResetType reset_type = solarxr_protocol::rpc::ResetType::YAW,
-    solarxr_protocol::rpc::ResetStatus status = solarxr_protocol::rpc::ResetStatus::STARTED,
+    solarxr_protocol::rpc::ResetLifecycle lifecycle = solarxr_protocol::rpc::ResetLifecycle::RUNNING,
     const std::vector<solarxr_protocol::datatypes::BodyPart> *body_parts = nullptr,
-    int32_t progress = 0,
-    int32_t duration = 0) {
+    solarxr_protocol::rpc::ResetDetail detail_type = solarxr_protocol::rpc::ResetDetail::NONE,
+    flatbuffers::Offset<void> detail = 0) {
   auto body_parts__ = body_parts ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*body_parts) : 0;
-  return solarxr_protocol::rpc::CreateResetResponse(
+  return solarxr_protocol::rpc::CreateResetStatusResponse(
       _fbb,
       reset_type,
-      status,
+      lifecycle,
       body_parts__,
-      progress,
-      duration);
+      detail_type,
+      detail);
+}
+
+/// Cancels the running reset, if any
+struct CancelResetRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CancelResetRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CancelResetRequestBuilder {
+  typedef CancelResetRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit CancelResetRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<CancelResetRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<CancelResetRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<CancelResetRequest> CreateCancelResetRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  CancelResetRequestBuilder builder_(_fbb);
+  return builder_.Finish();
 }
 
 /// Clears mounting reset data, defaulting to the manually set mounting orientations
@@ -9922,7 +10213,8 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_ARMS_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_RELIABLE_REFERENCE_ATTITUDE = 12
+    VT_RESET_RELIABLE_REFERENCE_ATTITUDE = 12,
+    VT_MOUNTING_METHOD = 14
   };
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
   bool reset_mounting_feet() const {
@@ -9943,6 +10235,10 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool reset_reliable_reference_attitude() const {
     return GetField<uint8_t>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 0) != 0;
   }
+  /// How a MOUNTING reset calibrates the trackers
+  solarxr_protocol::datatypes::MountingMethod mounting_method() const {
+    return static_cast<solarxr_protocol::datatypes::MountingMethod>(GetField<uint8_t>(VT_MOUNTING_METHOD, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
@@ -9950,6 +10246,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
            VerifyField<uint8_t>(verifier, VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MOUNTING_METHOD, 1) &&
            verifier.EndTable();
   }
 };
@@ -9973,6 +10270,9 @@ struct ResetsSettingsResponseBuilder {
   void add_reset_reliable_reference_attitude(bool reset_reliable_reference_attitude) {
     fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, static_cast<uint8_t>(reset_reliable_reference_attitude), 0);
   }
+  void add_mounting_method(solarxr_protocol::datatypes::MountingMethod mounting_method) {
+    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_MOUNTING_METHOD, static_cast<uint8_t>(mounting_method), 0);
+  }
   explicit ResetsSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -9990,9 +10290,11 @@ inline flatbuffers::Offset<ResetsSettingsResponse> CreateResetsSettingsResponse(
     solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_reliable_reference_attitude = false) {
+    bool reset_reliable_reference_attitude = false,
+    solarxr_protocol::datatypes::MountingMethod mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL) {
   ResetsSettingsResponseBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
+  builder_.add_mounting_method(mounting_method);
   builder_.add_reset_reliable_reference_attitude(reset_reliable_reference_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_reset_mode(arms_reset_mode);
@@ -10007,7 +10309,8 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
     VT_ARMS_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_RELIABLE_REFERENCE_ATTITUDE = 12
+    VT_RESET_RELIABLE_REFERENCE_ATTITUDE = 12,
+    VT_MOUNTING_METHOD = 14
   };
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
   bool reset_mounting_feet() const {
@@ -10028,6 +10331,10 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
   bool reset_reliable_reference_attitude() const {
     return GetField<uint8_t>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 0) != 0;
   }
+  /// How a MOUNTING reset calibrates the trackers
+  solarxr_protocol::datatypes::MountingMethod mounting_method() const {
+    return static_cast<solarxr_protocol::datatypes::MountingMethod>(GetField<uint8_t>(VT_MOUNTING_METHOD, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_RESET_MOUNTING_FEET, 1) &&
@@ -10035,6 +10342,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
            VerifyField<uint8_t>(verifier, VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MOUNTING_METHOD, 1) &&
            verifier.EndTable();
   }
 };
@@ -10058,6 +10366,9 @@ struct ChangeResetsSettingsRequestBuilder {
   void add_reset_reliable_reference_attitude(bool reset_reliable_reference_attitude) {
     fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, static_cast<uint8_t>(reset_reliable_reference_attitude), 0);
   }
+  void add_mounting_method(solarxr_protocol::datatypes::MountingMethod mounting_method) {
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, static_cast<uint8_t>(mounting_method), 0);
+  }
   explicit ChangeResetsSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -10075,9 +10386,11 @@ inline flatbuffers::Offset<ChangeResetsSettingsRequest> CreateChangeResetsSettin
     solarxr_protocol::rpc::ArmsResetMode arms_reset_mode = solarxr_protocol::rpc::ArmsResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_reliable_reference_attitude = false) {
+    bool reset_reliable_reference_attitude = false,
+    solarxr_protocol::datatypes::MountingMethod mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL) {
   ChangeResetsSettingsRequestBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
+  builder_.add_mounting_method(mounting_method);
   builder_.add_reset_reliable_reference_attitude(reset_reliable_reference_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_reset_mode(arms_reset_mode);
@@ -15789,8 +16102,8 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ResetRequest *message_as_ResetRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ResetRequest ? static_cast<const solarxr_protocol::rpc::ResetRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::ResetResponse *message_as_ResetResponse() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::ResetResponse ? static_cast<const solarxr_protocol::rpc::ResetResponse *>(message()) : nullptr;
+  const solarxr_protocol::rpc::ResetStatusResponse *message_as_ResetStatusResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ResetStatusResponse ? static_cast<const solarxr_protocol::rpc::ResetStatusResponse *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::UpdateTrackerRequest *message_as_UpdateTrackerRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::UpdateTrackerRequest ? static_cast<const solarxr_protocol::rpc::UpdateTrackerRequest *>(message()) : nullptr;
@@ -16173,6 +16486,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest *message_as_ChangeErrorReportingSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeErrorReportingSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::CancelResetRequest *message_as_CancelResetRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::CancelResetRequest ? static_cast<const solarxr_protocol::rpc::CancelResetRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -16196,8 +16512,8 @@ template<> inline const solarxr_protocol::rpc::ResetRequest *RpcMessageHeader::m
   return message_as_ResetRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::ResetResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetResponse>() const {
-  return message_as_ResetResponse();
+template<> inline const solarxr_protocol::rpc::ResetStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetStatusResponse>() const {
+  return message_as_ResetStatusResponse();
 }
 
 template<> inline const solarxr_protocol::rpc::UpdateTrackerRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::UpdateTrackerRequest>() const {
@@ -16706,6 +17022,10 @@ template<> inline const solarxr_protocol::rpc::ErrorReportingSettingsResponse *R
 
 template<> inline const solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest>() const {
   return message_as_ChangeErrorReportingSettingsRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::CancelResetRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::CancelResetRequest>() const {
+  return message_as_CancelResetRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -18097,6 +18417,35 @@ inline bool VerifyFirmwareUpdateMethodVector(flatbuffers::Verifier &verifier, co
   return true;
 }
 
+inline bool VerifyResetDetail(flatbuffers::Verifier &verifier, const void *obj, ResetDetail type) {
+  switch (type) {
+    case ResetDetail::NONE: {
+      return true;
+    }
+    case ResetDetail::CountdownDetail: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::CountdownDetail *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case ResetDetail::StepMountingDetail: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StepMountingDetail *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyResetDetailVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<ResetDetail> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyResetDetail(
+        verifier,  values->Get(i), types->GetEnum<ResetDetail>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
 inline bool VerifyTrackingChecklistExtraData(flatbuffers::Verifier &verifier, const void *obj, TrackingChecklistExtraData type) {
   switch (type) {
     case TrackingChecklistExtraData::NONE: {
@@ -18159,8 +18508,8 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ResetRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::ResetResponse: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ResetResponse *>(obj);
+    case RpcMessage::ResetStatusResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ResetStatusResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::UpdateTrackerRequest: {
@@ -18669,6 +19018,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ChangeErrorReportingSettingsRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeErrorReportingSettingsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::CancelResetRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::CancelResetRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

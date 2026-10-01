@@ -126,13 +126,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_reset_response(&self) -> Option<ResetResponse<'a>> {
-    if self.message_type() == RpcMessage::ResetResponse {
+  pub fn message_as_reset_status_response(&self) -> Option<ResetStatusResponse<'a>> {
+    if self.message_type() == RpcMessage::ResetStatusResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { ResetResponse::init_from_table(t) }
+       unsafe { ResetStatusResponse::init_from_table(t) }
      })
     } else {
       None
@@ -2044,6 +2044,21 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_cancel_reset_request(&self) -> Option<CancelResetRequest<'a>> {
+    if self.message_type() == RpcMessage::CancelResetRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { CancelResetRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -2060,7 +2075,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::HeartbeatRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeartbeatRequest>>("RpcMessage::HeartbeatRequest", pos),
           RpcMessage::HeartbeatResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeartbeatResponse>>("RpcMessage::HeartbeatResponse", pos),
           RpcMessage::ResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetRequest>>("RpcMessage::ResetRequest", pos),
-          RpcMessage::ResetResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetResponse>>("RpcMessage::ResetResponse", pos),
+          RpcMessage::ResetStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetStatusResponse>>("RpcMessage::ResetStatusResponse", pos),
           RpcMessage::UpdateTrackerRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UpdateTrackerRequest>>("RpcMessage::UpdateTrackerRequest", pos),
           RpcMessage::ResetTrackerAssignments => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetTrackerAssignments>>("RpcMessage::ResetTrackerAssignments", pos),
           RpcMessage::VMCOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VMCOSCSettingsRequest>>("RpcMessage::VMCOSCSettingsRequest", pos),
@@ -2188,6 +2203,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::ErrorReportingSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ErrorReportingSettingsRequest>>("RpcMessage::ErrorReportingSettingsRequest", pos),
           RpcMessage::ErrorReportingSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ErrorReportingSettingsResponse>>("RpcMessage::ErrorReportingSettingsResponse", pos),
           RpcMessage::ChangeErrorReportingSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeErrorReportingSettingsRequest>>("RpcMessage::ChangeErrorReportingSettingsRequest", pos),
+          RpcMessage::CancelResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CancelResetRequest>>("RpcMessage::CancelResetRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -2277,8 +2293,8 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::ResetResponse => {
-          if let Some(x) = self.message_as_reset_response() {
+        RpcMessage::ResetStatusResponse => {
+          if let Some(x) = self.message_as_reset_status_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
@@ -3168,6 +3184,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ChangeErrorReportingSettingsRequest => {
           if let Some(x) = self.message_as_change_error_reporting_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::CancelResetRequest => {
+          if let Some(x) = self.message_as_cancel_reset_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

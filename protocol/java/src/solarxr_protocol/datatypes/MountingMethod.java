@@ -7,8 +7,9 @@ public final class MountingMethod {
   private MountingMethod() { }
   public static final int MANUAL = 0;
   public static final int POSE = 1;
+  public static final int STEP = 2;
 
-  public static final String[] names = { "MANUAL", "POSE", };
+  public static final String[] names = { "MANUAL", "POSE", "STEP", };
 
   public static String name(int e) { return names[e]; }
 }

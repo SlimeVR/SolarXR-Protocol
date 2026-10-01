@@ -2,5 +2,6 @@
 
 export enum MountingMethod {
   MANUAL = 0,
-  POSE = 1
+  POSE = 1,
+  STEP = 2
 }

@@ -20,7 +20,7 @@ public sealed interface RpcMessage {
       1 -> HeartbeatRequest.decode(bb, offset)
       2 -> HeartbeatResponse.decode(bb, offset)
       3 -> ResetRequest.decode(bb, offset)
-      4 -> ResetResponse.decode(bb, offset)
+      4 -> ResetStatusResponse.decode(bb, offset)
       5 -> UpdateTrackerRequest.decode(bb, offset)
       6 -> ResetTrackerAssignments.decode(bb, offset)
       7 -> VMCOSCSettingsRequest.decode(bb, offset)
@@ -148,6 +148,7 @@ public sealed interface RpcMessage {
       129 -> ErrorReportingSettingsRequest.decode(bb, offset)
       130 -> ErrorReportingSettingsResponse.decode(bb, offset)
       131 -> ChangeErrorReportingSettingsRequest.decode(bb, offset)
+      132 -> CancelResetRequest.decode(bb, offset)
       else -> null
     }
 
@@ -155,7 +156,7 @@ public sealed interface RpcMessage {
       is HeartbeatRequest -> 1.toUByte()
       is HeartbeatResponse -> 2.toUByte()
       is ResetRequest -> 3.toUByte()
-      is ResetResponse -> 4.toUByte()
+      is ResetStatusResponse -> 4.toUByte()
       is UpdateTrackerRequest -> 5.toUByte()
       is ResetTrackerAssignments -> 6.toUByte()
       is VMCOSCSettingsRequest -> 7.toUByte()
@@ -283,13 +284,14 @@ public sealed interface RpcMessage {
       is ErrorReportingSettingsRequest -> 129.toUByte()
       is ErrorReportingSettingsResponse -> 130.toUByte()
       is ChangeErrorReportingSettingsRequest -> 131.toUByte()
+      is CancelResetRequest -> 132.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
       is HeartbeatRequest -> value.encode(builder)
       is HeartbeatResponse -> value.encode(builder)
       is ResetRequest -> value.encode(builder)
-      is ResetResponse -> value.encode(builder)
+      is ResetStatusResponse -> value.encode(builder)
       is UpdateTrackerRequest -> value.encode(builder)
       is ResetTrackerAssignments -> value.encode(builder)
       is VMCOSCSettingsRequest -> value.encode(builder)
@@ -417,6 +419,7 @@ public sealed interface RpcMessage {
       is ErrorReportingSettingsRequest -> value.encode(builder)
       is ErrorReportingSettingsResponse -> value.encode(builder)
       is ChangeErrorReportingSettingsRequest -> value.encode(builder)
+      is CancelResetRequest -> value.encode(builder)
     }
   }
 }

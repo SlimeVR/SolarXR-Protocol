@@ -12,7 +12,7 @@ export enum ResetType {
   FULL = 1,
 
   /**
-   * Second pose for calibrating mounting rotation
+   * Calibrates the mounting rotation with the configured MountingMethod
    */
-  POSE_MOUNTING = 2
+  MOUNTING = 2
 }

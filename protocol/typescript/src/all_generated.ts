@@ -12,6 +12,7 @@ export { DeviceDataMask, DeviceDataMaskT } from './solarxr-protocol/data-feed/de
 export { DongleData, DongleDataT } from './solarxr-protocol/data-feed/dongle-data/dongle-data.js';
 export { DongleDataMask, DongleDataMaskT } from './solarxr-protocol/data-feed/dongle-data/dongle-data-mask.js';
 export { DongleStatus } from './solarxr-protocol/data-feed/dongle-data/dongle-status.js';
+export { ResetAvailability } from './solarxr-protocol/data-feed/server/reset-availability.js';
 export { ServerGuards, ServerGuardsT } from './solarxr-protocol/data-feed/server/server-guards.js';
 export { StayAlignedTracker, StayAlignedTrackerT } from './solarxr-protocol/data-feed/tracker-data/stay-aligned-tracker.js';
 export { TrackerData, TrackerDataT } from './solarxr-protocol/data-feed/tracker-data/tracker-data.js';
@@ -62,6 +63,7 @@ export { AutoBoneStopRecordingRequest, AutoBoneStopRecordingRequestT } from './s
 export { BoneRoute, BoneRouteT } from './solarxr-protocol/rpc/bone-route.js';
 export { BoneRoutingSettingsRequest, BoneRoutingSettingsRequestT } from './solarxr-protocol/rpc/bone-routing-settings-request.js';
 export { BoneRoutingSettingsResponse, BoneRoutingSettingsResponseT } from './solarxr-protocol/rpc/bone-routing-settings-response.js';
+export { CancelResetRequest, CancelResetRequestT } from './solarxr-protocol/rpc/cancel-reset-request.js';
 export { CancelUserHeightCalibration, CancelUserHeightCalibrationT } from './solarxr-protocol/rpc/cancel-user-height-calibration.js';
 export { ChangeBoneRoutingSettingsRequest, ChangeBoneRoutingSettingsRequestT } from './solarxr-protocol/rpc/change-bone-routing-settings-request.js';
 export { ChangeDongleSettingsRequest, ChangeDongleSettingsRequestT } from './solarxr-protocol/rpc/change-dongle-settings-request.js';
@@ -84,6 +86,7 @@ export { ChangeVRMSettingsRequest, ChangeVRMSettingsRequestT } from './solarxr-p
 export { ClearMountingResetRequest, ClearMountingResetRequestT } from './solarxr-protocol/rpc/clear-mounting-reset-request.js';
 export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/close-serial-request.js';
 export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js';
+export { CountdownDetail, CountdownDetailT } from './solarxr-protocol/rpc/countdown-detail.js';
 export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
 export { DriverConnectionState } from './solarxr-protocol/rpc/driver-connection-state.js';
 export { DriverSettingsRequest, DriverSettingsRequestT } from './solarxr-protocol/rpc/driver-settings-request.js';
@@ -131,9 +134,10 @@ export { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from './solar
 export { RecordBVHRequest, RecordBVHRequestT } from './solarxr-protocol/rpc/record-bvhrequest.js';
 export { RecordBVHStatus, RecordBVHStatusT } from './solarxr-protocol/rpc/record-bvhstatus.js';
 export { RecordBVHStatusRequest, RecordBVHStatusRequestT } from './solarxr-protocol/rpc/record-bvhstatus-request.js';
+export { ResetDetail, unionToResetDetail, unionListToResetDetail } from './solarxr-protocol/rpc/reset-detail.js';
+export { ResetLifecycle } from './solarxr-protocol/rpc/reset-lifecycle.js';
 export { ResetRequest, ResetRequestT } from './solarxr-protocol/rpc/reset-request.js';
-export { ResetResponse, ResetResponseT } from './solarxr-protocol/rpc/reset-response.js';
-export { ResetStatus } from './solarxr-protocol/rpc/reset-status.js';
+export { ResetStatusResponse, ResetStatusResponseT } from './solarxr-protocol/rpc/reset-status-response.js';
 export { ResetStayAlignedRelaxedPoseRequest, ResetStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/reset-stay-aligned-relaxed-pose-request.js';
 export { ResetTrackerAssignments, ResetTrackerAssignmentsT } from './solarxr-protocol/rpc/reset-tracker-assignments.js';
 export { ResetType } from './solarxr-protocol/rpc/reset-type.js';
@@ -180,6 +184,8 @@ export { StartWifiScanRequest, StartWifiScanRequestT } from './solarxr-protocol/
 export { StayAlignedRelaxedPose } from './solarxr-protocol/rpc/stay-aligned-relaxed-pose.js';
 export { StayAlignedSettingsRequest, StayAlignedSettingsRequestT } from './solarxr-protocol/rpc/stay-aligned-settings-request.js';
 export { StayAlignedSettingsResponse, StayAlignedSettingsResponseT } from './solarxr-protocol/rpc/stay-aligned-settings-response.js';
+export { StepMountingDetail, StepMountingDetailT } from './solarxr-protocol/rpc/step-mounting-detail.js';
+export { StepMountingStatus } from './solarxr-protocol/rpc/step-mounting-status.js';
 export { StopTelemetryRequest, StopTelemetryRequestT } from './solarxr-protocol/rpc/stop-telemetry-request.js';
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { StopWifiScanRequest, StopWifiScanRequestT } from './solarxr-protocol/rpc/stop-wifi-scan-request.js';

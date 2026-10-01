@@ -83,9 +83,9 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ResetRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ResetResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.ResetResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.ResetStatusResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.ResetStatusResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ResetStatusResponse) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.UpdateTrackerRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.UpdateTrackerRequest());
@@ -594,6 +594,10 @@ public final class RpcMessageHeader extends Table {
       case solarxr_protocol.rpc.RpcMessage.ChangeErrorReportingSettingsRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeErrorReportingSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeErrorReportingSettingsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.CancelResetRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.CancelResetRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.CancelResetRequest) _oMessageValue).unpack() : null);
         break;
       default: break;
     }

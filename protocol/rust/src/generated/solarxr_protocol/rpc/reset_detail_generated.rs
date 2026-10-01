@@ -10,40 +10,44 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_RESET_STATUS: u8 = 0;
+pub const ENUM_MIN_RESET_DETAIL: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RESET_STATUS: u8 = 1;
+pub const ENUM_MAX_RESET_DETAIL: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RESET_STATUS: [ResetStatus; 2] = [
-  ResetStatus::STARTED,
-  ResetStatus::FINISHED,
+pub const ENUM_VALUES_RESET_DETAIL: [ResetDetail; 3] = [
+  ResetDetail::NONE,
+  ResetDetail::CountdownDetail,
+  ResetDetail::StepMountingDetail,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct ResetStatus(pub u8);
+pub struct ResetDetail(pub u8);
 #[allow(non_upper_case_globals)]
-impl ResetStatus {
-  pub const STARTED: Self = Self(0);
-  pub const FINISHED: Self = Self(1);
+impl ResetDetail {
+  pub const NONE: Self = Self(0);
+  pub const CountdownDetail: Self = Self(1);
+  pub const StepMountingDetail: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 1;
+  pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::STARTED,
-    Self::FINISHED,
+    Self::NONE,
+    Self::CountdownDetail,
+    Self::StepMountingDetail,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::STARTED => Some("STARTED"),
-      Self::FINISHED => Some("FINISHED"),
+      Self::NONE => Some("NONE"),
+      Self::CountdownDetail => Some("CountdownDetail"),
+      Self::StepMountingDetail => Some("StepMountingDetail"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for ResetStatus {
+impl core::fmt::Debug for ResetDetail {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -52,7 +56,7 @@ impl core::fmt::Debug for ResetStatus {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for ResetStatus {
+impl<'a> flatbuffers::Follow<'a> for ResetDetail {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -61,15 +65,15 @@ impl<'a> flatbuffers::Follow<'a> for ResetStatus {
   }
 }
 
-impl flatbuffers::Push for ResetStatus {
-    type Output = ResetStatus;
+impl flatbuffers::Push for ResetDetail {
+    type Output = ResetDetail;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for ResetStatus {
+impl flatbuffers::EndianScalar for ResetDetail {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -83,7 +87,7 @@ impl flatbuffers::EndianScalar for ResetStatus {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for ResetStatus {
+impl<'a> flatbuffers::Verifiable for ResetDetail {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -93,4 +97,6 @@ impl<'a> flatbuffers::Verifiable for ResetStatus {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for ResetStatus {}
+impl flatbuffers::SimpleToVerifyInSlice for ResetDetail {}
+pub struct ResetDetailUnionTableOffset {}
+

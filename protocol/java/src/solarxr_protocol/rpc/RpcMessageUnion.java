@@ -24,7 +24,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.HeartbeatRequestT asHeartbeatRequest() { return (solarxr_protocol.rpc.HeartbeatRequestT) value; }
   public solarxr_protocol.rpc.HeartbeatResponseT asHeartbeatResponse() { return (solarxr_protocol.rpc.HeartbeatResponseT) value; }
   public solarxr_protocol.rpc.ResetRequestT asResetRequest() { return (solarxr_protocol.rpc.ResetRequestT) value; }
-  public solarxr_protocol.rpc.ResetResponseT asResetResponse() { return (solarxr_protocol.rpc.ResetResponseT) value; }
+  public solarxr_protocol.rpc.ResetStatusResponseT asResetStatusResponse() { return (solarxr_protocol.rpc.ResetStatusResponseT) value; }
   public solarxr_protocol.rpc.UpdateTrackerRequestT asUpdateTrackerRequest() { return (solarxr_protocol.rpc.UpdateTrackerRequestT) value; }
   public solarxr_protocol.rpc.ResetTrackerAssignmentsT asResetTrackerAssignments() { return (solarxr_protocol.rpc.ResetTrackerAssignmentsT) value; }
   public solarxr_protocol.rpc.VMCOSCSettingsRequestT asVMCOSCSettingsRequest() { return (solarxr_protocol.rpc.VMCOSCSettingsRequestT) value; }
@@ -152,13 +152,14 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.ErrorReportingSettingsRequestT asErrorReportingSettingsRequest() { return (solarxr_protocol.rpc.ErrorReportingSettingsRequestT) value; }
   public solarxr_protocol.rpc.ErrorReportingSettingsResponseT asErrorReportingSettingsResponse() { return (solarxr_protocol.rpc.ErrorReportingSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeErrorReportingSettingsRequestT asChangeErrorReportingSettingsRequest() { return (solarxr_protocol.rpc.ChangeErrorReportingSettingsRequestT) value; }
+  public solarxr_protocol.rpc.CancelResetRequestT asCancelResetRequest() { return (solarxr_protocol.rpc.CancelResetRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
       case RpcMessage.HeartbeatRequest: return solarxr_protocol.rpc.HeartbeatRequest.pack(builder, _o.asHeartbeatRequest());
       case RpcMessage.HeartbeatResponse: return solarxr_protocol.rpc.HeartbeatResponse.pack(builder, _o.asHeartbeatResponse());
       case RpcMessage.ResetRequest: return solarxr_protocol.rpc.ResetRequest.pack(builder, _o.asResetRequest());
-      case RpcMessage.ResetResponse: return solarxr_protocol.rpc.ResetResponse.pack(builder, _o.asResetResponse());
+      case RpcMessage.ResetStatusResponse: return solarxr_protocol.rpc.ResetStatusResponse.pack(builder, _o.asResetStatusResponse());
       case RpcMessage.UpdateTrackerRequest: return solarxr_protocol.rpc.UpdateTrackerRequest.pack(builder, _o.asUpdateTrackerRequest());
       case RpcMessage.ResetTrackerAssignments: return solarxr_protocol.rpc.ResetTrackerAssignments.pack(builder, _o.asResetTrackerAssignments());
       case RpcMessage.VMCOSCSettingsRequest: return solarxr_protocol.rpc.VMCOSCSettingsRequest.pack(builder, _o.asVMCOSCSettingsRequest());
@@ -286,6 +287,7 @@ public class RpcMessageUnion {
       case RpcMessage.ErrorReportingSettingsRequest: return solarxr_protocol.rpc.ErrorReportingSettingsRequest.pack(builder, _o.asErrorReportingSettingsRequest());
       case RpcMessage.ErrorReportingSettingsResponse: return solarxr_protocol.rpc.ErrorReportingSettingsResponse.pack(builder, _o.asErrorReportingSettingsResponse());
       case RpcMessage.ChangeErrorReportingSettingsRequest: return solarxr_protocol.rpc.ChangeErrorReportingSettingsRequest.pack(builder, _o.asChangeErrorReportingSettingsRequest());
+      case RpcMessage.CancelResetRequest: return solarxr_protocol.rpc.CancelResetRequest.pack(builder, _o.asCancelResetRequest());
       default: return 0;
     }
   }

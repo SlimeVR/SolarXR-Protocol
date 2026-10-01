@@ -10,47 +10,48 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_RESET_TYPE: u8 = 0;
+pub const ENUM_MIN_RESET_AVAILABILITY: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RESET_TYPE: u8 = 2;
+pub const ENUM_MAX_RESET_AVAILABILITY: u8 = 3;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RESET_TYPE: [ResetType; 3] = [
-  ResetType::YAW,
-  ResetType::FULL,
-  ResetType::MOUNTING,
+pub const ENUM_VALUES_RESET_AVAILABILITY: [ResetAvailability; 4] = [
+  ResetAvailability::AVAILABLE,
+  ResetAvailability::NEEDS_FULL_RESET,
+  ResetAvailability::NEEDS_POSITIONAL_HEAD,
+  ResetAvailability::NO_TRACKERS,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct ResetType(pub u8);
+pub struct ResetAvailability(pub u8);
 #[allow(non_upper_case_globals)]
-impl ResetType {
-  /// Resets the yaw (horizontal) axis
-  pub const YAW: Self = Self(0);
-  /// Resets all axes
-  pub const FULL: Self = Self(1);
-  /// Calibrates the mounting rotation with the configured MountingMethod
-  pub const MOUNTING: Self = Self(2);
+impl ResetAvailability {
+  pub const AVAILABLE: Self = Self(0);
+  pub const NEEDS_FULL_RESET: Self = Self(1);
+  pub const NEEDS_POSITIONAL_HEAD: Self = Self(2);
+  pub const NO_TRACKERS: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 2;
+  pub const ENUM_MAX: u8 = 3;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::YAW,
-    Self::FULL,
-    Self::MOUNTING,
+    Self::AVAILABLE,
+    Self::NEEDS_FULL_RESET,
+    Self::NEEDS_POSITIONAL_HEAD,
+    Self::NO_TRACKERS,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::YAW => Some("YAW"),
-      Self::FULL => Some("FULL"),
-      Self::MOUNTING => Some("MOUNTING"),
+      Self::AVAILABLE => Some("AVAILABLE"),
+      Self::NEEDS_FULL_RESET => Some("NEEDS_FULL_RESET"),
+      Self::NEEDS_POSITIONAL_HEAD => Some("NEEDS_POSITIONAL_HEAD"),
+      Self::NO_TRACKERS => Some("NO_TRACKERS"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for ResetType {
+impl core::fmt::Debug for ResetAvailability {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -59,7 +60,7 @@ impl core::fmt::Debug for ResetType {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for ResetType {
+impl<'a> flatbuffers::Follow<'a> for ResetAvailability {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -68,15 +69,15 @@ impl<'a> flatbuffers::Follow<'a> for ResetType {
   }
 }
 
-impl flatbuffers::Push for ResetType {
-    type Output = ResetType;
+impl flatbuffers::Push for ResetAvailability {
+    type Output = ResetAvailability;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for ResetType {
+impl flatbuffers::EndianScalar for ResetAvailability {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -90,7 +91,7 @@ impl flatbuffers::EndianScalar for ResetType {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for ResetType {
+impl<'a> flatbuffers::Verifiable for ResetAvailability {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -100,4 +101,4 @@ impl<'a> flatbuffers::Verifiable for ResetType {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for ResetType {}
+impl flatbuffers::SimpleToVerifyInSlice for ResetAvailability {}

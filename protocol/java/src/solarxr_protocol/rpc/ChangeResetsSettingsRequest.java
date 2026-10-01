@@ -32,15 +32,21 @@ public final class ChangeResetsSettingsRequest extends Table {
    * Reset VR headset's pitch and roll
    */
   public boolean resetReliableReferenceAttitude() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  /**
+   * How a MOUNTING reset calibrates the trackers
+   */
+  public int mountingMethod() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createChangeResetsSettingsRequest(FlatBufferBuilder builder,
       boolean resetMountingFeet,
       int armsResetMode,
       float yawResetSmoothTime,
       boolean saveMountingReset,
-      boolean resetReliableReferenceAttitude) {
-    builder.startTable(5);
+      boolean resetReliableReferenceAttitude,
+      int mountingMethod) {
+    builder.startTable(6);
     ChangeResetsSettingsRequest.addYawResetSmoothTime(builder, yawResetSmoothTime);
+    ChangeResetsSettingsRequest.addMountingMethod(builder, mountingMethod);
     ChangeResetsSettingsRequest.addResetReliableReferenceAttitude(builder, resetReliableReferenceAttitude);
     ChangeResetsSettingsRequest.addSaveMountingReset(builder, saveMountingReset);
     ChangeResetsSettingsRequest.addArmsResetMode(builder, armsResetMode);
@@ -48,12 +54,13 @@ public final class ChangeResetsSettingsRequest extends Table {
     return ChangeResetsSettingsRequest.endChangeResetsSettingsRequest(builder);
   }
 
-  public static void startChangeResetsSettingsRequest(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startChangeResetsSettingsRequest(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addResetMountingFeet(FlatBufferBuilder builder, boolean resetMountingFeet) { builder.addBoolean(0, resetMountingFeet, false); }
   public static void addArmsResetMode(FlatBufferBuilder builder, int armsResetMode) { builder.addByte(1, (byte) armsResetMode, (byte) 0); }
   public static void addYawResetSmoothTime(FlatBufferBuilder builder, float yawResetSmoothTime) { builder.addFloat(2, yawResetSmoothTime, 0.0f); }
   public static void addSaveMountingReset(FlatBufferBuilder builder, boolean saveMountingReset) { builder.addBoolean(3, saveMountingReset, false); }
   public static void addResetReliableReferenceAttitude(FlatBufferBuilder builder, boolean resetReliableReferenceAttitude) { builder.addBoolean(4, resetReliableReferenceAttitude, false); }
+  public static void addMountingMethod(FlatBufferBuilder builder, int mountingMethod) { builder.addByte(5, (byte) mountingMethod, (byte) 0); }
   public static int endChangeResetsSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -81,6 +88,8 @@ public final class ChangeResetsSettingsRequest extends Table {
     _o.setSaveMountingReset(_oSaveMountingReset);
     boolean _oResetReliableReferenceAttitude = resetReliableReferenceAttitude();
     _o.setResetReliableReferenceAttitude(_oResetReliableReferenceAttitude);
+    int _oMountingMethod = mountingMethod();
+    _o.setMountingMethod(_oMountingMethod);
   }
   public static int pack(FlatBufferBuilder builder, ChangeResetsSettingsRequestT _o) {
     if (_o == null) return 0;
@@ -90,7 +99,8 @@ public final class ChangeResetsSettingsRequest extends Table {
       _o.getArmsResetMode(),
       _o.getYawResetSmoothTime(),
       _o.getSaveMountingReset(),
-      _o.getResetReliableReferenceAttitude());
+      _o.getResetReliableReferenceAttitude(),
+      _o.getMountingMethod());
   }
 }
 

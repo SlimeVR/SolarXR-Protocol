@@ -5,13 +5,8 @@ enum ResetType: uint8 {
     YAW,
     /// Resets all axes
     FULL,
-    /// Second pose for calibrating mounting rotation
-    POSE_MOUNTING,
-}
-
-enum ResetStatus: uint8 {
-    STARTED,
-    FINISHED,
+    /// Calibrates the mounting rotation with the configured MountingMethod
+    MOUNTING,
 }
 
 table ResetRequest {
@@ -21,16 +16,48 @@ table ResetRequest {
     delay: float = null;
 }
 
-table ResetResponse {
-    reset_type: ResetType;
-    status: ResetStatus;
-    /// Should return the body parts reset / being reset
-    body_parts: [solarxr_protocol.datatypes.BodyPart];
-    /// gives the time in seconds passed since the start of the reset
-    /// Starts at 0. Should be equal to 'duration' when status == FINISHED
+enum ResetLifecycle: uint8 {
+    RUNNING,
+    DONE,
+    CANCELED,
+    FAILED,
+}
+
+/// A reset that runs after a delay (full, yaw and pose mounting)
+table CountdownDetail {
+    /// Seconds passed since the start of the reset, equal to 'duration' when it is done
     progress: int;
     duration: int;
 }
+
+enum StepMountingStatus: uint8 {
+    WAITING_FOR_MOVEMENT,
+    RECORDING,
+    PROCESSING,
+    ERROR_NO_DATA,
+    ERROR_TIMEOUT,
+}
+
+/// A step mounting session
+table StepMountingDetail {
+    status: StepMountingStatus;
+}
+
+union ResetDetail {
+    CountdownDetail,
+    StepMountingDetail,
+}
+
+table ResetStatusResponse {
+    reset_type: ResetType;
+    lifecycle: ResetLifecycle;
+    /// The body parts reset / being reset
+    body_parts: [solarxr_protocol.datatypes.BodyPart];
+    detail: ResetDetail;
+}
+
+/// Cancels the running reset, if any
+table CancelResetRequest {}
 
 /// Clears mounting reset data, defaulting to the manually set mounting orientations
 table ClearMountingResetRequest {}
@@ -58,6 +85,8 @@ table ResetsSettingsResponse {
     save_mounting_reset: bool;
     /// Reset VR headset's pitch and roll
     reset_reliable_reference_attitude: bool;
+    /// How a MOUNTING reset calibrates the trackers
+    mounting_method: solarxr_protocol.datatypes.MountingMethod;
 }
 table ChangeResetsSettingsRequest {
     /// Makes it so feet will be always be mounting reset even when passing no BodyPart
@@ -69,4 +98,6 @@ table ChangeResetsSettingsRequest {
     save_mounting_reset: bool;
     /// Reset VR headset's pitch and roll
     reset_reliable_reference_attitude: bool;
+    /// How a MOUNTING reset calibrates the trackers
+    mounting_method: solarxr_protocol.datatypes.MountingMethod;
 }

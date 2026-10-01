@@ -35,7 +35,7 @@ union RpcMessage {
     HeartbeatRequest,
     HeartbeatResponse,
     ResetRequest,
-    ResetResponse,
+    ResetStatusResponse,
     UpdateTrackerRequest,
     ResetTrackerAssignments,
     VMCOSCSettingsRequest,
@@ -163,6 +163,7 @@ union RpcMessage {
     ErrorReportingSettingsRequest,
     ErrorReportingSettingsResponse,
     ChangeErrorReportingSettingsRequest,
+    CancelResetRequest,
 }
 
 table RpcMessageHeader {

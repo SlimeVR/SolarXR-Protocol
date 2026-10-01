@@ -10,47 +10,52 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_RESET_TYPE: u8 = 0;
+pub const ENUM_MIN_STEP_MOUNTING_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RESET_TYPE: u8 = 2;
+pub const ENUM_MAX_STEP_MOUNTING_STATUS: u8 = 4;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RESET_TYPE: [ResetType; 3] = [
-  ResetType::YAW,
-  ResetType::FULL,
-  ResetType::MOUNTING,
+pub const ENUM_VALUES_STEP_MOUNTING_STATUS: [StepMountingStatus; 5] = [
+  StepMountingStatus::WAITING_FOR_MOVEMENT,
+  StepMountingStatus::RECORDING,
+  StepMountingStatus::PROCESSING,
+  StepMountingStatus::ERROR_NO_DATA,
+  StepMountingStatus::ERROR_TIMEOUT,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct ResetType(pub u8);
+pub struct StepMountingStatus(pub u8);
 #[allow(non_upper_case_globals)]
-impl ResetType {
-  /// Resets the yaw (horizontal) axis
-  pub const YAW: Self = Self(0);
-  /// Resets all axes
-  pub const FULL: Self = Self(1);
-  /// Calibrates the mounting rotation with the configured MountingMethod
-  pub const MOUNTING: Self = Self(2);
+impl StepMountingStatus {
+  pub const WAITING_FOR_MOVEMENT: Self = Self(0);
+  pub const RECORDING: Self = Self(1);
+  pub const PROCESSING: Self = Self(2);
+  pub const ERROR_NO_DATA: Self = Self(3);
+  pub const ERROR_TIMEOUT: Self = Self(4);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 2;
+  pub const ENUM_MAX: u8 = 4;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::YAW,
-    Self::FULL,
-    Self::MOUNTING,
+    Self::WAITING_FOR_MOVEMENT,
+    Self::RECORDING,
+    Self::PROCESSING,
+    Self::ERROR_NO_DATA,
+    Self::ERROR_TIMEOUT,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::YAW => Some("YAW"),
-      Self::FULL => Some("FULL"),
-      Self::MOUNTING => Some("MOUNTING"),
+      Self::WAITING_FOR_MOVEMENT => Some("WAITING_FOR_MOVEMENT"),
+      Self::RECORDING => Some("RECORDING"),
+      Self::PROCESSING => Some("PROCESSING"),
+      Self::ERROR_NO_DATA => Some("ERROR_NO_DATA"),
+      Self::ERROR_TIMEOUT => Some("ERROR_TIMEOUT"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for ResetType {
+impl core::fmt::Debug for StepMountingStatus {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -59,7 +64,7 @@ impl core::fmt::Debug for ResetType {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for ResetType {
+impl<'a> flatbuffers::Follow<'a> for StepMountingStatus {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -68,15 +73,15 @@ impl<'a> flatbuffers::Follow<'a> for ResetType {
   }
 }
 
-impl flatbuffers::Push for ResetType {
-    type Output = ResetType;
+impl flatbuffers::Push for StepMountingStatus {
+    type Output = StepMountingStatus;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for ResetType {
+impl flatbuffers::EndianScalar for StepMountingStatus {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -90,7 +95,7 @@ impl flatbuffers::EndianScalar for ResetType {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for ResetType {
+impl<'a> flatbuffers::Verifiable for StepMountingStatus {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -100,4 +105,4 @@ impl<'a> flatbuffers::Verifiable for ResetType {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for ResetType {}
+impl flatbuffers::SimpleToVerifyInSlice for StepMountingStatus {}

@@ -12,15 +12,15 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 131;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 132;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 132] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 133] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
   RpcMessage::ResetRequest,
-  RpcMessage::ResetResponse,
+  RpcMessage::ResetStatusResponse,
   RpcMessage::UpdateTrackerRequest,
   RpcMessage::ResetTrackerAssignments,
   RpcMessage::VMCOSCSettingsRequest,
@@ -148,6 +148,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 132] = [
   RpcMessage::ErrorReportingSettingsRequest,
   RpcMessage::ErrorReportingSettingsResponse,
   RpcMessage::ChangeErrorReportingSettingsRequest,
+  RpcMessage::CancelResetRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -159,7 +160,7 @@ impl RpcMessage {
   pub const HeartbeatRequest: Self = Self(1);
   pub const HeartbeatResponse: Self = Self(2);
   pub const ResetRequest: Self = Self(3);
-  pub const ResetResponse: Self = Self(4);
+  pub const ResetStatusResponse: Self = Self(4);
   pub const UpdateTrackerRequest: Self = Self(5);
   pub const ResetTrackerAssignments: Self = Self(6);
   pub const VMCOSCSettingsRequest: Self = Self(7);
@@ -287,15 +288,16 @@ impl RpcMessage {
   pub const ErrorReportingSettingsRequest: Self = Self(129);
   pub const ErrorReportingSettingsResponse: Self = Self(130);
   pub const ChangeErrorReportingSettingsRequest: Self = Self(131);
+  pub const CancelResetRequest: Self = Self(132);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 131;
+  pub const ENUM_MAX: u8 = 132;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
     Self::HeartbeatResponse,
     Self::ResetRequest,
-    Self::ResetResponse,
+    Self::ResetStatusResponse,
     Self::UpdateTrackerRequest,
     Self::ResetTrackerAssignments,
     Self::VMCOSCSettingsRequest,
@@ -423,6 +425,7 @@ impl RpcMessage {
     Self::ErrorReportingSettingsRequest,
     Self::ErrorReportingSettingsResponse,
     Self::ChangeErrorReportingSettingsRequest,
+    Self::CancelResetRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -431,7 +434,7 @@ impl RpcMessage {
       Self::HeartbeatRequest => Some("HeartbeatRequest"),
       Self::HeartbeatResponse => Some("HeartbeatResponse"),
       Self::ResetRequest => Some("ResetRequest"),
-      Self::ResetResponse => Some("ResetResponse"),
+      Self::ResetStatusResponse => Some("ResetStatusResponse"),
       Self::UpdateTrackerRequest => Some("UpdateTrackerRequest"),
       Self::ResetTrackerAssignments => Some("ResetTrackerAssignments"),
       Self::VMCOSCSettingsRequest => Some("VMCOSCSettingsRequest"),
@@ -559,6 +562,7 @@ impl RpcMessage {
       Self::ErrorReportingSettingsRequest => Some("ErrorReportingSettingsRequest"),
       Self::ErrorReportingSettingsResponse => Some("ErrorReportingSettingsResponse"),
       Self::ChangeErrorReportingSettingsRequest => Some("ChangeErrorReportingSettingsRequest"),
+      Self::CancelResetRequest => Some("CancelResetRequest"),
       _ => None,
     }
   }

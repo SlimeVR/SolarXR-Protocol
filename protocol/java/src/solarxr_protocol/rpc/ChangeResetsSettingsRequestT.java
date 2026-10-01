@@ -13,6 +13,7 @@ public class ChangeResetsSettingsRequestT {
   private float yawResetSmoothTime;
   private boolean saveMountingReset;
   private boolean resetReliableReferenceAttitude;
+  private int mountingMethod;
 
   public boolean getResetMountingFeet() { return resetMountingFeet; }
 
@@ -34,6 +35,10 @@ public class ChangeResetsSettingsRequestT {
 
   public void setResetReliableReferenceAttitude(boolean resetReliableReferenceAttitude) { this.resetReliableReferenceAttitude = resetReliableReferenceAttitude; }
 
+  public int getMountingMethod() { return mountingMethod; }
+
+  public void setMountingMethod(int mountingMethod) { this.mountingMethod = mountingMethod; }
+
 
   public ChangeResetsSettingsRequestT() {
     this.resetMountingFeet = false;
@@ -41,6 +46,7 @@ public class ChangeResetsSettingsRequestT {
     this.yawResetSmoothTime = 0.0f;
     this.saveMountingReset = false;
     this.resetReliableReferenceAttitude = false;
+    this.mountingMethod = 0;
   }
 }
 

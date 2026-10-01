@@ -170,6 +170,7 @@ public enum class MountingMethod(
 ) {
   MANUAL(0.toUByte()),
   POSE(1.toUByte()),
+  STEP(2.toUByte()),
   ;
 
   public companion object {

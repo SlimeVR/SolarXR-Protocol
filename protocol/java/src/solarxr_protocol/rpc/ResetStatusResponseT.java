@@ -7,40 +7,34 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class ResetResponseT {
+public class ResetStatusResponseT {
   private int resetType;
-  private int status;
+  private int lifecycle;
   private int[] bodyParts;
-  private int progress;
-  private int duration;
+  private solarxr_protocol.rpc.ResetDetailUnion detail;
 
   public int getResetType() { return resetType; }
 
   public void setResetType(int resetType) { this.resetType = resetType; }
 
-  public int getStatus() { return status; }
+  public int getLifecycle() { return lifecycle; }
 
-  public void setStatus(int status) { this.status = status; }
+  public void setLifecycle(int lifecycle) { this.lifecycle = lifecycle; }
 
   public int[] getBodyParts() { return bodyParts; }
 
   public void setBodyParts(int[] bodyParts) { this.bodyParts = bodyParts; }
 
-  public int getProgress() { return progress; }
+  public solarxr_protocol.rpc.ResetDetailUnion getDetail() { return detail; }
 
-  public void setProgress(int progress) { this.progress = progress; }
-
-  public int getDuration() { return duration; }
-
-  public void setDuration(int duration) { this.duration = duration; }
+  public void setDetail(solarxr_protocol.rpc.ResetDetailUnion detail) { this.detail = detail; }
 
 
-  public ResetResponseT() {
+  public ResetStatusResponseT() {
     this.resetType = 0;
-    this.status = 0;
+    this.lifecycle = 0;
     this.bodyParts = null;
-    this.progress = 0;
-    this.duration = 0;
+    this.detail = null;
   }
 }
 

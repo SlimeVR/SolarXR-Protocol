@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { ResetAvailability } from '../../../solarxr-protocol/data-feed/server/reset-availability.js';
 
 
 /**
@@ -28,14 +29,14 @@ static getSizePrefixedRootAsServerGuards(bb:flatbuffers.ByteBuffer, obj?:ServerG
   return (obj || new ServerGuards()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-canDoMountingReset():boolean {
+yawReset():ResetAvailability {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetAvailability.AVAILABLE;
 }
 
-canDoYawReset():boolean {
+mountingReset():ResetAvailability {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ResetAvailability.AVAILABLE;
 }
 
 canDoUserHeightCalibration():boolean {
@@ -47,12 +48,12 @@ static startServerGuards(builder:flatbuffers.Builder) {
   builder.startObject(3);
 }
 
-static addCanDoMountingReset(builder:flatbuffers.Builder, canDoMountingReset:boolean) {
-  builder.addFieldInt8(0, +canDoMountingReset, +false);
+static addYawReset(builder:flatbuffers.Builder, yawReset:ResetAvailability) {
+  builder.addFieldInt8(0, yawReset, ResetAvailability.AVAILABLE);
 }
 
-static addCanDoYawReset(builder:flatbuffers.Builder, canDoYawReset:boolean) {
-  builder.addFieldInt8(1, +canDoYawReset, +false);
+static addMountingReset(builder:flatbuffers.Builder, mountingReset:ResetAvailability) {
+  builder.addFieldInt8(1, mountingReset, ResetAvailability.AVAILABLE);
 }
 
 static addCanDoUserHeightCalibration(builder:flatbuffers.Builder, canDoUserHeightCalibration:boolean) {
@@ -64,42 +65,42 @@ static endServerGuards(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createServerGuards(builder:flatbuffers.Builder, canDoMountingReset:boolean, canDoYawReset:boolean, canDoUserHeightCalibration:boolean):flatbuffers.Offset {
+static createServerGuards(builder:flatbuffers.Builder, yawReset:ResetAvailability, mountingReset:ResetAvailability, canDoUserHeightCalibration:boolean):flatbuffers.Offset {
   ServerGuards.startServerGuards(builder);
-  ServerGuards.addCanDoMountingReset(builder, canDoMountingReset);
-  ServerGuards.addCanDoYawReset(builder, canDoYawReset);
+  ServerGuards.addYawReset(builder, yawReset);
+  ServerGuards.addMountingReset(builder, mountingReset);
   ServerGuards.addCanDoUserHeightCalibration(builder, canDoUserHeightCalibration);
   return ServerGuards.endServerGuards(builder);
 }
 
 unpack(): ServerGuardsT {
   return new ServerGuardsT(
-    this.canDoMountingReset(),
-    this.canDoYawReset(),
+    this.yawReset(),
+    this.mountingReset(),
     this.canDoUserHeightCalibration()
   );
 }
 
 
 unpackTo(_o: ServerGuardsT): void {
-  _o.canDoMountingReset = this.canDoMountingReset();
-  _o.canDoYawReset = this.canDoYawReset();
+  _o.yawReset = this.yawReset();
+  _o.mountingReset = this.mountingReset();
   _o.canDoUserHeightCalibration = this.canDoUserHeightCalibration();
 }
 }
 
 export class ServerGuardsT implements flatbuffers.IGeneratedObject {
 constructor(
-  public canDoMountingReset: boolean = false,
-  public canDoYawReset: boolean = false,
+  public yawReset: ResetAvailability = ResetAvailability.AVAILABLE,
+  public mountingReset: ResetAvailability = ResetAvailability.AVAILABLE,
   public canDoUserHeightCalibration: boolean = false
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ServerGuards.createServerGuards(builder,
-    this.canDoMountingReset,
-    this.canDoYawReset,
+    this.yawReset,
+    this.mountingReset,
     this.canDoUserHeightCalibration
   );
 }

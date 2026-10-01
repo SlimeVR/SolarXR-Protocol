@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { MountingMethod } from '../../solarxr-protocol/datatypes/mounting-method.js';
 import { ArmsResetMode } from '../../solarxr-protocol/rpc/arms-reset-mode.js';
 
 
@@ -60,8 +61,16 @@ resetReliableReferenceAttitude():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+/**
+ * How a MOUNTING reset calibrates the trackers
+ */
+mountingMethod():MountingMethod {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : MountingMethod.MANUAL;
+}
+
 static startResetsSettingsResponse(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(6);
 }
 
 static addResetMountingFeet(builder:flatbuffers.Builder, resetMountingFeet:boolean) {
@@ -84,18 +93,23 @@ static addResetReliableReferenceAttitude(builder:flatbuffers.Builder, resetRelia
   builder.addFieldInt8(4, +resetReliableReferenceAttitude, +false);
 }
 
+static addMountingMethod(builder:flatbuffers.Builder, mountingMethod:MountingMethod) {
+  builder.addFieldInt8(5, mountingMethod, MountingMethod.MANUAL);
+}
+
 static endResetsSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createResetsSettingsResponse(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsResetMode:ArmsResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetReliableReferenceAttitude:boolean):flatbuffers.Offset {
+static createResetsSettingsResponse(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsResetMode:ArmsResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetReliableReferenceAttitude:boolean, mountingMethod:MountingMethod):flatbuffers.Offset {
   ResetsSettingsResponse.startResetsSettingsResponse(builder);
   ResetsSettingsResponse.addResetMountingFeet(builder, resetMountingFeet);
   ResetsSettingsResponse.addArmsResetMode(builder, armsResetMode);
   ResetsSettingsResponse.addYawResetSmoothTime(builder, yawResetSmoothTime);
   ResetsSettingsResponse.addSaveMountingReset(builder, saveMountingReset);
   ResetsSettingsResponse.addResetReliableReferenceAttitude(builder, resetReliableReferenceAttitude);
+  ResetsSettingsResponse.addMountingMethod(builder, mountingMethod);
   return ResetsSettingsResponse.endResetsSettingsResponse(builder);
 }
 
@@ -105,7 +119,8 @@ unpack(): ResetsSettingsResponseT {
     this.armsResetMode(),
     this.yawResetSmoothTime(),
     this.saveMountingReset(),
-    this.resetReliableReferenceAttitude()
+    this.resetReliableReferenceAttitude(),
+    this.mountingMethod()
   );
 }
 
@@ -116,6 +131,7 @@ unpackTo(_o: ResetsSettingsResponseT): void {
   _o.yawResetSmoothTime = this.yawResetSmoothTime();
   _o.saveMountingReset = this.saveMountingReset();
   _o.resetReliableReferenceAttitude = this.resetReliableReferenceAttitude();
+  _o.mountingMethod = this.mountingMethod();
 }
 }
 
@@ -125,7 +141,8 @@ constructor(
   public armsResetMode: ArmsResetMode = ArmsResetMode.BACK,
   public yawResetSmoothTime: number = 0.0,
   public saveMountingReset: boolean = false,
-  public resetReliableReferenceAttitude: boolean = false
+  public resetReliableReferenceAttitude: boolean = false,
+  public mountingMethod: MountingMethod = MountingMethod.MANUAL
 ){}
 
 
@@ -135,7 +152,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.armsResetMode,
     this.yawResetSmoothTime,
     this.saveMountingReset,
-    this.resetReliableReferenceAttitude
+    this.resetReliableReferenceAttitude,
+    this.mountingMethod
   );
 }
 }

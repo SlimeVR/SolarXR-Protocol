@@ -8,17 +8,17 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ServerGuardsT {
-  private boolean canDoMountingReset;
-  private boolean canDoYawReset;
+  private int yawReset;
+  private int mountingReset;
   private boolean canDoUserHeightCalibration;
 
-  public boolean getCanDoMountingReset() { return canDoMountingReset; }
+  public int getYawReset() { return yawReset; }
 
-  public void setCanDoMountingReset(boolean canDoMountingReset) { this.canDoMountingReset = canDoMountingReset; }
+  public void setYawReset(int yawReset) { this.yawReset = yawReset; }
 
-  public boolean getCanDoYawReset() { return canDoYawReset; }
+  public int getMountingReset() { return mountingReset; }
 
-  public void setCanDoYawReset(boolean canDoYawReset) { this.canDoYawReset = canDoYawReset; }
+  public void setMountingReset(int mountingReset) { this.mountingReset = mountingReset; }
 
   public boolean getCanDoUserHeightCalibration() { return canDoUserHeightCalibration; }
 
@@ -26,8 +26,8 @@ public class ServerGuardsT {
 
 
   public ServerGuardsT() {
-    this.canDoMountingReset = false;
-    this.canDoYawReset = false;
+    this.yawReset = 0;
+    this.mountingReset = 0;
     this.canDoUserHeightCalibration = false;
   }
 }
