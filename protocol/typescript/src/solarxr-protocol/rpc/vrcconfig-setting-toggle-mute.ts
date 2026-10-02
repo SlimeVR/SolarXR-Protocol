@@ -22,6 +22,9 @@ static getSizePrefixedRootAsVRCConfigSettingToggleMute(bb:flatbuffers.ByteBuffer
   return (obj || new VRCConfigSettingToggleMute()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+/**
+ * Key from VRCConfigValidity
+ */
 key():string|null
 key(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 key(optionalEncoding?:any):string|Uint8Array|null {

@@ -16,7 +16,7 @@ pub const ENUM_MAX_MCU_TYPE: u16 = 250;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_MCU_TYPE: [McuType; 12] = [
-  McuType::Other,
+  McuType::UNKNOWN,
   McuType::ESP8266,
   McuType::ESP32,
   McuType::OWOTRACK_ANDROID,
@@ -35,7 +35,7 @@ pub const ENUM_VALUES_MCU_TYPE: [McuType; 12] = [
 pub struct McuType(pub u16);
 #[allow(non_upper_case_globals)]
 impl McuType {
-  pub const Other: Self = Self(0);
+  pub const UNKNOWN: Self = Self(0);
   pub const ESP8266: Self = Self(1);
   pub const ESP32: Self = Self(2);
   pub const OWOTRACK_ANDROID: Self = Self(3);
@@ -51,7 +51,7 @@ impl McuType {
   pub const ENUM_MIN: u16 = 0;
   pub const ENUM_MAX: u16 = 250;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::Other,
+    Self::UNKNOWN,
     Self::ESP8266,
     Self::ESP32,
     Self::OWOTRACK_ANDROID,
@@ -67,7 +67,7 @@ impl McuType {
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::Other => Some("Other"),
+      Self::UNKNOWN => Some("UNKNOWN"),
       Self::ESP8266 => Some("ESP8266"),
       Self::ESP32 => Some("ESP32"),
       Self::OWOTRACK_ANDROID => Some("OWOTRACK_ANDROID"),

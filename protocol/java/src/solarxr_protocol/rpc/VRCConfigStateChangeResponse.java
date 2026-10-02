@@ -26,6 +26,9 @@ public final class VRCConfigStateChangeResponse extends Table {
   public solarxr_protocol.rpc.VRCConfigValues state(solarxr_protocol.rpc.VRCConfigValues obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.VRCConfigRecommendedValues recommended() { return recommended(new solarxr_protocol.rpc.VRCConfigRecommendedValues()); }
   public solarxr_protocol.rpc.VRCConfigRecommendedValues recommended(solarxr_protocol.rpc.VRCConfigRecommendedValues obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  /**
+   * Just a list of keys from the VRCConfigValidity table.
+   */
   public String muted(int j) { int o = __offset(12); return o != 0 ? __string(__vector(o) + j * 4) : null; }
   public int mutedLength() { int o = __offset(12); return o != 0 ? __vector_len(o) : 0; }
   public StringVector mutedVector() { return mutedVector(new StringVector()); }

@@ -8,12 +8,12 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class MagToggleResponseT {
-  private solarxr_protocol.datatypes.TrackerIdT trackerId;
+  private int trackerId;
   private boolean enable;
 
-  public solarxr_protocol.datatypes.TrackerIdT getTrackerId() { return trackerId; }
+  public int getTrackerId() { return trackerId; }
 
-  public void setTrackerId(solarxr_protocol.datatypes.TrackerIdT trackerId) { this.trackerId = trackerId; }
+  public void setTrackerId(int trackerId) { this.trackerId = trackerId; }
 
   public boolean getEnable() { return enable; }
 
@@ -21,7 +21,7 @@ public class MagToggleResponseT {
 
 
   public MagToggleResponseT() {
-    this.trackerId = null;
+    this.trackerId = 0;
     this.enable = false;
   }
 }

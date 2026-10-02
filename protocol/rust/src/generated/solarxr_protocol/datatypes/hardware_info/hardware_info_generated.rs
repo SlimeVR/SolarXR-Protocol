@@ -53,7 +53,7 @@ impl<'a> HardwareInfo<'a> {
     if let Some(x) = args.firmware_date { builder.add_firmware_date(x); }
     if let Some(x) = args.hardware_identifier { builder.add_hardware_identifier(x); }
     if let Some(x) = args.board_type { builder.add_board_type(x); }
-    if let Some(x) = args.ip_address { builder.add_ip_address(x); }
+    builder.add_ip_address(args.ip_address);
     if let Some(x) = args.hardware_address { builder.add_hardware_address(x); }
     if let Some(x) = args.firmware_version { builder.add_firmware_version(x); }
     if let Some(x) = args.hardware_revision { builder.add_hardware_revision(x); }
@@ -72,7 +72,7 @@ impl<'a> HardwareInfo<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<McuType>(HardwareInfo::VT_MCU_ID, Some(McuType::Other)).unwrap()}
+    unsafe { self._tab.get::<McuType>(HardwareInfo::VT_MCU_ID, Some(McuType::UNKNOWN)).unwrap()}
   }
   /// A human-friendly name to display as the name of the device.
   #[inline]
@@ -121,12 +121,13 @@ impl<'a> HardwareInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<HardwareAddress>(HardwareInfo::VT_HARDWARE_ADDRESS, None)}
   }
+  /// The 4 bytes of an ip address are stored in 32 bits in big endian order.
   #[inline]
-  pub fn ip_address(&self) -> Option<&'a super::Ipv4Address> {
+  pub fn ip_address(&self) -> u32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::Ipv4Address>(HardwareInfo::VT_IP_ADDRESS, None)}
+    unsafe { self._tab.get::<u32>(HardwareInfo::VT_IP_ADDRESS, Some(0)).unwrap()}
   }
   /// A board type string that can be used to name a board. if possible you should use official board type
   #[inline]
@@ -185,7 +186,7 @@ impl flatbuffers::Verifiable for HardwareInfo<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_revision", Self::VT_HARDWARE_REVISION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("firmware_version", Self::VT_FIRMWARE_VERSION, false)?
      .visit_field::<HardwareAddress>("hardware_address", Self::VT_HARDWARE_ADDRESS, false)?
-     .visit_field::<super::Ipv4Address>("ip_address", Self::VT_IP_ADDRESS, false)?
+     .visit_field::<u32>("ip_address", Self::VT_IP_ADDRESS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("board_type", Self::VT_BOARD_TYPE, false)?
      .visit_field::<BoardType>("official_board_type", Self::VT_OFFICIAL_BOARD_TYPE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_identifier", Self::VT_HARDWARE_IDENTIFIER, false)?
@@ -203,7 +204,7 @@ pub struct HardwareInfoArgs<'a> {
     pub hardware_revision: Option<flatbuffers::WIPOffset<&'a str>>,
     pub firmware_version: Option<flatbuffers::WIPOffset<&'a str>>,
     pub hardware_address: Option<&'a HardwareAddress>,
-    pub ip_address: Option<&'a super::Ipv4Address>,
+    pub ip_address: u32,
     pub board_type: Option<flatbuffers::WIPOffset<&'a str>>,
     pub official_board_type: BoardType,
     pub hardware_identifier: Option<flatbuffers::WIPOffset<&'a str>>,
@@ -214,14 +215,14 @@ impl<'a> Default for HardwareInfoArgs<'a> {
   #[inline]
   fn default() -> Self {
     HardwareInfoArgs {
-      mcu_id: McuType::Other,
+      mcu_id: McuType::UNKNOWN,
       display_name: None,
       model: None,
       manufacturer: None,
       hardware_revision: None,
       firmware_version: None,
       hardware_address: None,
-      ip_address: None,
+      ip_address: 0,
       board_type: None,
       official_board_type: BoardType::UNKNOWN,
       hardware_identifier: None,
@@ -238,7 +239,7 @@ pub struct HardwareInfoBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> HardwareInfoBuilder<'a, 'b> {
   #[inline]
   pub fn add_mcu_id(&mut self, mcu_id: McuType) {
-    self.fbb_.push_slot::<McuType>(HardwareInfo::VT_MCU_ID, mcu_id, McuType::Other);
+    self.fbb_.push_slot::<McuType>(HardwareInfo::VT_MCU_ID, mcu_id, McuType::UNKNOWN);
   }
   #[inline]
   pub fn add_display_name(&mut self, display_name: flatbuffers::WIPOffset<&'b  str>) {
@@ -265,8 +266,8 @@ impl<'a: 'b, 'b> HardwareInfoBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<&HardwareAddress>(HardwareInfo::VT_HARDWARE_ADDRESS, hardware_address);
   }
   #[inline]
-  pub fn add_ip_address(&mut self, ip_address: &super::Ipv4Address) {
-    self.fbb_.push_slot_always::<&super::Ipv4Address>(HardwareInfo::VT_IP_ADDRESS, ip_address);
+  pub fn add_ip_address(&mut self, ip_address: u32) {
+    self.fbb_.push_slot::<u32>(HardwareInfo::VT_IP_ADDRESS, ip_address, 0);
   }
   #[inline]
   pub fn add_board_type(&mut self, board_type: flatbuffers::WIPOffset<&'b  str>) {

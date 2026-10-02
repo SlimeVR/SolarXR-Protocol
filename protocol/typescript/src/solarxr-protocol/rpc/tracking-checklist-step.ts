@@ -10,7 +10,7 @@ import { TrackingChecklistStepId } from '../../solarxr-protocol/rpc/tracking-che
 import { TrackingChecklistStepVisibility } from '../../solarxr-protocol/rpc/tracking-checklist-step-visibility.js';
 import { TrackingChecklistTrackerError, TrackingChecklistTrackerErrorT } from '../../solarxr-protocol/rpc/tracking-checklist-tracker-error.js';
 import { TrackingChecklistTrackerReset, TrackingChecklistTrackerResetT } from '../../solarxr-protocol/rpc/tracking-checklist-tracker-reset.js';
-import { TrackingChecklistUnassignedHMD, TrackingChecklistUnassignedHMDT } from '../../solarxr-protocol/rpc/tracking-checklist-unassigned-hmd.js';
+import { TrackingChecklistUnassignedReliableReference, TrackingChecklistUnassignedReliableReferenceT } from '../../solarxr-protocol/rpc/tracking-checklist-unassigned-reliable-reference.js';
 
 
 export class TrackingChecklistStep implements flatbuffers.IUnpackableObject<TrackingChecklistStepT> {
@@ -168,7 +168,7 @@ constructor(
   public optional: boolean = false,
   public ignorable: boolean = false,
   public extraDataType: TrackingChecklistExtraData = TrackingChecklistExtraData.NONE,
-  public extraData: TrackingChecklistNeedCalibrationT|TrackingChecklistPublicNetworksT|TrackingChecklistSteamVRDisconnectedT|TrackingChecklistTrackerErrorT|TrackingChecklistTrackerResetT|TrackingChecklistUnassignedHMDT|null = null
+  public extraData: TrackingChecklistNeedCalibrationT|TrackingChecklistPublicNetworksT|TrackingChecklistSteamVRDisconnectedT|TrackingChecklistTrackerErrorT|TrackingChecklistTrackerResetT|TrackingChecklistUnassignedReliableReferenceT|null = null
 ){}
 
 

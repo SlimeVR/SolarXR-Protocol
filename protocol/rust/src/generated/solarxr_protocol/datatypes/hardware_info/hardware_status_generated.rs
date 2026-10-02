@@ -27,16 +27,18 @@ impl<'a> flatbuffers::Follow<'a> for HardwareStatus<'a> {
 
 impl<'a> HardwareStatus<'a> {
   pub const VT_ERROR_STATUS: flatbuffers::VOffsetT = 4;
-  pub const VT_PING: flatbuffers::VOffsetT = 8;
-  pub const VT_RSSI: flatbuffers::VOffsetT = 10;
-  pub const VT_MCU_TEMP: flatbuffers::VOffsetT = 12;
-  pub const VT_BATTERY_VOLTAGE: flatbuffers::VOffsetT = 14;
-  pub const VT_BATTERY_PCT_ESTIMATE: flatbuffers::VOffsetT = 16;
-  pub const VT_LOG_DATA: flatbuffers::VOffsetT = 18;
-  pub const VT_PACKET_LOSS: flatbuffers::VOffsetT = 20;
-  pub const VT_PACKETS_LOST: flatbuffers::VOffsetT = 22;
-  pub const VT_PACKETS_RECEIVED: flatbuffers::VOffsetT = 24;
-  pub const VT_BATTERY_RUNTIME_ESTIMATE: flatbuffers::VOffsetT = 26;
+  pub const VT_PING: flatbuffers::VOffsetT = 6;
+  pub const VT_RSSI: flatbuffers::VOffsetT = 8;
+  pub const VT_RSSI_MIN: flatbuffers::VOffsetT = 10;
+  pub const VT_RSSI_MAX: flatbuffers::VOffsetT = 12;
+  pub const VT_MCU_TEMP: flatbuffers::VOffsetT = 14;
+  pub const VT_BATTERY_VOLTAGE: flatbuffers::VOffsetT = 16;
+  pub const VT_BATTERY_PCT_ESTIMATE: flatbuffers::VOffsetT = 18;
+  pub const VT_LOG_DATA: flatbuffers::VOffsetT = 20;
+  pub const VT_PACKET_LOSS: flatbuffers::VOffsetT = 22;
+  pub const VT_PACKETS_LOST: flatbuffers::VOffsetT = 24;
+  pub const VT_PACKETS_RECEIVED: flatbuffers::VOffsetT = 26;
+  pub const VT_BATTERY_RUNTIME_ESTIMATE: flatbuffers::VOffsetT = 28;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -55,6 +57,8 @@ impl<'a> HardwareStatus<'a> {
     if let Some(x) = args.log_data { builder.add_log_data(x); }
     if let Some(x) = args.battery_voltage { builder.add_battery_voltage(x); }
     if let Some(x) = args.mcu_temp { builder.add_mcu_temp(x); }
+    if let Some(x) = args.rssi_max { builder.add_rssi_max(x); }
+    if let Some(x) = args.rssi_min { builder.add_rssi_min(x); }
     if let Some(x) = args.rssi { builder.add_rssi(x); }
     if let Some(x) = args.ping { builder.add_ping(x); }
     if let Some(x) = args.battery_pct_estimate { builder.add_battery_pct_estimate(x); }
@@ -77,13 +81,31 @@ impl<'a> HardwareStatus<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<u16>(HardwareStatus::VT_PING, None)}
   }
-  /// "Received Signal Strength Indicator" between device and wifi adapter in dBm
+  /// "Received Signal Strength Indicator" between device and wifi adapter in dBm.
+  /// Averaged over the datafeed interval (not an instantaneous single reading)
+  /// see `rssi_min`/`rssi_max` for the range within that same window.
   #[inline]
   pub fn rssi(&self) -> Option<i16> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<i16>(HardwareStatus::VT_RSSI, None)}
+  }
+  /// Weakest RSSI seen within the same recent window `rssi` is averaged over.
+  #[inline]
+  pub fn rssi_min(&self) -> Option<i16> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<i16>(HardwareStatus::VT_RSSI_MIN, None)}
+  }
+  /// Strongest RSSI seen within the same recent window `rssi` is averaged over.
+  #[inline]
+  pub fn rssi_max(&self) -> Option<i16> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<i16>(HardwareStatus::VT_RSSI_MAX, None)}
   }
   /// Temperature in degrees celsius
   #[inline]
@@ -114,6 +136,7 @@ impl<'a> HardwareStatus<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::LogData>>(HardwareStatus::VT_LOG_DATA, None)}
   }
+  /// Averaged over the datafeed interval, not the connection's whole lifetime.
   #[inline]
   pub fn packet_loss(&self) -> Option<f32> {
     // Safety:
@@ -155,6 +178,8 @@ impl flatbuffers::Verifiable for HardwareStatus<'_> {
      .visit_field::<super::FirmwareErrorCode>("error_status", Self::VT_ERROR_STATUS, false)?
      .visit_field::<u16>("ping", Self::VT_PING, false)?
      .visit_field::<i16>("rssi", Self::VT_RSSI, false)?
+     .visit_field::<i16>("rssi_min", Self::VT_RSSI_MIN, false)?
+     .visit_field::<i16>("rssi_max", Self::VT_RSSI_MAX, false)?
      .visit_field::<f32>("mcu_temp", Self::VT_MCU_TEMP, false)?
      .visit_field::<f32>("battery_voltage", Self::VT_BATTERY_VOLTAGE, false)?
      .visit_field::<u8>("battery_pct_estimate", Self::VT_BATTERY_PCT_ESTIMATE, false)?
@@ -171,6 +196,8 @@ pub struct HardwareStatusArgs<'a> {
     pub error_status: Option<super::FirmwareErrorCode>,
     pub ping: Option<u16>,
     pub rssi: Option<i16>,
+    pub rssi_min: Option<i16>,
+    pub rssi_max: Option<i16>,
     pub mcu_temp: Option<f32>,
     pub battery_voltage: Option<f32>,
     pub battery_pct_estimate: Option<u8>,
@@ -187,6 +214,8 @@ impl<'a> Default for HardwareStatusArgs<'a> {
       error_status: None,
       ping: None,
       rssi: None,
+      rssi_min: None,
+      rssi_max: None,
       mcu_temp: None,
       battery_voltage: None,
       battery_pct_estimate: None,
@@ -215,6 +244,14 @@ impl<'a: 'b, 'b> HardwareStatusBuilder<'a, 'b> {
   #[inline]
   pub fn add_rssi(&mut self, rssi: i16) {
     self.fbb_.push_slot_always::<i16>(HardwareStatus::VT_RSSI, rssi);
+  }
+  #[inline]
+  pub fn add_rssi_min(&mut self, rssi_min: i16) {
+    self.fbb_.push_slot_always::<i16>(HardwareStatus::VT_RSSI_MIN, rssi_min);
+  }
+  #[inline]
+  pub fn add_rssi_max(&mut self, rssi_max: i16) {
+    self.fbb_.push_slot_always::<i16>(HardwareStatus::VT_RSSI_MAX, rssi_max);
   }
   #[inline]
   pub fn add_mcu_temp(&mut self, mcu_temp: f32) {
@@ -269,6 +306,8 @@ impl core::fmt::Debug for HardwareStatus<'_> {
       ds.field("error_status", &self.error_status());
       ds.field("ping", &self.ping());
       ds.field("rssi", &self.rssi());
+      ds.field("rssi_min", &self.rssi_min());
+      ds.field("rssi_max", &self.rssi_max());
       ds.field("mcu_temp", &self.mcu_temp());
       ds.field("battery_voltage", &self.battery_voltage());
       ds.field("battery_pct_estimate", &self.battery_pct_estimate());

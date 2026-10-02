@@ -12,14 +12,13 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_ARMS_MOUNTING_RESET_MODE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_ARMS_MOUNTING_RESET_MODE: u8 = 3;
+pub const ENUM_MAX_ARMS_MOUNTING_RESET_MODE: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_ARMS_MOUNTING_RESET_MODE: [ArmsMountingResetMode; 4] = [
+pub const ENUM_VALUES_ARMS_MOUNTING_RESET_MODE: [ArmsMountingResetMode; 3] = [
   ArmsMountingResetMode::BACK,
   ArmsMountingResetMode::FORWARD,
-  ArmsMountingResetMode::TPOSE_UP,
-  ArmsMountingResetMode::TPOSE_DOWN,
+  ArmsMountingResetMode::SIDE,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -27,30 +26,26 @@ pub const ENUM_VALUES_ARMS_MOUNTING_RESET_MODE: [ArmsMountingResetMode; 4] = [
 pub struct ArmsMountingResetMode(pub u8);
 #[allow(non_upper_case_globals)]
 impl ArmsMountingResetMode {
-  /// Upper arm going back and forearm going forward
+  /// Upper arm going back and forearm going forward.
   pub const BACK: Self = Self(0);
-  /// Arms going forward
+  /// Arms going forward.
   pub const FORWARD: Self = Self(1);
-  /// Arms going up to the sides into a tpose
-  pub const TPOSE_UP: Self = Self(2);
-  /// Arms going down to the sides from a tpose
-  pub const TPOSE_DOWN: Self = Self(3);
+  /// Arms going in T-pose.
+  pub const SIDE: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 3;
+  pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::BACK,
     Self::FORWARD,
-    Self::TPOSE_UP,
-    Self::TPOSE_DOWN,
+    Self::SIDE,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::BACK => Some("BACK"),
       Self::FORWARD => Some("FORWARD"),
-      Self::TPOSE_UP => Some("TPOSE_UP"),
-      Self::TPOSE_DOWN => Some("TPOSE_DOWN"),
+      Self::SIDE => Some("SIDE"),
       _ => None,
     }
   }

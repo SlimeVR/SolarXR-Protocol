@@ -15,17 +15,23 @@ public final class WifiProvisioningStatusResponse extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public WifiProvisioningStatusResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int status() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public solarxr_protocol.rpc.TrackerProvisioningState trackers(int j) { return trackers(new solarxr_protocol.rpc.TrackerProvisioningState(), j); }
+  public solarxr_protocol.rpc.TrackerProvisioningState trackers(solarxr_protocol.rpc.TrackerProvisioningState obj, int j) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public int trackersLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
+  public solarxr_protocol.rpc.TrackerProvisioningState.Vector trackersVector() { return trackersVector(new solarxr_protocol.rpc.TrackerProvisioningState.Vector()); }
+  public solarxr_protocol.rpc.TrackerProvisioningState.Vector trackersVector(solarxr_protocol.rpc.TrackerProvisioningState.Vector obj) { int o = __offset(4); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createWifiProvisioningStatusResponse(FlatBufferBuilder builder,
-      int status) {
+      int trackersOffset) {
     builder.startTable(1);
-    WifiProvisioningStatusResponse.addStatus(builder, status);
+    WifiProvisioningStatusResponse.addTrackers(builder, trackersOffset);
     return WifiProvisioningStatusResponse.endWifiProvisioningStatusResponse(builder);
   }
 
   public static void startWifiProvisioningStatusResponse(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(0, (byte) status, (byte) 0); }
+  public static void addTrackers(FlatBufferBuilder builder, int trackersOffset) { builder.addOffset(0, trackersOffset, 0); }
+  public static int createTrackersVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startTrackersVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endWifiProvisioningStatusResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -43,14 +49,22 @@ public final class WifiProvisioningStatusResponse extends Table {
     return _o;
   }
   public void unpackTo(WifiProvisioningStatusResponseT _o) {
-    int _oStatus = status();
-    _o.setStatus(_oStatus);
+    solarxr_protocol.rpc.TrackerProvisioningStateT[] _oTrackers = new solarxr_protocol.rpc.TrackerProvisioningStateT[trackersLength()];
+    for (int _j = 0; _j < trackersLength(); ++_j) {_oTrackers[_j] = (trackers(_j) != null ? trackers(_j).unpack() : null);}
+    _o.setTrackers(_oTrackers);
   }
   public static int pack(FlatBufferBuilder builder, WifiProvisioningStatusResponseT _o) {
     if (_o == null) return 0;
+    int _trackers = 0;
+    if (_o.getTrackers() != null) {
+      int[] __trackers = new int[_o.getTrackers().length];
+      int _j = 0;
+      for (solarxr_protocol.rpc.TrackerProvisioningStateT _e : _o.getTrackers()) { __trackers[_j] = solarxr_protocol.rpc.TrackerProvisioningState.pack(builder, _e); _j++;}
+      _trackers = createTrackersVector(builder, __trackers);
+    }
     return createWifiProvisioningStatusResponse(
       builder,
-      _o.getStatus());
+      _trackers);
   }
 }
 

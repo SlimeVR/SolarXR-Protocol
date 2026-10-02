@@ -53,7 +53,7 @@ impl<'a> Keybind<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<KeybindId>(Keybind::VT_KEYBIND_ID, Some(KeybindId::FULL_RESET)).unwrap()}
+    unsafe { self._tab.get::<KeybindId>(Keybind::VT_KEYBIND_ID, Some(KeybindId::NONE)).unwrap()}
   }
   #[inline]
   pub fn keybind_name_id(&self) -> Option<&'a str> {
@@ -103,7 +103,7 @@ impl<'a> Default for KeybindArgs<'a> {
   #[inline]
   fn default() -> Self {
     KeybindArgs {
-      keybind_id: KeybindId::FULL_RESET,
+      keybind_id: KeybindId::NONE,
       keybind_name_id: None,
       keybind_value: None,
       keybind_delay: 0.0,
@@ -118,7 +118,7 @@ pub struct KeybindBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> KeybindBuilder<'a, 'b> {
   #[inline]
   pub fn add_keybind_id(&mut self, keybind_id: KeybindId) {
-    self.fbb_.push_slot::<KeybindId>(Keybind::VT_KEYBIND_ID, keybind_id, KeybindId::FULL_RESET);
+    self.fbb_.push_slot::<KeybindId>(Keybind::VT_KEYBIND_ID, keybind_id, KeybindId::NONE);
   }
   #[inline]
   pub fn add_keybind_name_id(&mut self, keybind_name_id: flatbuffers::WIPOffset<&'b  str>) {

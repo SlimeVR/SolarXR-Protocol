@@ -1,0 +1,78 @@
+namespace solarxr_protocol.rpc;
+
+enum SerialDeviceType: uint8 {
+    /// A USB serial port whose vendor and product id are not recognized
+    UNKNOWN = 0,
+    ESP_TRACKER = 1,
+    HID_RECEIVER = 2,
+    HID_TRACKER = 3,
+}
+
+/// State of the console the server keeps on a serial port
+enum SerialConsoleStatus: uint8 {
+    /// The port is open and logs are streaming
+    OPEN = 0,
+    /// The port is not present, the console resumes when it appears
+    WAITING = 1,
+    /// The port is in use by a firmware flash, the console resumes afterwards
+    BUSY = 2,
+    /// The port is present and the server is opening it
+    OPENING = 3,
+    /// The port is present but could not be opened
+    OPEN_FAILED = 4,
+}
+
+table SerialDevice {
+    port: string;
+    name: string;
+    type: SerialDeviceType;
+    vendor_id: uint16;
+    product_id: uint16;
+    serial_number: string;
+}
+
+table OpenSerialRequest {
+    /// Location of the port to open, as listed in SerialDevicesResponse
+    port: string;
+}
+
+table CloseSerialRequest {}
+
+table SerialUpdateResponse {
+    status: SerialConsoleStatus;
+    /// The port this console is on, null while the port is not present
+    device: SerialDevice;
+    /// Newline terminated log lines, one or more per message
+    log: string;
+}
+
+/// Reboots the tracker connected to the serial monitor
+table SerialTrackerRebootRequest {}
+
+/// Sends the GET INFO cmd to the current tracker on the serial monitor
+table SerialTrackerGetInfoRequest {}
+
+/// Sends the FRST cmd to the currently connected Tracker over the Serial Monitor
+table SerialTrackerFactoryResetRequest {}
+
+/// Sends a custom cmd to the currently connected Tracker over the Serial Monitor
+table SerialTrackerCustomCommandRequest {
+    command: string;
+}
+
+table SerialDevicesRequest {}
+
+table SerialDevicesResponse {
+    devices: [SerialDevice];
+}
+
+/// Sends the GET WIFISCAN cmd to the current tracker on the serial monitor
+table SerialTrackerGetWifiScanRequest {}
+
+table HIDSettingsRequest {}
+table HIDSettingsResponse {
+    trackers_over_hid: bool;
+}
+table ChangeHIDSettingsRequest {
+    trackers_over_hid: bool;
+}

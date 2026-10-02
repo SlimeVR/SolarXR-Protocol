@@ -15,20 +15,20 @@ public final class UserHeightRecordingStatusResponse extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public UserHeightRecordingStatusResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public float hmdHeight() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float headHeight() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
   public int status() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createUserHeightRecordingStatusResponse(FlatBufferBuilder builder,
-      float hmdHeight,
+      float headHeight,
       int status) {
     builder.startTable(2);
-    UserHeightRecordingStatusResponse.addHmdHeight(builder, hmdHeight);
+    UserHeightRecordingStatusResponse.addHeadHeight(builder, headHeight);
     UserHeightRecordingStatusResponse.addStatus(builder, status);
     return UserHeightRecordingStatusResponse.endUserHeightRecordingStatusResponse(builder);
   }
 
   public static void startUserHeightRecordingStatusResponse(FlatBufferBuilder builder) { builder.startTable(2); }
-  public static void addHmdHeight(FlatBufferBuilder builder, float hmdHeight) { builder.addFloat(0, hmdHeight, 0.0f); }
+  public static void addHeadHeight(FlatBufferBuilder builder, float headHeight) { builder.addFloat(0, headHeight, 0.0f); }
   public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(1, (byte) status, (byte) 0); }
   public static int endUserHeightRecordingStatusResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
@@ -47,8 +47,8 @@ public final class UserHeightRecordingStatusResponse extends Table {
     return _o;
   }
   public void unpackTo(UserHeightRecordingStatusResponseT _o) {
-    float _oHmdHeight = hmdHeight();
-    _o.setHmdHeight(_oHmdHeight);
+    float _oHeadHeight = headHeight();
+    _o.setHeadHeight(_oHeadHeight);
     int _oStatus = status();
     _o.setStatus(_oStatus);
   }
@@ -56,7 +56,7 @@ public final class UserHeightRecordingStatusResponse extends Table {
     if (_o == null) return 0;
     return createUserHeightRecordingStatusResponse(
       builder,
-      _o.getHmdHeight(),
+      _o.getHeadHeight(),
       _o.getStatus());
   }
 }
