@@ -167,8 +167,8 @@ pub mod solarxr_protocol {
     pub use self::step_mounting_status_generated::*;
     mod reset_detail_generated;
     pub use self::reset_detail_generated::*;
-    mod arms_reset_mode_generated;
-    pub use self::arms_reset_mode_generated::*;
+    mod arms_mounting_reset_mode_generated;
+    pub use self::arms_mounting_reset_mode_generated::*;
     mod serial_device_type_generated;
     pub use self::serial_device_type_generated::*;
     mod serial_console_status_generated;

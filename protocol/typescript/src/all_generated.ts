@@ -52,7 +52,7 @@ export { UpdateTrackerBattery, UpdateTrackerBatteryT } from './solarxr-protocol/
 export { UpdateTrackerPosition, UpdateTrackerPositionT } from './solarxr-protocol/driver-protocol/update-tracker-position.js';
 export { UpdateTrackerStatus, UpdateTrackerStatusT } from './solarxr-protocol/driver-protocol/update-tracker-status.js';
 export { AddUnknownDeviceRequest, AddUnknownDeviceRequestT } from './solarxr-protocol/rpc/add-unknown-device-request.js';
-export { ArmsResetMode } from './solarxr-protocol/rpc/arms-reset-mode.js';
+export { ArmsMountingResetMode } from './solarxr-protocol/rpc/arms-mounting-reset-mode.js';
 export { AutoBoneApplyRequest, AutoBoneApplyRequestT } from './solarxr-protocol/rpc/auto-bone-apply-request.js';
 export { AutoBoneCancelRecordingRequest, AutoBoneCancelRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-cancel-recording-request.js';
 export { AutoBoneEpochResponse, AutoBoneEpochResponseT } from './solarxr-protocol/rpc/auto-bone-epoch-response.js';

@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 public class ResetsSettingsResponseT {
   private boolean resetMountingFeet;
-  private int armsResetMode;
+  private int armsMountingResetMode;
   private float yawResetSmoothTime;
   private boolean saveMountingReset;
   private boolean resetReliableReferenceAttitude;
@@ -19,9 +19,9 @@ public class ResetsSettingsResponseT {
 
   public void setResetMountingFeet(boolean resetMountingFeet) { this.resetMountingFeet = resetMountingFeet; }
 
-  public int getArmsResetMode() { return armsResetMode; }
+  public int getArmsMountingResetMode() { return armsMountingResetMode; }
 
-  public void setArmsResetMode(int armsResetMode) { this.armsResetMode = armsResetMode; }
+  public void setArmsMountingResetMode(int armsMountingResetMode) { this.armsMountingResetMode = armsMountingResetMode; }
 
   public float getYawResetSmoothTime() { return yawResetSmoothTime; }
 
@@ -42,7 +42,7 @@ public class ResetsSettingsResponseT {
 
   public ResetsSettingsResponseT() {
     this.resetMountingFeet = false;
-    this.armsResetMode = 0;
+    this.armsMountingResetMode = 0;
     this.yawResetSmoothTime = 0.0f;
     this.saveMountingReset = false;
     this.resetReliableReferenceAttitude = false;

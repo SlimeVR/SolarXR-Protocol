@@ -19,7 +19,7 @@ public final class ChangeResetsSettingsRequest extends Table {
    * Makes it so feet will be always be mounting reset even when passing no BodyPart
    */
   public boolean resetMountingFeet() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public int armsResetMode() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int armsMountingResetMode() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
    */
@@ -39,7 +39,7 @@ public final class ChangeResetsSettingsRequest extends Table {
 
   public static int createChangeResetsSettingsRequest(FlatBufferBuilder builder,
       boolean resetMountingFeet,
-      int armsResetMode,
+      int armsMountingResetMode,
       float yawResetSmoothTime,
       boolean saveMountingReset,
       boolean resetReliableReferenceAttitude,
@@ -49,14 +49,14 @@ public final class ChangeResetsSettingsRequest extends Table {
     ChangeResetsSettingsRequest.addMountingMethod(builder, mountingMethod);
     ChangeResetsSettingsRequest.addResetReliableReferenceAttitude(builder, resetReliableReferenceAttitude);
     ChangeResetsSettingsRequest.addSaveMountingReset(builder, saveMountingReset);
-    ChangeResetsSettingsRequest.addArmsResetMode(builder, armsResetMode);
+    ChangeResetsSettingsRequest.addArmsMountingResetMode(builder, armsMountingResetMode);
     ChangeResetsSettingsRequest.addResetMountingFeet(builder, resetMountingFeet);
     return ChangeResetsSettingsRequest.endChangeResetsSettingsRequest(builder);
   }
 
   public static void startChangeResetsSettingsRequest(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addResetMountingFeet(FlatBufferBuilder builder, boolean resetMountingFeet) { builder.addBoolean(0, resetMountingFeet, false); }
-  public static void addArmsResetMode(FlatBufferBuilder builder, int armsResetMode) { builder.addByte(1, (byte) armsResetMode, (byte) 0); }
+  public static void addArmsMountingResetMode(FlatBufferBuilder builder, int armsMountingResetMode) { builder.addByte(1, (byte) armsMountingResetMode, (byte) 0); }
   public static void addYawResetSmoothTime(FlatBufferBuilder builder, float yawResetSmoothTime) { builder.addFloat(2, yawResetSmoothTime, 0.0f); }
   public static void addSaveMountingReset(FlatBufferBuilder builder, boolean saveMountingReset) { builder.addBoolean(3, saveMountingReset, false); }
   public static void addResetReliableReferenceAttitude(FlatBufferBuilder builder, boolean resetReliableReferenceAttitude) { builder.addBoolean(4, resetReliableReferenceAttitude, false); }
@@ -80,8 +80,8 @@ public final class ChangeResetsSettingsRequest extends Table {
   public void unpackTo(ChangeResetsSettingsRequestT _o) {
     boolean _oResetMountingFeet = resetMountingFeet();
     _o.setResetMountingFeet(_oResetMountingFeet);
-    int _oArmsResetMode = armsResetMode();
-    _o.setArmsResetMode(_oArmsResetMode);
+    int _oArmsMountingResetMode = armsMountingResetMode();
+    _o.setArmsMountingResetMode(_oArmsMountingResetMode);
     float _oYawResetSmoothTime = yawResetSmoothTime();
     _o.setYawResetSmoothTime(_oYawResetSmoothTime);
     boolean _oSaveMountingReset = saveMountingReset();
@@ -96,7 +96,7 @@ public final class ChangeResetsSettingsRequest extends Table {
     return createChangeResetsSettingsRequest(
       builder,
       _o.getResetMountingFeet(),
-      _o.getArmsResetMode(),
+      _o.getArmsMountingResetMode(),
       _o.getYawResetSmoothTime(),
       _o.getSaveMountingReset(),
       _o.getResetReliableReferenceAttitude(),

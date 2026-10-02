@@ -3,7 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { MountingMethod } from '../../solarxr-protocol/datatypes/mounting-method.js';
-import { ArmsResetMode } from '../../solarxr-protocol/rpc/arms-reset-mode.js';
+import { ArmsMountingResetMode } from '../../solarxr-protocol/rpc/arms-mounting-reset-mode.js';
 
 
 export class ResetsSettingsResponse implements flatbuffers.IUnpackableObject<ResetsSettingsResponseT> {
@@ -32,9 +32,9 @@ resetMountingFeet():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-armsResetMode():ArmsResetMode {
+armsMountingResetMode():ArmsMountingResetMode {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsResetMode.BACK;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsMountingResetMode.BACK;
 }
 
 /**
@@ -77,8 +77,8 @@ static addResetMountingFeet(builder:flatbuffers.Builder, resetMountingFeet:boole
   builder.addFieldInt8(0, +resetMountingFeet, +false);
 }
 
-static addArmsResetMode(builder:flatbuffers.Builder, armsResetMode:ArmsResetMode) {
-  builder.addFieldInt8(1, armsResetMode, ArmsResetMode.BACK);
+static addArmsMountingResetMode(builder:flatbuffers.Builder, armsMountingResetMode:ArmsMountingResetMode) {
+  builder.addFieldInt8(1, armsMountingResetMode, ArmsMountingResetMode.BACK);
 }
 
 static addYawResetSmoothTime(builder:flatbuffers.Builder, yawResetSmoothTime:number) {
@@ -102,10 +102,10 @@ static endResetsSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset
   return offset;
 }
 
-static createResetsSettingsResponse(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsResetMode:ArmsResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetReliableReferenceAttitude:boolean, mountingMethod:MountingMethod):flatbuffers.Offset {
+static createResetsSettingsResponse(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsMountingResetMode:ArmsMountingResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetReliableReferenceAttitude:boolean, mountingMethod:MountingMethod):flatbuffers.Offset {
   ResetsSettingsResponse.startResetsSettingsResponse(builder);
   ResetsSettingsResponse.addResetMountingFeet(builder, resetMountingFeet);
-  ResetsSettingsResponse.addArmsResetMode(builder, armsResetMode);
+  ResetsSettingsResponse.addArmsMountingResetMode(builder, armsMountingResetMode);
   ResetsSettingsResponse.addYawResetSmoothTime(builder, yawResetSmoothTime);
   ResetsSettingsResponse.addSaveMountingReset(builder, saveMountingReset);
   ResetsSettingsResponse.addResetReliableReferenceAttitude(builder, resetReliableReferenceAttitude);
@@ -116,7 +116,7 @@ static createResetsSettingsResponse(builder:flatbuffers.Builder, resetMountingFe
 unpack(): ResetsSettingsResponseT {
   return new ResetsSettingsResponseT(
     this.resetMountingFeet(),
-    this.armsResetMode(),
+    this.armsMountingResetMode(),
     this.yawResetSmoothTime(),
     this.saveMountingReset(),
     this.resetReliableReferenceAttitude(),
@@ -127,7 +127,7 @@ unpack(): ResetsSettingsResponseT {
 
 unpackTo(_o: ResetsSettingsResponseT): void {
   _o.resetMountingFeet = this.resetMountingFeet();
-  _o.armsResetMode = this.armsResetMode();
+  _o.armsMountingResetMode = this.armsMountingResetMode();
   _o.yawResetSmoothTime = this.yawResetSmoothTime();
   _o.saveMountingReset = this.saveMountingReset();
   _o.resetReliableReferenceAttitude = this.resetReliableReferenceAttitude();
@@ -138,7 +138,7 @@ unpackTo(_o: ResetsSettingsResponseT): void {
 export class ResetsSettingsResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetMountingFeet: boolean = false,
-  public armsResetMode: ArmsResetMode = ArmsResetMode.BACK,
+  public armsMountingResetMode: ArmsMountingResetMode = ArmsMountingResetMode.BACK,
   public yawResetSmoothTime: number = 0.0,
   public saveMountingReset: boolean = false,
   public resetReliableReferenceAttitude: boolean = false,
@@ -149,7 +149,7 @@ constructor(
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ResetsSettingsResponse.createResetsSettingsResponse(builder,
     this.resetMountingFeet,
-    this.armsResetMode,
+    this.armsMountingResetMode,
     this.yawResetSmoothTime,
     this.saveMountingReset,
     this.resetReliableReferenceAttitude,
