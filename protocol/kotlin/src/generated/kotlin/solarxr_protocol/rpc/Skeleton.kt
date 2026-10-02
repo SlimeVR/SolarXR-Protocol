@@ -303,11 +303,10 @@ public data class SkeletonToggles(
   public val mocapMode: Boolean? = null,
   public val useTrackerPositions: Boolean? = null,
   public val enforceConstraints: Boolean? = null,
-  public val correctConstraints: Boolean? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(8)
+    builder.startTable(7)
     if (floorClip != null) { builder.forceDefaults(true); builder.addBoolean(0, floorClip, false); builder.forceDefaults(false) }
     if (skatingCorrection != null) { builder.forceDefaults(true); builder.addBoolean(1, skatingCorrection, false); builder.forceDefaults(false) }
     if (toeSnap != null) { builder.forceDefaults(true); builder.addBoolean(2, toeSnap, false); builder.forceDefaults(false) }
@@ -315,7 +314,6 @@ public data class SkeletonToggles(
     if (mocapMode != null) { builder.forceDefaults(true); builder.addBoolean(4, mocapMode, false); builder.forceDefaults(false) }
     if (useTrackerPositions != null) { builder.forceDefaults(true); builder.addBoolean(5, useTrackerPositions, false); builder.forceDefaults(false) }
     if (enforceConstraints != null) { builder.forceDefaults(true); builder.addBoolean(6, enforceConstraints, false); builder.forceDefaults(false) }
-    if (correctConstraints != null) { builder.forceDefaults(true); builder.addBoolean(7, correctConstraints, false); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -331,7 +329,6 @@ public data class SkeletonToggles(
       val __offset_mocapMode = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_useTrackerPositions = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
       val __offset_enforceConstraints = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_correctConstraints = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
 
       return SkeletonToggles(
               floorClip = if (__offset_floorClip != 0) bb.get(tableOffset + __offset_floorClip) != 0.toByte() else null,
@@ -340,8 +337,7 @@ public data class SkeletonToggles(
               footPlant = if (__offset_footPlant != 0) bb.get(tableOffset + __offset_footPlant) != 0.toByte() else null,
               mocapMode = if (__offset_mocapMode != 0) bb.get(tableOffset + __offset_mocapMode) != 0.toByte() else null,
               useTrackerPositions = if (__offset_useTrackerPositions != 0) bb.get(tableOffset + __offset_useTrackerPositions) != 0.toByte() else null,
-              enforceConstraints = if (__offset_enforceConstraints != 0) bb.get(tableOffset + __offset_enforceConstraints) != 0.toByte() else null,
-              correctConstraints = if (__offset_correctConstraints != 0) bb.get(tableOffset + __offset_correctConstraints) != 0.toByte() else null
+              enforceConstraints = if (__offset_enforceConstraints != 0) bb.get(tableOffset + __offset_enforceConstraints) != 0.toByte() else null
           )
     }
   }

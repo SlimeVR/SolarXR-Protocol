@@ -60,13 +60,8 @@ enforceConstraints():boolean|null {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
 }
 
-correctConstraints():boolean|null {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
-}
-
 static startSkeletonToggles(builder:flatbuffers.Builder) {
-  builder.startObject(8);
+  builder.startObject(7);
 }
 
 static addFloorClip(builder:flatbuffers.Builder, floorClip:boolean) {
@@ -97,16 +92,12 @@ static addEnforceConstraints(builder:flatbuffers.Builder, enforceConstraints:boo
   builder.addFieldInt8(6, +enforceConstraints, 0);
 }
 
-static addCorrectConstraints(builder:flatbuffers.Builder, correctConstraints:boolean) {
-  builder.addFieldInt8(7, +correctConstraints, 0);
-}
-
 static endSkeletonToggles(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createSkeletonToggles(builder:flatbuffers.Builder, floorClip:boolean|null, skatingCorrection:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, mocapMode:boolean|null, useTrackerPositions:boolean|null, enforceConstraints:boolean|null, correctConstraints:boolean|null):flatbuffers.Offset {
+static createSkeletonToggles(builder:flatbuffers.Builder, floorClip:boolean|null, skatingCorrection:boolean|null, toeSnap:boolean|null, footPlant:boolean|null, mocapMode:boolean|null, useTrackerPositions:boolean|null, enforceConstraints:boolean|null):flatbuffers.Offset {
   SkeletonToggles.startSkeletonToggles(builder);
   if (floorClip !== null)
     SkeletonToggles.addFloorClip(builder, floorClip);
@@ -122,8 +113,6 @@ static createSkeletonToggles(builder:flatbuffers.Builder, floorClip:boolean|null
     SkeletonToggles.addUseTrackerPositions(builder, useTrackerPositions);
   if (enforceConstraints !== null)
     SkeletonToggles.addEnforceConstraints(builder, enforceConstraints);
-  if (correctConstraints !== null)
-    SkeletonToggles.addCorrectConstraints(builder, correctConstraints);
   return SkeletonToggles.endSkeletonToggles(builder);
 }
 
@@ -135,8 +124,7 @@ unpack(): SkeletonTogglesT {
     this.footPlant(),
     this.mocapMode(),
     this.useTrackerPositions(),
-    this.enforceConstraints(),
-    this.correctConstraints()
+    this.enforceConstraints()
   );
 }
 
@@ -149,7 +137,6 @@ unpackTo(_o: SkeletonTogglesT): void {
   _o.mocapMode = this.mocapMode();
   _o.useTrackerPositions = this.useTrackerPositions();
   _o.enforceConstraints = this.enforceConstraints();
-  _o.correctConstraints = this.correctConstraints();
 }
 }
 
@@ -161,8 +148,7 @@ constructor(
   public footPlant: boolean|null = null,
   public mocapMode: boolean|null = null,
   public useTrackerPositions: boolean|null = null,
-  public enforceConstraints: boolean|null = null,
-  public correctConstraints: boolean|null = null
+  public enforceConstraints: boolean|null = null
 ){}
 
 
@@ -174,8 +160,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.footPlant,
     this.mocapMode,
     this.useTrackerPositions,
-    this.enforceConstraints,
-    this.correctConstraints
+    this.enforceConstraints
   );
 }
 }

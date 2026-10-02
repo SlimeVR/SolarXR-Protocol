@@ -33,7 +33,6 @@ impl<'a> SkeletonToggles<'a> {
   pub const VT_MOCAP_MODE: flatbuffers::VOffsetT = 12;
   pub const VT_USE_TRACKER_POSITIONS: flatbuffers::VOffsetT = 14;
   pub const VT_ENFORCE_CONSTRAINTS: flatbuffers::VOffsetT = 16;
-  pub const VT_CORRECT_CONSTRAINTS: flatbuffers::VOffsetT = 18;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -45,7 +44,6 @@ impl<'a> SkeletonToggles<'a> {
     args: &'args SkeletonTogglesArgs
   ) -> flatbuffers::WIPOffset<SkeletonToggles<'bldr>> {
     let mut builder = SkeletonTogglesBuilder::new(_fbb);
-    if let Some(x) = args.correct_constraints { builder.add_correct_constraints(x); }
     if let Some(x) = args.enforce_constraints { builder.add_enforce_constraints(x); }
     if let Some(x) = args.use_tracker_positions { builder.add_use_tracker_positions(x); }
     if let Some(x) = args.mocap_mode { builder.add_mocap_mode(x); }
@@ -106,13 +104,6 @@ impl<'a> SkeletonToggles<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(SkeletonToggles::VT_ENFORCE_CONSTRAINTS, None)}
   }
-  #[inline]
-  pub fn correct_constraints(&self) -> Option<bool> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(SkeletonToggles::VT_CORRECT_CONSTRAINTS, None)}
-  }
 }
 
 impl flatbuffers::Verifiable for SkeletonToggles<'_> {
@@ -129,7 +120,6 @@ impl flatbuffers::Verifiable for SkeletonToggles<'_> {
      .visit_field::<bool>("mocap_mode", Self::VT_MOCAP_MODE, false)?
      .visit_field::<bool>("use_tracker_positions", Self::VT_USE_TRACKER_POSITIONS, false)?
      .visit_field::<bool>("enforce_constraints", Self::VT_ENFORCE_CONSTRAINTS, false)?
-     .visit_field::<bool>("correct_constraints", Self::VT_CORRECT_CONSTRAINTS, false)?
      .finish();
     Ok(())
   }
@@ -142,7 +132,6 @@ pub struct SkeletonTogglesArgs {
     pub mocap_mode: Option<bool>,
     pub use_tracker_positions: Option<bool>,
     pub enforce_constraints: Option<bool>,
-    pub correct_constraints: Option<bool>,
 }
 impl<'a> Default for SkeletonTogglesArgs {
   #[inline]
@@ -155,7 +144,6 @@ impl<'a> Default for SkeletonTogglesArgs {
       mocap_mode: None,
       use_tracker_positions: None,
       enforce_constraints: None,
-      correct_constraints: None,
     }
   }
 }
@@ -194,10 +182,6 @@ impl<'a: 'b, 'b> SkeletonTogglesBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<bool>(SkeletonToggles::VT_ENFORCE_CONSTRAINTS, enforce_constraints);
   }
   #[inline]
-  pub fn add_correct_constraints(&mut self, correct_constraints: bool) {
-    self.fbb_.push_slot_always::<bool>(SkeletonToggles::VT_CORRECT_CONSTRAINTS, correct_constraints);
-  }
-  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SkeletonTogglesBuilder<'a, 'b> {
     let start = _fbb.start_table();
     SkeletonTogglesBuilder {
@@ -222,7 +206,6 @@ impl core::fmt::Debug for SkeletonToggles<'_> {
       ds.field("mocap_mode", &self.mocap_mode());
       ds.field("use_tracker_positions", &self.use_tracker_positions());
       ds.field("enforce_constraints", &self.enforce_constraints());
-      ds.field("correct_constraints", &self.correct_constraints());
       ds.finish()
   }
 }
