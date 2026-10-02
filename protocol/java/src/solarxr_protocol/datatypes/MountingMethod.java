@@ -5,11 +5,12 @@ package solarxr_protocol.datatypes;
 @SuppressWarnings("unused")
 public final class MountingMethod {
   private MountingMethod() { }
-  public static final int MANUAL = 0;
-  public static final int POSE = 1;
-  public static final int STEP = 2;
+  public static final int UNKNOWN = 0;
+  public static final int MANUAL = 1;
+  public static final int POSE = 2;
+  public static final int STEP = 3;
 
-  public static final String[] names = { "MANUAL", "POSE", "STEP", };
+  public static final String[] names = { "UNKNOWN", "MANUAL", "POSE", "STEP", };
 
   public static String name(int e) { return names[e]; }
 }

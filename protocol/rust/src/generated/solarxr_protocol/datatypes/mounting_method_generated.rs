@@ -12,10 +12,11 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_MOUNTING_METHOD: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_MOUNTING_METHOD: u8 = 2;
+pub const ENUM_MAX_MOUNTING_METHOD: u8 = 3;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_MOUNTING_METHOD: [MountingMethod; 3] = [
+pub const ENUM_VALUES_MOUNTING_METHOD: [MountingMethod; 4] = [
+  MountingMethod::UNKNOWN,
   MountingMethod::MANUAL,
   MountingMethod::POSE,
   MountingMethod::STEP,
@@ -26,13 +27,15 @@ pub const ENUM_VALUES_MOUNTING_METHOD: [MountingMethod; 3] = [
 pub struct MountingMethod(pub u8);
 #[allow(non_upper_case_globals)]
 impl MountingMethod {
-  pub const MANUAL: Self = Self(0);
-  pub const POSE: Self = Self(1);
-  pub const STEP: Self = Self(2);
+  pub const UNKNOWN: Self = Self(0);
+  pub const MANUAL: Self = Self(1);
+  pub const POSE: Self = Self(2);
+  pub const STEP: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 2;
+  pub const ENUM_MAX: u8 = 3;
   pub const ENUM_VALUES: &'static [Self] = &[
+    Self::UNKNOWN,
     Self::MANUAL,
     Self::POSE,
     Self::STEP,
@@ -40,6 +43,7 @@ impl MountingMethod {
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
+      Self::UNKNOWN => Some("UNKNOWN"),
       Self::MANUAL => Some("MANUAL"),
       Self::POSE => Some("POSE"),
       Self::STEP => Some("STEP"),

@@ -91,13 +91,13 @@ impl<'a> ChangeResetsSettingsRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(ChangeResetsSettingsRequest::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, Some(false)).unwrap()}
   }
-  /// How a MOUNTING reset calibrates the trackers
+  /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
   #[inline]
   pub fn mounting_method(&self) -> super::datatypes::MountingMethod {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::datatypes::MountingMethod>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, Some(super::datatypes::MountingMethod::MANUAL)).unwrap()}
+    unsafe { self._tab.get::<super::datatypes::MountingMethod>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, Some(super::datatypes::MountingMethod::UNKNOWN)).unwrap()}
   }
 }
 
@@ -135,7 +135,7 @@ impl<'a> Default for ChangeResetsSettingsRequestArgs {
       yaw_reset_smooth_time: 0.0,
       save_mounting_reset: false,
       reset_reliable_reference_attitude: false,
-      mounting_method: super::datatypes::MountingMethod::MANUAL,
+      mounting_method: super::datatypes::MountingMethod::UNKNOWN,
     }
   }
 }
@@ -167,7 +167,7 @@ impl<'a: 'b, 'b> ChangeResetsSettingsRequestBuilder<'a, 'b> {
   }
   #[inline]
   pub fn add_mounting_method(&mut self, mounting_method: super::datatypes::MountingMethod) {
-    self.fbb_.push_slot::<super::datatypes::MountingMethod>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, mounting_method, super::datatypes::MountingMethod::MANUAL);
+    self.fbb_.push_slot::<super::datatypes::MountingMethod>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, mounting_method, super::datatypes::MountingMethod::UNKNOWN);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeResetsSettingsRequestBuilder<'a, 'b> {

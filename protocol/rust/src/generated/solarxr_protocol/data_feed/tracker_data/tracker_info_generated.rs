@@ -134,7 +134,7 @@ impl<'a> TrackerInfo<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::super::datatypes::MountingMethod>(TrackerInfo::VT_LAST_MOUNTING_METHOD, Some(super::super::datatypes::MountingMethod::MANUAL)).unwrap()}
+    unsafe { self._tab.get::<super::super::datatypes::MountingMethod>(TrackerInfo::VT_LAST_MOUNTING_METHOD, Some(super::super::datatypes::MountingMethod::UNKNOWN)).unwrap()}
   }
   /// Status of the tracker's magnetometer
   #[inline]
@@ -211,7 +211,7 @@ impl<'a> Default for TrackerInfoArgs<'a> {
       mounting_reset_orientation: None,
       display_name: None,
       custom_name: None,
-      last_mounting_method: super::super::datatypes::MountingMethod::MANUAL,
+      last_mounting_method: super::super::datatypes::MountingMethod::UNKNOWN,
       magnetometer: super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED,
       data_type: super::super::datatypes::hardware_info::TrackerDataType::ROTATION,
       bone_offset: None,
@@ -258,7 +258,7 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
   }
   #[inline]
   pub fn add_last_mounting_method(&mut self, last_mounting_method: super::super::datatypes::MountingMethod) {
-    self.fbb_.push_slot::<super::super::datatypes::MountingMethod>(TrackerInfo::VT_LAST_MOUNTING_METHOD, last_mounting_method, super::super::datatypes::MountingMethod::MANUAL);
+    self.fbb_.push_slot::<super::super::datatypes::MountingMethod>(TrackerInfo::VT_LAST_MOUNTING_METHOD, last_mounting_method, super::super::datatypes::MountingMethod::UNKNOWN);
   }
   #[inline]
   pub fn add_magnetometer(&mut self, magnetometer: super::super::datatypes::MagnetometerStatus) {

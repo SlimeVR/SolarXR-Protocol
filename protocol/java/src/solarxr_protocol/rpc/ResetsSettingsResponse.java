@@ -33,7 +33,7 @@ public final class ResetsSettingsResponse extends Table {
    */
   public boolean resetReliableReferenceAttitude() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   /**
-   * How a MOUNTING reset calibrates the trackers
+   * How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
    */
   public int mountingMethod() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 

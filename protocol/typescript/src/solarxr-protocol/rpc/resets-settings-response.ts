@@ -62,11 +62,11 @@ resetReliableReferenceAttitude():boolean {
 }
 
 /**
- * How a MOUNTING reset calibrates the trackers
+ * How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
  */
 mountingMethod():MountingMethod {
   const offset = this.bb!.__offset(this.bb_pos, 14);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : MountingMethod.MANUAL;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : MountingMethod.UNKNOWN;
 }
 
 static startResetsSettingsResponse(builder:flatbuffers.Builder) {
@@ -94,7 +94,7 @@ static addResetReliableReferenceAttitude(builder:flatbuffers.Builder, resetRelia
 }
 
 static addMountingMethod(builder:flatbuffers.Builder, mountingMethod:MountingMethod) {
-  builder.addFieldInt8(5, mountingMethod, MountingMethod.MANUAL);
+  builder.addFieldInt8(5, mountingMethod, MountingMethod.UNKNOWN);
 }
 
 static endResetsSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -142,7 +142,7 @@ constructor(
   public yawResetSmoothTime: number = 0.0,
   public saveMountingReset: boolean = false,
   public resetReliableReferenceAttitude: boolean = false,
-  public mountingMethod: MountingMethod = MountingMethod.MANUAL
+  public mountingMethod: MountingMethod = MountingMethod.UNKNOWN
 ){}
 
 

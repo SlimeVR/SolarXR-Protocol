@@ -977,15 +977,17 @@ inline const char *EnumNameMagnetometerStatus(MagnetometerStatus e) {
 }
 
 enum class MountingMethod : uint8_t {
-  MANUAL = 0,
-  POSE = 1,
-  STEP = 2,
-  MIN = MANUAL,
+  UNKNOWN = 0,
+  MANUAL = 1,
+  POSE = 2,
+  STEP = 3,
+  MIN = UNKNOWN,
   MAX = STEP
 };
 
-inline const MountingMethod (&EnumValuesMountingMethod())[3] {
+inline const MountingMethod (&EnumValuesMountingMethod())[4] {
   static const MountingMethod values[] = {
+    MountingMethod::UNKNOWN,
     MountingMethod::MANUAL,
     MountingMethod::POSE,
     MountingMethod::STEP
@@ -994,7 +996,8 @@ inline const MountingMethod (&EnumValuesMountingMethod())[3] {
 }
 
 inline const char * const *EnumNamesMountingMethod() {
-  static const char * const names[4] = {
+  static const char * const names[5] = {
+    "UNKNOWN",
     "MANUAL",
     "POSE",
     "STEP",
@@ -1004,7 +1007,7 @@ inline const char * const *EnumNamesMountingMethod() {
 }
 
 inline const char *EnumNameMountingMethod(MountingMethod e) {
-  if (flatbuffers::IsOutRange(e, MountingMethod::MANUAL, MountingMethod::STEP)) return "";
+  if (flatbuffers::IsOutRange(e, MountingMethod::UNKNOWN, MountingMethod::STEP)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMountingMethod()[index];
 }
@@ -2567,11 +2570,12 @@ enum class TrackingChecklistStepId : uint8_t {
   STEAMVR_HANDS_ENABLED = 11,
   STANDABLE_INSTALLED = 12,
   VRCHAT_OSC_TRACKING_DISABLED = 13,
+  MOUNTING_METHOD = 14,
   MIN = UNKNOWN,
-  MAX = VRCHAT_OSC_TRACKING_DISABLED
+  MAX = MOUNTING_METHOD
 };
 
-inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[14] {
+inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[15] {
   static const TrackingChecklistStepId values[] = {
     TrackingChecklistStepId::UNKNOWN,
     TrackingChecklistStepId::TRACKERS_REST_CALIBRATION,
@@ -2586,13 +2590,14 @@ inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[14] 
     TrackingChecklistStepId::STAY_ALIGNED_CONFIGURED,
     TrackingChecklistStepId::STEAMVR_HANDS_ENABLED,
     TrackingChecklistStepId::STANDABLE_INSTALLED,
-    TrackingChecklistStepId::VRCHAT_OSC_TRACKING_DISABLED
+    TrackingChecklistStepId::VRCHAT_OSC_TRACKING_DISABLED,
+    TrackingChecklistStepId::MOUNTING_METHOD
   };
   return values;
 }
 
 inline const char * const *EnumNamesTrackingChecklistStepId() {
-  static const char * const names[15] = {
+  static const char * const names[16] = {
     "UNKNOWN",
     "TRACKERS_REST_CALIBRATION",
     "FULL_RESET",
@@ -2607,13 +2612,14 @@ inline const char * const *EnumNamesTrackingChecklistStepId() {
     "STEAMVR_HANDS_ENABLED",
     "STANDABLE_INSTALLED",
     "VRCHAT_OSC_TRACKING_DISABLED",
+    "MOUNTING_METHOD",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTrackingChecklistStepId(TrackingChecklistStepId e) {
-  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::VRCHAT_OSC_TRACKING_DISABLED)) return "";
+  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::MOUNTING_METHOD)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTrackingChecklistStepId()[index];
 }
@@ -5716,7 +5722,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
-    solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL,
+    solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
     solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
     const solarxr_protocol::datatypes::math::Vec3f *bone_offset = nullptr) {
@@ -5746,7 +5752,7 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     const solarxr_protocol::datatypes::math::Quat *mounting_reset_orientation = nullptr,
     const char *display_name = nullptr,
     const char *custom_name = nullptr,
-    solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL,
+    solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
     solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
     const solarxr_protocol::datatypes::math::Vec3f *bone_offset = nullptr) {
@@ -10235,7 +10241,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   bool reset_reliable_reference_attitude() const {
     return GetField<uint8_t>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 0) != 0;
   }
-  /// How a MOUNTING reset calibrates the trackers
+  /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
   solarxr_protocol::datatypes::MountingMethod mounting_method() const {
     return static_cast<solarxr_protocol::datatypes::MountingMethod>(GetField<uint8_t>(VT_MOUNTING_METHOD, 0));
   }
@@ -10291,7 +10297,7 @@ inline flatbuffers::Offset<ResetsSettingsResponse> CreateResetsSettingsResponse(
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
     bool reset_reliable_reference_attitude = false,
-    solarxr_protocol::datatypes::MountingMethod mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL) {
+    solarxr_protocol::datatypes::MountingMethod mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN) {
   ResetsSettingsResponseBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
   builder_.add_mounting_method(mounting_method);
@@ -10331,7 +10337,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
   bool reset_reliable_reference_attitude() const {
     return GetField<uint8_t>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 0) != 0;
   }
-  /// How a MOUNTING reset calibrates the trackers
+  /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
   solarxr_protocol::datatypes::MountingMethod mounting_method() const {
     return static_cast<solarxr_protocol::datatypes::MountingMethod>(GetField<uint8_t>(VT_MOUNTING_METHOD, 0));
   }
@@ -10387,7 +10393,7 @@ inline flatbuffers::Offset<ChangeResetsSettingsRequest> CreateChangeResetsSettin
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
     bool reset_reliable_reference_attitude = false,
-    solarxr_protocol::datatypes::MountingMethod mounting_method = solarxr_protocol::datatypes::MountingMethod::MANUAL) {
+    solarxr_protocol::datatypes::MountingMethod mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN) {
   ChangeResetsSettingsRequestBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
   builder_.add_mounting_method(mounting_method);
