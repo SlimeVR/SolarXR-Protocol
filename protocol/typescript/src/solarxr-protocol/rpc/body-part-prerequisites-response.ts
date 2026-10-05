@@ -23,10 +23,6 @@ static getSizePrefixedRootAsBodyPartPrerequisitesResponse(bb:flatbuffers.ByteBuf
   return (obj || new BodyPartPrerequisitesResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-/**
- * One entry per body part the skeleton imputes, so a part missing here is one the
- * GUI has no rules for.
- */
 parts(index: number, obj?:BodyPartPrerequisites):BodyPartPrerequisites|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? (obj || new BodyPartPrerequisites()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;

@@ -2089,6 +2089,21 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_keepalive_request(&self) -> Option<SerialKeepaliveRequest<'a>> {
+    if self.message_type() == RpcMessage::SerialKeepaliveRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { SerialKeepaliveRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -2236,6 +2251,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::CancelResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CancelResetRequest>>("RpcMessage::CancelResetRequest", pos),
           RpcMessage::BodyPartPrerequisitesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BodyPartPrerequisitesRequest>>("RpcMessage::BodyPartPrerequisitesRequest", pos),
           RpcMessage::BodyPartPrerequisitesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BodyPartPrerequisitesResponse>>("RpcMessage::BodyPartPrerequisitesResponse", pos),
+          RpcMessage::SerialKeepaliveRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialKeepaliveRequest>>("RpcMessage::SerialKeepaliveRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -3237,6 +3253,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::BodyPartPrerequisitesResponse => {
           if let Some(x) = self.message_as_body_part_prerequisites_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialKeepaliveRequest => {
+          if let Some(x) = self.message_as_serial_keepalive_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

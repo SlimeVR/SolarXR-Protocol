@@ -329,6 +329,9 @@ struct OpenSerialRequestBuilder;
 struct CloseSerialRequest;
 struct CloseSerialRequestBuilder;
 
+struct SerialKeepaliveRequest;
+struct SerialKeepaliveRequestBuilder;
+
 struct SerialUpdateResponse;
 struct SerialUpdateResponseBuilder;
 
@@ -3252,11 +3255,12 @@ enum class RpcMessage : uint8_t {
   CancelResetRequest = 132,
   BodyPartPrerequisitesRequest = 133,
   BodyPartPrerequisitesResponse = 134,
+  SerialKeepaliveRequest = 135,
   MIN = NONE,
-  MAX = BodyPartPrerequisitesResponse
+  MAX = SerialKeepaliveRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[135] {
+inline const RpcMessage (&EnumValuesRpcMessage())[136] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -3392,13 +3396,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[135] {
     RpcMessage::ChangeErrorReportingSettingsRequest,
     RpcMessage::CancelResetRequest,
     RpcMessage::BodyPartPrerequisitesRequest,
-    RpcMessage::BodyPartPrerequisitesResponse
+    RpcMessage::BodyPartPrerequisitesResponse,
+    RpcMessage::SerialKeepaliveRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[136] = {
+  static const char * const names[137] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -3534,13 +3539,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "CancelResetRequest",
     "BodyPartPrerequisitesRequest",
     "BodyPartPrerequisitesResponse",
+    "SerialKeepaliveRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::BodyPartPrerequisitesResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SerialKeepaliveRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -4083,6 +4089,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::BodyPartPrerequisitesR
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::BodyPartPrerequisitesResponse> {
   static const RpcMessage enum_value = RpcMessage::BodyPartPrerequisitesResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialKeepaliveRequest> {
+  static const RpcMessage enum_value = RpcMessage::SerialKeepaliveRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -7344,8 +7354,6 @@ struct BodyPartPrerequisitesResponse FLATBUFFERS_FINAL_CLASS : private flatbuffe
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PARTS = 4
   };
-  /// One entry per body part the skeleton imputes, so a part missing here is one the
-  /// GUI has no rules for.
   const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartPrerequisites>> *parts() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartPrerequisites>> *>(VT_PARTS);
   }
@@ -10821,6 +10829,37 @@ struct CloseSerialRequestBuilder {
 inline flatbuffers::Offset<CloseSerialRequest> CreateCloseSerialRequest(
     flatbuffers::FlatBufferBuilder &_fbb) {
   CloseSerialRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// Renews the client's hold on the ports it opened. A client that stops sending these loses them,
+/// so a page that goes away without a CloseSerialRequest does not keep the ports locked
+struct SerialKeepaliveRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SerialKeepaliveRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SerialKeepaliveRequestBuilder {
+  typedef SerialKeepaliveRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SerialKeepaliveRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SerialKeepaliveRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SerialKeepaliveRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SerialKeepaliveRequest> CreateSerialKeepaliveRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  SerialKeepaliveRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
@@ -16725,6 +16764,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::BodyPartPrerequisitesResponse *message_as_BodyPartPrerequisitesResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::BodyPartPrerequisitesResponse ? static_cast<const solarxr_protocol::rpc::BodyPartPrerequisitesResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::SerialKeepaliveRequest *message_as_SerialKeepaliveRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SerialKeepaliveRequest ? static_cast<const solarxr_protocol::rpc::SerialKeepaliveRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -17270,6 +17312,10 @@ template<> inline const solarxr_protocol::rpc::BodyPartPrerequisitesRequest *Rpc
 
 template<> inline const solarxr_protocol::rpc::BodyPartPrerequisitesResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::BodyPartPrerequisitesResponse>() const {
   return message_as_BodyPartPrerequisitesResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::SerialKeepaliveRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SerialKeepaliveRequest>() const {
+  return message_as_SerialKeepaliveRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -19274,6 +19320,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::BodyPartPrerequisitesResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::BodyPartPrerequisitesResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SerialKeepaliveRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialKeepaliveRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

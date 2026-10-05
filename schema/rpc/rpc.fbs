@@ -167,6 +167,7 @@ union RpcMessage {
     CancelResetRequest,
     BodyPartPrerequisitesRequest,
     BodyPartPrerequisitesResponse,
+    SerialKeepaliveRequest,
 }
 
 table RpcMessageHeader {

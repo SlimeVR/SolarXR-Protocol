@@ -42,8 +42,6 @@ impl<'a> BodyPartPrerequisitesResponse<'a> {
   }
 
 
-  /// One entry per body part the skeleton imputes, so a part missing here is one the
-  /// GUI has no rules for.
   #[inline]
   pub fn parts(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<BodyPartPrerequisites<'a>>>> {
     // Safety:

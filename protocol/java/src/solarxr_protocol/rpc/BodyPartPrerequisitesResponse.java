@@ -15,10 +15,6 @@ public final class BodyPartPrerequisitesResponse extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public BodyPartPrerequisitesResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  /**
-   * One entry per body part the skeleton imputes, so a part missing here is one the
-   * GUI has no rules for.
-   */
   public solarxr_protocol.rpc.BodyPartPrerequisites parts(int j) { return parts(new solarxr_protocol.rpc.BodyPartPrerequisites(), j); }
   public solarxr_protocol.rpc.BodyPartPrerequisites parts(solarxr_protocol.rpc.BodyPartPrerequisites obj, int j) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
   public int partsLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }

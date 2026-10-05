@@ -38,6 +38,10 @@ table OpenSerialRequest {
 
 table CloseSerialRequest {}
 
+/// Renews the client's hold on the ports it opened. A client that stops sending these loses them,
+/// so a page that goes away without a CloseSerialRequest does not keep the ports locked
+table SerialKeepaliveRequest {}
+
 table SerialUpdateResponse {
     status: SerialConsoleStatus;
     /// The port this console is on, null while the port is not present

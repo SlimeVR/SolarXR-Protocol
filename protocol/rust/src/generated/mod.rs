@@ -355,6 +355,8 @@ pub mod solarxr_protocol {
     pub use self::open_serial_request_generated::*;
     mod close_serial_request_generated;
     pub use self::close_serial_request_generated::*;
+    mod serial_keepalive_request_generated;
+    pub use self::serial_keepalive_request_generated::*;
     mod serial_update_response_generated;
     pub use self::serial_update_response_generated::*;
     mod serial_tracker_reboot_request_generated;

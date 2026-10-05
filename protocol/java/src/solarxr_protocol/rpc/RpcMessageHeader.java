@@ -607,6 +607,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.BodyPartPrerequisitesResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.BodyPartPrerequisitesResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.SerialKeepaliveRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SerialKeepaliveRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialKeepaliveRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

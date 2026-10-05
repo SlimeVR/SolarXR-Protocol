@@ -160,6 +160,7 @@ export { SerialDeviceType } from './solarxr-protocol/rpc/serial-device-type.js';
 export { SerialDevicesRequest, SerialDevicesRequestT } from './solarxr-protocol/rpc/serial-devices-request.js';
 export { SerialDevicesResponse, SerialDevicesResponseT } from './solarxr-protocol/rpc/serial-devices-response.js';
 export { SerialFirmwareUpdate, SerialFirmwareUpdateT } from './solarxr-protocol/rpc/serial-firmware-update.js';
+export { SerialKeepaliveRequest, SerialKeepaliveRequestT } from './solarxr-protocol/rpc/serial-keepalive-request.js';
 export { SerialTrackerCustomCommandRequest, SerialTrackerCustomCommandRequestT } from './solarxr-protocol/rpc/serial-tracker-custom-command-request.js';
 export { SerialTrackerFactoryResetRequest, SerialTrackerFactoryResetRequestT } from './solarxr-protocol/rpc/serial-tracker-factory-reset-request.js';
 export { SerialTrackerGetInfoRequest, SerialTrackerGetInfoRequestT } from './solarxr-protocol/rpc/serial-tracker-get-info-request.js';

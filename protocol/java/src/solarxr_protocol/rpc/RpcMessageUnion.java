@@ -155,6 +155,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.CancelResetRequestT asCancelResetRequest() { return (solarxr_protocol.rpc.CancelResetRequestT) value; }
   public solarxr_protocol.rpc.BodyPartPrerequisitesRequestT asBodyPartPrerequisitesRequest() { return (solarxr_protocol.rpc.BodyPartPrerequisitesRequestT) value; }
   public solarxr_protocol.rpc.BodyPartPrerequisitesResponseT asBodyPartPrerequisitesResponse() { return (solarxr_protocol.rpc.BodyPartPrerequisitesResponseT) value; }
+  public solarxr_protocol.rpc.SerialKeepaliveRequestT asSerialKeepaliveRequest() { return (solarxr_protocol.rpc.SerialKeepaliveRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -292,6 +293,7 @@ public class RpcMessageUnion {
       case RpcMessage.CancelResetRequest: return solarxr_protocol.rpc.CancelResetRequest.pack(builder, _o.asCancelResetRequest());
       case RpcMessage.BodyPartPrerequisitesRequest: return solarxr_protocol.rpc.BodyPartPrerequisitesRequest.pack(builder, _o.asBodyPartPrerequisitesRequest());
       case RpcMessage.BodyPartPrerequisitesResponse: return solarxr_protocol.rpc.BodyPartPrerequisitesResponse.pack(builder, _o.asBodyPartPrerequisitesResponse());
+      case RpcMessage.SerialKeepaliveRequest: return solarxr_protocol.rpc.SerialKeepaliveRequest.pack(builder, _o.asSerialKeepaliveRequest());
       default: return 0;
     }
   }

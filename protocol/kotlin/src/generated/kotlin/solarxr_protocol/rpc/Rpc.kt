@@ -151,6 +151,7 @@ public sealed interface RpcMessage {
       132 -> CancelResetRequest.decode(bb, offset)
       133 -> BodyPartPrerequisitesRequest.decode(bb, offset)
       134 -> BodyPartPrerequisitesResponse.decode(bb, offset)
+      135 -> SerialKeepaliveRequest.decode(bb, offset)
       else -> null
     }
 
@@ -289,6 +290,7 @@ public sealed interface RpcMessage {
       is CancelResetRequest -> 132.toUByte()
       is BodyPartPrerequisitesRequest -> 133.toUByte()
       is BodyPartPrerequisitesResponse -> 134.toUByte()
+      is SerialKeepaliveRequest -> 135.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -426,6 +428,7 @@ public sealed interface RpcMessage {
       is CancelResetRequest -> value.encode(builder)
       is BodyPartPrerequisitesRequest -> value.encode(builder)
       is BodyPartPrerequisitesResponse -> value.encode(builder)
+      is SerialKeepaliveRequest -> value.encode(builder)
     }
   }
 }

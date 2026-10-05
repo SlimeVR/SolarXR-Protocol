@@ -143,6 +143,21 @@ public class CloseSerialRequest : RpcMessage {
   }
 }
 
+/**
+ * Renews the client's hold on the ports it opened. A client that stops sending these loses them,
+ * so a page that goes away without a CloseSerialRequest does not keep the ports locked
+ */
+public class SerialKeepaliveRequest : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): SerialKeepaliveRequest = SerialKeepaliveRequest()
+  }
+}
+
 public data class SerialUpdateResponse(
   public val status: SerialConsoleStatus = SerialConsoleStatus.OPEN,
   public val device: SerialDevice? = null,
