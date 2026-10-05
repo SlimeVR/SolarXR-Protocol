@@ -153,6 +153,8 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.ErrorReportingSettingsResponseT asErrorReportingSettingsResponse() { return (solarxr_protocol.rpc.ErrorReportingSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeErrorReportingSettingsRequestT asChangeErrorReportingSettingsRequest() { return (solarxr_protocol.rpc.ChangeErrorReportingSettingsRequestT) value; }
   public solarxr_protocol.rpc.CancelResetRequestT asCancelResetRequest() { return (solarxr_protocol.rpc.CancelResetRequestT) value; }
+  public solarxr_protocol.rpc.BodyPartPrerequisitesRequestT asBodyPartPrerequisitesRequest() { return (solarxr_protocol.rpc.BodyPartPrerequisitesRequestT) value; }
+  public solarxr_protocol.rpc.BodyPartPrerequisitesResponseT asBodyPartPrerequisitesResponse() { return (solarxr_protocol.rpc.BodyPartPrerequisitesResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -288,6 +290,8 @@ public class RpcMessageUnion {
       case RpcMessage.ErrorReportingSettingsResponse: return solarxr_protocol.rpc.ErrorReportingSettingsResponse.pack(builder, _o.asErrorReportingSettingsResponse());
       case RpcMessage.ChangeErrorReportingSettingsRequest: return solarxr_protocol.rpc.ChangeErrorReportingSettingsRequest.pack(builder, _o.asChangeErrorReportingSettingsRequest());
       case RpcMessage.CancelResetRequest: return solarxr_protocol.rpc.CancelResetRequest.pack(builder, _o.asCancelResetRequest());
+      case RpcMessage.BodyPartPrerequisitesRequest: return solarxr_protocol.rpc.BodyPartPrerequisitesRequest.pack(builder, _o.asBodyPartPrerequisitesRequest());
+      case RpcMessage.BodyPartPrerequisitesResponse: return solarxr_protocol.rpc.BodyPartPrerequisitesResponse.pack(builder, _o.asBodyPartPrerequisitesResponse());
       default: return 0;
     }
   }

@@ -223,6 +223,14 @@ pub mod solarxr_protocol {
     pub use self::auto_bone_stop_recording_request_generated::*;
     mod auto_bone_cancel_recording_request_generated;
     pub use self::auto_bone_cancel_recording_request_generated::*;
+    mod body_part_requirement_generated;
+    pub use self::body_part_requirement_generated::*;
+    mod body_part_prerequisites_generated;
+    pub use self::body_part_prerequisites_generated::*;
+    mod body_part_prerequisites_request_generated;
+    pub use self::body_part_prerequisites_request_generated::*;
+    mod body_part_prerequisites_response_generated;
+    pub use self::body_part_prerequisites_response_generated::*;
     mod bone_route_generated;
     pub use self::bone_route_generated::*;
     mod routing_output_status_generated;

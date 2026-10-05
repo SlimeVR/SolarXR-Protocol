@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 132;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 134;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 133] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 135] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -149,6 +149,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 133] = [
   RpcMessage::ErrorReportingSettingsResponse,
   RpcMessage::ChangeErrorReportingSettingsRequest,
   RpcMessage::CancelResetRequest,
+  RpcMessage::BodyPartPrerequisitesRequest,
+  RpcMessage::BodyPartPrerequisitesResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -289,9 +291,11 @@ impl RpcMessage {
   pub const ErrorReportingSettingsResponse: Self = Self(130);
   pub const ChangeErrorReportingSettingsRequest: Self = Self(131);
   pub const CancelResetRequest: Self = Self(132);
+  pub const BodyPartPrerequisitesRequest: Self = Self(133);
+  pub const BodyPartPrerequisitesResponse: Self = Self(134);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 132;
+  pub const ENUM_MAX: u8 = 134;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -426,6 +430,8 @@ impl RpcMessage {
     Self::ErrorReportingSettingsResponse,
     Self::ChangeErrorReportingSettingsRequest,
     Self::CancelResetRequest,
+    Self::BodyPartPrerequisitesRequest,
+    Self::BodyPartPrerequisitesResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -563,6 +569,8 @@ impl RpcMessage {
       Self::ErrorReportingSettingsResponse => Some("ErrorReportingSettingsResponse"),
       Self::ChangeErrorReportingSettingsRequest => Some("ChangeErrorReportingSettingsRequest"),
       Self::CancelResetRequest => Some("CancelResetRequest"),
+      Self::BodyPartPrerequisitesRequest => Some("BodyPartPrerequisitesRequest"),
+      Self::BodyPartPrerequisitesResponse => Some("BodyPartPrerequisitesResponse"),
       _ => None,
     }
   }

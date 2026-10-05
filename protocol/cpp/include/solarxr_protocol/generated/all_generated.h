@@ -131,6 +131,18 @@ struct AutoBoneStopRecordingRequestBuilder;
 struct AutoBoneCancelRecordingRequest;
 struct AutoBoneCancelRecordingRequestBuilder;
 
+struct BodyPartRequirement;
+struct BodyPartRequirementBuilder;
+
+struct BodyPartPrerequisites;
+struct BodyPartPrerequisitesBuilder;
+
+struct BodyPartPrerequisitesRequest;
+struct BodyPartPrerequisitesRequestBuilder;
+
+struct BodyPartPrerequisitesResponse;
+struct BodyPartPrerequisitesResponseBuilder;
+
 struct BoneRoute;
 struct BoneRouteBuilder;
 
@@ -3238,11 +3250,13 @@ enum class RpcMessage : uint8_t {
   ErrorReportingSettingsResponse = 130,
   ChangeErrorReportingSettingsRequest = 131,
   CancelResetRequest = 132,
+  BodyPartPrerequisitesRequest = 133,
+  BodyPartPrerequisitesResponse = 134,
   MIN = NONE,
-  MAX = CancelResetRequest
+  MAX = BodyPartPrerequisitesResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[133] {
+inline const RpcMessage (&EnumValuesRpcMessage())[135] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -3376,13 +3390,15 @@ inline const RpcMessage (&EnumValuesRpcMessage())[133] {
     RpcMessage::ErrorReportingSettingsRequest,
     RpcMessage::ErrorReportingSettingsResponse,
     RpcMessage::ChangeErrorReportingSettingsRequest,
-    RpcMessage::CancelResetRequest
+    RpcMessage::CancelResetRequest,
+    RpcMessage::BodyPartPrerequisitesRequest,
+    RpcMessage::BodyPartPrerequisitesResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[134] = {
+  static const char * const names[136] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -3516,13 +3532,15 @@ inline const char * const *EnumNamesRpcMessage() {
     "ErrorReportingSettingsResponse",
     "ChangeErrorReportingSettingsRequest",
     "CancelResetRequest",
+    "BodyPartPrerequisitesRequest",
+    "BodyPartPrerequisitesResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::CancelResetRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::BodyPartPrerequisitesResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -4057,6 +4075,14 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeErrorReportingSe
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::CancelResetRequest> {
   static const RpcMessage enum_value = RpcMessage::CancelResetRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::BodyPartPrerequisitesRequest> {
+  static const RpcMessage enum_value = RpcMessage::BodyPartPrerequisitesRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::BodyPartPrerequisitesResponse> {
+  static const RpcMessage enum_value = RpcMessage::BodyPartPrerequisitesResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -7163,6 +7189,208 @@ inline flatbuffers::Offset<AutoBoneCancelRecordingRequest> CreateAutoBoneCancelR
     flatbuffers::FlatBufferBuilder &_fbb) {
   AutoBoneCancelRecordingRequestBuilder builder_(_fbb);
   return builder_.Finish();
+}
+
+/// One set of alternatives. Satisfied as soon as any member of it is assigned.
+struct BodyPartRequirement FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef BodyPartRequirementBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ANY_OF = 4
+  };
+  const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *any_of() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart> *>(VT_ANY_OF);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ANY_OF) &&
+           verifier.VerifyVector(any_of()) &&
+           verifier.EndTable();
+  }
+};
+
+struct BodyPartRequirementBuilder {
+  typedef BodyPartRequirement Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_any_of(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> any_of) {
+    fbb_.AddOffset(BodyPartRequirement::VT_ANY_OF, any_of);
+  }
+  explicit BodyPartRequirementBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<BodyPartRequirement> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<BodyPartRequirement>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<BodyPartRequirement> CreateBodyPartRequirement(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::datatypes::BodyPart>> any_of = 0) {
+  BodyPartRequirementBuilder builder_(_fbb);
+  builder_.add_any_of(any_of);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<BodyPartRequirement> CreateBodyPartRequirementDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<solarxr_protocol::datatypes::BodyPart> *any_of = nullptr) {
+  auto any_of__ = any_of ? _fbb.CreateVector<solarxr_protocol::datatypes::BodyPart>(*any_of) : 0;
+  return solarxr_protocol::rpc::CreateBodyPartRequirement(
+      _fbb,
+      any_of__);
+}
+
+/// What a body part needs assigned around it for a tracker on it to track well.
+/// Derived from the skeleton hierarchy and the processors that impute missing bones.
+struct BodyPartPrerequisites FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef BodyPartPrerequisitesBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_BODY_PART = 4,
+    VT_REQUIRES_ = 6
+  };
+  solarxr_protocol::datatypes::BodyPart body_part() const {
+    return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
+  }
+  /// Every requirement has to be met. Empty means the part stands on its own.
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartRequirement>> *requires_() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartRequirement>> *>(VT_REQUIRES_);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
+           VerifyOffset(verifier, VT_REQUIRES_) &&
+           verifier.VerifyVector(requires_()) &&
+           verifier.VerifyVectorOfTables(requires_()) &&
+           verifier.EndTable();
+  }
+};
+
+struct BodyPartPrerequisitesBuilder {
+  typedef BodyPartPrerequisites Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_body_part(solarxr_protocol::datatypes::BodyPart body_part) {
+    fbb_.AddElement<uint8_t>(BodyPartPrerequisites::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
+  }
+  void add_requires_(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartRequirement>>> requires_) {
+    fbb_.AddOffset(BodyPartPrerequisites::VT_REQUIRES_, requires_);
+  }
+  explicit BodyPartPrerequisitesBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<BodyPartPrerequisites> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<BodyPartPrerequisites>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<BodyPartPrerequisites> CreateBodyPartPrerequisites(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartRequirement>>> requires_ = 0) {
+  BodyPartPrerequisitesBuilder builder_(_fbb);
+  builder_.add_requires_(requires_);
+  builder_.add_body_part(body_part);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<BodyPartPrerequisites> CreateBodyPartPrerequisitesDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartRequirement>> *requires_ = nullptr) {
+  auto requires___ = requires_ ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartRequirement>>(*requires_) : 0;
+  return solarxr_protocol::rpc::CreateBodyPartPrerequisites(
+      _fbb,
+      body_part,
+      requires___);
+}
+
+struct BodyPartPrerequisitesRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef BodyPartPrerequisitesRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct BodyPartPrerequisitesRequestBuilder {
+  typedef BodyPartPrerequisitesRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit BodyPartPrerequisitesRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<BodyPartPrerequisitesRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<BodyPartPrerequisitesRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<BodyPartPrerequisitesRequest> CreateBodyPartPrerequisitesRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  BodyPartPrerequisitesRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct BodyPartPrerequisitesResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef BodyPartPrerequisitesResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PARTS = 4
+  };
+  /// One entry per body part the skeleton imputes, so a part missing here is one the
+  /// GUI has no rules for.
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartPrerequisites>> *parts() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartPrerequisites>> *>(VT_PARTS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_PARTS) &&
+           verifier.VerifyVector(parts()) &&
+           verifier.VerifyVectorOfTables(parts()) &&
+           verifier.EndTable();
+  }
+};
+
+struct BodyPartPrerequisitesResponseBuilder {
+  typedef BodyPartPrerequisitesResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_parts(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartPrerequisites>>> parts) {
+    fbb_.AddOffset(BodyPartPrerequisitesResponse::VT_PARTS, parts);
+  }
+  explicit BodyPartPrerequisitesResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<BodyPartPrerequisitesResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<BodyPartPrerequisitesResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<BodyPartPrerequisitesResponse> CreateBodyPartPrerequisitesResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartPrerequisites>>> parts = 0) {
+  BodyPartPrerequisitesResponseBuilder builder_(_fbb);
+  builder_.add_parts(parts);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<BodyPartPrerequisitesResponse> CreateBodyPartPrerequisitesResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartPrerequisites>> *parts = nullptr) {
+  auto parts__ = parts ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::BodyPartPrerequisites>>(*parts) : 0;
+  return solarxr_protocol::rpc::CreateBodyPartPrerequisitesResponse(
+      _fbb,
+      parts__);
 }
 
 /// Where a single bone's data goes. Identical in both directions, so the change
@@ -16491,6 +16719,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::CancelResetRequest *message_as_CancelResetRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::CancelResetRequest ? static_cast<const solarxr_protocol::rpc::CancelResetRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::BodyPartPrerequisitesRequest *message_as_BodyPartPrerequisitesRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::BodyPartPrerequisitesRequest ? static_cast<const solarxr_protocol::rpc::BodyPartPrerequisitesRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::BodyPartPrerequisitesResponse *message_as_BodyPartPrerequisitesResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::BodyPartPrerequisitesResponse ? static_cast<const solarxr_protocol::rpc::BodyPartPrerequisitesResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -17028,6 +17262,14 @@ template<> inline const solarxr_protocol::rpc::ChangeErrorReportingSettingsReque
 
 template<> inline const solarxr_protocol::rpc::CancelResetRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::CancelResetRequest>() const {
   return message_as_CancelResetRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::BodyPartPrerequisitesRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::BodyPartPrerequisitesRequest>() const {
+  return message_as_BodyPartPrerequisitesRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::BodyPartPrerequisitesResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::BodyPartPrerequisitesResponse>() const {
+  return message_as_BodyPartPrerequisitesResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -19024,6 +19266,14 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::CancelResetRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::CancelResetRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::BodyPartPrerequisitesRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::BodyPartPrerequisitesRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::BodyPartPrerequisitesResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::BodyPartPrerequisitesResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

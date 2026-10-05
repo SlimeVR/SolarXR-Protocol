@@ -60,6 +60,10 @@ export { AutoBoneProcessRequest, AutoBoneProcessRequestT } from './solarxr-proto
 export { AutoBoneProcessStatusResponse, AutoBoneProcessStatusResponseT } from './solarxr-protocol/rpc/auto-bone-process-status-response.js';
 export { AutoBoneProcessType } from './solarxr-protocol/rpc/auto-bone-process-type.js';
 export { AutoBoneStopRecordingRequest, AutoBoneStopRecordingRequestT } from './solarxr-protocol/rpc/auto-bone-stop-recording-request.js';
+export { BodyPartPrerequisites, BodyPartPrerequisitesT } from './solarxr-protocol/rpc/body-part-prerequisites.js';
+export { BodyPartPrerequisitesRequest, BodyPartPrerequisitesRequestT } from './solarxr-protocol/rpc/body-part-prerequisites-request.js';
+export { BodyPartPrerequisitesResponse, BodyPartPrerequisitesResponseT } from './solarxr-protocol/rpc/body-part-prerequisites-response.js';
+export { BodyPartRequirement, BodyPartRequirementT } from './solarxr-protocol/rpc/body-part-requirement.js';
 export { BoneRoute, BoneRouteT } from './solarxr-protocol/rpc/bone-route.js';
 export { BoneRoutingSettingsRequest, BoneRoutingSettingsRequestT } from './solarxr-protocol/rpc/bone-routing-settings-request.js';
 export { BoneRoutingSettingsResponse, BoneRoutingSettingsResponseT } from './solarxr-protocol/rpc/bone-routing-settings-response.js';

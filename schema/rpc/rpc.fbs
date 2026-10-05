@@ -7,6 +7,7 @@
 
 include "../datatypes/datatypes.fbs";
 include "autobone.fbs";
+include "body_part_prerequisites.fbs";
 include "bone_routing.fbs";
 include "bvh.fbs";
 include "device.fbs";
@@ -164,6 +165,8 @@ union RpcMessage {
     ErrorReportingSettingsResponse,
     ChangeErrorReportingSettingsRequest,
     CancelResetRequest,
+    BodyPartPrerequisitesRequest,
+    BodyPartPrerequisitesResponse,
 }
 
 table RpcMessageHeader {
