@@ -102,7 +102,7 @@ customName(optionalEncoding?:any):string|Uint8Array|null {
  */
 lastMountingMethod():MountingMethod {
   const offset = this.bb!.__offset(this.bb_pos, 20);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : MountingMethod.MANUAL;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : MountingMethod.UNKNOWN;
 }
 
 /**
@@ -166,7 +166,7 @@ static addCustomName(builder:flatbuffers.Builder, customNameOffset:flatbuffers.O
 }
 
 static addLastMountingMethod(builder:flatbuffers.Builder, lastMountingMethod:MountingMethod) {
-  builder.addFieldInt8(8, lastMountingMethod, MountingMethod.MANUAL);
+  builder.addFieldInt8(8, lastMountingMethod, MountingMethod.UNKNOWN);
 }
 
 static addMagnetometer(builder:flatbuffers.Builder, magnetometer:MagnetometerStatus) {
@@ -231,7 +231,7 @@ constructor(
   public mountingResetOrientation: QuatT|null = null,
   public displayName: string|Uint8Array|null = null,
   public customName: string|Uint8Array|null = null,
-  public lastMountingMethod: MountingMethod = MountingMethod.MANUAL,
+  public lastMountingMethod: MountingMethod = MountingMethod.UNKNOWN,
   public magnetometer: MagnetometerStatus = MagnetometerStatus.NOT_SUPPORTED,
   public dataType: TrackerDataType = TrackerDataType.ROTATION,
   public boneOffset: Vec3fT|null = null

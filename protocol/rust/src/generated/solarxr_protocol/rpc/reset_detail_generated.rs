@@ -10,52 +10,44 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_ARMS_RESET_MODE: u8 = 0;
+pub const ENUM_MIN_RESET_DETAIL: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_ARMS_RESET_MODE: u8 = 3;
+pub const ENUM_MAX_RESET_DETAIL: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_ARMS_RESET_MODE: [ArmsResetMode; 4] = [
-  ArmsResetMode::BACK,
-  ArmsResetMode::FORWARD,
-  ArmsResetMode::T_POSE_UP,
-  ArmsResetMode::T_POSE_DOWN,
+pub const ENUM_VALUES_RESET_DETAIL: [ResetDetail; 3] = [
+  ResetDetail::NONE,
+  ResetDetail::CountdownDetail,
+  ResetDetail::StepMountingDetail,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct ArmsResetMode(pub u8);
+pub struct ResetDetail(pub u8);
 #[allow(non_upper_case_globals)]
-impl ArmsResetMode {
-  /// Down to the sides for full. Upper arm going back and forearm going forward for mounting.
-  pub const BACK: Self = Self(0);
-  /// Down to the sides for full. Arms going forward for mounting.
-  pub const FORWARD: Self = Self(1);
-  /// Down to the sides for full. T-pose for mounting.
-  pub const T_POSE_UP: Self = Self(2);
-  /// T-pose for full. Down to the sides for mounting.
-  pub const T_POSE_DOWN: Self = Self(3);
+impl ResetDetail {
+  pub const NONE: Self = Self(0);
+  pub const CountdownDetail: Self = Self(1);
+  pub const StepMountingDetail: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 3;
+  pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::BACK,
-    Self::FORWARD,
-    Self::T_POSE_UP,
-    Self::T_POSE_DOWN,
+    Self::NONE,
+    Self::CountdownDetail,
+    Self::StepMountingDetail,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::BACK => Some("BACK"),
-      Self::FORWARD => Some("FORWARD"),
-      Self::T_POSE_UP => Some("T_POSE_UP"),
-      Self::T_POSE_DOWN => Some("T_POSE_DOWN"),
+      Self::NONE => Some("NONE"),
+      Self::CountdownDetail => Some("CountdownDetail"),
+      Self::StepMountingDetail => Some("StepMountingDetail"),
       _ => None,
     }
   }
 }
-impl core::fmt::Debug for ArmsResetMode {
+impl core::fmt::Debug for ResetDetail {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -64,7 +56,7 @@ impl core::fmt::Debug for ArmsResetMode {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for ArmsResetMode {
+impl<'a> flatbuffers::Follow<'a> for ResetDetail {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -73,15 +65,15 @@ impl<'a> flatbuffers::Follow<'a> for ArmsResetMode {
   }
 }
 
-impl flatbuffers::Push for ArmsResetMode {
-    type Output = ArmsResetMode;
+impl flatbuffers::Push for ResetDetail {
+    type Output = ResetDetail;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for ArmsResetMode {
+impl flatbuffers::EndianScalar for ResetDetail {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -95,7 +87,7 @@ impl flatbuffers::EndianScalar for ArmsResetMode {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for ArmsResetMode {
+impl<'a> flatbuffers::Verifiable for ResetDetail {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -105,4 +97,6 @@ impl<'a> flatbuffers::Verifiable for ArmsResetMode {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for ArmsResetMode {}
+impl flatbuffers::SimpleToVerifyInSlice for ResetDetail {}
+pub struct ResetDetailUnionTableOffset {}
+

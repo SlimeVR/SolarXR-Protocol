@@ -28,6 +28,7 @@ public enum class TrackingChecklistStepId(
   STEAMVR_HANDS_ENABLED(11.toUByte()),
   STANDABLE_INSTALLED(12.toUByte()),
   VRCHAT_OSC_TRACKING_DISABLED(13.toUByte()),
+  MOUNTING_METHOD(14.toUByte()),
   ;
 
   public companion object {

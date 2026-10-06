@@ -15,7 +15,6 @@ public class SkeletonTogglesT {
   private Boolean mocapMode;
   private Boolean useTrackerPositions;
   private Boolean enforceConstraints;
-  private Boolean correctConstraints;
 
   public Boolean getFloorClip() { return floorClip; }
 
@@ -45,10 +44,6 @@ public class SkeletonTogglesT {
 
   public void setEnforceConstraints(Boolean enforceConstraints) { this.enforceConstraints = enforceConstraints; }
 
-  public Boolean getCorrectConstraints() { return correctConstraints; }
-
-  public void setCorrectConstraints(Boolean correctConstraints) { this.correctConstraints = correctConstraints; }
-
 
   public SkeletonTogglesT() {
     this.floorClip = null;
@@ -58,7 +53,6 @@ public class SkeletonTogglesT {
     this.mocapMode = null;
     this.useTrackerPositions = null;
     this.enforceConstraints = null;
-    this.correctConstraints = null;
   }
 }
 

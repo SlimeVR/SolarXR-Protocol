@@ -2,7 +2,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { ArmsResetMode } from '../../solarxr-protocol/rpc/arms-reset-mode.js';
+import { MountingMethod } from '../../solarxr-protocol/datatypes/mounting-method.js';
+import { ArmsMountingResetMode } from '../../solarxr-protocol/rpc/arms-mounting-reset-mode.js';
 
 
 export class ChangeResetsSettingsRequest implements flatbuffers.IUnpackableObject<ChangeResetsSettingsRequestT> {
@@ -31,9 +32,9 @@ resetMountingFeet():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-armsResetMode():ArmsResetMode {
+armsMountingResetMode():ArmsMountingResetMode {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsResetMode.BACK;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsMountingResetMode.BACK;
 }
 
 /**
@@ -60,16 +61,24 @@ resetReliableReferenceAttitude():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
+/**
+ * How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
+ */
+mountingMethod():MountingMethod {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : MountingMethod.UNKNOWN;
+}
+
 static startChangeResetsSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(6);
 }
 
 static addResetMountingFeet(builder:flatbuffers.Builder, resetMountingFeet:boolean) {
   builder.addFieldInt8(0, +resetMountingFeet, +false);
 }
 
-static addArmsResetMode(builder:flatbuffers.Builder, armsResetMode:ArmsResetMode) {
-  builder.addFieldInt8(1, armsResetMode, ArmsResetMode.BACK);
+static addArmsMountingResetMode(builder:flatbuffers.Builder, armsMountingResetMode:ArmsMountingResetMode) {
+  builder.addFieldInt8(1, armsMountingResetMode, ArmsMountingResetMode.BACK);
 }
 
 static addYawResetSmoothTime(builder:flatbuffers.Builder, yawResetSmoothTime:number) {
@@ -84,58 +93,67 @@ static addResetReliableReferenceAttitude(builder:flatbuffers.Builder, resetRelia
   builder.addFieldInt8(4, +resetReliableReferenceAttitude, +false);
 }
 
+static addMountingMethod(builder:flatbuffers.Builder, mountingMethod:MountingMethod) {
+  builder.addFieldInt8(5, mountingMethod, MountingMethod.UNKNOWN);
+}
+
 static endChangeResetsSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createChangeResetsSettingsRequest(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsResetMode:ArmsResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetReliableReferenceAttitude:boolean):flatbuffers.Offset {
+static createChangeResetsSettingsRequest(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsMountingResetMode:ArmsMountingResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetReliableReferenceAttitude:boolean, mountingMethod:MountingMethod):flatbuffers.Offset {
   ChangeResetsSettingsRequest.startChangeResetsSettingsRequest(builder);
   ChangeResetsSettingsRequest.addResetMountingFeet(builder, resetMountingFeet);
-  ChangeResetsSettingsRequest.addArmsResetMode(builder, armsResetMode);
+  ChangeResetsSettingsRequest.addArmsMountingResetMode(builder, armsMountingResetMode);
   ChangeResetsSettingsRequest.addYawResetSmoothTime(builder, yawResetSmoothTime);
   ChangeResetsSettingsRequest.addSaveMountingReset(builder, saveMountingReset);
   ChangeResetsSettingsRequest.addResetReliableReferenceAttitude(builder, resetReliableReferenceAttitude);
+  ChangeResetsSettingsRequest.addMountingMethod(builder, mountingMethod);
   return ChangeResetsSettingsRequest.endChangeResetsSettingsRequest(builder);
 }
 
 unpack(): ChangeResetsSettingsRequestT {
   return new ChangeResetsSettingsRequestT(
     this.resetMountingFeet(),
-    this.armsResetMode(),
+    this.armsMountingResetMode(),
     this.yawResetSmoothTime(),
     this.saveMountingReset(),
-    this.resetReliableReferenceAttitude()
+    this.resetReliableReferenceAttitude(),
+    this.mountingMethod()
   );
 }
 
 
 unpackTo(_o: ChangeResetsSettingsRequestT): void {
   _o.resetMountingFeet = this.resetMountingFeet();
-  _o.armsResetMode = this.armsResetMode();
+  _o.armsMountingResetMode = this.armsMountingResetMode();
   _o.yawResetSmoothTime = this.yawResetSmoothTime();
   _o.saveMountingReset = this.saveMountingReset();
   _o.resetReliableReferenceAttitude = this.resetReliableReferenceAttitude();
+  _o.mountingMethod = this.mountingMethod();
 }
 }
 
 export class ChangeResetsSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public resetMountingFeet: boolean = false,
-  public armsResetMode: ArmsResetMode = ArmsResetMode.BACK,
+  public armsMountingResetMode: ArmsMountingResetMode = ArmsMountingResetMode.BACK,
   public yawResetSmoothTime: number = 0.0,
   public saveMountingReset: boolean = false,
-  public resetReliableReferenceAttitude: boolean = false
+  public resetReliableReferenceAttitude: boolean = false,
+  public mountingMethod: MountingMethod = MountingMethod.UNKNOWN
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return ChangeResetsSettingsRequest.createChangeResetsSettingsRequest(builder,
     this.resetMountingFeet,
-    this.armsResetMode,
+    this.armsMountingResetMode,
     this.yawResetSmoothTime,
     this.saveMountingReset,
-    this.resetReliableReferenceAttitude
+    this.resetReliableReferenceAttitude,
+    this.mountingMethod
   );
 }
 }

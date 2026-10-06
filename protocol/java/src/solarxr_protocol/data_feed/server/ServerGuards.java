@@ -21,24 +21,24 @@ public final class ServerGuards extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public ServerGuards __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean canDoMountingReset() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean canDoYawReset() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public int yawReset() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int mountingReset() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public boolean canDoUserHeightCalibration() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createServerGuards(FlatBufferBuilder builder,
-      boolean canDoMountingReset,
-      boolean canDoYawReset,
+      int yawReset,
+      int mountingReset,
       boolean canDoUserHeightCalibration) {
     builder.startTable(3);
     ServerGuards.addCanDoUserHeightCalibration(builder, canDoUserHeightCalibration);
-    ServerGuards.addCanDoYawReset(builder, canDoYawReset);
-    ServerGuards.addCanDoMountingReset(builder, canDoMountingReset);
+    ServerGuards.addMountingReset(builder, mountingReset);
+    ServerGuards.addYawReset(builder, yawReset);
     return ServerGuards.endServerGuards(builder);
   }
 
   public static void startServerGuards(FlatBufferBuilder builder) { builder.startTable(3); }
-  public static void addCanDoMountingReset(FlatBufferBuilder builder, boolean canDoMountingReset) { builder.addBoolean(0, canDoMountingReset, false); }
-  public static void addCanDoYawReset(FlatBufferBuilder builder, boolean canDoYawReset) { builder.addBoolean(1, canDoYawReset, false); }
+  public static void addYawReset(FlatBufferBuilder builder, int yawReset) { builder.addByte(0, (byte) yawReset, (byte) 0); }
+  public static void addMountingReset(FlatBufferBuilder builder, int mountingReset) { builder.addByte(1, (byte) mountingReset, (byte) 0); }
   public static void addCanDoUserHeightCalibration(FlatBufferBuilder builder, boolean canDoUserHeightCalibration) { builder.addBoolean(2, canDoUserHeightCalibration, false); }
   public static int endServerGuards(FlatBufferBuilder builder) {
     int o = builder.endTable();
@@ -57,10 +57,10 @@ public final class ServerGuards extends Table {
     return _o;
   }
   public void unpackTo(ServerGuardsT _o) {
-    boolean _oCanDoMountingReset = canDoMountingReset();
-    _o.setCanDoMountingReset(_oCanDoMountingReset);
-    boolean _oCanDoYawReset = canDoYawReset();
-    _o.setCanDoYawReset(_oCanDoYawReset);
+    int _oYawReset = yawReset();
+    _o.setYawReset(_oYawReset);
+    int _oMountingReset = mountingReset();
+    _o.setMountingReset(_oMountingReset);
     boolean _oCanDoUserHeightCalibration = canDoUserHeightCalibration();
     _o.setCanDoUserHeightCalibration(_oCanDoUserHeightCalibration);
   }
@@ -68,8 +68,8 @@ public final class ServerGuards extends Table {
     if (_o == null) return 0;
     return createServerGuards(
       builder,
-      _o.getCanDoMountingReset(),
-      _o.getCanDoYawReset(),
+      _o.getYawReset(),
+      _o.getMountingReset(),
       _o.getCanDoUserHeightCalibration());
   }
 }

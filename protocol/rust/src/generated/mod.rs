@@ -22,6 +22,8 @@ pub mod solarxr_protocol {
     } // dongle_data
     pub mod server {
       use super::*;
+      mod reset_availability_generated;
+      pub use self::reset_availability_generated::*;
       mod server_guards_generated;
       pub use self::server_guards_generated::*;
     } // server
@@ -159,10 +161,14 @@ pub mod solarxr_protocol {
     pub use self::tracker_provisioning_status_generated::*;
     mod reset_type_generated;
     pub use self::reset_type_generated::*;
-    mod reset_status_generated;
-    pub use self::reset_status_generated::*;
-    mod arms_reset_mode_generated;
-    pub use self::arms_reset_mode_generated::*;
+    mod reset_lifecycle_generated;
+    pub use self::reset_lifecycle_generated::*;
+    mod step_mounting_status_generated;
+    pub use self::step_mounting_status_generated::*;
+    mod reset_detail_generated;
+    pub use self::reset_detail_generated::*;
+    mod arms_mounting_reset_mode_generated;
+    pub use self::arms_mounting_reset_mode_generated::*;
     mod serial_device_type_generated;
     pub use self::serial_device_type_generated::*;
     mod serial_console_status_generated;
@@ -219,6 +225,14 @@ pub mod solarxr_protocol {
     pub use self::auto_bone_stop_recording_request_generated::*;
     mod auto_bone_cancel_recording_request_generated;
     pub use self::auto_bone_cancel_recording_request_generated::*;
+    mod body_part_requirement_generated;
+    pub use self::body_part_requirement_generated::*;
+    mod body_part_prerequisites_generated;
+    pub use self::body_part_prerequisites_generated::*;
+    mod body_part_prerequisites_request_generated;
+    pub use self::body_part_prerequisites_request_generated::*;
+    mod body_part_prerequisites_response_generated;
+    pub use self::body_part_prerequisites_response_generated::*;
     mod bone_route_generated;
     pub use self::bone_route_generated::*;
     mod routing_output_status_generated;
@@ -321,8 +335,14 @@ pub mod solarxr_protocol {
     pub use self::wifi_provisioning_status_response_generated::*;
     mod reset_request_generated;
     pub use self::reset_request_generated::*;
-    mod reset_response_generated;
-    pub use self::reset_response_generated::*;
+    mod countdown_detail_generated;
+    pub use self::countdown_detail_generated::*;
+    mod step_mounting_detail_generated;
+    pub use self::step_mounting_detail_generated::*;
+    mod reset_status_response_generated;
+    pub use self::reset_status_response_generated::*;
+    mod cancel_reset_request_generated;
+    pub use self::cancel_reset_request_generated::*;
     mod clear_mounting_reset_request_generated;
     pub use self::clear_mounting_reset_request_generated::*;
     mod resets_settings_request_generated;
@@ -337,6 +357,8 @@ pub mod solarxr_protocol {
     pub use self::open_serial_request_generated::*;
     mod close_serial_request_generated;
     pub use self::close_serial_request_generated::*;
+    mod serial_keepalive_request_generated;
+    pub use self::serial_keepalive_request_generated::*;
     mod serial_update_response_generated;
     pub use self::serial_update_response_generated::*;
     mod serial_tracker_reboot_request_generated;

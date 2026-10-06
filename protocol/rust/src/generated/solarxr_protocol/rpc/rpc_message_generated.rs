@@ -12,15 +12,15 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 134;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 138;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 135] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 139] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
   RpcMessage::ResetRequest,
-  RpcMessage::ResetResponse,
+  RpcMessage::ResetStatusResponse,
   RpcMessage::UpdateTrackerRequest,
   RpcMessage::ResetTrackerAssignments,
   RpcMessage::VMCOSCSettingsRequest,
@@ -148,6 +148,10 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 135] = [
   RpcMessage::ErrorReportingSettingsRequest,
   RpcMessage::ErrorReportingSettingsResponse,
   RpcMessage::ChangeErrorReportingSettingsRequest,
+  RpcMessage::CancelResetRequest,
+  RpcMessage::BodyPartPrerequisitesRequest,
+  RpcMessage::BodyPartPrerequisitesResponse,
+  RpcMessage::SerialKeepaliveRequest,
   RpcMessage::CustomOSCSettingsRequest,
   RpcMessage::CustomOSCSettingsResponse,
   RpcMessage::ChangeCustomOSCSettingsRequest,
@@ -162,7 +166,7 @@ impl RpcMessage {
   pub const HeartbeatRequest: Self = Self(1);
   pub const HeartbeatResponse: Self = Self(2);
   pub const ResetRequest: Self = Self(3);
-  pub const ResetResponse: Self = Self(4);
+  pub const ResetStatusResponse: Self = Self(4);
   pub const UpdateTrackerRequest: Self = Self(5);
   pub const ResetTrackerAssignments: Self = Self(6);
   pub const VMCOSCSettingsRequest: Self = Self(7);
@@ -290,18 +294,22 @@ impl RpcMessage {
   pub const ErrorReportingSettingsRequest: Self = Self(129);
   pub const ErrorReportingSettingsResponse: Self = Self(130);
   pub const ChangeErrorReportingSettingsRequest: Self = Self(131);
-  pub const CustomOSCSettingsRequest: Self = Self(132);
-  pub const CustomOSCSettingsResponse: Self = Self(133);
-  pub const ChangeCustomOSCSettingsRequest: Self = Self(134);
+  pub const CancelResetRequest: Self = Self(132);
+  pub const BodyPartPrerequisitesRequest: Self = Self(133);
+  pub const BodyPartPrerequisitesResponse: Self = Self(134);
+  pub const SerialKeepaliveRequest: Self = Self(135);
+  pub const CustomOSCSettingsRequest: Self = Self(136);
+  pub const CustomOSCSettingsResponse: Self = Self(137);
+  pub const ChangeCustomOSCSettingsRequest: Self = Self(138);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 134;
+  pub const ENUM_MAX: u8 = 138;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
     Self::HeartbeatResponse,
     Self::ResetRequest,
-    Self::ResetResponse,
+    Self::ResetStatusResponse,
     Self::UpdateTrackerRequest,
     Self::ResetTrackerAssignments,
     Self::VMCOSCSettingsRequest,
@@ -429,6 +437,10 @@ impl RpcMessage {
     Self::ErrorReportingSettingsRequest,
     Self::ErrorReportingSettingsResponse,
     Self::ChangeErrorReportingSettingsRequest,
+    Self::CancelResetRequest,
+    Self::BodyPartPrerequisitesRequest,
+    Self::BodyPartPrerequisitesResponse,
+    Self::SerialKeepaliveRequest,
     Self::CustomOSCSettingsRequest,
     Self::CustomOSCSettingsResponse,
     Self::ChangeCustomOSCSettingsRequest,
@@ -440,7 +452,7 @@ impl RpcMessage {
       Self::HeartbeatRequest => Some("HeartbeatRequest"),
       Self::HeartbeatResponse => Some("HeartbeatResponse"),
       Self::ResetRequest => Some("ResetRequest"),
-      Self::ResetResponse => Some("ResetResponse"),
+      Self::ResetStatusResponse => Some("ResetStatusResponse"),
       Self::UpdateTrackerRequest => Some("UpdateTrackerRequest"),
       Self::ResetTrackerAssignments => Some("ResetTrackerAssignments"),
       Self::VMCOSCSettingsRequest => Some("VMCOSCSettingsRequest"),
@@ -568,6 +580,10 @@ impl RpcMessage {
       Self::ErrorReportingSettingsRequest => Some("ErrorReportingSettingsRequest"),
       Self::ErrorReportingSettingsResponse => Some("ErrorReportingSettingsResponse"),
       Self::ChangeErrorReportingSettingsRequest => Some("ChangeErrorReportingSettingsRequest"),
+      Self::CancelResetRequest => Some("CancelResetRequest"),
+      Self::BodyPartPrerequisitesRequest => Some("BodyPartPrerequisitesRequest"),
+      Self::BodyPartPrerequisitesResponse => Some("BodyPartPrerequisitesResponse"),
+      Self::SerialKeepaliveRequest => Some("SerialKeepaliveRequest"),
       Self::CustomOSCSettingsRequest => Some("CustomOSCSettingsRequest"),
       Self::CustomOSCSettingsResponse => Some("CustomOSCSettingsResponse"),
       Self::ChangeCustomOSCSettingsRequest => Some("ChangeCustomOSCSettingsRequest"),

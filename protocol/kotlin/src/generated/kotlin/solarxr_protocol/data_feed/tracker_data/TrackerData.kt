@@ -193,7 +193,7 @@ public data class TrackerInfo(
   public val mountingResetOrientation: Quat? = null,
   public val displayName: String? = null,
   public val customName: String? = null,
-  public val lastMountingMethod: MountingMethod = MountingMethod.MANUAL,
+  public val lastMountingMethod: MountingMethod = MountingMethod.UNKNOWN,
   public val magnetometer: MagnetometerStatus = MagnetometerStatus.NOT_SUPPORTED,
   public val dataType: TrackerDataType = TrackerDataType.ROTATION,
   public val boneOffset: Vec3f? = null,
@@ -245,7 +245,7 @@ public data class TrackerInfo(
               mountingResetOrientation = if (__offset_mountingResetOrientation != 0) Quat.decode(bb, tableOffset + __offset_mountingResetOrientation) else null,
               displayName = if (__offset_displayName != 0) readFlatBufferString(bb, tableOffset + __offset_displayName) else null,
               customName = if (__offset_customName != 0) readFlatBufferString(bb, tableOffset + __offset_customName) else null,
-              lastMountingMethod = if (__offset_lastMountingMethod != 0) MountingMethod.fromValue(bb.get(tableOffset + __offset_lastMountingMethod).toUByte()) ?: MountingMethod.MANUAL else MountingMethod.MANUAL,
+              lastMountingMethod = if (__offset_lastMountingMethod != 0) MountingMethod.fromValue(bb.get(tableOffset + __offset_lastMountingMethod).toUByte()) ?: MountingMethod.UNKNOWN else MountingMethod.UNKNOWN,
               magnetometer = if (__offset_magnetometer != 0) MagnetometerStatus.fromValue(bb.get(tableOffset + __offset_magnetometer).toUByte()) ?: MagnetometerStatus.NOT_SUPPORTED else MagnetometerStatus.NOT_SUPPORTED,
               dataType = if (__offset_dataType != 0) TrackerDataType.fromValue(bb.get(tableOffset + __offset_dataType).toUByte()) ?: TrackerDataType.ROTATION else TrackerDataType.ROTATION,
               boneOffset = if (__offset_boneOffset != 0) Vec3f.decode(bb, tableOffset + __offset_boneOffset) else null

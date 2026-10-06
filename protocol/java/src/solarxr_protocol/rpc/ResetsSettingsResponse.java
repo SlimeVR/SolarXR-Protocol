@@ -19,7 +19,7 @@ public final class ResetsSettingsResponse extends Table {
    * Makes it so feet will be always be mounting reset even when passing no BodyPart
    */
   public boolean resetMountingFeet() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public int armsResetMode() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int armsMountingResetMode() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
    */
@@ -32,28 +32,35 @@ public final class ResetsSettingsResponse extends Table {
    * Reset VR headset's pitch and roll
    */
   public boolean resetReliableReferenceAttitude() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  /**
+   * How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
+   */
+  public int mountingMethod() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createResetsSettingsResponse(FlatBufferBuilder builder,
       boolean resetMountingFeet,
-      int armsResetMode,
+      int armsMountingResetMode,
       float yawResetSmoothTime,
       boolean saveMountingReset,
-      boolean resetReliableReferenceAttitude) {
-    builder.startTable(5);
+      boolean resetReliableReferenceAttitude,
+      int mountingMethod) {
+    builder.startTable(6);
     ResetsSettingsResponse.addYawResetSmoothTime(builder, yawResetSmoothTime);
+    ResetsSettingsResponse.addMountingMethod(builder, mountingMethod);
     ResetsSettingsResponse.addResetReliableReferenceAttitude(builder, resetReliableReferenceAttitude);
     ResetsSettingsResponse.addSaveMountingReset(builder, saveMountingReset);
-    ResetsSettingsResponse.addArmsResetMode(builder, armsResetMode);
+    ResetsSettingsResponse.addArmsMountingResetMode(builder, armsMountingResetMode);
     ResetsSettingsResponse.addResetMountingFeet(builder, resetMountingFeet);
     return ResetsSettingsResponse.endResetsSettingsResponse(builder);
   }
 
-  public static void startResetsSettingsResponse(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startResetsSettingsResponse(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addResetMountingFeet(FlatBufferBuilder builder, boolean resetMountingFeet) { builder.addBoolean(0, resetMountingFeet, false); }
-  public static void addArmsResetMode(FlatBufferBuilder builder, int armsResetMode) { builder.addByte(1, (byte) armsResetMode, (byte) 0); }
+  public static void addArmsMountingResetMode(FlatBufferBuilder builder, int armsMountingResetMode) { builder.addByte(1, (byte) armsMountingResetMode, (byte) 0); }
   public static void addYawResetSmoothTime(FlatBufferBuilder builder, float yawResetSmoothTime) { builder.addFloat(2, yawResetSmoothTime, 0.0f); }
   public static void addSaveMountingReset(FlatBufferBuilder builder, boolean saveMountingReset) { builder.addBoolean(3, saveMountingReset, false); }
   public static void addResetReliableReferenceAttitude(FlatBufferBuilder builder, boolean resetReliableReferenceAttitude) { builder.addBoolean(4, resetReliableReferenceAttitude, false); }
+  public static void addMountingMethod(FlatBufferBuilder builder, int mountingMethod) { builder.addByte(5, (byte) mountingMethod, (byte) 0); }
   public static int endResetsSettingsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -73,24 +80,27 @@ public final class ResetsSettingsResponse extends Table {
   public void unpackTo(ResetsSettingsResponseT _o) {
     boolean _oResetMountingFeet = resetMountingFeet();
     _o.setResetMountingFeet(_oResetMountingFeet);
-    int _oArmsResetMode = armsResetMode();
-    _o.setArmsResetMode(_oArmsResetMode);
+    int _oArmsMountingResetMode = armsMountingResetMode();
+    _o.setArmsMountingResetMode(_oArmsMountingResetMode);
     float _oYawResetSmoothTime = yawResetSmoothTime();
     _o.setYawResetSmoothTime(_oYawResetSmoothTime);
     boolean _oSaveMountingReset = saveMountingReset();
     _o.setSaveMountingReset(_oSaveMountingReset);
     boolean _oResetReliableReferenceAttitude = resetReliableReferenceAttitude();
     _o.setResetReliableReferenceAttitude(_oResetReliableReferenceAttitude);
+    int _oMountingMethod = mountingMethod();
+    _o.setMountingMethod(_oMountingMethod);
   }
   public static int pack(FlatBufferBuilder builder, ResetsSettingsResponseT _o) {
     if (_o == null) return 0;
     return createResetsSettingsResponse(
       builder,
       _o.getResetMountingFeet(),
-      _o.getArmsResetMode(),
+      _o.getArmsMountingResetMode(),
       _o.getYawResetSmoothTime(),
       _o.getSaveMountingReset(),
-      _o.getResetReliableReferenceAttitude());
+      _o.getResetReliableReferenceAttitude(),
+      _o.getMountingMethod());
   }
 }
 

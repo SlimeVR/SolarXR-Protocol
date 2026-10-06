@@ -5,13 +5,8 @@ enum ResetType: uint8 {
     YAW,
     /// Resets all axes
     FULL,
-    /// Second pose for calibrating mounting rotation
-    POSE_MOUNTING,
-}
-
-enum ResetStatus: uint8 {
-    STARTED,
-    FINISHED,
+    /// Calibrates the mounting rotation with the configured MountingMethod
+    MOUNTING,
 }
 
 table ResetRequest {
@@ -21,29 +16,59 @@ table ResetRequest {
     delay: float = null;
 }
 
-table ResetResponse {
-    reset_type: ResetType;
-    status: ResetStatus;
-    /// Should return the body parts reset / being reset
-    body_parts: [solarxr_protocol.datatypes.BodyPart];
-    /// gives the time in seconds passed since the start of the reset
-    /// Starts at 0. Should be equal to 'duration' when status == FINISHED
+enum ResetLifecycle: uint8 {
+    RUNNING,
+    DONE,
+    CANCELED,
+    FAILED,
+}
+
+/// A reset that runs after a delay (full, yaw and pose mounting)
+table CountdownDetail {
+    /// Seconds passed since the start of the reset, equal to 'duration' when it is done
     progress: int;
     duration: int;
 }
 
+enum StepMountingStatus: uint8 {
+    WAITING_FOR_MOVEMENT,
+    RECORDING,
+    PROCESSING,
+    ERROR_NO_DATA,
+    ERROR_TIMEOUT,
+}
+
+/// A step mounting session
+table StepMountingDetail {
+    status: StepMountingStatus;
+}
+
+union ResetDetail {
+    CountdownDetail,
+    StepMountingDetail,
+}
+
+table ResetStatusResponse {
+    reset_type: ResetType;
+    lifecycle: ResetLifecycle;
+    /// The body parts reset / being reset
+    body_parts: [solarxr_protocol.datatypes.BodyPart];
+    detail: ResetDetail;
+}
+
+/// Cancels the running reset, if any
+table CancelResetRequest {}
+
 /// Clears mounting reset data, defaulting to the manually set mounting orientations
 table ClearMountingResetRequest {}
 
-enum ArmsResetMode: uint8 {
-    /// Down to the sides for full. Upper arm going back and forearm going forward for mounting.
+enum ArmsMountingResetMode: uint8 {
+    /// Upper arm going back and forearm going forward.
     BACK,
-    /// Down to the sides for full. Arms going forward for mounting.
+    /// Arms going forward.
     FORWARD,
-    /// Down to the sides for full. T-pose for mounting.
-    T_POSE_UP,
-    /// T-pose for full. Down to the sides for mounting.
-    T_POSE_DOWN
+    /// Arms going in T-pose.
+    SIDE,
 }
 
 // Resets settings request and response
@@ -51,22 +76,26 @@ table ResetsSettingsRequest {}
 table ResetsSettingsResponse {
     /// Makes it so feet will be always be mounting reset even when passing no BodyPart
     reset_mounting_feet: bool;
-    arms_reset_mode: ArmsResetMode;
+    arms_mounting_reset_mode: ArmsMountingResetMode;
     /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
     yaw_reset_smooth_time: float32;
     /// Save mounting reset between restarts
     save_mounting_reset: bool;
     /// Reset VR headset's pitch and roll
     reset_reliable_reference_attitude: bool;
+    /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
+    mounting_method: solarxr_protocol.datatypes.MountingMethod;
 }
 table ChangeResetsSettingsRequest {
     /// Makes it so feet will be always be mounting reset even when passing no BodyPart
     reset_mounting_feet: bool;
-    arms_reset_mode: ArmsResetMode;
+    arms_mounting_reset_mode: ArmsMountingResetMode;
     /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
     yaw_reset_smooth_time: float32;
     /// Save mounting reset between restarts
     save_mounting_reset: bool;
     /// Reset VR headset's pitch and roll
     reset_reliable_reference_attitude: bool;
+    /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
+    mounting_method: solarxr_protocol.datatypes.MountingMethod;
 }

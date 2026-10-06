@@ -78,7 +78,6 @@ table SkeletonToggles {
     mocap_mode: bool = null;
     use_tracker_positions: bool = null;
     enforce_constraints: bool = null;
-    correct_constraints: bool = null;
 }
 
 /// Ratios for the skeletal model. Accepted values for them range from 0 to 1

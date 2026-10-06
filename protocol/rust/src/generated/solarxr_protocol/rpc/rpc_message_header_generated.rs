@@ -126,13 +126,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_reset_response(&self) -> Option<ResetResponse<'a>> {
-    if self.message_type() == RpcMessage::ResetResponse {
+  pub fn message_as_reset_status_response(&self) -> Option<ResetStatusResponse<'a>> {
+    if self.message_type() == RpcMessage::ResetStatusResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { ResetResponse::init_from_table(t) }
+       unsafe { ResetStatusResponse::init_from_table(t) }
      })
     } else {
       None
@@ -2046,6 +2046,66 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_cancel_reset_request(&self) -> Option<CancelResetRequest<'a>> {
+    if self.message_type() == RpcMessage::CancelResetRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { CancelResetRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_body_part_prerequisites_request(&self) -> Option<BodyPartPrerequisitesRequest<'a>> {
+    if self.message_type() == RpcMessage::BodyPartPrerequisitesRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { BodyPartPrerequisitesRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_body_part_prerequisites_response(&self) -> Option<BodyPartPrerequisitesResponse<'a>> {
+    if self.message_type() == RpcMessage::BodyPartPrerequisitesResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { BodyPartPrerequisitesResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_serial_keepalive_request(&self) -> Option<SerialKeepaliveRequest<'a>> {
+    if self.message_type() == RpcMessage::SerialKeepaliveRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { SerialKeepaliveRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_custom_oscsettings_request(&self) -> Option<CustomOSCSettingsRequest<'a>> {
     if self.message_type() == RpcMessage::CustomOSCSettingsRequest {
       self.message().map(|t| {
@@ -2105,7 +2165,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::HeartbeatRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeartbeatRequest>>("RpcMessage::HeartbeatRequest", pos),
           RpcMessage::HeartbeatResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HeartbeatResponse>>("RpcMessage::HeartbeatResponse", pos),
           RpcMessage::ResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetRequest>>("RpcMessage::ResetRequest", pos),
-          RpcMessage::ResetResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetResponse>>("RpcMessage::ResetResponse", pos),
+          RpcMessage::ResetStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetStatusResponse>>("RpcMessage::ResetStatusResponse", pos),
           RpcMessage::UpdateTrackerRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UpdateTrackerRequest>>("RpcMessage::UpdateTrackerRequest", pos),
           RpcMessage::ResetTrackerAssignments => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetTrackerAssignments>>("RpcMessage::ResetTrackerAssignments", pos),
           RpcMessage::VMCOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<VMCOSCSettingsRequest>>("RpcMessage::VMCOSCSettingsRequest", pos),
@@ -2233,6 +2293,10 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::ErrorReportingSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ErrorReportingSettingsRequest>>("RpcMessage::ErrorReportingSettingsRequest", pos),
           RpcMessage::ErrorReportingSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ErrorReportingSettingsResponse>>("RpcMessage::ErrorReportingSettingsResponse", pos),
           RpcMessage::ChangeErrorReportingSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeErrorReportingSettingsRequest>>("RpcMessage::ChangeErrorReportingSettingsRequest", pos),
+          RpcMessage::CancelResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CancelResetRequest>>("RpcMessage::CancelResetRequest", pos),
+          RpcMessage::BodyPartPrerequisitesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BodyPartPrerequisitesRequest>>("RpcMessage::BodyPartPrerequisitesRequest", pos),
+          RpcMessage::BodyPartPrerequisitesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BodyPartPrerequisitesResponse>>("RpcMessage::BodyPartPrerequisitesResponse", pos),
+          RpcMessage::SerialKeepaliveRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialKeepaliveRequest>>("RpcMessage::SerialKeepaliveRequest", pos),
           RpcMessage::CustomOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CustomOSCSettingsRequest>>("RpcMessage::CustomOSCSettingsRequest", pos),
           RpcMessage::CustomOSCSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CustomOSCSettingsResponse>>("RpcMessage::CustomOSCSettingsResponse", pos),
           RpcMessage::ChangeCustomOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeCustomOSCSettingsRequest>>("RpcMessage::ChangeCustomOSCSettingsRequest", pos),
@@ -2325,8 +2389,8 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::ResetResponse => {
-          if let Some(x) = self.message_as_reset_response() {
+        RpcMessage::ResetStatusResponse => {
+          if let Some(x) = self.message_as_reset_status_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
@@ -3216,6 +3280,34 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ChangeErrorReportingSettingsRequest => {
           if let Some(x) = self.message_as_change_error_reporting_settings_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::CancelResetRequest => {
+          if let Some(x) = self.message_as_cancel_reset_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::BodyPartPrerequisitesRequest => {
+          if let Some(x) = self.message_as_body_part_prerequisites_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::BodyPartPrerequisitesResponse => {
+          if let Some(x) = self.message_as_body_part_prerequisites_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SerialKeepaliveRequest => {
+          if let Some(x) = self.message_as_serial_keepalive_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -179,8 +179,10 @@ public enum class MagnetometerStatus(
 public enum class MountingMethod(
   public val `value`: UByte,
 ) {
-  MANUAL(0.toUByte()),
-  POSE(1.toUByte()),
+  UNKNOWN(0.toUByte()),
+  MANUAL(1.toUByte()),
+  POSE(2.toUByte()),
+  STEP(3.toUByte()),
   ;
 
   public companion object {
