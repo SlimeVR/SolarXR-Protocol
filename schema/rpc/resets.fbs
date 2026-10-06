@@ -91,14 +91,14 @@ table ResetsSettingsResponse {
 }
 table ChangeResetsSettingsRequest {
     /// Makes it so feet will be always be mounting reset even when passing no BodyPart
-    reset_mounting_feet: bool;
-    arms_mounting_reset_mode: ArmsMountingResetMode;
+    reset_mounting_feet: bool = null;
+    arms_mounting_reset_mode: ArmsMountingResetMode = null;
     /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
-    yaw_reset_smooth_time: float32;
+    yaw_reset_smooth_time: float32 = null;
     /// Save mounting reset between restarts
-    save_mounting_reset: bool;
+    save_mounting_reset: bool = null;
     /// Reset VR headset's pitch and roll
-    reset_reliable_reference_attitude: bool;
+    reset_reliable_reference_attitude: bool = null;
     /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
-    mounting_method: solarxr_protocol.datatypes.MountingMethod;
+    mounting_method: solarxr_protocol.datatypes.MountingMethod = null;
 }

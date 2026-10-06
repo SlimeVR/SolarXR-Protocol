@@ -10524,27 +10524,27 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
     VT_MOUNTING_METHOD = 14
   };
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
-  bool reset_mounting_feet() const {
-    return GetField<uint8_t>(VT_RESET_MOUNTING_FEET, 0) != 0;
+  flatbuffers::Optional<bool> reset_mounting_feet() const {
+    return GetOptional<uint8_t, bool>(VT_RESET_MOUNTING_FEET);
   }
-  solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode() const {
-    return static_cast<solarxr_protocol::rpc::ArmsMountingResetMode>(GetField<uint8_t>(VT_ARMS_MOUNTING_RESET_MODE, 0));
+  flatbuffers::Optional<solarxr_protocol::rpc::ArmsMountingResetMode> arms_mounting_reset_mode() const {
+    return GetOptional<uint8_t, solarxr_protocol::rpc::ArmsMountingResetMode>(VT_ARMS_MOUNTING_RESET_MODE);
   }
   /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
-  float yaw_reset_smooth_time() const {
-    return GetField<float>(VT_YAW_RESET_SMOOTH_TIME, 0.0f);
+  flatbuffers::Optional<float> yaw_reset_smooth_time() const {
+    return GetOptional<float, float>(VT_YAW_RESET_SMOOTH_TIME);
   }
   /// Save mounting reset between restarts
-  bool save_mounting_reset() const {
-    return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
+  flatbuffers::Optional<bool> save_mounting_reset() const {
+    return GetOptional<uint8_t, bool>(VT_SAVE_MOUNTING_RESET);
   }
   /// Reset VR headset's pitch and roll
-  bool reset_reliable_reference_attitude() const {
-    return GetField<uint8_t>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 0) != 0;
+  flatbuffers::Optional<bool> reset_reliable_reference_attitude() const {
+    return GetOptional<uint8_t, bool>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE);
   }
   /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
-  solarxr_protocol::datatypes::MountingMethod mounting_method() const {
-    return static_cast<solarxr_protocol::datatypes::MountingMethod>(GetField<uint8_t>(VT_MOUNTING_METHOD, 0));
+  flatbuffers::Optional<solarxr_protocol::datatypes::MountingMethod> mounting_method() const {
+    return GetOptional<uint8_t, solarxr_protocol::datatypes::MountingMethod>(VT_MOUNTING_METHOD);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -10563,22 +10563,22 @@ struct ChangeResetsSettingsRequestBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_reset_mounting_feet(bool reset_mounting_feet) {
-    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_MOUNTING_FEET, static_cast<uint8_t>(reset_mounting_feet), 0);
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_MOUNTING_FEET, static_cast<uint8_t>(reset_mounting_feet));
   }
   void add_arms_mounting_reset_mode(solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode) {
-    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_ARMS_MOUNTING_RESET_MODE, static_cast<uint8_t>(arms_mounting_reset_mode), 0);
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_ARMS_MOUNTING_RESET_MODE, static_cast<uint8_t>(arms_mounting_reset_mode));
   }
   void add_yaw_reset_smooth_time(float yaw_reset_smooth_time) {
-    fbb_.AddElement<float>(ChangeResetsSettingsRequest::VT_YAW_RESET_SMOOTH_TIME, yaw_reset_smooth_time, 0.0f);
+    fbb_.AddElement<float>(ChangeResetsSettingsRequest::VT_YAW_RESET_SMOOTH_TIME, yaw_reset_smooth_time);
   }
   void add_save_mounting_reset(bool save_mounting_reset) {
-    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset));
   }
   void add_reset_reliable_reference_attitude(bool reset_reliable_reference_attitude) {
-    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, static_cast<uint8_t>(reset_reliable_reference_attitude), 0);
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, static_cast<uint8_t>(reset_reliable_reference_attitude));
   }
   void add_mounting_method(solarxr_protocol::datatypes::MountingMethod mounting_method) {
-    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, static_cast<uint8_t>(mounting_method), 0);
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, static_cast<uint8_t>(mounting_method));
   }
   explicit ChangeResetsSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -10593,19 +10593,19 @@ struct ChangeResetsSettingsRequestBuilder {
 
 inline flatbuffers::Offset<ChangeResetsSettingsRequest> CreateChangeResetsSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool reset_mounting_feet = false,
-    solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
-    float yaw_reset_smooth_time = 0.0f,
-    bool save_mounting_reset = false,
-    bool reset_reliable_reference_attitude = false,
-    solarxr_protocol::datatypes::MountingMethod mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN) {
+    flatbuffers::Optional<bool> reset_mounting_feet = flatbuffers::nullopt,
+    flatbuffers::Optional<solarxr_protocol::rpc::ArmsMountingResetMode> arms_mounting_reset_mode = flatbuffers::nullopt,
+    flatbuffers::Optional<float> yaw_reset_smooth_time = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> save_mounting_reset = flatbuffers::nullopt,
+    flatbuffers::Optional<bool> reset_reliable_reference_attitude = flatbuffers::nullopt,
+    flatbuffers::Optional<solarxr_protocol::datatypes::MountingMethod> mounting_method = flatbuffers::nullopt) {
   ChangeResetsSettingsRequestBuilder builder_(_fbb);
-  builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
-  builder_.add_mounting_method(mounting_method);
-  builder_.add_reset_reliable_reference_attitude(reset_reliable_reference_attitude);
-  builder_.add_save_mounting_reset(save_mounting_reset);
-  builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
-  builder_.add_reset_mounting_feet(reset_mounting_feet);
+  if(yaw_reset_smooth_time) { builder_.add_yaw_reset_smooth_time(*yaw_reset_smooth_time); }
+  if(mounting_method) { builder_.add_mounting_method(*mounting_method); }
+  if(reset_reliable_reference_attitude) { builder_.add_reset_reliable_reference_attitude(*reset_reliable_reference_attitude); }
+  if(save_mounting_reset) { builder_.add_save_mounting_reset(*save_mounting_reset); }
+  if(arms_mounting_reset_mode) { builder_.add_arms_mounting_reset_mode(*arms_mounting_reset_mode); }
+  if(reset_mounting_feet) { builder_.add_reset_mounting_feet(*reset_mounting_feet); }
   return builder_.Finish();
 }
 

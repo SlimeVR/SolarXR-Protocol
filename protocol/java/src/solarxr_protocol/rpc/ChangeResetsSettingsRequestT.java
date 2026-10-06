@@ -8,45 +8,45 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class ChangeResetsSettingsRequestT {
-  private boolean resetMountingFeet;
-  private int armsMountingResetMode;
-  private float yawResetSmoothTime;
-  private boolean saveMountingReset;
-  private boolean resetReliableReferenceAttitude;
-  private int mountingMethod;
+  private Boolean resetMountingFeet;
+  private Integer armsMountingResetMode;
+  private Float yawResetSmoothTime;
+  private Boolean saveMountingReset;
+  private Boolean resetReliableReferenceAttitude;
+  private Integer mountingMethod;
 
-  public boolean getResetMountingFeet() { return resetMountingFeet; }
+  public Boolean getResetMountingFeet() { return resetMountingFeet; }
 
-  public void setResetMountingFeet(boolean resetMountingFeet) { this.resetMountingFeet = resetMountingFeet; }
+  public void setResetMountingFeet(Boolean resetMountingFeet) { this.resetMountingFeet = resetMountingFeet; }
 
-  public int getArmsMountingResetMode() { return armsMountingResetMode; }
+  public Integer getArmsMountingResetMode() { return armsMountingResetMode; }
 
-  public void setArmsMountingResetMode(int armsMountingResetMode) { this.armsMountingResetMode = armsMountingResetMode; }
+  public void setArmsMountingResetMode(Integer armsMountingResetMode) { this.armsMountingResetMode = armsMountingResetMode; }
 
-  public float getYawResetSmoothTime() { return yawResetSmoothTime; }
+  public Float getYawResetSmoothTime() { return yawResetSmoothTime; }
 
-  public void setYawResetSmoothTime(float yawResetSmoothTime) { this.yawResetSmoothTime = yawResetSmoothTime; }
+  public void setYawResetSmoothTime(Float yawResetSmoothTime) { this.yawResetSmoothTime = yawResetSmoothTime; }
 
-  public boolean getSaveMountingReset() { return saveMountingReset; }
+  public Boolean getSaveMountingReset() { return saveMountingReset; }
 
-  public void setSaveMountingReset(boolean saveMountingReset) { this.saveMountingReset = saveMountingReset; }
+  public void setSaveMountingReset(Boolean saveMountingReset) { this.saveMountingReset = saveMountingReset; }
 
-  public boolean getResetReliableReferenceAttitude() { return resetReliableReferenceAttitude; }
+  public Boolean getResetReliableReferenceAttitude() { return resetReliableReferenceAttitude; }
 
-  public void setResetReliableReferenceAttitude(boolean resetReliableReferenceAttitude) { this.resetReliableReferenceAttitude = resetReliableReferenceAttitude; }
+  public void setResetReliableReferenceAttitude(Boolean resetReliableReferenceAttitude) { this.resetReliableReferenceAttitude = resetReliableReferenceAttitude; }
 
-  public int getMountingMethod() { return mountingMethod; }
+  public Integer getMountingMethod() { return mountingMethod; }
 
-  public void setMountingMethod(int mountingMethod) { this.mountingMethod = mountingMethod; }
+  public void setMountingMethod(Integer mountingMethod) { this.mountingMethod = mountingMethod; }
 
 
   public ChangeResetsSettingsRequestT() {
-    this.resetMountingFeet = false;
-    this.armsMountingResetMode = 0;
-    this.yawResetSmoothTime = 0.0f;
-    this.saveMountingReset = false;
-    this.resetReliableReferenceAttitude = false;
-    this.mountingMethod = 0;
+    this.resetMountingFeet = null;
+    this.armsMountingResetMode = null;
+    this.yawResetSmoothTime = null;
+    this.saveMountingReset = null;
+    this.resetReliableReferenceAttitude = null;
+    this.mountingMethod = null;
   }
 }
 

@@ -42,62 +42,62 @@ impl<'a> ChangeResetsSettingsRequest<'a> {
     args: &'args ChangeResetsSettingsRequestArgs
   ) -> flatbuffers::WIPOffset<ChangeResetsSettingsRequest<'bldr>> {
     let mut builder = ChangeResetsSettingsRequestBuilder::new(_fbb);
-    builder.add_yaw_reset_smooth_time(args.yaw_reset_smooth_time);
-    builder.add_mounting_method(args.mounting_method);
-    builder.add_reset_reliable_reference_attitude(args.reset_reliable_reference_attitude);
-    builder.add_save_mounting_reset(args.save_mounting_reset);
-    builder.add_arms_mounting_reset_mode(args.arms_mounting_reset_mode);
-    builder.add_reset_mounting_feet(args.reset_mounting_feet);
+    if let Some(x) = args.yaw_reset_smooth_time { builder.add_yaw_reset_smooth_time(x); }
+    if let Some(x) = args.mounting_method { builder.add_mounting_method(x); }
+    if let Some(x) = args.reset_reliable_reference_attitude { builder.add_reset_reliable_reference_attitude(x); }
+    if let Some(x) = args.save_mounting_reset { builder.add_save_mounting_reset(x); }
+    if let Some(x) = args.arms_mounting_reset_mode { builder.add_arms_mounting_reset_mode(x); }
+    if let Some(x) = args.reset_mounting_feet { builder.add_reset_mounting_feet(x); }
     builder.finish()
   }
 
 
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
   #[inline]
-  pub fn reset_mounting_feet(&self) -> bool {
+  pub fn reset_mounting_feet(&self) -> Option<bool> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ChangeResetsSettingsRequest::VT_RESET_MOUNTING_FEET, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(ChangeResetsSettingsRequest::VT_RESET_MOUNTING_FEET, None)}
   }
   #[inline]
-  pub fn arms_mounting_reset_mode(&self) -> ArmsMountingResetMode {
+  pub fn arms_mounting_reset_mode(&self) -> Option<ArmsMountingResetMode> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<ArmsMountingResetMode>(ChangeResetsSettingsRequest::VT_ARMS_MOUNTING_RESET_MODE, Some(ArmsMountingResetMode::BACK)).unwrap()}
+    unsafe { self._tab.get::<ArmsMountingResetMode>(ChangeResetsSettingsRequest::VT_ARMS_MOUNTING_RESET_MODE, None)}
   }
   /// In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
   #[inline]
-  pub fn yaw_reset_smooth_time(&self) -> f32 {
+  pub fn yaw_reset_smooth_time(&self) -> Option<f32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(ChangeResetsSettingsRequest::VT_YAW_RESET_SMOOTH_TIME, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(ChangeResetsSettingsRequest::VT_YAW_RESET_SMOOTH_TIME, None)}
   }
   /// Save mounting reset between restarts
   #[inline]
-  pub fn save_mounting_reset(&self) -> bool {
+  pub fn save_mounting_reset(&self) -> Option<bool> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ChangeResetsSettingsRequest::VT_SAVE_MOUNTING_RESET, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(ChangeResetsSettingsRequest::VT_SAVE_MOUNTING_RESET, None)}
   }
   /// Reset VR headset's pitch and roll
   #[inline]
-  pub fn reset_reliable_reference_attitude(&self) -> bool {
+  pub fn reset_reliable_reference_attitude(&self) -> Option<bool> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ChangeResetsSettingsRequest::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(ChangeResetsSettingsRequest::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, None)}
   }
   /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
   #[inline]
-  pub fn mounting_method(&self) -> super::datatypes::MountingMethod {
+  pub fn mounting_method(&self) -> Option<super::datatypes::MountingMethod> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::datatypes::MountingMethod>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, Some(super::datatypes::MountingMethod::UNKNOWN)).unwrap()}
+    unsafe { self._tab.get::<super::datatypes::MountingMethod>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, None)}
   }
 }
 
@@ -119,23 +119,23 @@ impl flatbuffers::Verifiable for ChangeResetsSettingsRequest<'_> {
   }
 }
 pub struct ChangeResetsSettingsRequestArgs {
-    pub reset_mounting_feet: bool,
-    pub arms_mounting_reset_mode: ArmsMountingResetMode,
-    pub yaw_reset_smooth_time: f32,
-    pub save_mounting_reset: bool,
-    pub reset_reliable_reference_attitude: bool,
-    pub mounting_method: super::datatypes::MountingMethod,
+    pub reset_mounting_feet: Option<bool>,
+    pub arms_mounting_reset_mode: Option<ArmsMountingResetMode>,
+    pub yaw_reset_smooth_time: Option<f32>,
+    pub save_mounting_reset: Option<bool>,
+    pub reset_reliable_reference_attitude: Option<bool>,
+    pub mounting_method: Option<super::datatypes::MountingMethod>,
 }
 impl<'a> Default for ChangeResetsSettingsRequestArgs {
   #[inline]
   fn default() -> Self {
     ChangeResetsSettingsRequestArgs {
-      reset_mounting_feet: false,
-      arms_mounting_reset_mode: ArmsMountingResetMode::BACK,
-      yaw_reset_smooth_time: 0.0,
-      save_mounting_reset: false,
-      reset_reliable_reference_attitude: false,
-      mounting_method: super::datatypes::MountingMethod::UNKNOWN,
+      reset_mounting_feet: None,
+      arms_mounting_reset_mode: None,
+      yaw_reset_smooth_time: None,
+      save_mounting_reset: None,
+      reset_reliable_reference_attitude: None,
+      mounting_method: None,
     }
   }
 }
@@ -147,27 +147,27 @@ pub struct ChangeResetsSettingsRequestBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> ChangeResetsSettingsRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_reset_mounting_feet(&mut self, reset_mounting_feet: bool) {
-    self.fbb_.push_slot::<bool>(ChangeResetsSettingsRequest::VT_RESET_MOUNTING_FEET, reset_mounting_feet, false);
+    self.fbb_.push_slot_always::<bool>(ChangeResetsSettingsRequest::VT_RESET_MOUNTING_FEET, reset_mounting_feet);
   }
   #[inline]
   pub fn add_arms_mounting_reset_mode(&mut self, arms_mounting_reset_mode: ArmsMountingResetMode) {
-    self.fbb_.push_slot::<ArmsMountingResetMode>(ChangeResetsSettingsRequest::VT_ARMS_MOUNTING_RESET_MODE, arms_mounting_reset_mode, ArmsMountingResetMode::BACK);
+    self.fbb_.push_slot_always::<ArmsMountingResetMode>(ChangeResetsSettingsRequest::VT_ARMS_MOUNTING_RESET_MODE, arms_mounting_reset_mode);
   }
   #[inline]
   pub fn add_yaw_reset_smooth_time(&mut self, yaw_reset_smooth_time: f32) {
-    self.fbb_.push_slot::<f32>(ChangeResetsSettingsRequest::VT_YAW_RESET_SMOOTH_TIME, yaw_reset_smooth_time, 0.0);
+    self.fbb_.push_slot_always::<f32>(ChangeResetsSettingsRequest::VT_YAW_RESET_SMOOTH_TIME, yaw_reset_smooth_time);
   }
   #[inline]
   pub fn add_save_mounting_reset(&mut self, save_mounting_reset: bool) {
-    self.fbb_.push_slot::<bool>(ChangeResetsSettingsRequest::VT_SAVE_MOUNTING_RESET, save_mounting_reset, false);
+    self.fbb_.push_slot_always::<bool>(ChangeResetsSettingsRequest::VT_SAVE_MOUNTING_RESET, save_mounting_reset);
   }
   #[inline]
   pub fn add_reset_reliable_reference_attitude(&mut self, reset_reliable_reference_attitude: bool) {
-    self.fbb_.push_slot::<bool>(ChangeResetsSettingsRequest::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, reset_reliable_reference_attitude, false);
+    self.fbb_.push_slot_always::<bool>(ChangeResetsSettingsRequest::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, reset_reliable_reference_attitude);
   }
   #[inline]
   pub fn add_mounting_method(&mut self, mounting_method: super::datatypes::MountingMethod) {
-    self.fbb_.push_slot::<super::datatypes::MountingMethod>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, mounting_method, super::datatypes::MountingMethod::UNKNOWN);
+    self.fbb_.push_slot_always::<super::datatypes::MountingMethod>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, mounting_method);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeResetsSettingsRequestBuilder<'a, 'b> {

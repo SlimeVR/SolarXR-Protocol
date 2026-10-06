@@ -18,23 +18,29 @@ public final class ChangeResetsSettingsRequest extends Table {
   /**
    * Makes it so feet will be always be mounting reset even when passing no BodyPart
    */
+  public boolean hasResetMountingFeet() { return 0 != __offset(4); }
   public boolean resetMountingFeet() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean hasArmsMountingResetMode() { return 0 != __offset(6); }
   public int armsMountingResetMode() { int o = __offset(6); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   /**
    * In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
    */
-  public float yawResetSmoothTime() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public boolean hasYawResetSmoothTime() { return 0 != __offset(8); }
+  public float yawResetSmoothTime() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
   /**
    * Save mounting reset between restarts
    */
+  public boolean hasSaveMountingReset() { return 0 != __offset(10); }
   public boolean saveMountingReset() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   /**
    * Reset VR headset's pitch and roll
    */
+  public boolean hasResetReliableReferenceAttitude() { return 0 != __offset(12); }
   public boolean resetReliableReferenceAttitude() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   /**
    * How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
    */
+  public boolean hasMountingMethod() { return 0 != __offset(14); }
   public int mountingMethod() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createChangeResetsSettingsRequest(FlatBufferBuilder builder,
@@ -57,7 +63,7 @@ public final class ChangeResetsSettingsRequest extends Table {
   public static void startChangeResetsSettingsRequest(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addResetMountingFeet(FlatBufferBuilder builder, boolean resetMountingFeet) { builder.addBoolean(0, resetMountingFeet, false); }
   public static void addArmsMountingResetMode(FlatBufferBuilder builder, int armsMountingResetMode) { builder.addByte(1, (byte) armsMountingResetMode, (byte) 0); }
-  public static void addYawResetSmoothTime(FlatBufferBuilder builder, float yawResetSmoothTime) { builder.addFloat(2, yawResetSmoothTime, 0.0f); }
+  public static void addYawResetSmoothTime(FlatBufferBuilder builder, float yawResetSmoothTime) { builder.addFloat(2, yawResetSmoothTime, 0f); }
   public static void addSaveMountingReset(FlatBufferBuilder builder, boolean saveMountingReset) { builder.addBoolean(3, saveMountingReset, false); }
   public static void addResetReliableReferenceAttitude(FlatBufferBuilder builder, boolean resetReliableReferenceAttitude) { builder.addBoolean(4, resetReliableReferenceAttitude, false); }
   public static void addMountingMethod(FlatBufferBuilder builder, int mountingMethod) { builder.addByte(5, (byte) mountingMethod, (byte) 0); }
@@ -78,17 +84,17 @@ public final class ChangeResetsSettingsRequest extends Table {
     return _o;
   }
   public void unpackTo(ChangeResetsSettingsRequestT _o) {
-    boolean _oResetMountingFeet = resetMountingFeet();
+    Boolean _oResetMountingFeet = hasResetMountingFeet() ? resetMountingFeet() : null;
     _o.setResetMountingFeet(_oResetMountingFeet);
-    int _oArmsMountingResetMode = armsMountingResetMode();
+    Integer _oArmsMountingResetMode = hasArmsMountingResetMode() ? armsMountingResetMode() : null;
     _o.setArmsMountingResetMode(_oArmsMountingResetMode);
-    float _oYawResetSmoothTime = yawResetSmoothTime();
+    Float _oYawResetSmoothTime = hasYawResetSmoothTime() ? yawResetSmoothTime() : null;
     _o.setYawResetSmoothTime(_oYawResetSmoothTime);
-    boolean _oSaveMountingReset = saveMountingReset();
+    Boolean _oSaveMountingReset = hasSaveMountingReset() ? saveMountingReset() : null;
     _o.setSaveMountingReset(_oSaveMountingReset);
-    boolean _oResetReliableReferenceAttitude = resetReliableReferenceAttitude();
+    Boolean _oResetReliableReferenceAttitude = hasResetReliableReferenceAttitude() ? resetReliableReferenceAttitude() : null;
     _o.setResetReliableReferenceAttitude(_oResetReliableReferenceAttitude);
-    int _oMountingMethod = mountingMethod();
+    Integer _oMountingMethod = hasMountingMethod() ? mountingMethod() : null;
     _o.setMountingMethod(_oMountingMethod);
   }
   public static int pack(FlatBufferBuilder builder, ChangeResetsSettingsRequestT _o) {
