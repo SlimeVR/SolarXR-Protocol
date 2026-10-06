@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 135;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 138;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 136] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 139] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -152,6 +152,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 136] = [
   RpcMessage::BodyPartPrerequisitesRequest,
   RpcMessage::BodyPartPrerequisitesResponse,
   RpcMessage::SerialKeepaliveRequest,
+  RpcMessage::CustomOSCSettingsRequest,
+  RpcMessage::CustomOSCSettingsResponse,
+  RpcMessage::ChangeCustomOSCSettingsRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -295,9 +298,12 @@ impl RpcMessage {
   pub const BodyPartPrerequisitesRequest: Self = Self(133);
   pub const BodyPartPrerequisitesResponse: Self = Self(134);
   pub const SerialKeepaliveRequest: Self = Self(135);
+  pub const CustomOSCSettingsRequest: Self = Self(136);
+  pub const CustomOSCSettingsResponse: Self = Self(137);
+  pub const ChangeCustomOSCSettingsRequest: Self = Self(138);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 135;
+  pub const ENUM_MAX: u8 = 138;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -435,6 +441,9 @@ impl RpcMessage {
     Self::BodyPartPrerequisitesRequest,
     Self::BodyPartPrerequisitesResponse,
     Self::SerialKeepaliveRequest,
+    Self::CustomOSCSettingsRequest,
+    Self::CustomOSCSettingsResponse,
+    Self::ChangeCustomOSCSettingsRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -575,6 +584,9 @@ impl RpcMessage {
       Self::BodyPartPrerequisitesRequest => Some("BodyPartPrerequisitesRequest"),
       Self::BodyPartPrerequisitesResponse => Some("BodyPartPrerequisitesResponse"),
       Self::SerialKeepaliveRequest => Some("SerialKeepaliveRequest"),
+      Self::CustomOSCSettingsRequest => Some("CustomOSCSettingsRequest"),
+      Self::CustomOSCSettingsResponse => Some("CustomOSCSettingsResponse"),
+      Self::ChangeCustomOSCSettingsRequest => Some("ChangeCustomOSCSettingsRequest"),
       _ => None,
     }
   }

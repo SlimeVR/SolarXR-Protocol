@@ -152,6 +152,9 @@ public sealed interface RpcMessage {
       133 -> BodyPartPrerequisitesRequest.decode(bb, offset)
       134 -> BodyPartPrerequisitesResponse.decode(bb, offset)
       135 -> SerialKeepaliveRequest.decode(bb, offset)
+      136 -> CustomOSCSettingsRequest.decode(bb, offset)
+      137 -> CustomOSCSettingsResponse.decode(bb, offset)
+      138 -> ChangeCustomOSCSettingsRequest.decode(bb, offset)
       else -> null
     }
 
@@ -291,6 +294,9 @@ public sealed interface RpcMessage {
       is BodyPartPrerequisitesRequest -> 133.toUByte()
       is BodyPartPrerequisitesResponse -> 134.toUByte()
       is SerialKeepaliveRequest -> 135.toUByte()
+      is CustomOSCSettingsRequest -> 136.toUByte()
+      is CustomOSCSettingsResponse -> 137.toUByte()
+      is ChangeCustomOSCSettingsRequest -> 138.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -429,6 +435,9 @@ public sealed interface RpcMessage {
       is BodyPartPrerequisitesRequest -> value.encode(builder)
       is BodyPartPrerequisitesResponse -> value.encode(builder)
       is SerialKeepaliveRequest -> value.encode(builder)
+      is CustomOSCSettingsRequest -> value.encode(builder)
+      is CustomOSCSettingsResponse -> value.encode(builder)
+      is ChangeCustomOSCSettingsRequest -> value.encode(builder)
     }
   }
 }

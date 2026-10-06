@@ -29,6 +29,7 @@ include "tracking_checklist.fbs";
 include "vmc.fbs";
 include "vrchat.fbs";
 include "vrcosc.fbs";
+include "custom_osc.fbs";
 
 namespace solarxr_protocol.rpc;
 
@@ -168,6 +169,9 @@ union RpcMessage {
     BodyPartPrerequisitesRequest,
     BodyPartPrerequisitesResponse,
     SerialKeepaliveRequest,
+    CustomOSCSettingsRequest,
+    CustomOSCSettingsResponse,
+    ChangeCustomOSCSettingsRequest,
 }
 
 table RpcMessageHeader {

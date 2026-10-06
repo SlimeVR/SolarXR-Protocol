@@ -156,6 +156,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.BodyPartPrerequisitesRequestT asBodyPartPrerequisitesRequest() { return (solarxr_protocol.rpc.BodyPartPrerequisitesRequestT) value; }
   public solarxr_protocol.rpc.BodyPartPrerequisitesResponseT asBodyPartPrerequisitesResponse() { return (solarxr_protocol.rpc.BodyPartPrerequisitesResponseT) value; }
   public solarxr_protocol.rpc.SerialKeepaliveRequestT asSerialKeepaliveRequest() { return (solarxr_protocol.rpc.SerialKeepaliveRequestT) value; }
+  public solarxr_protocol.rpc.CustomOSCSettingsRequestT asCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.CustomOSCSettingsRequestT) value; }
+  public solarxr_protocol.rpc.CustomOSCSettingsResponseT asCustomOSCSettingsResponse() { return (solarxr_protocol.rpc.CustomOSCSettingsResponseT) value; }
+  public solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT asChangeCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -294,6 +297,9 @@ public class RpcMessageUnion {
       case RpcMessage.BodyPartPrerequisitesRequest: return solarxr_protocol.rpc.BodyPartPrerequisitesRequest.pack(builder, _o.asBodyPartPrerequisitesRequest());
       case RpcMessage.BodyPartPrerequisitesResponse: return solarxr_protocol.rpc.BodyPartPrerequisitesResponse.pack(builder, _o.asBodyPartPrerequisitesResponse());
       case RpcMessage.SerialKeepaliveRequest: return solarxr_protocol.rpc.SerialKeepaliveRequest.pack(builder, _o.asSerialKeepaliveRequest());
+      case RpcMessage.CustomOSCSettingsRequest: return solarxr_protocol.rpc.CustomOSCSettingsRequest.pack(builder, _o.asCustomOSCSettingsRequest());
+      case RpcMessage.CustomOSCSettingsResponse: return solarxr_protocol.rpc.CustomOSCSettingsResponse.pack(builder, _o.asCustomOSCSettingsResponse());
+      case RpcMessage.ChangeCustomOSCSettingsRequest: return solarxr_protocol.rpc.ChangeCustomOSCSettingsRequest.pack(builder, _o.asChangeCustomOSCSettingsRequest());
       default: return 0;
     }
   }
