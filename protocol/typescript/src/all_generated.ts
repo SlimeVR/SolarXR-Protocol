@@ -250,7 +250,6 @@ export { VRCOSCStatusChangeResponse, VRCOSCStatusChangeResponseT } from './solar
 export { VRCOSCStatusRequest, VRCOSCStatusRequestT } from './solarxr-protocol/rpc/vrcoscstatus-request.js';
 export { VRCOSCTargetSource } from './solarxr-protocol/rpc/vrcosctarget-source.js';
 export { VRCOSCTrackingDataState } from './solarxr-protocol/rpc/vrcosctracking-data-state.js';
-export { VRCSpineMode } from './solarxr-protocol/rpc/vrcspine-mode.js';
 export { VRCTrackerModel } from './solarxr-protocol/rpc/vrctracker-model.js';
 export { VRMSettingsRequest, VRMSettingsRequestT } from './solarxr-protocol/rpc/vrmsettings-request.js';
 export { VRMSettingsResponse, VRMSettingsResponseT } from './solarxr-protocol/rpc/vrmsettings-response.js';

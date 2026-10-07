@@ -25,20 +25,6 @@ public enum class VRCTrackerModel(
   }
 }
 
-public enum class VRCSpineMode(
-  public val `value`: UByte,
-) {
-  UNKNOWN(0.toUByte()),
-  LOCK_HIP(1.toUByte()),
-  LOCK_HEAD(2.toUByte()),
-  LOCK_BOTH(3.toUByte()),
-  ;
-
-  public companion object {
-    public fun fromValue(`value`: UByte): VRCSpineMode? = entries.firstOrNull { it.value == value }
-  }
-}
-
 public enum class VRCAvatarMeasurementType(
   public val `value`: UByte,
 ) {
@@ -59,22 +45,18 @@ public data class VRCConfigValidity(
   public val calibrationRangeOk: Boolean = false,
   public val calibrationVisualsOk: Boolean = false,
   public val trackerModelOk: Boolean = false,
-  public val spineModeOk: Boolean = false,
   public val avatarMeasurementTypeOk: Boolean = false,
-  public val shoulderWidthCompensationOk: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(9)
+    builder.startTable(7)
     builder.addBoolean(0, legacyModeOk, false)
     builder.addBoolean(1, shoulderTrackingOk, false)
     builder.addBoolean(2, userHeightOk, false)
     builder.addBoolean(3, calibrationRangeOk, false)
     builder.addBoolean(4, calibrationVisualsOk, false)
     builder.addBoolean(5, trackerModelOk, false)
-    builder.addBoolean(6, spineModeOk, false)
-    builder.addBoolean(7, avatarMeasurementTypeOk, false)
-    builder.addBoolean(8, shoulderWidthCompensationOk, false)
+    builder.addBoolean(6, avatarMeasurementTypeOk, false)
     return builder.endTable()
   }
 
@@ -89,9 +71,7 @@ public data class VRCConfigValidity(
       val __offset_calibrationRangeOk = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_calibrationVisualsOk = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_trackerModelOk = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_spineModeOk = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_avatarMeasurementTypeOk = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_shoulderWidthCompensationOk = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_avatarMeasurementTypeOk = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
 
       return VRCConfigValidity(
               legacyModeOk = if (__offset_legacyModeOk != 0) bb.get(tableOffset + __offset_legacyModeOk) != 0.toByte() else false,
@@ -100,9 +80,7 @@ public data class VRCConfigValidity(
               calibrationRangeOk = if (__offset_calibrationRangeOk != 0) bb.get(tableOffset + __offset_calibrationRangeOk) != 0.toByte() else false,
               calibrationVisualsOk = if (__offset_calibrationVisualsOk != 0) bb.get(tableOffset + __offset_calibrationVisualsOk) != 0.toByte() else false,
               trackerModelOk = if (__offset_trackerModelOk != 0) bb.get(tableOffset + __offset_trackerModelOk) != 0.toByte() else false,
-              spineModeOk = if (__offset_spineModeOk != 0) bb.get(tableOffset + __offset_spineModeOk) != 0.toByte() else false,
-              avatarMeasurementTypeOk = if (__offset_avatarMeasurementTypeOk != 0) bb.get(tableOffset + __offset_avatarMeasurementTypeOk) != 0.toByte() else false,
-              shoulderWidthCompensationOk = if (__offset_shoulderWidthCompensationOk != 0) bb.get(tableOffset + __offset_shoulderWidthCompensationOk) != 0.toByte() else false
+              avatarMeasurementTypeOk = if (__offset_avatarMeasurementTypeOk != 0) bb.get(tableOffset + __offset_avatarMeasurementTypeOk) != 0.toByte() else false
           )
     }
   }
@@ -115,22 +93,18 @@ public data class VRCConfigValues(
   public val calibrationRange: Float = 0.0f,
   public val calibrationVisuals: Boolean = false,
   public val trackerModel: VRCTrackerModel = VRCTrackerModel.UNKNOWN,
-  public val spineMode: VRCSpineMode = VRCSpineMode.UNKNOWN,
   public val avatarMeasurementType: VRCAvatarMeasurementType = VRCAvatarMeasurementType.UNKNOWN,
-  public val shoulderWidthCompensation: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(9)
+    builder.startTable(7)
     builder.addBoolean(0, legacyMode, false)
     builder.addBoolean(1, shoulderTrackingDisabled, false)
     builder.addFloat(2, userHeight, 0.0)
     builder.addFloat(3, calibrationRange, 0.0)
     builder.addBoolean(4, calibrationVisuals, false)
     builder.addByte(5, trackerModel.value.toByte(), 0)
-    builder.addByte(6, spineMode.value.toByte(), 0)
-    builder.addByte(7, avatarMeasurementType.value.toByte(), 0)
-    builder.addBoolean(8, shoulderWidthCompensation, false)
+    builder.addByte(6, avatarMeasurementType.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -145,9 +119,7 @@ public data class VRCConfigValues(
       val __offset_calibrationRange = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_calibrationVisuals = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_trackerModel = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_spineMode = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_avatarMeasurementType = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_shoulderWidthCompensation = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_avatarMeasurementType = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
 
       return VRCConfigValues(
               legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else false,
@@ -156,9 +128,7 @@ public data class VRCConfigValues(
               calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else 0.0f,
               calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else false,
               trackerModel = if (__offset_trackerModel != 0) VRCTrackerModel.fromValue(bb.get(tableOffset + __offset_trackerModel).toUByte()) ?: VRCTrackerModel.UNKNOWN else VRCTrackerModel.UNKNOWN,
-              spineMode = if (__offset_spineMode != 0) VRCSpineMode.fromValue(bb.get(tableOffset + __offset_spineMode).toUByte()) ?: VRCSpineMode.UNKNOWN else VRCSpineMode.UNKNOWN,
-              avatarMeasurementType = if (__offset_avatarMeasurementType != 0) VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) ?: VRCAvatarMeasurementType.UNKNOWN else VRCAvatarMeasurementType.UNKNOWN,
-              shoulderWidthCompensation = if (__offset_shoulderWidthCompensation != 0) bb.get(tableOffset + __offset_shoulderWidthCompensation) != 0.toByte() else false
+              avatarMeasurementType = if (__offset_avatarMeasurementType != 0) VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) ?: VRCAvatarMeasurementType.UNKNOWN else VRCAvatarMeasurementType.UNKNOWN
           )
     }
   }
@@ -171,23 +141,18 @@ public data class VRCConfigRecommendedValues(
   public val calibrationRange: Float = 0.0f,
   public val calibrationVisuals: Boolean = false,
   public val trackerModel: VRCTrackerModel = VRCTrackerModel.UNKNOWN,
-  public val spineMode: List<VRCSpineMode>? = null,
   public val avatarMeasurementType: VRCAvatarMeasurementType = VRCAvatarMeasurementType.UNKNOWN,
-  public val shoulderWidthCompensation: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_spineMode = spineMode?.let { builder.createByteVector(it.map { e -> e.value.toByte() }.toByteArray()) }
 
-    builder.startTable(9)
+    builder.startTable(7)
     builder.addBoolean(0, legacyMode, false)
     builder.addBoolean(1, shoulderTrackingDisabled, false)
     builder.addFloat(2, userHeight, 0.0)
     builder.addFloat(3, calibrationRange, 0.0)
     builder.addBoolean(4, calibrationVisuals, false)
     builder.addByte(5, trackerModel.value.toByte(), 0)
-    __off_spineMode?.let { builder.addOffset(6, it, 0) }
-    builder.addByte(7, avatarMeasurementType.value.toByte(), 0)
-    builder.addBoolean(8, shoulderWidthCompensation, false)
+    builder.addByte(6, avatarMeasurementType.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -202,9 +167,7 @@ public data class VRCConfigRecommendedValues(
       val __offset_calibrationRange = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_calibrationVisuals = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_trackerModel = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_spineMode = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_avatarMeasurementType = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_shoulderWidthCompensation = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
+      val __offset_avatarMeasurementType = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
 
       return VRCConfigRecommendedValues(
               legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else false,
@@ -213,9 +176,7 @@ public data class VRCConfigRecommendedValues(
               calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else 0.0f,
               calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else false,
               trackerModel = if (__offset_trackerModel != 0) VRCTrackerModel.fromValue(bb.get(tableOffset + __offset_trackerModel).toUByte()) ?: VRCTrackerModel.UNKNOWN else VRCTrackerModel.UNKNOWN,
-              spineMode = if (__offset_spineMode != 0) { val vecOff = tableOffset + __offset_spineMode + bb.getInt(tableOffset + __offset_spineMode); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> VRCSpineMode.fromValue(bb.get(vecOff + 4 + i * 1).toUByte()) } } else null,
-              avatarMeasurementType = if (__offset_avatarMeasurementType != 0) VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) ?: VRCAvatarMeasurementType.UNKNOWN else VRCAvatarMeasurementType.UNKNOWN,
-              shoulderWidthCompensation = if (__offset_shoulderWidthCompensation != 0) bb.get(tableOffset + __offset_shoulderWidthCompensation) != 0.toByte() else false
+              avatarMeasurementType = if (__offset_avatarMeasurementType != 0) VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) ?: VRCAvatarMeasurementType.UNKNOWN else VRCAvatarMeasurementType.UNKNOWN
           )
     }
   }
