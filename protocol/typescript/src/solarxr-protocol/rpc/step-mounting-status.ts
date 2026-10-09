@@ -5,5 +5,6 @@ export enum StepMountingStatus {
   RECORDING = 1,
   PROCESSING = 2,
   ERROR_NO_DATA = 3,
-  ERROR_TIMEOUT = 4
+  ERROR_THRESHOLD_EXCEEDED = 4,
+  ERROR_TIMEOUT = 5
 }

@@ -12,14 +12,15 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_STEP_MOUNTING_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_STEP_MOUNTING_STATUS: u8 = 4;
+pub const ENUM_MAX_STEP_MOUNTING_STATUS: u8 = 5;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_STEP_MOUNTING_STATUS: [StepMountingStatus; 5] = [
+pub const ENUM_VALUES_STEP_MOUNTING_STATUS: [StepMountingStatus; 6] = [
   StepMountingStatus::WAITING_FOR_MOVEMENT,
   StepMountingStatus::RECORDING,
   StepMountingStatus::PROCESSING,
   StepMountingStatus::ERROR_NO_DATA,
+  StepMountingStatus::ERROR_THRESHOLD_EXCEEDED,
   StepMountingStatus::ERROR_TIMEOUT,
 ];
 
@@ -32,15 +33,17 @@ impl StepMountingStatus {
   pub const RECORDING: Self = Self(1);
   pub const PROCESSING: Self = Self(2);
   pub const ERROR_NO_DATA: Self = Self(3);
-  pub const ERROR_TIMEOUT: Self = Self(4);
+  pub const ERROR_THRESHOLD_EXCEEDED: Self = Self(4);
+  pub const ERROR_TIMEOUT: Self = Self(5);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 4;
+  pub const ENUM_MAX: u8 = 5;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::WAITING_FOR_MOVEMENT,
     Self::RECORDING,
     Self::PROCESSING,
     Self::ERROR_NO_DATA,
+    Self::ERROR_THRESHOLD_EXCEEDED,
     Self::ERROR_TIMEOUT,
   ];
   /// Returns the variant's name or "" if unknown.
@@ -50,6 +53,7 @@ impl StepMountingStatus {
       Self::RECORDING => Some("RECORDING"),
       Self::PROCESSING => Some("PROCESSING"),
       Self::ERROR_NO_DATA => Some("ERROR_NO_DATA"),
+      Self::ERROR_THRESHOLD_EXCEEDED => Some("ERROR_THRESHOLD_EXCEEDED"),
       Self::ERROR_TIMEOUT => Some("ERROR_TIMEOUT"),
       _ => None,
     }

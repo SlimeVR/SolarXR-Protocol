@@ -2225,28 +2225,31 @@ enum class StepMountingStatus : uint8_t {
   RECORDING = 1,
   PROCESSING = 2,
   ERROR_NO_DATA = 3,
-  ERROR_TIMEOUT = 4,
+  ERROR_THRESHOLD_EXCEEDED = 4,
+  ERROR_TIMEOUT = 5,
   MIN = WAITING_FOR_MOVEMENT,
   MAX = ERROR_TIMEOUT
 };
 
-inline const StepMountingStatus (&EnumValuesStepMountingStatus())[5] {
+inline const StepMountingStatus (&EnumValuesStepMountingStatus())[6] {
   static const StepMountingStatus values[] = {
     StepMountingStatus::WAITING_FOR_MOVEMENT,
     StepMountingStatus::RECORDING,
     StepMountingStatus::PROCESSING,
     StepMountingStatus::ERROR_NO_DATA,
+    StepMountingStatus::ERROR_THRESHOLD_EXCEEDED,
     StepMountingStatus::ERROR_TIMEOUT
   };
   return values;
 }
 
 inline const char * const *EnumNamesStepMountingStatus() {
-  static const char * const names[6] = {
+  static const char * const names[7] = {
     "WAITING_FOR_MOVEMENT",
     "RECORDING",
     "PROCESSING",
     "ERROR_NO_DATA",
+    "ERROR_THRESHOLD_EXCEEDED",
     "ERROR_TIMEOUT",
     nullptr
   };

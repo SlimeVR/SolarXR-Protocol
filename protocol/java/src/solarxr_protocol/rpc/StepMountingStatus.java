@@ -9,9 +9,10 @@ public final class StepMountingStatus {
   public static final int RECORDING = 1;
   public static final int PROCESSING = 2;
   public static final int ERROR_NO_DATA = 3;
-  public static final int ERROR_TIMEOUT = 4;
+  public static final int ERROR_THRESHOLD_EXCEEDED = 4;
+  public static final int ERROR_TIMEOUT = 5;
 
-  public static final String[] names = { "WAITING_FOR_MOVEMENT", "RECORDING", "PROCESSING", "ERROR_NO_DATA", "ERROR_TIMEOUT", };
+  public static final String[] names = { "WAITING_FOR_MOVEMENT", "RECORDING", "PROCESSING", "ERROR_NO_DATA", "ERROR_THRESHOLD_EXCEEDED", "ERROR_TIMEOUT", };
 
   public static String name(int e) { return names[e]; }
 }

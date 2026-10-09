@@ -117,7 +117,8 @@ public enum class StepMountingStatus(
   RECORDING(1.toUByte()),
   PROCESSING(2.toUByte()),
   ERROR_NO_DATA(3.toUByte()),
-  ERROR_TIMEOUT(4.toUByte()),
+  ERROR_THRESHOLD_EXCEEDED(4.toUByte()),
+  ERROR_TIMEOUT(5.toUByte()),
   ;
 
   public companion object {
