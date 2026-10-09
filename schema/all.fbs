@@ -1,8 +1,8 @@
 // Pass only this file to flatc, it will include the rest.
 
 include "data_feed/data_feed.fbs";
-include "rpc.fbs";
-include "pub_sub/pub_sub.fbs";
+include "rpc/rpc.fbs";
+include "driver_protocol/driver_protocol.fbs";
 
 namespace solarxr_protocol;
 
@@ -19,11 +19,6 @@ namespace solarxr_protocol;
 // to wrap any scalar or list types in those unions in structs, because unions
 // only support tables, structs, or strings. Luckily, this has no impact on the
 // size of the flatbuffer.
-//
-// One other convention to be aware of: If a table is only there to wrap something
-// trivially (such as a union or an enum), and I couldn't think of a better name,
-// I append `W` for "wrapper" to it. LMK if you thing there is a better naming
-// convention.
 
 
 /// MessageBundle contains all of the messages for the data feed system and the
@@ -34,5 +29,5 @@ namespace solarxr_protocol;
 table MessageBundle {
     data_feed_msgs: [solarxr_protocol.data_feed.DataFeedMessageHeader];
     rpc_msgs: [solarxr_protocol.rpc.RpcMessageHeader];
-    pub_sub_msgs: [solarxr_protocol.pub_sub.PubSubHeader];
+    driver_msgs: [solarxr_protocol.driver_protocol.DriverMessageHeader];
 }

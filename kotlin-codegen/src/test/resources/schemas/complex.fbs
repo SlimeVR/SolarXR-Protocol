@@ -1,0 +1,33 @@
+namespace fixture.complex;
+
+enum TestEnum : uint8 {
+    A = 0,
+    B = 1,
+    C = 2
+}
+
+struct TestStruct {
+    a: int32;
+    b: float32;
+}
+
+table TestTable {
+    name: string;
+}
+
+union TestUnion {
+    TestStruct,
+    TestTable
+}
+
+table ComplexRoot {
+    single_enum: TestEnum;
+    optional_enum: TestEnum = null;
+    explicit_enum: TestEnum = B;
+    
+    single_union: TestUnion;
+    
+    enum_vector: [TestEnum];
+}
+
+root_type ComplexRoot;

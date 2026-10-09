@@ -27,7 +27,6 @@ impl<'a> flatbuffers::Follow<'a> for StartWifiProvisioningRequest<'a> {
 impl<'a> StartWifiProvisioningRequest<'a> {
   pub const VT_SSID: flatbuffers::VOffsetT = 4;
   pub const VT_PASSWORD: flatbuffers::VOffsetT = 6;
-  pub const VT_PORT: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,7 +38,6 @@ impl<'a> StartWifiProvisioningRequest<'a> {
     args: &'args StartWifiProvisioningRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<StartWifiProvisioningRequest<'bldr>> {
     let mut builder = StartWifiProvisioningRequestBuilder::new(_fbb);
-    if let Some(x) = args.port { builder.add_port(x); }
     if let Some(x) = args.password { builder.add_password(x); }
     if let Some(x) = args.ssid { builder.add_ssid(x); }
     builder.finish()
@@ -60,13 +58,6 @@ impl<'a> StartWifiProvisioningRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(StartWifiProvisioningRequest::VT_PASSWORD, None)}
   }
-  #[inline]
-  pub fn port(&self) -> Option<&'a str> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(StartWifiProvisioningRequest::VT_PORT, None)}
-  }
 }
 
 impl flatbuffers::Verifiable for StartWifiProvisioningRequest<'_> {
@@ -78,7 +69,6 @@ impl flatbuffers::Verifiable for StartWifiProvisioningRequest<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("ssid", Self::VT_SSID, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("password", Self::VT_PASSWORD, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("port", Self::VT_PORT, false)?
      .finish();
     Ok(())
   }
@@ -86,7 +76,6 @@ impl flatbuffers::Verifiable for StartWifiProvisioningRequest<'_> {
 pub struct StartWifiProvisioningRequestArgs<'a> {
     pub ssid: Option<flatbuffers::WIPOffset<&'a str>>,
     pub password: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub port: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for StartWifiProvisioningRequestArgs<'a> {
   #[inline]
@@ -94,7 +83,6 @@ impl<'a> Default for StartWifiProvisioningRequestArgs<'a> {
     StartWifiProvisioningRequestArgs {
       ssid: None,
       password: None,
-      port: None,
     }
   }
 }
@@ -111,10 +99,6 @@ impl<'a: 'b, 'b> StartWifiProvisioningRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_password(&mut self, password: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StartWifiProvisioningRequest::VT_PASSWORD, password);
-  }
-  #[inline]
-  pub fn add_port(&mut self, port: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(StartWifiProvisioningRequest::VT_PORT, port);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StartWifiProvisioningRequestBuilder<'a, 'b> {
@@ -136,7 +120,6 @@ impl core::fmt::Debug for StartWifiProvisioningRequest<'_> {
     let mut ds = f.debug_struct("StartWifiProvisioningRequest");
       ds.field("ssid", &self.ssid());
       ds.field("password", &self.password());
-      ds.field("port", &self.port());
       ds.finish()
   }
 }

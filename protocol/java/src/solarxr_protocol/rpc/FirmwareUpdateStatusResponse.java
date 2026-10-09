@@ -63,9 +63,9 @@ public final class FirmwareUpdateStatusResponse extends Table {
     _oDeviceId.setType(_oDeviceIdType);
     Table _oDeviceIdValue;
     switch (_oDeviceIdType) {
-      case solarxr_protocol.rpc.FirmwareUpdateDeviceId.solarxr_protocol_datatypes_DeviceIdTable:
-        _oDeviceIdValue = deviceId(new solarxr_protocol.datatypes.DeviceIdTable());
-        _oDeviceId.setValue(_oDeviceIdValue != null ? ((solarxr_protocol.datatypes.DeviceIdTable) _oDeviceIdValue).unpack() : null);
+      case solarxr_protocol.rpc.FirmwareUpdateDeviceId.FirmwareDeviceIdTable:
+        _oDeviceIdValue = deviceId(new solarxr_protocol.rpc.FirmwareDeviceIdTable());
+        _oDeviceId.setValue(_oDeviceIdValue != null ? ((solarxr_protocol.rpc.FirmwareDeviceIdTable) _oDeviceIdValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.FirmwareUpdateDeviceId.SerialDevicePort:
         _oDeviceIdValue = deviceId(new solarxr_protocol.rpc.SerialDevicePort());

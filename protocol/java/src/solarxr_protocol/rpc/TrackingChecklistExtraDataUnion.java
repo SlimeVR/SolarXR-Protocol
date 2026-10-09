@@ -24,7 +24,7 @@ public class TrackingChecklistExtraDataUnion {
   public solarxr_protocol.rpc.TrackingChecklistTrackerResetT asTrackingChecklistTrackerReset() { return (solarxr_protocol.rpc.TrackingChecklistTrackerResetT) value; }
   public solarxr_protocol.rpc.TrackingChecklistTrackerErrorT asTrackingChecklistTrackerError() { return (solarxr_protocol.rpc.TrackingChecklistTrackerErrorT) value; }
   public solarxr_protocol.rpc.TrackingChecklistSteamVRDisconnectedT asTrackingChecklistSteamVRDisconnected() { return (solarxr_protocol.rpc.TrackingChecklistSteamVRDisconnectedT) value; }
-  public solarxr_protocol.rpc.TrackingChecklistUnassignedHMDT asTrackingChecklistUnassignedHMD() { return (solarxr_protocol.rpc.TrackingChecklistUnassignedHMDT) value; }
+  public solarxr_protocol.rpc.TrackingChecklistUnassignedReliableReferenceT asTrackingChecklistUnassignedReliableReference() { return (solarxr_protocol.rpc.TrackingChecklistUnassignedReliableReferenceT) value; }
   public solarxr_protocol.rpc.TrackingChecklistNeedCalibrationT asTrackingChecklistNeedCalibration() { return (solarxr_protocol.rpc.TrackingChecklistNeedCalibrationT) value; }
   public solarxr_protocol.rpc.TrackingChecklistPublicNetworksT asTrackingChecklistPublicNetworks() { return (solarxr_protocol.rpc.TrackingChecklistPublicNetworksT) value; }
 
@@ -33,7 +33,7 @@ public class TrackingChecklistExtraDataUnion {
       case TrackingChecklistExtraData.TrackingChecklistTrackerReset: return solarxr_protocol.rpc.TrackingChecklistTrackerReset.pack(builder, _o.asTrackingChecklistTrackerReset());
       case TrackingChecklistExtraData.TrackingChecklistTrackerError: return solarxr_protocol.rpc.TrackingChecklistTrackerError.pack(builder, _o.asTrackingChecklistTrackerError());
       case TrackingChecklistExtraData.TrackingChecklistSteamVRDisconnected: return solarxr_protocol.rpc.TrackingChecklistSteamVRDisconnected.pack(builder, _o.asTrackingChecklistSteamVRDisconnected());
-      case TrackingChecklistExtraData.TrackingChecklistUnassignedHMD: return solarxr_protocol.rpc.TrackingChecklistUnassignedHMD.pack(builder, _o.asTrackingChecklistUnassignedHMD());
+      case TrackingChecklistExtraData.TrackingChecklistUnassignedReliableReference: return solarxr_protocol.rpc.TrackingChecklistUnassignedReliableReference.pack(builder, _o.asTrackingChecklistUnassignedReliableReference());
       case TrackingChecklistExtraData.TrackingChecklistNeedCalibration: return solarxr_protocol.rpc.TrackingChecklistNeedCalibration.pack(builder, _o.asTrackingChecklistNeedCalibration());
       case TrackingChecklistExtraData.TrackingChecklistPublicNetworks: return solarxr_protocol.rpc.TrackingChecklistPublicNetworks.pack(builder, _o.asTrackingChecklistPublicNetworks());
       default: return 0;
