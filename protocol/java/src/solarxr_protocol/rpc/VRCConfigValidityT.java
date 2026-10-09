@@ -11,7 +11,6 @@ public class VRCConfigValidityT {
   private boolean legacyModeOk;
   private boolean shoulderTrackingOk;
   private boolean userHeightOk;
-  private boolean calibrationRangeOk;
   private boolean calibrationVisualsOk;
   private boolean trackerModelOk;
   private boolean avatarMeasurementTypeOk;
@@ -27,10 +26,6 @@ public class VRCConfigValidityT {
   public boolean getUserHeightOk() { return userHeightOk; }
 
   public void setUserHeightOk(boolean userHeightOk) { this.userHeightOk = userHeightOk; }
-
-  public boolean getCalibrationRangeOk() { return calibrationRangeOk; }
-
-  public void setCalibrationRangeOk(boolean calibrationRangeOk) { this.calibrationRangeOk = calibrationRangeOk; }
 
   public boolean getCalibrationVisualsOk() { return calibrationVisualsOk; }
 
@@ -49,7 +44,6 @@ public class VRCConfigValidityT {
     this.legacyModeOk = false;
     this.shoulderTrackingOk = false;
     this.userHeightOk = false;
-    this.calibrationRangeOk = false;
     this.calibrationVisualsOk = false;
     this.trackerModelOk = false;
     this.avatarMeasurementTypeOk = false;

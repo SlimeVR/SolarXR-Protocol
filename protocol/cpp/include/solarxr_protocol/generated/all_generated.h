@@ -15159,10 +15159,9 @@ struct VRCConfigValidity FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_LEGACY_MODE_OK = 4,
     VT_SHOULDER_TRACKING_OK = 6,
     VT_USER_HEIGHT_OK = 8,
-    VT_CALIBRATION_RANGE_OK = 10,
-    VT_CALIBRATION_VISUALS_OK = 12,
-    VT_TRACKER_MODEL_OK = 14,
-    VT_AVATAR_MEASUREMENT_TYPE_OK = 16
+    VT_CALIBRATION_VISUALS_OK = 10,
+    VT_TRACKER_MODEL_OK = 12,
+    VT_AVATAR_MEASUREMENT_TYPE_OK = 14
   };
   bool legacy_mode_ok() const {
     return GetField<uint8_t>(VT_LEGACY_MODE_OK, 0) != 0;
@@ -15172,9 +15171,6 @@ struct VRCConfigValidity FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool user_height_ok() const {
     return GetField<uint8_t>(VT_USER_HEIGHT_OK, 0) != 0;
-  }
-  bool calibration_range_ok() const {
-    return GetField<uint8_t>(VT_CALIBRATION_RANGE_OK, 0) != 0;
   }
   bool calibration_visuals_ok() const {
     return GetField<uint8_t>(VT_CALIBRATION_VISUALS_OK, 0) != 0;
@@ -15190,7 +15186,6 @@ struct VRCConfigValidity FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_LEGACY_MODE_OK, 1) &&
            VerifyField<uint8_t>(verifier, VT_SHOULDER_TRACKING_OK, 1) &&
            VerifyField<uint8_t>(verifier, VT_USER_HEIGHT_OK, 1) &&
-           VerifyField<uint8_t>(verifier, VT_CALIBRATION_RANGE_OK, 1) &&
            VerifyField<uint8_t>(verifier, VT_CALIBRATION_VISUALS_OK, 1) &&
            VerifyField<uint8_t>(verifier, VT_TRACKER_MODEL_OK, 1) &&
            VerifyField<uint8_t>(verifier, VT_AVATAR_MEASUREMENT_TYPE_OK, 1) &&
@@ -15210,9 +15205,6 @@ struct VRCConfigValidityBuilder {
   }
   void add_user_height_ok(bool user_height_ok) {
     fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_USER_HEIGHT_OK, static_cast<uint8_t>(user_height_ok), 0);
-  }
-  void add_calibration_range_ok(bool calibration_range_ok) {
-    fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_CALIBRATION_RANGE_OK, static_cast<uint8_t>(calibration_range_ok), 0);
   }
   void add_calibration_visuals_ok(bool calibration_visuals_ok) {
     fbb_.AddElement<uint8_t>(VRCConfigValidity::VT_CALIBRATION_VISUALS_OK, static_cast<uint8_t>(calibration_visuals_ok), 0);
@@ -15239,7 +15231,6 @@ inline flatbuffers::Offset<VRCConfigValidity> CreateVRCConfigValidity(
     bool legacy_mode_ok = false,
     bool shoulder_tracking_ok = false,
     bool user_height_ok = false,
-    bool calibration_range_ok = false,
     bool calibration_visuals_ok = false,
     bool tracker_model_ok = false,
     bool avatar_measurement_type_ok = false) {
@@ -15247,7 +15238,6 @@ inline flatbuffers::Offset<VRCConfigValidity> CreateVRCConfigValidity(
   builder_.add_avatar_measurement_type_ok(avatar_measurement_type_ok);
   builder_.add_tracker_model_ok(tracker_model_ok);
   builder_.add_calibration_visuals_ok(calibration_visuals_ok);
-  builder_.add_calibration_range_ok(calibration_range_ok);
   builder_.add_user_height_ok(user_height_ok);
   builder_.add_shoulder_tracking_ok(shoulder_tracking_ok);
   builder_.add_legacy_mode_ok(legacy_mode_ok);
@@ -15260,10 +15250,9 @@ struct VRCConfigValues FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_LEGACY_MODE = 4,
     VT_SHOULDER_TRACKING_DISABLED = 6,
     VT_USER_HEIGHT = 8,
-    VT_CALIBRATION_RANGE = 10,
-    VT_CALIBRATION_VISUALS = 12,
-    VT_TRACKER_MODEL = 14,
-    VT_AVATAR_MEASUREMENT_TYPE = 16
+    VT_CALIBRATION_VISUALS = 10,
+    VT_TRACKER_MODEL = 12,
+    VT_AVATAR_MEASUREMENT_TYPE = 14
   };
   bool legacy_mode() const {
     return GetField<uint8_t>(VT_LEGACY_MODE, 0) != 0;
@@ -15273,9 +15262,6 @@ struct VRCConfigValues FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   float user_height() const {
     return GetField<float>(VT_USER_HEIGHT, 0.0f);
-  }
-  float calibration_range() const {
-    return GetField<float>(VT_CALIBRATION_RANGE, 0.0f);
   }
   bool calibration_visuals() const {
     return GetField<uint8_t>(VT_CALIBRATION_VISUALS, 0) != 0;
@@ -15291,7 +15277,6 @@ struct VRCConfigValues FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_LEGACY_MODE, 1) &&
            VerifyField<uint8_t>(verifier, VT_SHOULDER_TRACKING_DISABLED, 1) &&
            VerifyField<float>(verifier, VT_USER_HEIGHT, 4) &&
-           VerifyField<float>(verifier, VT_CALIBRATION_RANGE, 4) &&
            VerifyField<uint8_t>(verifier, VT_CALIBRATION_VISUALS, 1) &&
            VerifyField<uint8_t>(verifier, VT_TRACKER_MODEL, 1) &&
            VerifyField<uint8_t>(verifier, VT_AVATAR_MEASUREMENT_TYPE, 1) &&
@@ -15311,9 +15296,6 @@ struct VRCConfigValuesBuilder {
   }
   void add_user_height(float user_height) {
     fbb_.AddElement<float>(VRCConfigValues::VT_USER_HEIGHT, user_height, 0.0f);
-  }
-  void add_calibration_range(float calibration_range) {
-    fbb_.AddElement<float>(VRCConfigValues::VT_CALIBRATION_RANGE, calibration_range, 0.0f);
   }
   void add_calibration_visuals(bool calibration_visuals) {
     fbb_.AddElement<uint8_t>(VRCConfigValues::VT_CALIBRATION_VISUALS, static_cast<uint8_t>(calibration_visuals), 0);
@@ -15340,12 +15322,10 @@ inline flatbuffers::Offset<VRCConfigValues> CreateVRCConfigValues(
     bool legacy_mode = false,
     bool shoulder_tracking_disabled = false,
     float user_height = 0.0f,
-    float calibration_range = 0.0f,
     bool calibration_visuals = false,
     solarxr_protocol::rpc::VRCTrackerModel tracker_model = solarxr_protocol::rpc::VRCTrackerModel::UNKNOWN,
     solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type = solarxr_protocol::rpc::VRCAvatarMeasurementType::UNKNOWN) {
   VRCConfigValuesBuilder builder_(_fbb);
-  builder_.add_calibration_range(calibration_range);
   builder_.add_user_height(user_height);
   builder_.add_avatar_measurement_type(avatar_measurement_type);
   builder_.add_tracker_model(tracker_model);
@@ -15361,10 +15341,9 @@ struct VRCConfigRecommendedValues FLATBUFFERS_FINAL_CLASS : private flatbuffers:
     VT_LEGACY_MODE = 4,
     VT_SHOULDER_TRACKING_DISABLED = 6,
     VT_USER_HEIGHT = 8,
-    VT_CALIBRATION_RANGE = 10,
-    VT_CALIBRATION_VISUALS = 12,
-    VT_TRACKER_MODEL = 14,
-    VT_AVATAR_MEASUREMENT_TYPE = 16
+    VT_CALIBRATION_VISUALS = 10,
+    VT_TRACKER_MODEL = 12,
+    VT_AVATAR_MEASUREMENT_TYPE = 14
   };
   bool legacy_mode() const {
     return GetField<uint8_t>(VT_LEGACY_MODE, 0) != 0;
@@ -15374,9 +15353,6 @@ struct VRCConfigRecommendedValues FLATBUFFERS_FINAL_CLASS : private flatbuffers:
   }
   float user_height() const {
     return GetField<float>(VT_USER_HEIGHT, 0.0f);
-  }
-  float calibration_range() const {
-    return GetField<float>(VT_CALIBRATION_RANGE, 0.0f);
   }
   bool calibration_visuals() const {
     return GetField<uint8_t>(VT_CALIBRATION_VISUALS, 0) != 0;
@@ -15392,7 +15368,6 @@ struct VRCConfigRecommendedValues FLATBUFFERS_FINAL_CLASS : private flatbuffers:
            VerifyField<uint8_t>(verifier, VT_LEGACY_MODE, 1) &&
            VerifyField<uint8_t>(verifier, VT_SHOULDER_TRACKING_DISABLED, 1) &&
            VerifyField<float>(verifier, VT_USER_HEIGHT, 4) &&
-           VerifyField<float>(verifier, VT_CALIBRATION_RANGE, 4) &&
            VerifyField<uint8_t>(verifier, VT_CALIBRATION_VISUALS, 1) &&
            VerifyField<uint8_t>(verifier, VT_TRACKER_MODEL, 1) &&
            VerifyField<uint8_t>(verifier, VT_AVATAR_MEASUREMENT_TYPE, 1) &&
@@ -15412,9 +15387,6 @@ struct VRCConfigRecommendedValuesBuilder {
   }
   void add_user_height(float user_height) {
     fbb_.AddElement<float>(VRCConfigRecommendedValues::VT_USER_HEIGHT, user_height, 0.0f);
-  }
-  void add_calibration_range(float calibration_range) {
-    fbb_.AddElement<float>(VRCConfigRecommendedValues::VT_CALIBRATION_RANGE, calibration_range, 0.0f);
   }
   void add_calibration_visuals(bool calibration_visuals) {
     fbb_.AddElement<uint8_t>(VRCConfigRecommendedValues::VT_CALIBRATION_VISUALS, static_cast<uint8_t>(calibration_visuals), 0);
@@ -15441,12 +15413,10 @@ inline flatbuffers::Offset<VRCConfigRecommendedValues> CreateVRCConfigRecommende
     bool legacy_mode = false,
     bool shoulder_tracking_disabled = false,
     float user_height = 0.0f,
-    float calibration_range = 0.0f,
     bool calibration_visuals = false,
     solarxr_protocol::rpc::VRCTrackerModel tracker_model = solarxr_protocol::rpc::VRCTrackerModel::UNKNOWN,
     solarxr_protocol::rpc::VRCAvatarMeasurementType avatar_measurement_type = solarxr_protocol::rpc::VRCAvatarMeasurementType::UNKNOWN) {
   VRCConfigRecommendedValuesBuilder builder_(_fbb);
-  builder_.add_calibration_range(calibration_range);
   builder_.add_user_height(user_height);
   builder_.add_avatar_measurement_type(avatar_measurement_type);
   builder_.add_tracker_model(tracker_model);

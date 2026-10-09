@@ -18,38 +18,34 @@ public final class VRCConfigValidity extends Table {
   public boolean legacyModeOk() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean shoulderTrackingOk() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
   public boolean userHeightOk() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean calibrationRangeOk() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean calibrationVisualsOk() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean trackerModelOk() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean avatarMeasurementTypeOk() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean calibrationVisualsOk() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean trackerModelOk() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public boolean avatarMeasurementTypeOk() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createVRCConfigValidity(FlatBufferBuilder builder,
       boolean legacyModeOk,
       boolean shoulderTrackingOk,
       boolean userHeightOk,
-      boolean calibrationRangeOk,
       boolean calibrationVisualsOk,
       boolean trackerModelOk,
       boolean avatarMeasurementTypeOk) {
-    builder.startTable(7);
+    builder.startTable(6);
     VRCConfigValidity.addAvatarMeasurementTypeOk(builder, avatarMeasurementTypeOk);
     VRCConfigValidity.addTrackerModelOk(builder, trackerModelOk);
     VRCConfigValidity.addCalibrationVisualsOk(builder, calibrationVisualsOk);
-    VRCConfigValidity.addCalibrationRangeOk(builder, calibrationRangeOk);
     VRCConfigValidity.addUserHeightOk(builder, userHeightOk);
     VRCConfigValidity.addShoulderTrackingOk(builder, shoulderTrackingOk);
     VRCConfigValidity.addLegacyModeOk(builder, legacyModeOk);
     return VRCConfigValidity.endVRCConfigValidity(builder);
   }
 
-  public static void startVRCConfigValidity(FlatBufferBuilder builder) { builder.startTable(7); }
+  public static void startVRCConfigValidity(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addLegacyModeOk(FlatBufferBuilder builder, boolean legacyModeOk) { builder.addBoolean(0, legacyModeOk, false); }
   public static void addShoulderTrackingOk(FlatBufferBuilder builder, boolean shoulderTrackingOk) { builder.addBoolean(1, shoulderTrackingOk, false); }
   public static void addUserHeightOk(FlatBufferBuilder builder, boolean userHeightOk) { builder.addBoolean(2, userHeightOk, false); }
-  public static void addCalibrationRangeOk(FlatBufferBuilder builder, boolean calibrationRangeOk) { builder.addBoolean(3, calibrationRangeOk, false); }
-  public static void addCalibrationVisualsOk(FlatBufferBuilder builder, boolean calibrationVisualsOk) { builder.addBoolean(4, calibrationVisualsOk, false); }
-  public static void addTrackerModelOk(FlatBufferBuilder builder, boolean trackerModelOk) { builder.addBoolean(5, trackerModelOk, false); }
-  public static void addAvatarMeasurementTypeOk(FlatBufferBuilder builder, boolean avatarMeasurementTypeOk) { builder.addBoolean(6, avatarMeasurementTypeOk, false); }
+  public static void addCalibrationVisualsOk(FlatBufferBuilder builder, boolean calibrationVisualsOk) { builder.addBoolean(3, calibrationVisualsOk, false); }
+  public static void addTrackerModelOk(FlatBufferBuilder builder, boolean trackerModelOk) { builder.addBoolean(4, trackerModelOk, false); }
+  public static void addAvatarMeasurementTypeOk(FlatBufferBuilder builder, boolean avatarMeasurementTypeOk) { builder.addBoolean(5, avatarMeasurementTypeOk, false); }
   public static int endVRCConfigValidity(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -73,8 +69,6 @@ public final class VRCConfigValidity extends Table {
     _o.setShoulderTrackingOk(_oShoulderTrackingOk);
     boolean _oUserHeightOk = userHeightOk();
     _o.setUserHeightOk(_oUserHeightOk);
-    boolean _oCalibrationRangeOk = calibrationRangeOk();
-    _o.setCalibrationRangeOk(_oCalibrationRangeOk);
     boolean _oCalibrationVisualsOk = calibrationVisualsOk();
     _o.setCalibrationVisualsOk(_oCalibrationVisualsOk);
     boolean _oTrackerModelOk = trackerModelOk();
@@ -89,7 +83,6 @@ public final class VRCConfigValidity extends Table {
       _o.getLegacyModeOk(),
       _o.getShoulderTrackingOk(),
       _o.getUserHeightOk(),
-      _o.getCalibrationRangeOk(),
       _o.getCalibrationVisualsOk(),
       _o.getTrackerModelOk(),
       _o.getAvatarMeasurementTypeOk());

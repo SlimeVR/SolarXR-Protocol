@@ -11,7 +11,6 @@ public class VRCConfigValuesT {
   private boolean legacyMode;
   private boolean shoulderTrackingDisabled;
   private float userHeight;
-  private float calibrationRange;
   private boolean calibrationVisuals;
   private int trackerModel;
   private int avatarMeasurementType;
@@ -27,10 +26,6 @@ public class VRCConfigValuesT {
   public float getUserHeight() { return userHeight; }
 
   public void setUserHeight(float userHeight) { this.userHeight = userHeight; }
-
-  public float getCalibrationRange() { return calibrationRange; }
-
-  public void setCalibrationRange(float calibrationRange) { this.calibrationRange = calibrationRange; }
 
   public boolean getCalibrationVisuals() { return calibrationVisuals; }
 
@@ -49,7 +44,6 @@ public class VRCConfigValuesT {
     this.legacyMode = false;
     this.shoulderTrackingDisabled = false;
     this.userHeight = 0.0f;
-    this.calibrationRange = 0.0f;
     this.calibrationVisuals = false;
     this.trackerModel = 0;
     this.avatarMeasurementType = 0;

@@ -18,7 +18,6 @@ table VRCConfigValidity {
     legacy_mode_ok: bool;
     shoulder_tracking_ok: bool;
     user_height_ok: bool;
-    calibration_range_ok: bool;
     calibration_visuals_ok: bool;
     tracker_model_ok: bool;
     avatar_measurement_type_ok: bool;
@@ -28,7 +27,6 @@ table VRCConfigValues {
     legacy_mode: bool;
     shoulder_tracking_disabled: bool;
     user_height: float;
-    calibration_range: float;
     calibration_visuals: bool;
     tracker_model: VRCTrackerModel;
     avatar_measurement_type: VRCAvatarMeasurementType;
@@ -38,7 +36,6 @@ table VRCConfigRecommendedValues {
     legacy_mode: bool;
     shoulder_tracking_disabled: bool;
     user_height: float;
-    calibration_range: float;
     calibration_visuals: bool;
     tracker_model: VRCTrackerModel;
     avatar_measurement_type: VRCAvatarMeasurementType;

@@ -37,28 +37,23 @@ userHeightOk():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-calibrationRangeOk():boolean {
+calibrationVisualsOk():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-calibrationVisualsOk():boolean {
+trackerModelOk():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-trackerModelOk():boolean {
+avatarMeasurementTypeOk():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-avatarMeasurementTypeOk():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
 static startVRCConfigValidity(builder:flatbuffers.Builder) {
-  builder.startObject(7);
+  builder.startObject(6);
 }
 
 static addLegacyModeOk(builder:flatbuffers.Builder, legacyModeOk:boolean) {
@@ -73,20 +68,16 @@ static addUserHeightOk(builder:flatbuffers.Builder, userHeightOk:boolean) {
   builder.addFieldInt8(2, +userHeightOk, +false);
 }
 
-static addCalibrationRangeOk(builder:flatbuffers.Builder, calibrationRangeOk:boolean) {
-  builder.addFieldInt8(3, +calibrationRangeOk, +false);
-}
-
 static addCalibrationVisualsOk(builder:flatbuffers.Builder, calibrationVisualsOk:boolean) {
-  builder.addFieldInt8(4, +calibrationVisualsOk, +false);
+  builder.addFieldInt8(3, +calibrationVisualsOk, +false);
 }
 
 static addTrackerModelOk(builder:flatbuffers.Builder, trackerModelOk:boolean) {
-  builder.addFieldInt8(5, +trackerModelOk, +false);
+  builder.addFieldInt8(4, +trackerModelOk, +false);
 }
 
 static addAvatarMeasurementTypeOk(builder:flatbuffers.Builder, avatarMeasurementTypeOk:boolean) {
-  builder.addFieldInt8(6, +avatarMeasurementTypeOk, +false);
+  builder.addFieldInt8(5, +avatarMeasurementTypeOk, +false);
 }
 
 static endVRCConfigValidity(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -94,12 +85,11 @@ static endVRCConfigValidity(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createVRCConfigValidity(builder:flatbuffers.Builder, legacyModeOk:boolean, shoulderTrackingOk:boolean, userHeightOk:boolean, calibrationRangeOk:boolean, calibrationVisualsOk:boolean, trackerModelOk:boolean, avatarMeasurementTypeOk:boolean):flatbuffers.Offset {
+static createVRCConfigValidity(builder:flatbuffers.Builder, legacyModeOk:boolean, shoulderTrackingOk:boolean, userHeightOk:boolean, calibrationVisualsOk:boolean, trackerModelOk:boolean, avatarMeasurementTypeOk:boolean):flatbuffers.Offset {
   VRCConfigValidity.startVRCConfigValidity(builder);
   VRCConfigValidity.addLegacyModeOk(builder, legacyModeOk);
   VRCConfigValidity.addShoulderTrackingOk(builder, shoulderTrackingOk);
   VRCConfigValidity.addUserHeightOk(builder, userHeightOk);
-  VRCConfigValidity.addCalibrationRangeOk(builder, calibrationRangeOk);
   VRCConfigValidity.addCalibrationVisualsOk(builder, calibrationVisualsOk);
   VRCConfigValidity.addTrackerModelOk(builder, trackerModelOk);
   VRCConfigValidity.addAvatarMeasurementTypeOk(builder, avatarMeasurementTypeOk);
@@ -111,7 +101,6 @@ unpack(): VRCConfigValidityT {
     this.legacyModeOk(),
     this.shoulderTrackingOk(),
     this.userHeightOk(),
-    this.calibrationRangeOk(),
     this.calibrationVisualsOk(),
     this.trackerModelOk(),
     this.avatarMeasurementTypeOk()
@@ -123,7 +112,6 @@ unpackTo(_o: VRCConfigValidityT): void {
   _o.legacyModeOk = this.legacyModeOk();
   _o.shoulderTrackingOk = this.shoulderTrackingOk();
   _o.userHeightOk = this.userHeightOk();
-  _o.calibrationRangeOk = this.calibrationRangeOk();
   _o.calibrationVisualsOk = this.calibrationVisualsOk();
   _o.trackerModelOk = this.trackerModelOk();
   _o.avatarMeasurementTypeOk = this.avatarMeasurementTypeOk();
@@ -135,7 +123,6 @@ constructor(
   public legacyModeOk: boolean = false,
   public shoulderTrackingOk: boolean = false,
   public userHeightOk: boolean = false,
-  public calibrationRangeOk: boolean = false,
   public calibrationVisualsOk: boolean = false,
   public trackerModelOk: boolean = false,
   public avatarMeasurementTypeOk: boolean = false
@@ -147,7 +134,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.legacyModeOk,
     this.shoulderTrackingOk,
     this.userHeightOk,
-    this.calibrationRangeOk,
     this.calibrationVisualsOk,
     this.trackerModelOk,
     this.avatarMeasurementTypeOk

@@ -28,10 +28,9 @@ impl<'a> VRCConfigValues<'a> {
   pub const VT_LEGACY_MODE: flatbuffers::VOffsetT = 4;
   pub const VT_SHOULDER_TRACKING_DISABLED: flatbuffers::VOffsetT = 6;
   pub const VT_USER_HEIGHT: flatbuffers::VOffsetT = 8;
-  pub const VT_CALIBRATION_RANGE: flatbuffers::VOffsetT = 10;
-  pub const VT_CALIBRATION_VISUALS: flatbuffers::VOffsetT = 12;
-  pub const VT_TRACKER_MODEL: flatbuffers::VOffsetT = 14;
-  pub const VT_AVATAR_MEASUREMENT_TYPE: flatbuffers::VOffsetT = 16;
+  pub const VT_CALIBRATION_VISUALS: flatbuffers::VOffsetT = 10;
+  pub const VT_TRACKER_MODEL: flatbuffers::VOffsetT = 12;
+  pub const VT_AVATAR_MEASUREMENT_TYPE: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -43,7 +42,6 @@ impl<'a> VRCConfigValues<'a> {
     args: &'args VRCConfigValuesArgs
   ) -> flatbuffers::WIPOffset<VRCConfigValues<'bldr>> {
     let mut builder = VRCConfigValuesBuilder::new(_fbb);
-    builder.add_calibration_range(args.calibration_range);
     builder.add_user_height(args.user_height);
     builder.add_avatar_measurement_type(args.avatar_measurement_type);
     builder.add_tracker_model(args.tracker_model);
@@ -74,13 +72,6 @@ impl<'a> VRCConfigValues<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(VRCConfigValues::VT_USER_HEIGHT, Some(0.0)).unwrap()}
-  }
-  #[inline]
-  pub fn calibration_range(&self) -> f32 {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(VRCConfigValues::VT_CALIBRATION_RANGE, Some(0.0)).unwrap()}
   }
   #[inline]
   pub fn calibration_visuals(&self) -> bool {
@@ -115,7 +106,6 @@ impl flatbuffers::Verifiable for VRCConfigValues<'_> {
      .visit_field::<bool>("legacy_mode", Self::VT_LEGACY_MODE, false)?
      .visit_field::<bool>("shoulder_tracking_disabled", Self::VT_SHOULDER_TRACKING_DISABLED, false)?
      .visit_field::<f32>("user_height", Self::VT_USER_HEIGHT, false)?
-     .visit_field::<f32>("calibration_range", Self::VT_CALIBRATION_RANGE, false)?
      .visit_field::<bool>("calibration_visuals", Self::VT_CALIBRATION_VISUALS, false)?
      .visit_field::<VRCTrackerModel>("tracker_model", Self::VT_TRACKER_MODEL, false)?
      .visit_field::<VRCAvatarMeasurementType>("avatar_measurement_type", Self::VT_AVATAR_MEASUREMENT_TYPE, false)?
@@ -127,7 +117,6 @@ pub struct VRCConfigValuesArgs {
     pub legacy_mode: bool,
     pub shoulder_tracking_disabled: bool,
     pub user_height: f32,
-    pub calibration_range: f32,
     pub calibration_visuals: bool,
     pub tracker_model: VRCTrackerModel,
     pub avatar_measurement_type: VRCAvatarMeasurementType,
@@ -139,7 +128,6 @@ impl<'a> Default for VRCConfigValuesArgs {
       legacy_mode: false,
       shoulder_tracking_disabled: false,
       user_height: 0.0,
-      calibration_range: 0.0,
       calibration_visuals: false,
       tracker_model: VRCTrackerModel::UNKNOWN,
       avatar_measurement_type: VRCAvatarMeasurementType::UNKNOWN,
@@ -163,10 +151,6 @@ impl<'a: 'b, 'b> VRCConfigValuesBuilder<'a, 'b> {
   #[inline]
   pub fn add_user_height(&mut self, user_height: f32) {
     self.fbb_.push_slot::<f32>(VRCConfigValues::VT_USER_HEIGHT, user_height, 0.0);
-  }
-  #[inline]
-  pub fn add_calibration_range(&mut self, calibration_range: f32) {
-    self.fbb_.push_slot::<f32>(VRCConfigValues::VT_CALIBRATION_RANGE, calibration_range, 0.0);
   }
   #[inline]
   pub fn add_calibration_visuals(&mut self, calibration_visuals: bool) {
@@ -201,7 +185,6 @@ impl core::fmt::Debug for VRCConfigValues<'_> {
       ds.field("legacy_mode", &self.legacy_mode());
       ds.field("shoulder_tracking_disabled", &self.shoulder_tracking_disabled());
       ds.field("user_height", &self.user_height());
-      ds.field("calibration_range", &self.calibration_range());
       ds.field("calibration_visuals", &self.calibration_visuals());
       ds.field("tracker_model", &self.tracker_model());
       ds.field("avatar_measurement_type", &self.avatar_measurement_type());

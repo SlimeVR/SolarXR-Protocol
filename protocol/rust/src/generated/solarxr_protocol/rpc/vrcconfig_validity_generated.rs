@@ -28,10 +28,9 @@ impl<'a> VRCConfigValidity<'a> {
   pub const VT_LEGACY_MODE_OK: flatbuffers::VOffsetT = 4;
   pub const VT_SHOULDER_TRACKING_OK: flatbuffers::VOffsetT = 6;
   pub const VT_USER_HEIGHT_OK: flatbuffers::VOffsetT = 8;
-  pub const VT_CALIBRATION_RANGE_OK: flatbuffers::VOffsetT = 10;
-  pub const VT_CALIBRATION_VISUALS_OK: flatbuffers::VOffsetT = 12;
-  pub const VT_TRACKER_MODEL_OK: flatbuffers::VOffsetT = 14;
-  pub const VT_AVATAR_MEASUREMENT_TYPE_OK: flatbuffers::VOffsetT = 16;
+  pub const VT_CALIBRATION_VISUALS_OK: flatbuffers::VOffsetT = 10;
+  pub const VT_TRACKER_MODEL_OK: flatbuffers::VOffsetT = 12;
+  pub const VT_AVATAR_MEASUREMENT_TYPE_OK: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -46,7 +45,6 @@ impl<'a> VRCConfigValidity<'a> {
     builder.add_avatar_measurement_type_ok(args.avatar_measurement_type_ok);
     builder.add_tracker_model_ok(args.tracker_model_ok);
     builder.add_calibration_visuals_ok(args.calibration_visuals_ok);
-    builder.add_calibration_range_ok(args.calibration_range_ok);
     builder.add_user_height_ok(args.user_height_ok);
     builder.add_shoulder_tracking_ok(args.shoulder_tracking_ok);
     builder.add_legacy_mode_ok(args.legacy_mode_ok);
@@ -74,13 +72,6 @@ impl<'a> VRCConfigValidity<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(VRCConfigValidity::VT_USER_HEIGHT_OK, Some(false)).unwrap()}
-  }
-  #[inline]
-  pub fn calibration_range_ok(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(VRCConfigValidity::VT_CALIBRATION_RANGE_OK, Some(false)).unwrap()}
   }
   #[inline]
   pub fn calibration_visuals_ok(&self) -> bool {
@@ -115,7 +106,6 @@ impl flatbuffers::Verifiable for VRCConfigValidity<'_> {
      .visit_field::<bool>("legacy_mode_ok", Self::VT_LEGACY_MODE_OK, false)?
      .visit_field::<bool>("shoulder_tracking_ok", Self::VT_SHOULDER_TRACKING_OK, false)?
      .visit_field::<bool>("user_height_ok", Self::VT_USER_HEIGHT_OK, false)?
-     .visit_field::<bool>("calibration_range_ok", Self::VT_CALIBRATION_RANGE_OK, false)?
      .visit_field::<bool>("calibration_visuals_ok", Self::VT_CALIBRATION_VISUALS_OK, false)?
      .visit_field::<bool>("tracker_model_ok", Self::VT_TRACKER_MODEL_OK, false)?
      .visit_field::<bool>("avatar_measurement_type_ok", Self::VT_AVATAR_MEASUREMENT_TYPE_OK, false)?
@@ -127,7 +117,6 @@ pub struct VRCConfigValidityArgs {
     pub legacy_mode_ok: bool,
     pub shoulder_tracking_ok: bool,
     pub user_height_ok: bool,
-    pub calibration_range_ok: bool,
     pub calibration_visuals_ok: bool,
     pub tracker_model_ok: bool,
     pub avatar_measurement_type_ok: bool,
@@ -139,7 +128,6 @@ impl<'a> Default for VRCConfigValidityArgs {
       legacy_mode_ok: false,
       shoulder_tracking_ok: false,
       user_height_ok: false,
-      calibration_range_ok: false,
       calibration_visuals_ok: false,
       tracker_model_ok: false,
       avatar_measurement_type_ok: false,
@@ -163,10 +151,6 @@ impl<'a: 'b, 'b> VRCConfigValidityBuilder<'a, 'b> {
   #[inline]
   pub fn add_user_height_ok(&mut self, user_height_ok: bool) {
     self.fbb_.push_slot::<bool>(VRCConfigValidity::VT_USER_HEIGHT_OK, user_height_ok, false);
-  }
-  #[inline]
-  pub fn add_calibration_range_ok(&mut self, calibration_range_ok: bool) {
-    self.fbb_.push_slot::<bool>(VRCConfigValidity::VT_CALIBRATION_RANGE_OK, calibration_range_ok, false);
   }
   #[inline]
   pub fn add_calibration_visuals_ok(&mut self, calibration_visuals_ok: bool) {
@@ -201,7 +185,6 @@ impl core::fmt::Debug for VRCConfigValidity<'_> {
       ds.field("legacy_mode_ok", &self.legacy_mode_ok());
       ds.field("shoulder_tracking_ok", &self.shoulder_tracking_ok());
       ds.field("user_height_ok", &self.user_height_ok());
-      ds.field("calibration_range_ok", &self.calibration_range_ok());
       ds.field("calibration_visuals_ok", &self.calibration_visuals_ok());
       ds.field("tracker_model_ok", &self.tracker_model_ok());
       ds.field("avatar_measurement_type_ok", &self.avatar_measurement_type_ok());

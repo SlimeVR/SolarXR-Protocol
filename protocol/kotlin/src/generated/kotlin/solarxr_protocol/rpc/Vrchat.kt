@@ -42,21 +42,19 @@ public data class VRCConfigValidity(
   public val legacyModeOk: Boolean = false,
   public val shoulderTrackingOk: Boolean = false,
   public val userHeightOk: Boolean = false,
-  public val calibrationRangeOk: Boolean = false,
   public val calibrationVisualsOk: Boolean = false,
   public val trackerModelOk: Boolean = false,
   public val avatarMeasurementTypeOk: Boolean = false,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(7)
+    builder.startTable(6)
     builder.addBoolean(0, legacyModeOk, false)
     builder.addBoolean(1, shoulderTrackingOk, false)
     builder.addBoolean(2, userHeightOk, false)
-    builder.addBoolean(3, calibrationRangeOk, false)
-    builder.addBoolean(4, calibrationVisualsOk, false)
-    builder.addBoolean(5, trackerModelOk, false)
-    builder.addBoolean(6, avatarMeasurementTypeOk, false)
+    builder.addBoolean(3, calibrationVisualsOk, false)
+    builder.addBoolean(4, trackerModelOk, false)
+    builder.addBoolean(5, avatarMeasurementTypeOk, false)
     return builder.endTable()
   }
 
@@ -68,16 +66,14 @@ public data class VRCConfigValidity(
       val __offset_legacyModeOk = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_shoulderTrackingOk = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_userHeightOk = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_calibrationRangeOk = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_calibrationVisualsOk = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_trackerModelOk = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_avatarMeasurementTypeOk = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_calibrationVisualsOk = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_trackerModelOk = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_avatarMeasurementTypeOk = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return VRCConfigValidity(
               legacyModeOk = if (__offset_legacyModeOk != 0) bb.get(tableOffset + __offset_legacyModeOk) != 0.toByte() else false,
               shoulderTrackingOk = if (__offset_shoulderTrackingOk != 0) bb.get(tableOffset + __offset_shoulderTrackingOk) != 0.toByte() else false,
               userHeightOk = if (__offset_userHeightOk != 0) bb.get(tableOffset + __offset_userHeightOk) != 0.toByte() else false,
-              calibrationRangeOk = if (__offset_calibrationRangeOk != 0) bb.get(tableOffset + __offset_calibrationRangeOk) != 0.toByte() else false,
               calibrationVisualsOk = if (__offset_calibrationVisualsOk != 0) bb.get(tableOffset + __offset_calibrationVisualsOk) != 0.toByte() else false,
               trackerModelOk = if (__offset_trackerModelOk != 0) bb.get(tableOffset + __offset_trackerModelOk) != 0.toByte() else false,
               avatarMeasurementTypeOk = if (__offset_avatarMeasurementTypeOk != 0) bb.get(tableOffset + __offset_avatarMeasurementTypeOk) != 0.toByte() else false
@@ -90,21 +86,19 @@ public data class VRCConfigValues(
   public val legacyMode: Boolean = false,
   public val shoulderTrackingDisabled: Boolean = false,
   public val userHeight: Float = 0.0f,
-  public val calibrationRange: Float = 0.0f,
   public val calibrationVisuals: Boolean = false,
   public val trackerModel: VRCTrackerModel = VRCTrackerModel.UNKNOWN,
   public val avatarMeasurementType: VRCAvatarMeasurementType = VRCAvatarMeasurementType.UNKNOWN,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(7)
+    builder.startTable(6)
     builder.addBoolean(0, legacyMode, false)
     builder.addBoolean(1, shoulderTrackingDisabled, false)
     builder.addFloat(2, userHeight, 0.0)
-    builder.addFloat(3, calibrationRange, 0.0)
-    builder.addBoolean(4, calibrationVisuals, false)
-    builder.addByte(5, trackerModel.value.toByte(), 0)
-    builder.addByte(6, avatarMeasurementType.value.toByte(), 0)
+    builder.addBoolean(3, calibrationVisuals, false)
+    builder.addByte(4, trackerModel.value.toByte(), 0)
+    builder.addByte(5, avatarMeasurementType.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -116,16 +110,14 @@ public data class VRCConfigValues(
       val __offset_legacyMode = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_shoulderTrackingDisabled = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_userHeight = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_calibrationRange = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_calibrationVisuals = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_trackerModel = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_avatarMeasurementType = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_calibrationVisuals = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_trackerModel = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_avatarMeasurementType = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return VRCConfigValues(
               legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else false,
               shoulderTrackingDisabled = if (__offset_shoulderTrackingDisabled != 0) bb.get(tableOffset + __offset_shoulderTrackingDisabled) != 0.toByte() else false,
               userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else 0.0f,
-              calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else 0.0f,
               calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else false,
               trackerModel = if (__offset_trackerModel != 0) VRCTrackerModel.fromValue(bb.get(tableOffset + __offset_trackerModel).toUByte()) ?: VRCTrackerModel.UNKNOWN else VRCTrackerModel.UNKNOWN,
               avatarMeasurementType = if (__offset_avatarMeasurementType != 0) VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) ?: VRCAvatarMeasurementType.UNKNOWN else VRCAvatarMeasurementType.UNKNOWN
@@ -138,21 +130,19 @@ public data class VRCConfigRecommendedValues(
   public val legacyMode: Boolean = false,
   public val shoulderTrackingDisabled: Boolean = false,
   public val userHeight: Float = 0.0f,
-  public val calibrationRange: Float = 0.0f,
   public val calibrationVisuals: Boolean = false,
   public val trackerModel: VRCTrackerModel = VRCTrackerModel.UNKNOWN,
   public val avatarMeasurementType: VRCAvatarMeasurementType = VRCAvatarMeasurementType.UNKNOWN,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(7)
+    builder.startTable(6)
     builder.addBoolean(0, legacyMode, false)
     builder.addBoolean(1, shoulderTrackingDisabled, false)
     builder.addFloat(2, userHeight, 0.0)
-    builder.addFloat(3, calibrationRange, 0.0)
-    builder.addBoolean(4, calibrationVisuals, false)
-    builder.addByte(5, trackerModel.value.toByte(), 0)
-    builder.addByte(6, avatarMeasurementType.value.toByte(), 0)
+    builder.addBoolean(3, calibrationVisuals, false)
+    builder.addByte(4, trackerModel.value.toByte(), 0)
+    builder.addByte(5, avatarMeasurementType.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -164,16 +154,14 @@ public data class VRCConfigRecommendedValues(
       val __offset_legacyMode = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_shoulderTrackingDisabled = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_userHeight = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_calibrationRange = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_calibrationVisuals = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
-      val __offset_trackerModel = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
-      val __offset_avatarMeasurementType = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+      val __offset_calibrationVisuals = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_trackerModel = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_avatarMeasurementType = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return VRCConfigRecommendedValues(
               legacyMode = if (__offset_legacyMode != 0) bb.get(tableOffset + __offset_legacyMode) != 0.toByte() else false,
               shoulderTrackingDisabled = if (__offset_shoulderTrackingDisabled != 0) bb.get(tableOffset + __offset_shoulderTrackingDisabled) != 0.toByte() else false,
               userHeight = if (__offset_userHeight != 0) bb.getFloat(tableOffset + __offset_userHeight) else 0.0f,
-              calibrationRange = if (__offset_calibrationRange != 0) bb.getFloat(tableOffset + __offset_calibrationRange) else 0.0f,
               calibrationVisuals = if (__offset_calibrationVisuals != 0) bb.get(tableOffset + __offset_calibrationVisuals) != 0.toByte() else false,
               trackerModel = if (__offset_trackerModel != 0) VRCTrackerModel.fromValue(bb.get(tableOffset + __offset_trackerModel).toUByte()) ?: VRCTrackerModel.UNKNOWN else VRCTrackerModel.UNKNOWN,
               avatarMeasurementType = if (__offset_avatarMeasurementType != 0) VRCAvatarMeasurementType.fromValue(bb.get(tableOffset + __offset_avatarMeasurementType).toUByte()) ?: VRCAvatarMeasurementType.UNKNOWN else VRCAvatarMeasurementType.UNKNOWN
