@@ -31,9 +31,11 @@ table CountdownDetail {
 }
 
 enum StepMountingStatus: uint8 {
+    NONE,
     WAITING_FOR_MOVEMENT,
     RECORDING,
     PROCESSING,
+    DONE,
     ERROR_NO_DATA,
     ERROR_THRESHOLD_EXCEEDED,
     ERROR_TIMEOUT,

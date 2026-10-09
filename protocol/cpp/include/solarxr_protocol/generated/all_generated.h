@@ -2221,21 +2221,25 @@ inline const char *EnumNameResetLifecycle(ResetLifecycle e) {
 }
 
 enum class StepMountingStatus : uint8_t {
-  WAITING_FOR_MOVEMENT = 0,
-  RECORDING = 1,
-  PROCESSING = 2,
-  ERROR_NO_DATA = 3,
-  ERROR_THRESHOLD_EXCEEDED = 4,
-  ERROR_TIMEOUT = 5,
-  MIN = WAITING_FOR_MOVEMENT,
+  NONE = 0,
+  WAITING_FOR_MOVEMENT = 1,
+  RECORDING = 2,
+  PROCESSING = 3,
+  DONE = 4,
+  ERROR_NO_DATA = 5,
+  ERROR_THRESHOLD_EXCEEDED = 6,
+  ERROR_TIMEOUT = 7,
+  MIN = NONE,
   MAX = ERROR_TIMEOUT
 };
 
-inline const StepMountingStatus (&EnumValuesStepMountingStatus())[6] {
+inline const StepMountingStatus (&EnumValuesStepMountingStatus())[8] {
   static const StepMountingStatus values[] = {
+    StepMountingStatus::NONE,
     StepMountingStatus::WAITING_FOR_MOVEMENT,
     StepMountingStatus::RECORDING,
     StepMountingStatus::PROCESSING,
+    StepMountingStatus::DONE,
     StepMountingStatus::ERROR_NO_DATA,
     StepMountingStatus::ERROR_THRESHOLD_EXCEEDED,
     StepMountingStatus::ERROR_TIMEOUT
@@ -2244,10 +2248,12 @@ inline const StepMountingStatus (&EnumValuesStepMountingStatus())[6] {
 }
 
 inline const char * const *EnumNamesStepMountingStatus() {
-  static const char * const names[7] = {
+  static const char * const names[9] = {
+    "NONE",
     "WAITING_FOR_MOVEMENT",
     "RECORDING",
     "PROCESSING",
+    "DONE",
     "ERROR_NO_DATA",
     "ERROR_THRESHOLD_EXCEEDED",
     "ERROR_TIMEOUT",
@@ -2257,7 +2263,7 @@ inline const char * const *EnumNamesStepMountingStatus() {
 }
 
 inline const char *EnumNameStepMountingStatus(StepMountingStatus e) {
-  if (flatbuffers::IsOutRange(e, StepMountingStatus::WAITING_FOR_MOVEMENT, StepMountingStatus::ERROR_TIMEOUT)) return "";
+  if (flatbuffers::IsOutRange(e, StepMountingStatus::NONE, StepMountingStatus::ERROR_TIMEOUT)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesStepMountingStatus()[index];
 }
@@ -10200,7 +10206,7 @@ struct StepMountingDetailBuilder {
 
 inline flatbuffers::Offset<StepMountingDetail> CreateStepMountingDetail(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::StepMountingStatus status = solarxr_protocol::rpc::StepMountingStatus::WAITING_FOR_MOVEMENT) {
+    solarxr_protocol::rpc::StepMountingStatus status = solarxr_protocol::rpc::StepMountingStatus::NONE) {
   StepMountingDetailBuilder builder_(_fbb);
   builder_.add_status(status);
   return builder_.Finish();

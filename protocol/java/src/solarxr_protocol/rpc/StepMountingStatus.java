@@ -5,14 +5,16 @@ package solarxr_protocol.rpc;
 @SuppressWarnings("unused")
 public final class StepMountingStatus {
   private StepMountingStatus() { }
-  public static final int WAITING_FOR_MOVEMENT = 0;
-  public static final int RECORDING = 1;
-  public static final int PROCESSING = 2;
-  public static final int ERROR_NO_DATA = 3;
-  public static final int ERROR_THRESHOLD_EXCEEDED = 4;
-  public static final int ERROR_TIMEOUT = 5;
+  public static final int NONE = 0;
+  public static final int WAITING_FOR_MOVEMENT = 1;
+  public static final int RECORDING = 2;
+  public static final int PROCESSING = 3;
+  public static final int DONE = 4;
+  public static final int ERROR_NO_DATA = 5;
+  public static final int ERROR_THRESHOLD_EXCEEDED = 6;
+  public static final int ERROR_TIMEOUT = 7;
 
-  public static final String[] names = { "WAITING_FOR_MOVEMENT", "RECORDING", "PROCESSING", "ERROR_NO_DATA", "ERROR_THRESHOLD_EXCEEDED", "ERROR_TIMEOUT", };
+  public static final String[] names = { "NONE", "WAITING_FOR_MOVEMENT", "RECORDING", "PROCESSING", "DONE", "ERROR_NO_DATA", "ERROR_THRESHOLD_EXCEEDED", "ERROR_TIMEOUT", };
 
   public static String name(int e) { return names[e]; }
 }

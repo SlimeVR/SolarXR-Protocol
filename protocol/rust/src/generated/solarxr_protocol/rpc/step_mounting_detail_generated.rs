@@ -48,7 +48,7 @@ impl<'a> StepMountingDetail<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<StepMountingStatus>(StepMountingDetail::VT_STATUS, Some(StepMountingStatus::WAITING_FOR_MOVEMENT)).unwrap()}
+    unsafe { self._tab.get::<StepMountingStatus>(StepMountingDetail::VT_STATUS, Some(StepMountingStatus::NONE)).unwrap()}
   }
 }
 
@@ -71,7 +71,7 @@ impl<'a> Default for StepMountingDetailArgs {
   #[inline]
   fn default() -> Self {
     StepMountingDetailArgs {
-      status: StepMountingStatus::WAITING_FOR_MOVEMENT,
+      status: StepMountingStatus::NONE,
     }
   }
 }
@@ -83,7 +83,7 @@ pub struct StepMountingDetailBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> StepMountingDetailBuilder<'a, 'b> {
   #[inline]
   pub fn add_status(&mut self, status: StepMountingStatus) {
-    self.fbb_.push_slot::<StepMountingStatus>(StepMountingDetail::VT_STATUS, status, StepMountingStatus::WAITING_FOR_MOVEMENT);
+    self.fbb_.push_slot::<StepMountingStatus>(StepMountingDetail::VT_STATUS, status, StepMountingStatus::NONE);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StepMountingDetailBuilder<'a, 'b> {

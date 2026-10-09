@@ -113,12 +113,14 @@ public data class CountdownDetail(
 public enum class StepMountingStatus(
   public val `value`: UByte,
 ) {
-  WAITING_FOR_MOVEMENT(0.toUByte()),
-  RECORDING(1.toUByte()),
-  PROCESSING(2.toUByte()),
-  ERROR_NO_DATA(3.toUByte()),
-  ERROR_THRESHOLD_EXCEEDED(4.toUByte()),
-  ERROR_TIMEOUT(5.toUByte()),
+  NONE(0.toUByte()),
+  WAITING_FOR_MOVEMENT(1.toUByte()),
+  RECORDING(2.toUByte()),
+  PROCESSING(3.toUByte()),
+  DONE(4.toUByte()),
+  ERROR_NO_DATA(5.toUByte()),
+  ERROR_THRESHOLD_EXCEEDED(6.toUByte()),
+  ERROR_TIMEOUT(7.toUByte()),
   ;
 
   public companion object {
@@ -130,7 +132,7 @@ public enum class StepMountingStatus(
  * A step mounting session
  */
 public data class StepMountingDetail(
-  public val status: StepMountingStatus = StepMountingStatus.WAITING_FOR_MOVEMENT,
+  public val status: StepMountingStatus = StepMountingStatus.NONE,
 ) : ResetDetail {
   public fun encode(builder: FlatBufferWriter): Int {
 
@@ -147,7 +149,7 @@ public data class StepMountingDetail(
       val __offset_status = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return StepMountingDetail(
-              status = if (__offset_status != 0) StepMountingStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: StepMountingStatus.WAITING_FOR_MOVEMENT else StepMountingStatus.WAITING_FOR_MOVEMENT
+              status = if (__offset_status != 0) StepMountingStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: StepMountingStatus.NONE else StepMountingStatus.NONE
           )
     }
   }
