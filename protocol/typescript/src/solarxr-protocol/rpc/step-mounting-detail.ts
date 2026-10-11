@@ -28,7 +28,7 @@ static getSizePrefixedRootAsStepMountingDetail(bb:flatbuffers.ByteBuffer, obj?:S
 
 status():StepMountingStatus {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : StepMountingStatus.WAITING_FOR_MOVEMENT;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : StepMountingStatus.NONE;
 }
 
 static startStepMountingDetail(builder:flatbuffers.Builder) {
@@ -36,7 +36,7 @@ static startStepMountingDetail(builder:flatbuffers.Builder) {
 }
 
 static addStatus(builder:flatbuffers.Builder, status:StepMountingStatus) {
-  builder.addFieldInt8(0, status, StepMountingStatus.WAITING_FOR_MOVEMENT);
+  builder.addFieldInt8(0, status, StepMountingStatus.NONE);
 }
 
 static endStepMountingDetail(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -64,7 +64,7 @@ unpackTo(_o: StepMountingDetailT): void {
 
 export class StepMountingDetailT implements flatbuffers.IGeneratedObject {
 constructor(
-  public status: StepMountingStatus = StepMountingStatus.WAITING_FOR_MOVEMENT
+  public status: StepMountingStatus = StepMountingStatus.NONE
 ){}
 
 

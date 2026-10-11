@@ -193,8 +193,6 @@ pub mod solarxr_protocol {
     pub use self::vmcoscvrm_state_generated::*;
     mod vrctracker_model_generated;
     pub use self::vrctracker_model_generated::*;
-    mod vrcspine_mode_generated;
-    pub use self::vrcspine_mode_generated::*;
     mod vrcavatar_measurement_type_generated;
     pub use self::vrcavatar_measurement_type_generated::*;
     mod vrcoscinput_state_generated;
