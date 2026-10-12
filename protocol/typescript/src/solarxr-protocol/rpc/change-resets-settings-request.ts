@@ -27,46 +27,46 @@ static getSizePrefixedRootAsChangeResetsSettingsRequest(bb:flatbuffers.ByteBuffe
 /**
  * Makes it so feet will be always be mounting reset even when passing no BodyPart
  */
-resetMountingFeet():boolean|null {
+resetMountingFeet():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-armsMountingResetMode():ArmsMountingResetMode|null {
+armsMountingResetMode():ArmsMountingResetMode {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : ArmsMountingResetMode.BACK;
 }
 
 /**
  * In seconds, the time it takes to smooth to the corrected rotation when doing a yaw reset.
  */
-yawResetSmoothTime():number|null {
+yawResetSmoothTime():number {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : null;
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
 /**
  * Save mounting reset between restarts
  */
-saveMountingReset():boolean|null {
+saveMountingReset():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 /**
  * Reset VR headset's pitch and roll
  */
-resetReliableReferenceAttitude():boolean|null {
+resetReliableReferenceAttitude():boolean {
   const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : null;
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 /**
  * How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
  */
-mountingMethod():MountingMethod|null {
+mountingMethod():MountingMethod {
   const offset = this.bb!.__offset(this.bb_pos, 14);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : MountingMethod.UNKNOWN;
 }
 
 static startChangeResetsSettingsRequest(builder:flatbuffers.Builder) {
@@ -74,27 +74,27 @@ static startChangeResetsSettingsRequest(builder:flatbuffers.Builder) {
 }
 
 static addResetMountingFeet(builder:flatbuffers.Builder, resetMountingFeet:boolean) {
-  builder.addFieldInt8(0, +resetMountingFeet, 0);
+  builder.addFieldInt8(0, +resetMountingFeet, +false);
 }
 
 static addArmsMountingResetMode(builder:flatbuffers.Builder, armsMountingResetMode:ArmsMountingResetMode) {
-  builder.addFieldInt8(1, armsMountingResetMode, 0);
+  builder.addFieldInt8(1, armsMountingResetMode, ArmsMountingResetMode.BACK);
 }
 
 static addYawResetSmoothTime(builder:flatbuffers.Builder, yawResetSmoothTime:number) {
-  builder.addFieldFloat32(2, yawResetSmoothTime, 0);
+  builder.addFieldFloat32(2, yawResetSmoothTime, 0.0);
 }
 
 static addSaveMountingReset(builder:flatbuffers.Builder, saveMountingReset:boolean) {
-  builder.addFieldInt8(3, +saveMountingReset, 0);
+  builder.addFieldInt8(3, +saveMountingReset, +false);
 }
 
 static addResetReliableReferenceAttitude(builder:flatbuffers.Builder, resetReliableReferenceAttitude:boolean) {
-  builder.addFieldInt8(4, +resetReliableReferenceAttitude, 0);
+  builder.addFieldInt8(4, +resetReliableReferenceAttitude, +false);
 }
 
 static addMountingMethod(builder:flatbuffers.Builder, mountingMethod:MountingMethod) {
-  builder.addFieldInt8(5, mountingMethod, 0);
+  builder.addFieldInt8(5, mountingMethod, MountingMethod.UNKNOWN);
 }
 
 static endChangeResetsSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -102,20 +102,14 @@ static endChangeResetsSettingsRequest(builder:flatbuffers.Builder):flatbuffers.O
   return offset;
 }
 
-static createChangeResetsSettingsRequest(builder:flatbuffers.Builder, resetMountingFeet:boolean|null, armsMountingResetMode:ArmsMountingResetMode|null, yawResetSmoothTime:number|null, saveMountingReset:boolean|null, resetReliableReferenceAttitude:boolean|null, mountingMethod:MountingMethod|null):flatbuffers.Offset {
+static createChangeResetsSettingsRequest(builder:flatbuffers.Builder, resetMountingFeet:boolean, armsMountingResetMode:ArmsMountingResetMode, yawResetSmoothTime:number, saveMountingReset:boolean, resetReliableReferenceAttitude:boolean, mountingMethod:MountingMethod):flatbuffers.Offset {
   ChangeResetsSettingsRequest.startChangeResetsSettingsRequest(builder);
-  if (resetMountingFeet !== null)
-    ChangeResetsSettingsRequest.addResetMountingFeet(builder, resetMountingFeet);
-  if (armsMountingResetMode !== null)
-    ChangeResetsSettingsRequest.addArmsMountingResetMode(builder, armsMountingResetMode);
-  if (yawResetSmoothTime !== null)
-    ChangeResetsSettingsRequest.addYawResetSmoothTime(builder, yawResetSmoothTime);
-  if (saveMountingReset !== null)
-    ChangeResetsSettingsRequest.addSaveMountingReset(builder, saveMountingReset);
-  if (resetReliableReferenceAttitude !== null)
-    ChangeResetsSettingsRequest.addResetReliableReferenceAttitude(builder, resetReliableReferenceAttitude);
-  if (mountingMethod !== null)
-    ChangeResetsSettingsRequest.addMountingMethod(builder, mountingMethod);
+  ChangeResetsSettingsRequest.addResetMountingFeet(builder, resetMountingFeet);
+  ChangeResetsSettingsRequest.addArmsMountingResetMode(builder, armsMountingResetMode);
+  ChangeResetsSettingsRequest.addYawResetSmoothTime(builder, yawResetSmoothTime);
+  ChangeResetsSettingsRequest.addSaveMountingReset(builder, saveMountingReset);
+  ChangeResetsSettingsRequest.addResetReliableReferenceAttitude(builder, resetReliableReferenceAttitude);
+  ChangeResetsSettingsRequest.addMountingMethod(builder, mountingMethod);
   return ChangeResetsSettingsRequest.endChangeResetsSettingsRequest(builder);
 }
 
@@ -143,12 +137,12 @@ unpackTo(_o: ChangeResetsSettingsRequestT): void {
 
 export class ChangeResetsSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public resetMountingFeet: boolean|null = null,
-  public armsMountingResetMode: ArmsMountingResetMode|null = null,
-  public yawResetSmoothTime: number|null = null,
-  public saveMountingReset: boolean|null = null,
-  public resetReliableReferenceAttitude: boolean|null = null,
-  public mountingMethod: MountingMethod|null = null
+  public resetMountingFeet: boolean = false,
+  public armsMountingResetMode: ArmsMountingResetMode = ArmsMountingResetMode.BACK,
+  public yawResetSmoothTime: number = 0.0,
+  public saveMountingReset: boolean = false,
+  public resetReliableReferenceAttitude: boolean = false,
+  public mountingMethod: MountingMethod = MountingMethod.UNKNOWN
 ){}
 
 

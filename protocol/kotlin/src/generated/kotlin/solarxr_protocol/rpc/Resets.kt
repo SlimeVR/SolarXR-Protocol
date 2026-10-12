@@ -326,22 +326,22 @@ public data class ResetsSettingsResponse(
 }
 
 public data class ChangeResetsSettingsRequest(
-  public val resetMountingFeet: Boolean? = null,
-  public val armsMountingResetMode: ArmsMountingResetMode? = null,
-  public val yawResetSmoothTime: Float? = null,
-  public val saveMountingReset: Boolean? = null,
-  public val resetReliableReferenceAttitude: Boolean? = null,
-  public val mountingMethod: MountingMethod? = null,
+  public val resetMountingFeet: Boolean = false,
+  public val armsMountingResetMode: ArmsMountingResetMode = ArmsMountingResetMode.BACK,
+  public val yawResetSmoothTime: Float = 0.0f,
+  public val saveMountingReset: Boolean = false,
+  public val resetReliableReferenceAttitude: Boolean = false,
+  public val mountingMethod: MountingMethod = MountingMethod.UNKNOWN,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
     builder.startTable(6)
-    if (resetMountingFeet != null) { builder.forceDefaults(true); builder.addBoolean(0, resetMountingFeet, false); builder.forceDefaults(false) }
-    if (armsMountingResetMode != null) { builder.forceDefaults(true); builder.addByte(1, armsMountingResetMode.value.toByte(), 0); builder.forceDefaults(false) }
-    if (yawResetSmoothTime != null) { builder.forceDefaults(true); builder.addFloat(2, yawResetSmoothTime, 0.0); builder.forceDefaults(false) }
-    if (saveMountingReset != null) { builder.forceDefaults(true); builder.addBoolean(3, saveMountingReset, false); builder.forceDefaults(false) }
-    if (resetReliableReferenceAttitude != null) { builder.forceDefaults(true); builder.addBoolean(4, resetReliableReferenceAttitude, false); builder.forceDefaults(false) }
-    if (mountingMethod != null) { builder.forceDefaults(true); builder.addByte(5, mountingMethod.value.toByte(), 0); builder.forceDefaults(false) }
+    builder.addBoolean(0, resetMountingFeet, false)
+    builder.addByte(1, armsMountingResetMode.value.toByte(), 0)
+    builder.addFloat(2, yawResetSmoothTime, 0.0)
+    builder.addBoolean(3, saveMountingReset, false)
+    builder.addBoolean(4, resetReliableReferenceAttitude, false)
+    builder.addByte(5, mountingMethod.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -358,12 +358,12 @@ public data class ChangeResetsSettingsRequest(
       val __offset_mountingMethod = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return ChangeResetsSettingsRequest(
-              resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else null,
-              armsMountingResetMode = if (__offset_armsMountingResetMode != 0) ArmsMountingResetMode.fromValue(bb.get(tableOffset + __offset_armsMountingResetMode).toUByte()) else null,
-              yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else null,
-              saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else null,
-              resetReliableReferenceAttitude = if (__offset_resetReliableReferenceAttitude != 0) bb.get(tableOffset + __offset_resetReliableReferenceAttitude) != 0.toByte() else null,
-              mountingMethod = if (__offset_mountingMethod != 0) MountingMethod.fromValue(bb.get(tableOffset + __offset_mountingMethod).toUByte()) else null
+              resetMountingFeet = if (__offset_resetMountingFeet != 0) bb.get(tableOffset + __offset_resetMountingFeet) != 0.toByte() else false,
+              armsMountingResetMode = if (__offset_armsMountingResetMode != 0) ArmsMountingResetMode.fromValue(bb.get(tableOffset + __offset_armsMountingResetMode).toUByte()) ?: ArmsMountingResetMode.BACK else ArmsMountingResetMode.BACK,
+              yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else 0.0f,
+              saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else false,
+              resetReliableReferenceAttitude = if (__offset_resetReliableReferenceAttitude != 0) bb.get(tableOffset + __offset_resetReliableReferenceAttitude) != 0.toByte() else false,
+              mountingMethod = if (__offset_mountingMethod != 0) MountingMethod.fromValue(bb.get(tableOffset + __offset_mountingMethod).toUByte()) ?: MountingMethod.UNKNOWN else MountingMethod.UNKNOWN
           )
     }
   }
