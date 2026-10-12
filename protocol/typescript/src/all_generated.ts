@@ -171,6 +171,8 @@ export { ServerInfosRequest, ServerInfosRequestT } from './solarxr-protocol/rpc/
 export { ServerInfosResponse, ServerInfosResponseT } from './solarxr-protocol/rpc/server-infos-response.js';
 export { SetKeybindRecordingRequest, SetKeybindRecordingRequestT } from './solarxr-protocol/rpc/set-keybind-recording-request.js';
 export { SetPauseTrackingRequest, SetPauseTrackingRequestT } from './solarxr-protocol/rpc/set-pause-tracking-request.js';
+export { SettingsDefaultsRequest, SettingsDefaultsRequestT } from './solarxr-protocol/rpc/settings-defaults-request.js';
+export { SettingsDefaultsResponse, SettingsDefaultsResponseT } from './solarxr-protocol/rpc/settings-defaults-response.js';
 export { SettingsResetRequest, SettingsResetRequestT } from './solarxr-protocol/rpc/settings-reset-request.js';
 export { SkeletonBone } from './solarxr-protocol/rpc/skeleton-bone.js';
 export { SkeletonFiltering, SkeletonFilteringT } from './solarxr-protocol/rpc/skeleton-filtering.js';

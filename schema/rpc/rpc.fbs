@@ -21,6 +21,7 @@ include "overlay.fbs";
 include "provisioning.fbs";
 include "resets.fbs";
 include "serial.fbs";
+include "settings_defaults.fbs";
 include "skeleton.fbs";
 include "stay_aligned.fbs";
 include "telemetry.fbs";
@@ -168,6 +169,8 @@ union RpcMessage {
     BodyPartPrerequisitesRequest,
     BodyPartPrerequisitesResponse,
     SerialKeepaliveRequest,
+    SettingsDefaultsRequest,
+    SettingsDefaultsResponse,
 }
 
 table RpcMessageHeader {
