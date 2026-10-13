@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 137;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 144;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 138] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 145] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -154,6 +154,13 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 138] = [
   RpcMessage::SerialKeepaliveRequest,
   RpcMessage::SettingsDefaultsRequest,
   RpcMessage::SettingsDefaultsResponse,
+  RpcMessage::ProfilesRequest,
+  RpcMessage::ProfilesResponse,
+  RpcMessage::SwitchProfileRequest,
+  RpcMessage::CreateProfileRequest,
+  RpcMessage::RenameProfileRequest,
+  RpcMessage::DeleteProfileRequest,
+  RpcMessage::ProfileOperationResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -299,9 +306,16 @@ impl RpcMessage {
   pub const SerialKeepaliveRequest: Self = Self(135);
   pub const SettingsDefaultsRequest: Self = Self(136);
   pub const SettingsDefaultsResponse: Self = Self(137);
+  pub const ProfilesRequest: Self = Self(138);
+  pub const ProfilesResponse: Self = Self(139);
+  pub const SwitchProfileRequest: Self = Self(140);
+  pub const CreateProfileRequest: Self = Self(141);
+  pub const RenameProfileRequest: Self = Self(142);
+  pub const DeleteProfileRequest: Self = Self(143);
+  pub const ProfileOperationResponse: Self = Self(144);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 137;
+  pub const ENUM_MAX: u8 = 144;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -441,6 +455,13 @@ impl RpcMessage {
     Self::SerialKeepaliveRequest,
     Self::SettingsDefaultsRequest,
     Self::SettingsDefaultsResponse,
+    Self::ProfilesRequest,
+    Self::ProfilesResponse,
+    Self::SwitchProfileRequest,
+    Self::CreateProfileRequest,
+    Self::RenameProfileRequest,
+    Self::DeleteProfileRequest,
+    Self::ProfileOperationResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -583,6 +604,13 @@ impl RpcMessage {
       Self::SerialKeepaliveRequest => Some("SerialKeepaliveRequest"),
       Self::SettingsDefaultsRequest => Some("SettingsDefaultsRequest"),
       Self::SettingsDefaultsResponse => Some("SettingsDefaultsResponse"),
+      Self::ProfilesRequest => Some("ProfilesRequest"),
+      Self::ProfilesResponse => Some("ProfilesResponse"),
+      Self::SwitchProfileRequest => Some("SwitchProfileRequest"),
+      Self::CreateProfileRequest => Some("CreateProfileRequest"),
+      Self::RenameProfileRequest => Some("RenameProfileRequest"),
+      Self::DeleteProfileRequest => Some("DeleteProfileRequest"),
+      Self::ProfileOperationResponse => Some("ProfileOperationResponse"),
       _ => None,
     }
   }

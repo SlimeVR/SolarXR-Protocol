@@ -269,6 +269,30 @@ struct OverlayDisplayModeChangeRequestBuilder;
 struct OverlayDisplayModeResponse;
 struct OverlayDisplayModeResponseBuilder;
 
+struct ProfileList;
+struct ProfileListBuilder;
+
+struct ProfilesRequest;
+struct ProfilesRequestBuilder;
+
+struct ProfilesResponse;
+struct ProfilesResponseBuilder;
+
+struct SwitchProfileRequest;
+struct SwitchProfileRequestBuilder;
+
+struct CreateProfileRequest;
+struct CreateProfileRequestBuilder;
+
+struct RenameProfileRequest;
+struct RenameProfileRequestBuilder;
+
+struct DeleteProfileRequest;
+struct DeleteProfileRequestBuilder;
+
+struct ProfileOperationResponse;
+struct ProfileOperationResponseBuilder;
+
 struct StartWifiProvisioningRequest;
 struct StartWifiProvisioningRequestBuilder;
 
@@ -1998,6 +2022,93 @@ inline const char *EnumNameKeybindSupport(KeybindSupport e) {
   return EnumNamesKeybindSupport()[index];
 }
 
+enum class ProfileKind : uint8_t {
+  /// Not set, a request with this kind is rejected.
+  UNKNOWN = 0,
+  /// The machine: trackers, outputs, resets, keybinds and every other setting.
+  SETTINGS = 1,
+  /// The person: height and bone proportions.
+  USER = 2,
+  MIN = UNKNOWN,
+  MAX = USER
+};
+
+inline const ProfileKind (&EnumValuesProfileKind())[3] {
+  static const ProfileKind values[] = {
+    ProfileKind::UNKNOWN,
+    ProfileKind::SETTINGS,
+    ProfileKind::USER
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesProfileKind() {
+  static const char * const names[4] = {
+    "UNKNOWN",
+    "SETTINGS",
+    "USER",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameProfileKind(ProfileKind e) {
+  if (flatbuffers::IsOutRange(e, ProfileKind::UNKNOWN, ProfileKind::USER)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesProfileKind()[index];
+}
+
+enum class ProfileOperationStatus : uint8_t {
+  OK = 0,
+  /// The request has no profile kind.
+  INVALID_KIND = 1,
+  /// The name has characters that are not allowed, or is empty or too long.
+  INVALID_NAME = 2,
+  /// A profile with this name already exists, names compare case-insensitively.
+  ALREADY_EXISTS = 3,
+  /// No profile with this name exists.
+  NOT_FOUND = 4,
+  /// The profile is in use (active), so the operation cannot be performed
+  IS_ACTIVE = 5,
+  /// The server could not read or write the profile files.
+  FAILED = 6,
+  MIN = OK,
+  MAX = FAILED
+};
+
+inline const ProfileOperationStatus (&EnumValuesProfileOperationStatus())[7] {
+  static const ProfileOperationStatus values[] = {
+    ProfileOperationStatus::OK,
+    ProfileOperationStatus::INVALID_KIND,
+    ProfileOperationStatus::INVALID_NAME,
+    ProfileOperationStatus::ALREADY_EXISTS,
+    ProfileOperationStatus::NOT_FOUND,
+    ProfileOperationStatus::IS_ACTIVE,
+    ProfileOperationStatus::FAILED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesProfileOperationStatus() {
+  static const char * const names[8] = {
+    "OK",
+    "INVALID_KIND",
+    "INVALID_NAME",
+    "ALREADY_EXISTS",
+    "NOT_FOUND",
+    "IS_ACTIVE",
+    "FAILED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameProfileOperationStatus(ProfileOperationStatus e) {
+  if (flatbuffers::IsOutRange(e, ProfileOperationStatus::OK, ProfileOperationStatus::FAILED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesProfileOperationStatus()[index];
+}
+
 enum class WifiAuthMode : uint8_t {
   OPEN = 0,
   WEP = 1,
@@ -3237,11 +3348,18 @@ enum class RpcMessage : uint8_t {
   SerialKeepaliveRequest = 135,
   SettingsDefaultsRequest = 136,
   SettingsDefaultsResponse = 137,
+  ProfilesRequest = 138,
+  ProfilesResponse = 139,
+  SwitchProfileRequest = 140,
+  CreateProfileRequest = 141,
+  RenameProfileRequest = 142,
+  DeleteProfileRequest = 143,
+  ProfileOperationResponse = 144,
   MIN = NONE,
-  MAX = SettingsDefaultsResponse
+  MAX = ProfileOperationResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[138] {
+inline const RpcMessage (&EnumValuesRpcMessage())[145] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -3380,13 +3498,20 @@ inline const RpcMessage (&EnumValuesRpcMessage())[138] {
     RpcMessage::BodyPartPrerequisitesResponse,
     RpcMessage::SerialKeepaliveRequest,
     RpcMessage::SettingsDefaultsRequest,
-    RpcMessage::SettingsDefaultsResponse
+    RpcMessage::SettingsDefaultsResponse,
+    RpcMessage::ProfilesRequest,
+    RpcMessage::ProfilesResponse,
+    RpcMessage::SwitchProfileRequest,
+    RpcMessage::CreateProfileRequest,
+    RpcMessage::RenameProfileRequest,
+    RpcMessage::DeleteProfileRequest,
+    RpcMessage::ProfileOperationResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[139] = {
+  static const char * const names[146] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -3525,13 +3650,20 @@ inline const char * const *EnumNamesRpcMessage() {
     "SerialKeepaliveRequest",
     "SettingsDefaultsRequest",
     "SettingsDefaultsResponse",
+    "ProfilesRequest",
+    "ProfilesResponse",
+    "SwitchProfileRequest",
+    "CreateProfileRequest",
+    "RenameProfileRequest",
+    "DeleteProfileRequest",
+    "ProfileOperationResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::SettingsDefaultsResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ProfileOperationResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -4086,6 +4218,34 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::SettingsDefaultsReques
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::SettingsDefaultsResponse> {
   static const RpcMessage enum_value = RpcMessage::SettingsDefaultsResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ProfilesRequest> {
+  static const RpcMessage enum_value = RpcMessage::ProfilesRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ProfilesResponse> {
+  static const RpcMessage enum_value = RpcMessage::ProfilesResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::SwitchProfileRequest> {
+  static const RpcMessage enum_value = RpcMessage::SwitchProfileRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::CreateProfileRequest> {
+  static const RpcMessage enum_value = RpcMessage::CreateProfileRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::RenameProfileRequest> {
+  static const RpcMessage enum_value = RpcMessage::RenameProfileRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::DeleteProfileRequest> {
+  static const RpcMessage enum_value = RpcMessage::DeleteProfileRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ProfileOperationResponse> {
+  static const RpcMessage enum_value = RpcMessage::ProfileOperationResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -9638,6 +9798,475 @@ inline flatbuffers::Offset<OverlayDisplayModeResponse> CreateOverlayDisplayModeR
   OverlayDisplayModeResponseBuilder builder_(_fbb);
   builder_.add_is_mirrored(is_mirrored);
   builder_.add_is_visible(is_visible);
+  return builder_.Finish();
+}
+
+struct ProfileList FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ProfileListBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ACTIVE = 4,
+    VT_NAMES = 6
+  };
+  const flatbuffers::String *active() const {
+    return GetPointer<const flatbuffers::String *>(VT_ACTIVE);
+  }
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *names() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_NAMES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ACTIVE) &&
+           verifier.VerifyString(active()) &&
+           VerifyOffset(verifier, VT_NAMES) &&
+           verifier.VerifyVector(names()) &&
+           verifier.VerifyVectorOfStrings(names()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ProfileListBuilder {
+  typedef ProfileList Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_active(flatbuffers::Offset<flatbuffers::String> active) {
+    fbb_.AddOffset(ProfileList::VT_ACTIVE, active);
+  }
+  void add_names(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> names) {
+    fbb_.AddOffset(ProfileList::VT_NAMES, names);
+  }
+  explicit ProfileListBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ProfileList> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ProfileList>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ProfileList> CreateProfileList(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> active = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> names = 0) {
+  ProfileListBuilder builder_(_fbb);
+  builder_.add_names(names);
+  builder_.add_active(active);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ProfileList> CreateProfileListDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *active = nullptr,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *names = nullptr) {
+  auto active__ = active ? _fbb.CreateString(active) : 0;
+  auto names__ = names ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*names) : 0;
+  return solarxr_protocol::rpc::CreateProfileList(
+      _fbb,
+      active__,
+      names__);
+}
+
+struct ProfilesRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ProfilesRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ProfilesRequestBuilder {
+  typedef ProfilesRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit ProfilesRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ProfilesRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ProfilesRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ProfilesRequest> CreateProfilesRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  ProfilesRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct ProfilesResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ProfilesResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SETTINGS = 4,
+    VT_USER = 6
+  };
+  const solarxr_protocol::rpc::ProfileList *settings() const {
+    return GetPointer<const solarxr_protocol::rpc::ProfileList *>(VT_SETTINGS);
+  }
+  const solarxr_protocol::rpc::ProfileList *user() const {
+    return GetPointer<const solarxr_protocol::rpc::ProfileList *>(VT_USER);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_SETTINGS) &&
+           verifier.VerifyTable(settings()) &&
+           VerifyOffset(verifier, VT_USER) &&
+           verifier.VerifyTable(user()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ProfilesResponseBuilder {
+  typedef ProfilesResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_settings(flatbuffers::Offset<solarxr_protocol::rpc::ProfileList> settings) {
+    fbb_.AddOffset(ProfilesResponse::VT_SETTINGS, settings);
+  }
+  void add_user(flatbuffers::Offset<solarxr_protocol::rpc::ProfileList> user) {
+    fbb_.AddOffset(ProfilesResponse::VT_USER, user);
+  }
+  explicit ProfilesResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ProfilesResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ProfilesResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ProfilesResponse> CreateProfilesResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<solarxr_protocol::rpc::ProfileList> settings = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::ProfileList> user = 0) {
+  ProfilesResponseBuilder builder_(_fbb);
+  builder_.add_user(user);
+  builder_.add_settings(settings);
+  return builder_.Finish();
+}
+
+struct SwitchProfileRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SwitchProfileRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KIND = 4,
+    VT_NAME = 6
+  };
+  solarxr_protocol::rpc::ProfileKind kind() const {
+    return static_cast<solarxr_protocol::rpc::ProfileKind>(GetField<uint8_t>(VT_KIND, 0));
+  }
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_KIND, 1) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           verifier.EndTable();
+  }
+};
+
+struct SwitchProfileRequestBuilder {
+  typedef SwitchProfileRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_kind(solarxr_protocol::rpc::ProfileKind kind) {
+    fbb_.AddElement<uint8_t>(SwitchProfileRequest::VT_KIND, static_cast<uint8_t>(kind), 0);
+  }
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(SwitchProfileRequest::VT_NAME, name);
+  }
+  explicit SwitchProfileRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SwitchProfileRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SwitchProfileRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SwitchProfileRequest> CreateSwitchProfileRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ProfileKind kind = solarxr_protocol::rpc::ProfileKind::UNKNOWN,
+    flatbuffers::Offset<flatbuffers::String> name = 0) {
+  SwitchProfileRequestBuilder builder_(_fbb);
+  builder_.add_name(name);
+  builder_.add_kind(kind);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<SwitchProfileRequest> CreateSwitchProfileRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ProfileKind kind = solarxr_protocol::rpc::ProfileKind::UNKNOWN,
+    const char *name = nullptr) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  return solarxr_protocol::rpc::CreateSwitchProfileRequest(
+      _fbb,
+      kind,
+      name__);
+}
+
+struct CreateProfileRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CreateProfileRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KIND = 4,
+    VT_NAME = 6,
+    VT_COPY_FROM = 8
+  };
+  solarxr_protocol::rpc::ProfileKind kind() const {
+    return static_cast<solarxr_protocol::rpc::ProfileKind>(GetField<uint8_t>(VT_KIND, 0));
+  }
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  const flatbuffers::String *copy_from() const {
+    return GetPointer<const flatbuffers::String *>(VT_COPY_FROM);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_KIND, 1) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           VerifyOffset(verifier, VT_COPY_FROM) &&
+           verifier.VerifyString(copy_from()) &&
+           verifier.EndTable();
+  }
+};
+
+struct CreateProfileRequestBuilder {
+  typedef CreateProfileRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_kind(solarxr_protocol::rpc::ProfileKind kind) {
+    fbb_.AddElement<uint8_t>(CreateProfileRequest::VT_KIND, static_cast<uint8_t>(kind), 0);
+  }
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(CreateProfileRequest::VT_NAME, name);
+  }
+  void add_copy_from(flatbuffers::Offset<flatbuffers::String> copy_from) {
+    fbb_.AddOffset(CreateProfileRequest::VT_COPY_FROM, copy_from);
+  }
+  explicit CreateProfileRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<CreateProfileRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<CreateProfileRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<CreateProfileRequest> CreateCreateProfileRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ProfileKind kind = solarxr_protocol::rpc::ProfileKind::UNKNOWN,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    flatbuffers::Offset<flatbuffers::String> copy_from = 0) {
+  CreateProfileRequestBuilder builder_(_fbb);
+  builder_.add_copy_from(copy_from);
+  builder_.add_name(name);
+  builder_.add_kind(kind);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<CreateProfileRequest> CreateCreateProfileRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ProfileKind kind = solarxr_protocol::rpc::ProfileKind::UNKNOWN,
+    const char *name = nullptr,
+    const char *copy_from = nullptr) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  auto copy_from__ = copy_from ? _fbb.CreateString(copy_from) : 0;
+  return solarxr_protocol::rpc::CreateCreateProfileRequest(
+      _fbb,
+      kind,
+      name__,
+      copy_from__);
+}
+
+struct RenameProfileRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef RenameProfileRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KIND = 4,
+    VT_NAME = 6,
+    VT_NEW_NAME = 8
+  };
+  solarxr_protocol::rpc::ProfileKind kind() const {
+    return static_cast<solarxr_protocol::rpc::ProfileKind>(GetField<uint8_t>(VT_KIND, 0));
+  }
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  const flatbuffers::String *new_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NEW_NAME);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_KIND, 1) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           VerifyOffset(verifier, VT_NEW_NAME) &&
+           verifier.VerifyString(new_name()) &&
+           verifier.EndTable();
+  }
+};
+
+struct RenameProfileRequestBuilder {
+  typedef RenameProfileRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_kind(solarxr_protocol::rpc::ProfileKind kind) {
+    fbb_.AddElement<uint8_t>(RenameProfileRequest::VT_KIND, static_cast<uint8_t>(kind), 0);
+  }
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(RenameProfileRequest::VT_NAME, name);
+  }
+  void add_new_name(flatbuffers::Offset<flatbuffers::String> new_name) {
+    fbb_.AddOffset(RenameProfileRequest::VT_NEW_NAME, new_name);
+  }
+  explicit RenameProfileRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<RenameProfileRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<RenameProfileRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<RenameProfileRequest> CreateRenameProfileRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ProfileKind kind = solarxr_protocol::rpc::ProfileKind::UNKNOWN,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    flatbuffers::Offset<flatbuffers::String> new_name = 0) {
+  RenameProfileRequestBuilder builder_(_fbb);
+  builder_.add_new_name(new_name);
+  builder_.add_name(name);
+  builder_.add_kind(kind);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<RenameProfileRequest> CreateRenameProfileRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ProfileKind kind = solarxr_protocol::rpc::ProfileKind::UNKNOWN,
+    const char *name = nullptr,
+    const char *new_name = nullptr) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  auto new_name__ = new_name ? _fbb.CreateString(new_name) : 0;
+  return solarxr_protocol::rpc::CreateRenameProfileRequest(
+      _fbb,
+      kind,
+      name__,
+      new_name__);
+}
+
+struct DeleteProfileRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef DeleteProfileRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KIND = 4,
+    VT_NAME = 6
+  };
+  solarxr_protocol::rpc::ProfileKind kind() const {
+    return static_cast<solarxr_protocol::rpc::ProfileKind>(GetField<uint8_t>(VT_KIND, 0));
+  }
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_KIND, 1) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           verifier.EndTable();
+  }
+};
+
+struct DeleteProfileRequestBuilder {
+  typedef DeleteProfileRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_kind(solarxr_protocol::rpc::ProfileKind kind) {
+    fbb_.AddElement<uint8_t>(DeleteProfileRequest::VT_KIND, static_cast<uint8_t>(kind), 0);
+  }
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(DeleteProfileRequest::VT_NAME, name);
+  }
+  explicit DeleteProfileRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<DeleteProfileRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<DeleteProfileRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<DeleteProfileRequest> CreateDeleteProfileRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ProfileKind kind = solarxr_protocol::rpc::ProfileKind::UNKNOWN,
+    flatbuffers::Offset<flatbuffers::String> name = 0) {
+  DeleteProfileRequestBuilder builder_(_fbb);
+  builder_.add_name(name);
+  builder_.add_kind(kind);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<DeleteProfileRequest> CreateDeleteProfileRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ProfileKind kind = solarxr_protocol::rpc::ProfileKind::UNKNOWN,
+    const char *name = nullptr) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  return solarxr_protocol::rpc::CreateDeleteProfileRequest(
+      _fbb,
+      kind,
+      name__);
+}
+
+struct ProfileOperationResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ProfileOperationResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_STATUS = 4
+  };
+  solarxr_protocol::rpc::ProfileOperationStatus status() const {
+    return static_cast<solarxr_protocol::rpc::ProfileOperationStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct ProfileOperationResponseBuilder {
+  typedef ProfileOperationResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_status(solarxr_protocol::rpc::ProfileOperationStatus status) {
+    fbb_.AddElement<uint8_t>(ProfileOperationResponse::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  explicit ProfileOperationResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ProfileOperationResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ProfileOperationResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ProfileOperationResponse> CreateProfileOperationResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::ProfileOperationStatus status = solarxr_protocol::rpc::ProfileOperationStatus::OK) {
+  ProfileOperationResponseBuilder builder_(_fbb);
+  builder_.add_status(status);
   return builder_.Finish();
 }
 
@@ -16853,6 +17482,27 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::SettingsDefaultsResponse *message_as_SettingsDefaultsResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::SettingsDefaultsResponse ? static_cast<const solarxr_protocol::rpc::SettingsDefaultsResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::ProfilesRequest *message_as_ProfilesRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ProfilesRequest ? static_cast<const solarxr_protocol::rpc::ProfilesRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ProfilesResponse *message_as_ProfilesResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ProfilesResponse ? static_cast<const solarxr_protocol::rpc::ProfilesResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::SwitchProfileRequest *message_as_SwitchProfileRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::SwitchProfileRequest ? static_cast<const solarxr_protocol::rpc::SwitchProfileRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::CreateProfileRequest *message_as_CreateProfileRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::CreateProfileRequest ? static_cast<const solarxr_protocol::rpc::CreateProfileRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::RenameProfileRequest *message_as_RenameProfileRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::RenameProfileRequest ? static_cast<const solarxr_protocol::rpc::RenameProfileRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::DeleteProfileRequest *message_as_DeleteProfileRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::DeleteProfileRequest ? static_cast<const solarxr_protocol::rpc::DeleteProfileRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::ProfileOperationResponse *message_as_ProfileOperationResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ProfileOperationResponse ? static_cast<const solarxr_protocol::rpc::ProfileOperationResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -17410,6 +18060,34 @@ template<> inline const solarxr_protocol::rpc::SettingsDefaultsRequest *RpcMessa
 
 template<> inline const solarxr_protocol::rpc::SettingsDefaultsResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::SettingsDefaultsResponse>() const {
   return message_as_SettingsDefaultsResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::ProfilesRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ProfilesRequest>() const {
+  return message_as_ProfilesRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::ProfilesResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ProfilesResponse>() const {
+  return message_as_ProfilesResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::SwitchProfileRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SwitchProfileRequest>() const {
+  return message_as_SwitchProfileRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::CreateProfileRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::CreateProfileRequest>() const {
+  return message_as_CreateProfileRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::RenameProfileRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::RenameProfileRequest>() const {
+  return message_as_RenameProfileRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::DeleteProfileRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::DeleteProfileRequest>() const {
+  return message_as_DeleteProfileRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::ProfileOperationResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ProfileOperationResponse>() const {
+  return message_as_ProfileOperationResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -19426,6 +20104,34 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::SettingsDefaultsResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SettingsDefaultsResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ProfilesRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ProfilesRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ProfilesResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ProfilesResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::SwitchProfileRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SwitchProfileRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::CreateProfileRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::CreateProfileRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::RenameProfileRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::RenameProfileRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::DeleteProfileRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::DeleteProfileRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::ProfileOperationResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ProfileOperationResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

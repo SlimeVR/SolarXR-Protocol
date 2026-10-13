@@ -154,6 +154,13 @@ public sealed interface RpcMessage {
       135 -> SerialKeepaliveRequest.decode(bb, offset)
       136 -> SettingsDefaultsRequest.decode(bb, offset)
       137 -> SettingsDefaultsResponse.decode(bb, offset)
+      138 -> ProfilesRequest.decode(bb, offset)
+      139 -> ProfilesResponse.decode(bb, offset)
+      140 -> SwitchProfileRequest.decode(bb, offset)
+      141 -> CreateProfileRequest.decode(bb, offset)
+      142 -> RenameProfileRequest.decode(bb, offset)
+      143 -> DeleteProfileRequest.decode(bb, offset)
+      144 -> ProfileOperationResponse.decode(bb, offset)
       else -> null
     }
 
@@ -295,6 +302,13 @@ public sealed interface RpcMessage {
       is SerialKeepaliveRequest -> 135.toUByte()
       is SettingsDefaultsRequest -> 136.toUByte()
       is SettingsDefaultsResponse -> 137.toUByte()
+      is ProfilesRequest -> 138.toUByte()
+      is ProfilesResponse -> 139.toUByte()
+      is SwitchProfileRequest -> 140.toUByte()
+      is CreateProfileRequest -> 141.toUByte()
+      is RenameProfileRequest -> 142.toUByte()
+      is DeleteProfileRequest -> 143.toUByte()
+      is ProfileOperationResponse -> 144.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -435,6 +449,13 @@ public sealed interface RpcMessage {
       is SerialKeepaliveRequest -> value.encode(builder)
       is SettingsDefaultsRequest -> value.encode(builder)
       is SettingsDefaultsResponse -> value.encode(builder)
+      is ProfilesRequest -> value.encode(builder)
+      is ProfilesResponse -> value.encode(builder)
+      is SwitchProfileRequest -> value.encode(builder)
+      is CreateProfileRequest -> value.encode(builder)
+      is RenameProfileRequest -> value.encode(builder)
+      is DeleteProfileRequest -> value.encode(builder)
+      is ProfileOperationResponse -> value.encode(builder)
     }
   }
 }

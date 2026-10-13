@@ -619,6 +619,34 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.SettingsDefaultsResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SettingsDefaultsResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.ProfilesRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ProfilesRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ProfilesRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ProfilesResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.ProfilesResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ProfilesResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.SwitchProfileRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SwitchProfileRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SwitchProfileRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.CreateProfileRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.CreateProfileRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.CreateProfileRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.RenameProfileRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.RenameProfileRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.RenameProfileRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.DeleteProfileRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.DeleteProfileRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DeleteProfileRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ProfileOperationResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.ProfileOperationResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ProfileOperationResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

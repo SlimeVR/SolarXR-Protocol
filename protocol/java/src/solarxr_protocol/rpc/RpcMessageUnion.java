@@ -158,6 +158,13 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.SerialKeepaliveRequestT asSerialKeepaliveRequest() { return (solarxr_protocol.rpc.SerialKeepaliveRequestT) value; }
   public solarxr_protocol.rpc.SettingsDefaultsRequestT asSettingsDefaultsRequest() { return (solarxr_protocol.rpc.SettingsDefaultsRequestT) value; }
   public solarxr_protocol.rpc.SettingsDefaultsResponseT asSettingsDefaultsResponse() { return (solarxr_protocol.rpc.SettingsDefaultsResponseT) value; }
+  public solarxr_protocol.rpc.ProfilesRequestT asProfilesRequest() { return (solarxr_protocol.rpc.ProfilesRequestT) value; }
+  public solarxr_protocol.rpc.ProfilesResponseT asProfilesResponse() { return (solarxr_protocol.rpc.ProfilesResponseT) value; }
+  public solarxr_protocol.rpc.SwitchProfileRequestT asSwitchProfileRequest() { return (solarxr_protocol.rpc.SwitchProfileRequestT) value; }
+  public solarxr_protocol.rpc.CreateProfileRequestT asCreateProfileRequest() { return (solarxr_protocol.rpc.CreateProfileRequestT) value; }
+  public solarxr_protocol.rpc.RenameProfileRequestT asRenameProfileRequest() { return (solarxr_protocol.rpc.RenameProfileRequestT) value; }
+  public solarxr_protocol.rpc.DeleteProfileRequestT asDeleteProfileRequest() { return (solarxr_protocol.rpc.DeleteProfileRequestT) value; }
+  public solarxr_protocol.rpc.ProfileOperationResponseT asProfileOperationResponse() { return (solarxr_protocol.rpc.ProfileOperationResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -298,6 +305,13 @@ public class RpcMessageUnion {
       case RpcMessage.SerialKeepaliveRequest: return solarxr_protocol.rpc.SerialKeepaliveRequest.pack(builder, _o.asSerialKeepaliveRequest());
       case RpcMessage.SettingsDefaultsRequest: return solarxr_protocol.rpc.SettingsDefaultsRequest.pack(builder, _o.asSettingsDefaultsRequest());
       case RpcMessage.SettingsDefaultsResponse: return solarxr_protocol.rpc.SettingsDefaultsResponse.pack(builder, _o.asSettingsDefaultsResponse());
+      case RpcMessage.ProfilesRequest: return solarxr_protocol.rpc.ProfilesRequest.pack(builder, _o.asProfilesRequest());
+      case RpcMessage.ProfilesResponse: return solarxr_protocol.rpc.ProfilesResponse.pack(builder, _o.asProfilesResponse());
+      case RpcMessage.SwitchProfileRequest: return solarxr_protocol.rpc.SwitchProfileRequest.pack(builder, _o.asSwitchProfileRequest());
+      case RpcMessage.CreateProfileRequest: return solarxr_protocol.rpc.CreateProfileRequest.pack(builder, _o.asCreateProfileRequest());
+      case RpcMessage.RenameProfileRequest: return solarxr_protocol.rpc.RenameProfileRequest.pack(builder, _o.asRenameProfileRequest());
+      case RpcMessage.DeleteProfileRequest: return solarxr_protocol.rpc.DeleteProfileRequest.pack(builder, _o.asDeleteProfileRequest());
+      case RpcMessage.ProfileOperationResponse: return solarxr_protocol.rpc.ProfileOperationResponse.pack(builder, _o.asProfileOperationResponse());
       default: return 0;
     }
   }

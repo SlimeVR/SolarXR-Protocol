@@ -18,6 +18,7 @@ include "firmware.fbs";
 include "height_calibration.fbs";
 include "keybinding.fbs";
 include "overlay.fbs";
+include "profiles.fbs";
 include "provisioning.fbs";
 include "resets.fbs";
 include "serial.fbs";
@@ -171,6 +172,13 @@ union RpcMessage {
     SerialKeepaliveRequest,
     SettingsDefaultsRequest,
     SettingsDefaultsResponse,
+    ProfilesRequest,
+    ProfilesResponse,
+    SwitchProfileRequest,
+    CreateProfileRequest,
+    RenameProfileRequest,
+    DeleteProfileRequest,
+    ProfileOperationResponse,
 }
 
 table RpcMessageHeader {

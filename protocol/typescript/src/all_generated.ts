@@ -91,6 +91,8 @@ export { ClearMountingResetRequest, ClearMountingResetRequestT } from './solarxr
 export { CloseSerialRequest, CloseSerialRequestT } from './solarxr-protocol/rpc/close-serial-request.js';
 export { ComputerDirectory } from './solarxr-protocol/rpc/computer-directory.js';
 export { CountdownDetail, CountdownDetailT } from './solarxr-protocol/rpc/countdown-detail.js';
+export { CreateProfileRequest, CreateProfileRequestT } from './solarxr-protocol/rpc/create-profile-request.js';
+export { DeleteProfileRequest, DeleteProfileRequestT } from './solarxr-protocol/rpc/delete-profile-request.js';
 export { DetectStayAlignedRelaxedPoseRequest, DetectStayAlignedRelaxedPoseRequestT } from './solarxr-protocol/rpc/detect-stay-aligned-relaxed-pose-request.js';
 export { DriverConnectionState } from './solarxr-protocol/rpc/driver-connection-state.js';
 export { DriverSettingsRequest, DriverSettingsRequestT } from './solarxr-protocol/rpc/driver-settings-request.js';
@@ -135,9 +137,16 @@ export { OpenSerialRequest, OpenSerialRequestT } from './solarxr-protocol/rpc/op
 export { OverlayDisplayModeChangeRequest, OverlayDisplayModeChangeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-change-request.js';
 export { OverlayDisplayModeRequest, OverlayDisplayModeRequestT } from './solarxr-protocol/rpc/overlay-display-mode-request.js';
 export { OverlayDisplayModeResponse, OverlayDisplayModeResponseT } from './solarxr-protocol/rpc/overlay-display-mode-response.js';
+export { ProfileKind } from './solarxr-protocol/rpc/profile-kind.js';
+export { ProfileList, ProfileListT } from './solarxr-protocol/rpc/profile-list.js';
+export { ProfileOperationResponse, ProfileOperationResponseT } from './solarxr-protocol/rpc/profile-operation-response.js';
+export { ProfileOperationStatus } from './solarxr-protocol/rpc/profile-operation-status.js';
+export { ProfilesRequest, ProfilesRequestT } from './solarxr-protocol/rpc/profiles-request.js';
+export { ProfilesResponse, ProfilesResponseT } from './solarxr-protocol/rpc/profiles-response.js';
 export { RecordBVHRequest, RecordBVHRequestT } from './solarxr-protocol/rpc/record-bvhrequest.js';
 export { RecordBVHStatus, RecordBVHStatusT } from './solarxr-protocol/rpc/record-bvhstatus.js';
 export { RecordBVHStatusRequest, RecordBVHStatusRequestT } from './solarxr-protocol/rpc/record-bvhstatus-request.js';
+export { RenameProfileRequest, RenameProfileRequestT } from './solarxr-protocol/rpc/rename-profile-request.js';
 export { ResetDetail, unionToResetDetail, unionListToResetDetail } from './solarxr-protocol/rpc/reset-detail.js';
 export { ResetLifecycle } from './solarxr-protocol/rpc/reset-lifecycle.js';
 export { ResetRequest, ResetRequestT } from './solarxr-protocol/rpc/reset-request.js';
@@ -196,6 +205,7 @@ export { StepMountingStatus } from './solarxr-protocol/rpc/step-mounting-status.
 export { StopTelemetryRequest, StopTelemetryRequestT } from './solarxr-protocol/rpc/stop-telemetry-request.js';
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { StopWifiScanRequest, StopWifiScanRequestT } from './solarxr-protocol/rpc/stop-wifi-scan-request.js';
+export { SwitchProfileRequest, SwitchProfileRequestT } from './solarxr-protocol/rpc/switch-profile-request.js';
 export { TapDetectionSettingsRequest, TapDetectionSettingsRequestT } from './solarxr-protocol/rpc/tap-detection-settings-request.js';
 export { TapDetectionSettingsResponse, TapDetectionSettingsResponseT } from './solarxr-protocol/rpc/tap-detection-settings-response.js';
 export { TapDetectionSetupModeRequest, TapDetectionSetupModeRequestT } from './solarxr-protocol/rpc/tap-detection-setup-mode-request.js';

@@ -2134,6 +2134,111 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_profiles_request(&self) -> Option<ProfilesRequest<'a>> {
+    if self.message_type() == RpcMessage::ProfilesRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ProfilesRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_profiles_response(&self) -> Option<ProfilesResponse<'a>> {
+    if self.message_type() == RpcMessage::ProfilesResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ProfilesResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_switch_profile_request(&self) -> Option<SwitchProfileRequest<'a>> {
+    if self.message_type() == RpcMessage::SwitchProfileRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { SwitchProfileRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_create_profile_request(&self) -> Option<CreateProfileRequest<'a>> {
+    if self.message_type() == RpcMessage::CreateProfileRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { CreateProfileRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_rename_profile_request(&self) -> Option<RenameProfileRequest<'a>> {
+    if self.message_type() == RpcMessage::RenameProfileRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { RenameProfileRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_delete_profile_request(&self) -> Option<DeleteProfileRequest<'a>> {
+    if self.message_type() == RpcMessage::DeleteProfileRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { DeleteProfileRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_profile_operation_response(&self) -> Option<ProfileOperationResponse<'a>> {
+    if self.message_type() == RpcMessage::ProfileOperationResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ProfileOperationResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -2284,6 +2389,13 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::SerialKeepaliveRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialKeepaliveRequest>>("RpcMessage::SerialKeepaliveRequest", pos),
           RpcMessage::SettingsDefaultsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsDefaultsRequest>>("RpcMessage::SettingsDefaultsRequest", pos),
           RpcMessage::SettingsDefaultsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsDefaultsResponse>>("RpcMessage::SettingsDefaultsResponse", pos),
+          RpcMessage::ProfilesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ProfilesRequest>>("RpcMessage::ProfilesRequest", pos),
+          RpcMessage::ProfilesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ProfilesResponse>>("RpcMessage::ProfilesResponse", pos),
+          RpcMessage::SwitchProfileRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SwitchProfileRequest>>("RpcMessage::SwitchProfileRequest", pos),
+          RpcMessage::CreateProfileRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CreateProfileRequest>>("RpcMessage::CreateProfileRequest", pos),
+          RpcMessage::RenameProfileRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RenameProfileRequest>>("RpcMessage::RenameProfileRequest", pos),
+          RpcMessage::DeleteProfileRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DeleteProfileRequest>>("RpcMessage::DeleteProfileRequest", pos),
+          RpcMessage::ProfileOperationResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ProfileOperationResponse>>("RpcMessage::ProfileOperationResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -3306,6 +3418,55 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::SettingsDefaultsResponse => {
           if let Some(x) = self.message_as_settings_defaults_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ProfilesRequest => {
+          if let Some(x) = self.message_as_profiles_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ProfilesResponse => {
+          if let Some(x) = self.message_as_profiles_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SwitchProfileRequest => {
+          if let Some(x) = self.message_as_switch_profile_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::CreateProfileRequest => {
+          if let Some(x) = self.message_as_create_profile_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::RenameProfileRequest => {
+          if let Some(x) = self.message_as_rename_profile_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::DeleteProfileRequest => {
+          if let Some(x) = self.message_as_delete_profile_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ProfileOperationResponse => {
+          if let Some(x) = self.message_as_profile_operation_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
