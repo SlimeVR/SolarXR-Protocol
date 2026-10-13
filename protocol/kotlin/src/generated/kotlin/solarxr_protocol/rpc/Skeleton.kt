@@ -347,20 +347,18 @@ public data class SkeletonToggles(
  * Ratios for the skeletal model. Accepted values for them range from 0 to 1
  */
 public data class SkeletonRatios(
-  public val imputeSpineFromUpperToLower: Float? = null,
   public val spineCurvature: Float? = null,
-  public val interpolateHipWithUpperLegs: Float? = null,
+  public val imputeSpineFromUpperToLower: Float? = null,
   public val interpolateUpperLegsTwistWithLowerLegs: Float? = null,
   public val skatingCorrectionStrength: Float? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(5)
-    if (imputeSpineFromUpperToLower != null) { builder.forceDefaults(true); builder.addFloat(0, imputeSpineFromUpperToLower, 0.0); builder.forceDefaults(false) }
-    if (spineCurvature != null) { builder.forceDefaults(true); builder.addFloat(1, spineCurvature, 0.0); builder.forceDefaults(false) }
-    if (interpolateHipWithUpperLegs != null) { builder.forceDefaults(true); builder.addFloat(2, interpolateHipWithUpperLegs, 0.0); builder.forceDefaults(false) }
-    if (interpolateUpperLegsTwistWithLowerLegs != null) { builder.forceDefaults(true); builder.addFloat(3, interpolateUpperLegsTwistWithLowerLegs, 0.0); builder.forceDefaults(false) }
-    if (skatingCorrectionStrength != null) { builder.forceDefaults(true); builder.addFloat(4, skatingCorrectionStrength, 0.0); builder.forceDefaults(false) }
+    builder.startTable(4)
+    if (spineCurvature != null) { builder.forceDefaults(true); builder.addFloat(0, spineCurvature, 0.0); builder.forceDefaults(false) }
+    if (imputeSpineFromUpperToLower != null) { builder.forceDefaults(true); builder.addFloat(1, imputeSpineFromUpperToLower, 0.0); builder.forceDefaults(false) }
+    if (interpolateUpperLegsTwistWithLowerLegs != null) { builder.forceDefaults(true); builder.addFloat(2, interpolateUpperLegsTwistWithLowerLegs, 0.0); builder.forceDefaults(false) }
+    if (skatingCorrectionStrength != null) { builder.forceDefaults(true); builder.addFloat(3, skatingCorrectionStrength, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -369,16 +367,14 @@ public data class SkeletonRatios(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_imputeSpineFromUpperToLower = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_spineCurvature = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_interpolateHipWithUpperLegs = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_interpolateUpperLegsTwistWithLowerLegs = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_skatingCorrectionStrength = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_spineCurvature = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_imputeSpineFromUpperToLower = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_interpolateUpperLegsTwistWithLowerLegs = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_skatingCorrectionStrength = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return SkeletonRatios(
-              imputeSpineFromUpperToLower = if (__offset_imputeSpineFromUpperToLower != 0) bb.getFloat(tableOffset + __offset_imputeSpineFromUpperToLower) else null,
               spineCurvature = if (__offset_spineCurvature != 0) bb.getFloat(tableOffset + __offset_spineCurvature) else null,
-              interpolateHipWithUpperLegs = if (__offset_interpolateHipWithUpperLegs != 0) bb.getFloat(tableOffset + __offset_interpolateHipWithUpperLegs) else null,
+              imputeSpineFromUpperToLower = if (__offset_imputeSpineFromUpperToLower != 0) bb.getFloat(tableOffset + __offset_imputeSpineFromUpperToLower) else null,
               interpolateUpperLegsTwistWithLowerLegs = if (__offset_interpolateUpperLegsTwistWithLowerLegs != 0) bb.getFloat(tableOffset + __offset_interpolateUpperLegsTwistWithLowerLegs) else null,
               skatingCorrectionStrength = if (__offset_skatingCorrectionStrength != 0) bb.getFloat(tableOffset + __offset_skatingCorrectionStrength) else null
           )

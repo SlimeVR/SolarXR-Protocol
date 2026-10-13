@@ -26,11 +26,10 @@ impl<'a> flatbuffers::Follow<'a> for SkeletonRatios<'a> {
 }
 
 impl<'a> SkeletonRatios<'a> {
-  pub const VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER: flatbuffers::VOffsetT = 4;
-  pub const VT_SPINE_CURVATURE: flatbuffers::VOffsetT = 6;
-  pub const VT_INTERPOLATE_HIP_WITH_UPPER_LEGS: flatbuffers::VOffsetT = 8;
-  pub const VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS: flatbuffers::VOffsetT = 10;
-  pub const VT_SKATING_CORRECTION_STRENGTH: flatbuffers::VOffsetT = 12;
+  pub const VT_SPINE_CURVATURE: flatbuffers::VOffsetT = 4;
+  pub const VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER: flatbuffers::VOffsetT = 6;
+  pub const VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS: flatbuffers::VOffsetT = 8;
+  pub const VT_SKATING_CORRECTION_STRENGTH: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -44,21 +43,12 @@ impl<'a> SkeletonRatios<'a> {
     let mut builder = SkeletonRatiosBuilder::new(_fbb);
     if let Some(x) = args.skating_correction_strength { builder.add_skating_correction_strength(x); }
     if let Some(x) = args.interpolate_upper_legs_twist_with_lower_legs { builder.add_interpolate_upper_legs_twist_with_lower_legs(x); }
-    if let Some(x) = args.interpolate_hip_with_upper_legs { builder.add_interpolate_hip_with_upper_legs(x); }
-    if let Some(x) = args.spine_curvature { builder.add_spine_curvature(x); }
     if let Some(x) = args.impute_spine_from_upper_to_lower { builder.add_impute_spine_from_upper_to_lower(x); }
+    if let Some(x) = args.spine_curvature { builder.add_spine_curvature(x); }
     builder.finish()
   }
 
 
-  /// Compute missing spine bones as a ratio of the next available upper and lower bones.
-  #[inline]
-  pub fn impute_spine_from_upper_to_lower(&self) -> Option<f32> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(SkeletonRatios::VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, None)}
-  }
   /// Used to compute the curvature of the spine. Higher = more curvature.
   #[inline]
   pub fn spine_curvature(&self) -> Option<f32> {
@@ -67,13 +57,13 @@ impl<'a> SkeletonRatios<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<f32>(SkeletonRatios::VT_SPINE_CURVATURE, None)}
   }
-  /// How much to average the hip's yaw and roll with the upper legs'.
+  /// Compute missing spine bones as a ratio of the next available upper and lower bones.
   #[inline]
-  pub fn interpolate_hip_with_upper_legs(&self) -> Option<f32> {
+  pub fn impute_spine_from_upper_to_lower(&self) -> Option<f32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(SkeletonRatios::VT_INTERPOLATE_HIP_WITH_UPPER_LEGS, None)}
+    unsafe { self._tab.get::<f32>(SkeletonRatios::VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, None)}
   }
   /// How much to average the upper legs' roll with the lower legs'.
   #[inline]
@@ -100,9 +90,8 @@ impl flatbuffers::Verifiable for SkeletonRatios<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<f32>("impute_spine_from_upper_to_lower", Self::VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, false)?
      .visit_field::<f32>("spine_curvature", Self::VT_SPINE_CURVATURE, false)?
-     .visit_field::<f32>("interpolate_hip_with_upper_legs", Self::VT_INTERPOLATE_HIP_WITH_UPPER_LEGS, false)?
+     .visit_field::<f32>("impute_spine_from_upper_to_lower", Self::VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, false)?
      .visit_field::<f32>("interpolate_upper_legs_twist_with_lower_legs", Self::VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS, false)?
      .visit_field::<f32>("skating_correction_strength", Self::VT_SKATING_CORRECTION_STRENGTH, false)?
      .finish();
@@ -110,9 +99,8 @@ impl flatbuffers::Verifiable for SkeletonRatios<'_> {
   }
 }
 pub struct SkeletonRatiosArgs {
-    pub impute_spine_from_upper_to_lower: Option<f32>,
     pub spine_curvature: Option<f32>,
-    pub interpolate_hip_with_upper_legs: Option<f32>,
+    pub impute_spine_from_upper_to_lower: Option<f32>,
     pub interpolate_upper_legs_twist_with_lower_legs: Option<f32>,
     pub skating_correction_strength: Option<f32>,
 }
@@ -120,9 +108,8 @@ impl<'a> Default for SkeletonRatiosArgs {
   #[inline]
   fn default() -> Self {
     SkeletonRatiosArgs {
-      impute_spine_from_upper_to_lower: None,
       spine_curvature: None,
-      interpolate_hip_with_upper_legs: None,
+      impute_spine_from_upper_to_lower: None,
       interpolate_upper_legs_twist_with_lower_legs: None,
       skating_correction_strength: None,
     }
@@ -135,16 +122,12 @@ pub struct SkeletonRatiosBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> SkeletonRatiosBuilder<'a, 'b> {
   #[inline]
-  pub fn add_impute_spine_from_upper_to_lower(&mut self, impute_spine_from_upper_to_lower: f32) {
-    self.fbb_.push_slot_always::<f32>(SkeletonRatios::VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, impute_spine_from_upper_to_lower);
-  }
-  #[inline]
   pub fn add_spine_curvature(&mut self, spine_curvature: f32) {
     self.fbb_.push_slot_always::<f32>(SkeletonRatios::VT_SPINE_CURVATURE, spine_curvature);
   }
   #[inline]
-  pub fn add_interpolate_hip_with_upper_legs(&mut self, interpolate_hip_with_upper_legs: f32) {
-    self.fbb_.push_slot_always::<f32>(SkeletonRatios::VT_INTERPOLATE_HIP_WITH_UPPER_LEGS, interpolate_hip_with_upper_legs);
+  pub fn add_impute_spine_from_upper_to_lower(&mut self, impute_spine_from_upper_to_lower: f32) {
+    self.fbb_.push_slot_always::<f32>(SkeletonRatios::VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, impute_spine_from_upper_to_lower);
   }
   #[inline]
   pub fn add_interpolate_upper_legs_twist_with_lower_legs(&mut self, interpolate_upper_legs_twist_with_lower_legs: f32) {
@@ -172,9 +155,8 @@ impl<'a: 'b, 'b> SkeletonRatiosBuilder<'a, 'b> {
 impl core::fmt::Debug for SkeletonRatios<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("SkeletonRatios");
-      ds.field("impute_spine_from_upper_to_lower", &self.impute_spine_from_upper_to_lower());
       ds.field("spine_curvature", &self.spine_curvature());
-      ds.field("interpolate_hip_with_upper_legs", &self.interpolate_hip_with_upper_legs());
+      ds.field("impute_spine_from_upper_to_lower", &self.impute_spine_from_upper_to_lower());
       ds.field("interpolate_upper_legs_twist_with_lower_legs", &self.interpolate_upper_legs_twist_with_lower_legs());
       ds.field("skating_correction_strength", &self.skating_correction_strength());
       ds.finish()
