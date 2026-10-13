@@ -24,10 +24,10 @@ public final class SkeletonRatios extends Table {
   public boolean hasImputeSpineFromUpperToLower() { return 0 != __offset(4); }
   public float imputeSpineFromUpperToLower() { int o = __offset(4); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
   /**
-   * Computes the curvature between 2 adjacent missing spine bones. Higher = more curvature.
+   * Used to compute the curvature of the spine. Higher = more curvature.
    */
-  public boolean hasImputeSpineCurvature() { return 0 != __offset(6); }
-  public float imputeSpineCurvature() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
+  public boolean hasSpineCurvature() { return 0 != __offset(6); }
+  public float spineCurvature() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0f; }
   /**
    * How much to average the hip's yaw and roll with the upper legs'.
    */
@@ -46,7 +46,7 @@ public final class SkeletonRatios extends Table {
 
   public static int createSkeletonRatios(FlatBufferBuilder builder,
       float imputeSpineFromUpperToLower,
-      float imputeSpineCurvature,
+      float spineCurvature,
       float interpolateHipWithUpperLegs,
       float interpolateUpperLegsTwistWithLowerLegs,
       float skatingCorrectionStrength) {
@@ -54,14 +54,14 @@ public final class SkeletonRatios extends Table {
     SkeletonRatios.addSkatingCorrectionStrength(builder, skatingCorrectionStrength);
     SkeletonRatios.addInterpolateUpperLegsTwistWithLowerLegs(builder, interpolateUpperLegsTwistWithLowerLegs);
     SkeletonRatios.addInterpolateHipWithUpperLegs(builder, interpolateHipWithUpperLegs);
-    SkeletonRatios.addImputeSpineCurvature(builder, imputeSpineCurvature);
+    SkeletonRatios.addSpineCurvature(builder, spineCurvature);
     SkeletonRatios.addImputeSpineFromUpperToLower(builder, imputeSpineFromUpperToLower);
     return SkeletonRatios.endSkeletonRatios(builder);
   }
 
   public static void startSkeletonRatios(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addImputeSpineFromUpperToLower(FlatBufferBuilder builder, float imputeSpineFromUpperToLower) { builder.addFloat(0, imputeSpineFromUpperToLower, 0f); }
-  public static void addImputeSpineCurvature(FlatBufferBuilder builder, float imputeSpineCurvature) { builder.addFloat(1, imputeSpineCurvature, 0f); }
+  public static void addSpineCurvature(FlatBufferBuilder builder, float spineCurvature) { builder.addFloat(1, spineCurvature, 0f); }
   public static void addInterpolateHipWithUpperLegs(FlatBufferBuilder builder, float interpolateHipWithUpperLegs) { builder.addFloat(2, interpolateHipWithUpperLegs, 0f); }
   public static void addInterpolateUpperLegsTwistWithLowerLegs(FlatBufferBuilder builder, float interpolateUpperLegsTwistWithLowerLegs) { builder.addFloat(3, interpolateUpperLegsTwistWithLowerLegs, 0f); }
   public static void addSkatingCorrectionStrength(FlatBufferBuilder builder, float skatingCorrectionStrength) { builder.addFloat(4, skatingCorrectionStrength, 0f); }
@@ -84,8 +84,8 @@ public final class SkeletonRatios extends Table {
   public void unpackTo(SkeletonRatiosT _o) {
     Float _oImputeSpineFromUpperToLower = hasImputeSpineFromUpperToLower() ? imputeSpineFromUpperToLower() : null;
     _o.setImputeSpineFromUpperToLower(_oImputeSpineFromUpperToLower);
-    Float _oImputeSpineCurvature = hasImputeSpineCurvature() ? imputeSpineCurvature() : null;
-    _o.setImputeSpineCurvature(_oImputeSpineCurvature);
+    Float _oSpineCurvature = hasSpineCurvature() ? spineCurvature() : null;
+    _o.setSpineCurvature(_oSpineCurvature);
     Float _oInterpolateHipWithUpperLegs = hasInterpolateHipWithUpperLegs() ? interpolateHipWithUpperLegs() : null;
     _o.setInterpolateHipWithUpperLegs(_oInterpolateHipWithUpperLegs);
     Float _oInterpolateUpperLegsTwistWithLowerLegs = hasInterpolateUpperLegsTwistWithLowerLegs() ? interpolateUpperLegsTwistWithLowerLegs() : null;
@@ -98,7 +98,7 @@ public final class SkeletonRatios extends Table {
     return createSkeletonRatios(
       builder,
       _o.getImputeSpineFromUpperToLower(),
-      _o.getImputeSpineCurvature(),
+      _o.getSpineCurvature(),
       _o.getInterpolateHipWithUpperLegs(),
       _o.getInterpolateUpperLegsTwistWithLowerLegs(),
       _o.getSkatingCorrectionStrength());

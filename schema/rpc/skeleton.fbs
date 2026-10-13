@@ -84,8 +84,8 @@ table SkeletonToggles {
 table SkeletonRatios {
     /// Compute missing spine bones as a ratio of the next available upper and lower bones.
     impute_spine_from_upper_to_lower: float32 = null;
-    /// Computes the curvature between 2 adjacent missing spine bones. Higher = more curvature.
-    impute_spine_curvature: float32 = null;
+    /// Used to compute the curvature of the spine. Higher = more curvature.
+    spine_curvature: float32 = null;
     /// How much to average the hip's yaw and roll with the upper legs'.
     interpolate_hip_with_upper_legs: float32 = null;
     /// How much to average the upper legs' roll with the lower legs'.

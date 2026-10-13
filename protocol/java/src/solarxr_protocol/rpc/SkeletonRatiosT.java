@@ -9,7 +9,7 @@ import com.google.flatbuffers.*;
 
 public class SkeletonRatiosT {
   private Float imputeSpineFromUpperToLower;
-  private Float imputeSpineCurvature;
+  private Float spineCurvature;
   private Float interpolateHipWithUpperLegs;
   private Float interpolateUpperLegsTwistWithLowerLegs;
   private Float skatingCorrectionStrength;
@@ -18,9 +18,9 @@ public class SkeletonRatiosT {
 
   public void setImputeSpineFromUpperToLower(Float imputeSpineFromUpperToLower) { this.imputeSpineFromUpperToLower = imputeSpineFromUpperToLower; }
 
-  public Float getImputeSpineCurvature() { return imputeSpineCurvature; }
+  public Float getSpineCurvature() { return spineCurvature; }
 
-  public void setImputeSpineCurvature(Float imputeSpineCurvature) { this.imputeSpineCurvature = imputeSpineCurvature; }
+  public void setSpineCurvature(Float spineCurvature) { this.spineCurvature = spineCurvature; }
 
   public Float getInterpolateHipWithUpperLegs() { return interpolateHipWithUpperLegs; }
 
@@ -37,7 +37,7 @@ public class SkeletonRatiosT {
 
   public SkeletonRatiosT() {
     this.imputeSpineFromUpperToLower = null;
-    this.imputeSpineCurvature = null;
+    this.spineCurvature = null;
     this.interpolateHipWithUpperLegs = null;
     this.interpolateUpperLegsTwistWithLowerLegs = null;
     this.skatingCorrectionStrength = null;
