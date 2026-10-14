@@ -161,6 +161,9 @@ public sealed interface RpcMessage {
       142 -> RenameProfileRequest.decode(bb, offset)
       143 -> DeleteProfileRequest.decode(bb, offset)
       144 -> ProfileOperationResponse.decode(bb, offset)
+      145 -> StartTrackerImuTelemetryRequest.decode(bb, offset)
+      146 -> StopTrackerImuTelemetryRequest.decode(bb, offset)
+      147 -> TrackerImuTelemetryResponse.decode(bb, offset)
       else -> null
     }
 
@@ -309,6 +312,9 @@ public sealed interface RpcMessage {
       is RenameProfileRequest -> 142.toUByte()
       is DeleteProfileRequest -> 143.toUByte()
       is ProfileOperationResponse -> 144.toUByte()
+      is StartTrackerImuTelemetryRequest -> 145.toUByte()
+      is StopTrackerImuTelemetryRequest -> 146.toUByte()
+      is TrackerImuTelemetryResponse -> 147.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -456,6 +462,9 @@ public sealed interface RpcMessage {
       is RenameProfileRequest -> value.encode(builder)
       is DeleteProfileRequest -> value.encode(builder)
       is ProfileOperationResponse -> value.encode(builder)
+      is StartTrackerImuTelemetryRequest -> value.encode(builder)
+      is StopTrackerImuTelemetryRequest -> value.encode(builder)
+      is TrackerImuTelemetryResponse -> value.encode(builder)
     }
   }
 }

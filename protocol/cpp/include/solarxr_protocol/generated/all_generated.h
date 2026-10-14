@@ -569,6 +569,18 @@ struct TelemetryGapEventBuilder;
 struct TelemetryGapResponse;
 struct TelemetryGapResponseBuilder;
 
+struct StartTrackerImuTelemetryRequest;
+struct StartTrackerImuTelemetryRequestBuilder;
+
+struct StopTrackerImuTelemetryRequest;
+struct StopTrackerImuTelemetryRequestBuilder;
+
+struct TrackerImuSample;
+struct TrackerImuSampleBuilder;
+
+struct TrackerImuTelemetryResponse;
+struct TrackerImuTelemetryResponseBuilder;
+
 struct TrackingChecklistTrackerReset;
 struct TrackingChecklistTrackerResetBuilder;
 
@@ -3355,11 +3367,14 @@ enum class RpcMessage : uint8_t {
   RenameProfileRequest = 142,
   DeleteProfileRequest = 143,
   ProfileOperationResponse = 144,
+  StartTrackerImuTelemetryRequest = 145,
+  StopTrackerImuTelemetryRequest = 146,
+  TrackerImuTelemetryResponse = 147,
   MIN = NONE,
-  MAX = ProfileOperationResponse
+  MAX = TrackerImuTelemetryResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[145] {
+inline const RpcMessage (&EnumValuesRpcMessage())[148] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -3505,13 +3520,16 @@ inline const RpcMessage (&EnumValuesRpcMessage())[145] {
     RpcMessage::CreateProfileRequest,
     RpcMessage::RenameProfileRequest,
     RpcMessage::DeleteProfileRequest,
-    RpcMessage::ProfileOperationResponse
+    RpcMessage::ProfileOperationResponse,
+    RpcMessage::StartTrackerImuTelemetryRequest,
+    RpcMessage::StopTrackerImuTelemetryRequest,
+    RpcMessage::TrackerImuTelemetryResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[146] = {
+  static const char * const names[149] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -3657,13 +3675,16 @@ inline const char * const *EnumNamesRpcMessage() {
     "RenameProfileRequest",
     "DeleteProfileRequest",
     "ProfileOperationResponse",
+    "StartTrackerImuTelemetryRequest",
+    "StopTrackerImuTelemetryRequest",
+    "TrackerImuTelemetryResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::ProfileOperationResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::TrackerImuTelemetryResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -4246,6 +4267,18 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::DeleteProfileRequest> 
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ProfileOperationResponse> {
   static const RpcMessage enum_value = RpcMessage::ProfileOperationResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StartTrackerImuTelemetryRequest> {
+  static const RpcMessage enum_value = RpcMessage::StartTrackerImuTelemetryRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StopTrackerImuTelemetryRequest> {
+  static const RpcMessage enum_value = RpcMessage::StopTrackerImuTelemetryRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackerImuTelemetryResponse> {
+  static const RpcMessage enum_value = RpcMessage::TrackerImuTelemetryResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -15897,6 +15930,221 @@ inline flatbuffers::Offset<TelemetryGapResponse> CreateTelemetryGapResponseDirec
       events__);
 }
 
+struct StartTrackerImuTelemetryRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StartTrackerImuTelemetryRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4
+  };
+  uint16_t tracker_id() const {
+    return GetField<uint16_t>(VT_TRACKER_ID, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
+           verifier.EndTable();
+  }
+};
+
+struct StartTrackerImuTelemetryRequestBuilder {
+  typedef StartTrackerImuTelemetryRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(uint16_t tracker_id) {
+    fbb_.AddElement<uint16_t>(StartTrackerImuTelemetryRequest::VT_TRACKER_ID, tracker_id, 0);
+  }
+  explicit StartTrackerImuTelemetryRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StartTrackerImuTelemetryRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StartTrackerImuTelemetryRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StartTrackerImuTelemetryRequest> CreateStartTrackerImuTelemetryRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t tracker_id = 0) {
+  StartTrackerImuTelemetryRequestBuilder builder_(_fbb);
+  builder_.add_tracker_id(tracker_id);
+  return builder_.Finish();
+}
+
+struct StopTrackerImuTelemetryRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StopTrackerImuTelemetryRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct StopTrackerImuTelemetryRequestBuilder {
+  typedef StopTrackerImuTelemetryRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit StopTrackerImuTelemetryRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StopTrackerImuTelemetryRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StopTrackerImuTelemetryRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StopTrackerImuTelemetryRequest> CreateStopTrackerImuTelemetryRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  StopTrackerImuTelemetryRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct TrackerImuSample FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerImuSampleBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TIME = 4,
+    VT_RAW_ROTATION = 6,
+    VT_ROTATION = 8,
+    VT_RAW_ACCELERATION = 10,
+    VT_LINEAR_ACCELERATION = 12
+  };
+  uint64_t time() const {
+    return GetField<uint64_t>(VT_TIME, 0);
+  }
+  const solarxr_protocol::datatypes::math::Quat *raw_rotation() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_RAW_ROTATION);
+  }
+  const solarxr_protocol::datatypes::math::Quat *rotation() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Quat *>(VT_ROTATION);
+  }
+  const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_RAW_ACCELERATION);
+  }
+  const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_LINEAR_ACCELERATION);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint64_t>(verifier, VT_TIME, 8) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_RAW_ROTATION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Quat>(verifier, VT_ROTATION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_RAW_ACCELERATION, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_ACCELERATION, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackerImuSampleBuilder {
+  typedef TrackerImuSample Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_time(uint64_t time) {
+    fbb_.AddElement<uint64_t>(TrackerImuSample::VT_TIME, time, 0);
+  }
+  void add_raw_rotation(const solarxr_protocol::datatypes::math::Quat *raw_rotation) {
+    fbb_.AddStruct(TrackerImuSample::VT_RAW_ROTATION, raw_rotation);
+  }
+  void add_rotation(const solarxr_protocol::datatypes::math::Quat *rotation) {
+    fbb_.AddStruct(TrackerImuSample::VT_ROTATION, rotation);
+  }
+  void add_raw_acceleration(const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration) {
+    fbb_.AddStruct(TrackerImuSample::VT_RAW_ACCELERATION, raw_acceleration);
+  }
+  void add_linear_acceleration(const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration) {
+    fbb_.AddStruct(TrackerImuSample::VT_LINEAR_ACCELERATION, linear_acceleration);
+  }
+  explicit TrackerImuSampleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackerImuSample> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackerImuSample>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackerImuSample> CreateTrackerImuSample(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint64_t time = 0,
+    const solarxr_protocol::datatypes::math::Quat *raw_rotation = nullptr,
+    const solarxr_protocol::datatypes::math::Quat *rotation = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *raw_acceleration = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration = nullptr) {
+  TrackerImuSampleBuilder builder_(_fbb);
+  builder_.add_time(time);
+  builder_.add_linear_acceleration(linear_acceleration);
+  builder_.add_raw_acceleration(raw_acceleration);
+  builder_.add_rotation(rotation);
+  builder_.add_raw_rotation(raw_rotation);
+  return builder_.Finish();
+}
+
+struct TrackerImuTelemetryResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerImuTelemetryResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TRACKER_ID = 4,
+    VT_SAMPLES = 6
+  };
+  uint16_t tracker_id() const {
+    return GetField<uint16_t>(VT_TRACKER_ID, 0);
+  }
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TrackerImuSample>> *samples() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TrackerImuSample>> *>(VT_SAMPLES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
+           VerifyOffset(verifier, VT_SAMPLES) &&
+           verifier.VerifyVector(samples()) &&
+           verifier.VerifyVectorOfTables(samples()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackerImuTelemetryResponseBuilder {
+  typedef TrackerImuTelemetryResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_tracker_id(uint16_t tracker_id) {
+    fbb_.AddElement<uint16_t>(TrackerImuTelemetryResponse::VT_TRACKER_ID, tracker_id, 0);
+  }
+  void add_samples(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TrackerImuSample>>> samples) {
+    fbb_.AddOffset(TrackerImuTelemetryResponse::VT_SAMPLES, samples);
+  }
+  explicit TrackerImuTelemetryResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackerImuTelemetryResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackerImuTelemetryResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackerImuTelemetryResponse> CreateTrackerImuTelemetryResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t tracker_id = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::TrackerImuSample>>> samples = 0) {
+  TrackerImuTelemetryResponseBuilder builder_(_fbb);
+  builder_.add_samples(samples);
+  builder_.add_tracker_id(tracker_id);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TrackerImuTelemetryResponse> CreateTrackerImuTelemetryResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t tracker_id = 0,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::TrackerImuSample>> *samples = nullptr) {
+  auto samples__ = samples ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::TrackerImuSample>>(*samples) : 0;
+  return solarxr_protocol::rpc::CreateTrackerImuTelemetryResponse(
+      _fbb,
+      tracker_id,
+      samples__);
+}
+
 /// Trackers that need a reset
 struct TrackingChecklistTrackerReset FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TrackingChecklistTrackerResetBuilder Builder;
@@ -17492,6 +17740,15 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ProfileOperationResponse *message_as_ProfileOperationResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ProfileOperationResponse ? static_cast<const solarxr_protocol::rpc::ProfileOperationResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::StartTrackerImuTelemetryRequest *message_as_StartTrackerImuTelemetryRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StartTrackerImuTelemetryRequest ? static_cast<const solarxr_protocol::rpc::StartTrackerImuTelemetryRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StopTrackerImuTelemetryRequest *message_as_StopTrackerImuTelemetryRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StopTrackerImuTelemetryRequest ? static_cast<const solarxr_protocol::rpc::StopTrackerImuTelemetryRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::TrackerImuTelemetryResponse *message_as_TrackerImuTelemetryResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TrackerImuTelemetryResponse ? static_cast<const solarxr_protocol::rpc::TrackerImuTelemetryResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -18077,6 +18334,18 @@ template<> inline const solarxr_protocol::rpc::DeleteProfileRequest *RpcMessageH
 
 template<> inline const solarxr_protocol::rpc::ProfileOperationResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::ProfileOperationResponse>() const {
   return message_as_ProfileOperationResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::StartTrackerImuTelemetryRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StartTrackerImuTelemetryRequest>() const {
+  return message_as_StartTrackerImuTelemetryRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::StopTrackerImuTelemetryRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StopTrackerImuTelemetryRequest>() const {
+  return message_as_StopTrackerImuTelemetryRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::TrackerImuTelemetryResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackerImuTelemetryResponse>() const {
+  return message_as_TrackerImuTelemetryResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -20121,6 +20390,18 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::ProfileOperationResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ProfileOperationResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StartTrackerImuTelemetryRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StartTrackerImuTelemetryRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StopTrackerImuTelemetryRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StopTrackerImuTelemetryRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::TrackerImuTelemetryResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackerImuTelemetryResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

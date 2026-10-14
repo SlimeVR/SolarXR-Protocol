@@ -647,6 +647,18 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ProfileOperationResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ProfileOperationResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.StartTrackerImuTelemetryRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StartTrackerImuTelemetryRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StartTrackerImuTelemetryRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StopTrackerImuTelemetryRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StopTrackerImuTelemetryRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StopTrackerImuTelemetryRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TrackerImuTelemetryResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackerImuTelemetryResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackerImuTelemetryResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

@@ -27,6 +27,7 @@ include "skeleton.fbs";
 include "stay_aligned.fbs";
 include "telemetry.fbs";
 include "tracker.fbs";
+include "tracker_imu_telemetry.fbs";
 include "tracking_checklist.fbs";
 include "vmc.fbs";
 include "vrchat.fbs";
@@ -179,6 +180,9 @@ union RpcMessage {
     RenameProfileRequest,
     DeleteProfileRequest,
     ProfileOperationResponse,
+    StartTrackerImuTelemetryRequest,
+    StopTrackerImuTelemetryRequest,
+    TrackerImuTelemetryResponse,
 }
 
 table RpcMessageHeader {

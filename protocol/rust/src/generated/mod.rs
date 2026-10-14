@@ -517,6 +517,14 @@ pub mod solarxr_protocol {
     pub use self::telemetry_gap_event_generated::*;
     mod telemetry_gap_response_generated;
     pub use self::telemetry_gap_response_generated::*;
+    mod start_tracker_imu_telemetry_request_generated;
+    pub use self::start_tracker_imu_telemetry_request_generated::*;
+    mod stop_tracker_imu_telemetry_request_generated;
+    pub use self::stop_tracker_imu_telemetry_request_generated::*;
+    mod tracker_imu_sample_generated;
+    pub use self::tracker_imu_sample_generated::*;
+    mod tracker_imu_telemetry_response_generated;
+    pub use self::tracker_imu_telemetry_response_generated::*;
     mod tracking_checklist_tracker_reset_generated;
     pub use self::tracking_checklist_tracker_reset_generated::*;
     mod tracking_checklist_tracker_error_generated;

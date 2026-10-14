@@ -165,6 +165,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.RenameProfileRequestT asRenameProfileRequest() { return (solarxr_protocol.rpc.RenameProfileRequestT) value; }
   public solarxr_protocol.rpc.DeleteProfileRequestT asDeleteProfileRequest() { return (solarxr_protocol.rpc.DeleteProfileRequestT) value; }
   public solarxr_protocol.rpc.ProfileOperationResponseT asProfileOperationResponse() { return (solarxr_protocol.rpc.ProfileOperationResponseT) value; }
+  public solarxr_protocol.rpc.StartTrackerImuTelemetryRequestT asStartTrackerImuTelemetryRequest() { return (solarxr_protocol.rpc.StartTrackerImuTelemetryRequestT) value; }
+  public solarxr_protocol.rpc.StopTrackerImuTelemetryRequestT asStopTrackerImuTelemetryRequest() { return (solarxr_protocol.rpc.StopTrackerImuTelemetryRequestT) value; }
+  public solarxr_protocol.rpc.TrackerImuTelemetryResponseT asTrackerImuTelemetryResponse() { return (solarxr_protocol.rpc.TrackerImuTelemetryResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -312,6 +315,9 @@ public class RpcMessageUnion {
       case RpcMessage.RenameProfileRequest: return solarxr_protocol.rpc.RenameProfileRequest.pack(builder, _o.asRenameProfileRequest());
       case RpcMessage.DeleteProfileRequest: return solarxr_protocol.rpc.DeleteProfileRequest.pack(builder, _o.asDeleteProfileRequest());
       case RpcMessage.ProfileOperationResponse: return solarxr_protocol.rpc.ProfileOperationResponse.pack(builder, _o.asProfileOperationResponse());
+      case RpcMessage.StartTrackerImuTelemetryRequest: return solarxr_protocol.rpc.StartTrackerImuTelemetryRequest.pack(builder, _o.asStartTrackerImuTelemetryRequest());
+      case RpcMessage.StopTrackerImuTelemetryRequest: return solarxr_protocol.rpc.StopTrackerImuTelemetryRequest.pack(builder, _o.asStopTrackerImuTelemetryRequest());
+      case RpcMessage.TrackerImuTelemetryResponse: return solarxr_protocol.rpc.TrackerImuTelemetryResponse.pack(builder, _o.asTrackerImuTelemetryResponse());
       default: return 0;
     }
   }

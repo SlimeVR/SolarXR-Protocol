@@ -194,6 +194,7 @@ export { SkeletonSettingsRequest, SkeletonSettingsRequestT } from './solarxr-pro
 export { SkeletonSettingsResponse, SkeletonSettingsResponseT } from './solarxr-protocol/rpc/skeleton-settings-response.js';
 export { SkeletonToggles, SkeletonTogglesT } from './solarxr-protocol/rpc/skeleton-toggles.js';
 export { StartTelemetryRequest, StartTelemetryRequestT } from './solarxr-protocol/rpc/start-telemetry-request.js';
+export { StartTrackerImuTelemetryRequest, StartTrackerImuTelemetryRequestT } from './solarxr-protocol/rpc/start-tracker-imu-telemetry-request.js';
 export { StartUserHeightCalibration, StartUserHeightCalibrationT } from './solarxr-protocol/rpc/start-user-height-calibration.js';
 export { StartWifiProvisioningRequest, StartWifiProvisioningRequestT } from './solarxr-protocol/rpc/start-wifi-provisioning-request.js';
 export { StartWifiScanRequest, StartWifiScanRequestT } from './solarxr-protocol/rpc/start-wifi-scan-request.js';
@@ -203,6 +204,7 @@ export { StayAlignedSettingsResponse, StayAlignedSettingsResponseT } from './sol
 export { StepMountingDetail, StepMountingDetailT } from './solarxr-protocol/rpc/step-mounting-detail.js';
 export { StepMountingStatus } from './solarxr-protocol/rpc/step-mounting-status.js';
 export { StopTelemetryRequest, StopTelemetryRequestT } from './solarxr-protocol/rpc/stop-telemetry-request.js';
+export { StopTrackerImuTelemetryRequest, StopTrackerImuTelemetryRequestT } from './solarxr-protocol/rpc/stop-tracker-imu-telemetry-request.js';
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { StopWifiScanRequest, StopWifiScanRequestT } from './solarxr-protocol/rpc/stop-wifi-scan-request.js';
 export { SwitchProfileRequest, SwitchProfileRequestT } from './solarxr-protocol/rpc/switch-profile-request.js';
@@ -216,6 +218,8 @@ export { TelemetrySample, TelemetrySampleT } from './solarxr-protocol/rpc/teleme
 export { TelemetryUpdateResponse, TelemetryUpdateResponseT } from './solarxr-protocol/rpc/telemetry-update-response.js';
 export { TimeoutSettingsRequest, TimeoutSettingsRequestT } from './solarxr-protocol/rpc/timeout-settings-request.js';
 export { TimeoutSettingsResponse, TimeoutSettingsResponseT } from './solarxr-protocol/rpc/timeout-settings-response.js';
+export { TrackerImuSample, TrackerImuSampleT } from './solarxr-protocol/rpc/tracker-imu-sample.js';
+export { TrackerImuTelemetryResponse, TrackerImuTelemetryResponseT } from './solarxr-protocol/rpc/tracker-imu-telemetry-response.js';
 export { TrackerProvisioningState, TrackerProvisioningStateT } from './solarxr-protocol/rpc/tracker-provisioning-state.js';
 export { TrackerProvisioningStatus } from './solarxr-protocol/rpc/tracker-provisioning-status.js';
 export { TrackingChecklistExtraData, unionToTrackingChecklistExtraData, unionListToTrackingChecklistExtraData } from './solarxr-protocol/rpc/tracking-checklist-extra-data.js';

@@ -2239,6 +2239,51 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_start_tracker_imu_telemetry_request(&self) -> Option<StartTrackerImuTelemetryRequest<'a>> {
+    if self.message_type() == RpcMessage::StartTrackerImuTelemetryRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StartTrackerImuTelemetryRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_stop_tracker_imu_telemetry_request(&self) -> Option<StopTrackerImuTelemetryRequest<'a>> {
+    if self.message_type() == RpcMessage::StopTrackerImuTelemetryRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StopTrackerImuTelemetryRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_tracker_imu_telemetry_response(&self) -> Option<TrackerImuTelemetryResponse<'a>> {
+    if self.message_type() == RpcMessage::TrackerImuTelemetryResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TrackerImuTelemetryResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -2396,6 +2441,9 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::RenameProfileRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RenameProfileRequest>>("RpcMessage::RenameProfileRequest", pos),
           RpcMessage::DeleteProfileRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DeleteProfileRequest>>("RpcMessage::DeleteProfileRequest", pos),
           RpcMessage::ProfileOperationResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ProfileOperationResponse>>("RpcMessage::ProfileOperationResponse", pos),
+          RpcMessage::StartTrackerImuTelemetryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartTrackerImuTelemetryRequest>>("RpcMessage::StartTrackerImuTelemetryRequest", pos),
+          RpcMessage::StopTrackerImuTelemetryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopTrackerImuTelemetryRequest>>("RpcMessage::StopTrackerImuTelemetryRequest", pos),
+          RpcMessage::TrackerImuTelemetryResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackerImuTelemetryResponse>>("RpcMessage::TrackerImuTelemetryResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -3467,6 +3515,27 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::ProfileOperationResponse => {
           if let Some(x) = self.message_as_profile_operation_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StartTrackerImuTelemetryRequest => {
+          if let Some(x) = self.message_as_start_tracker_imu_telemetry_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StopTrackerImuTelemetryRequest => {
+          if let Some(x) = self.message_as_stop_tracker_imu_telemetry_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TrackerImuTelemetryResponse => {
+          if let Some(x) = self.message_as_tracker_imu_telemetry_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 144;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 147;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 145] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 148] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -161,6 +161,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 145] = [
   RpcMessage::RenameProfileRequest,
   RpcMessage::DeleteProfileRequest,
   RpcMessage::ProfileOperationResponse,
+  RpcMessage::StartTrackerImuTelemetryRequest,
+  RpcMessage::StopTrackerImuTelemetryRequest,
+  RpcMessage::TrackerImuTelemetryResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -313,9 +316,12 @@ impl RpcMessage {
   pub const RenameProfileRequest: Self = Self(142);
   pub const DeleteProfileRequest: Self = Self(143);
   pub const ProfileOperationResponse: Self = Self(144);
+  pub const StartTrackerImuTelemetryRequest: Self = Self(145);
+  pub const StopTrackerImuTelemetryRequest: Self = Self(146);
+  pub const TrackerImuTelemetryResponse: Self = Self(147);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 144;
+  pub const ENUM_MAX: u8 = 147;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -462,6 +468,9 @@ impl RpcMessage {
     Self::RenameProfileRequest,
     Self::DeleteProfileRequest,
     Self::ProfileOperationResponse,
+    Self::StartTrackerImuTelemetryRequest,
+    Self::StopTrackerImuTelemetryRequest,
+    Self::TrackerImuTelemetryResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -611,6 +620,9 @@ impl RpcMessage {
       Self::RenameProfileRequest => Some("RenameProfileRequest"),
       Self::DeleteProfileRequest => Some("DeleteProfileRequest"),
       Self::ProfileOperationResponse => Some("ProfileOperationResponse"),
+      Self::StartTrackerImuTelemetryRequest => Some("StartTrackerImuTelemetryRequest"),
+      Self::StopTrackerImuTelemetryRequest => Some("StopTrackerImuTelemetryRequest"),
+      Self::TrackerImuTelemetryResponse => Some("TrackerImuTelemetryResponse"),
       _ => None,
     }
   }
