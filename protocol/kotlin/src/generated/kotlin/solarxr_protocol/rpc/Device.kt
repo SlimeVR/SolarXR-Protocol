@@ -30,7 +30,7 @@ public enum class UnknownDeviceStatus(
 }
 
 public data class UnknownDevice(
-  public val macAddress: String? = null,
+  public val hardwareId: String? = null,
   public val ipAddress: UInt = 0u,
   public val boardType: BoardType = BoardType.UNKNOWN,
   public val mcuType: McuType = McuType.UNKNOWN,
@@ -38,11 +38,11 @@ public data class UnknownDevice(
   public val status: UnknownDeviceStatus = UnknownDeviceStatus.WAITING,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_macAddress = macAddress?.let { builder.createString(it) }
+    val __off_hardwareId = hardwareId?.let { builder.createString(it) }
     val __off_firmwareVersion = firmwareVersion?.let { builder.createString(it) }
 
     builder.startTable(6)
-    __off_macAddress?.let { builder.addOffset(0, it, 0) }
+    __off_hardwareId?.let { builder.addOffset(0, it, 0) }
     builder.addInt(1, ipAddress.toInt(), 0)
     builder.addShort(2, boardType.value.toShort(), 0)
     builder.addShort(3, mcuType.value.toShort(), 0)
@@ -56,7 +56,7 @@ public data class UnknownDevice(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_macAddress = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_hardwareId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_ipAddress = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_boardType = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_mcuType = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
@@ -64,7 +64,7 @@ public data class UnknownDevice(
       val __offset_status = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return UnknownDevice(
-              macAddress = if (__offset_macAddress != 0) readFlatBufferString(bb, tableOffset + __offset_macAddress) else null,
+              hardwareId = if (__offset_hardwareId != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareId) else null,
               ipAddress = if (__offset_ipAddress != 0) bb.getInt(tableOffset + __offset_ipAddress).toUInt() else 0u,
               boardType = if (__offset_boardType != 0) BoardType.fromValue(bb.getShort(tableOffset + __offset_boardType).toUShort()) ?: BoardType.UNKNOWN else BoardType.UNKNOWN,
               mcuType = if (__offset_mcuType != 0) McuType.fromValue(bb.getShort(tableOffset + __offset_mcuType).toUShort()) ?: McuType.UNKNOWN else McuType.UNKNOWN,
@@ -101,13 +101,13 @@ public data class UnknownDevicesResponse(
 }
 
 public data class IgnoreUnknownDeviceRequest(
-  public val macAddress: String? = null,
+  public val hardwareId: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_macAddress = macAddress?.let { builder.createString(it) }
+    val __off_hardwareId = hardwareId?.let { builder.createString(it) }
 
     builder.startTable(1)
-    __off_macAddress?.let { builder.addOffset(0, it, 0) }
+    __off_hardwareId?.let { builder.addOffset(0, it, 0) }
     return builder.endTable()
   }
 
@@ -116,23 +116,23 @@ public data class IgnoreUnknownDeviceRequest(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_macAddress = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_hardwareId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return IgnoreUnknownDeviceRequest(
-              macAddress = if (__offset_macAddress != 0) readFlatBufferString(bb, tableOffset + __offset_macAddress) else null
+              hardwareId = if (__offset_hardwareId != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareId) else null
           )
     }
   }
 }
 
 public data class AddUnknownDeviceRequest(
-  public val macAddress: String? = null,
+  public val hardwareId: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_macAddress = macAddress?.let { builder.createString(it) }
+    val __off_hardwareId = hardwareId?.let { builder.createString(it) }
 
     builder.startTable(1)
-    __off_macAddress?.let { builder.addOffset(0, it, 0) }
+    __off_hardwareId?.let { builder.addOffset(0, it, 0) }
     return builder.endTable()
   }
 
@@ -141,23 +141,23 @@ public data class AddUnknownDeviceRequest(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_macAddress = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_hardwareId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return AddUnknownDeviceRequest(
-              macAddress = if (__offset_macAddress != 0) readFlatBufferString(bb, tableOffset + __offset_macAddress) else null
+              hardwareId = if (__offset_hardwareId != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareId) else null
           )
     }
   }
 }
 
 public data class ForgetDeviceRequest(
-  public val macAddress: String? = null,
+  public val hardwareId: String? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
-    val __off_macAddress = macAddress?.let { builder.createString(it) }
+    val __off_hardwareId = hardwareId?.let { builder.createString(it) }
 
     builder.startTable(1)
-    __off_macAddress?.let { builder.addOffset(0, it, 0) }
+    __off_hardwareId?.let { builder.addOffset(0, it, 0) }
     return builder.endTable()
   }
 
@@ -166,10 +166,10 @@ public data class ForgetDeviceRequest(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_macAddress = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_hardwareId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
 
       return ForgetDeviceRequest(
-              macAddress = if (__offset_macAddress != 0) readFlatBufferString(bb, tableOffset + __offset_macAddress) else null
+              hardwareId = if (__offset_hardwareId != 0) readFlatBufferString(bb, tableOffset + __offset_hardwareId) else null
           )
     }
   }

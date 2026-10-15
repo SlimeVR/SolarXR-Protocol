@@ -8,16 +8,16 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class UnknownDeviceT {
-  private String macAddress;
+  private String hardwareId;
   private long ipAddress;
   private int boardType;
   private int mcuType;
   private String firmwareVersion;
   private int status;
 
-  public String getMacAddress() { return macAddress; }
+  public String getHardwareId() { return hardwareId; }
 
-  public void setMacAddress(String macAddress) { this.macAddress = macAddress; }
+  public void setHardwareId(String hardwareId) { this.hardwareId = hardwareId; }
 
   public long getIpAddress() { return ipAddress; }
 
@@ -41,7 +41,7 @@ public class UnknownDeviceT {
 
 
   public UnknownDeviceT() {
-    this.macAddress = null;
+    this.hardwareId = null;
     this.ipAddress = 0L;
     this.boardType = 0;
     this.mcuType = 0;

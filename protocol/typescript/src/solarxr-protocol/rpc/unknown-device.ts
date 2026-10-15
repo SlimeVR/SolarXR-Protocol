@@ -25,9 +25,12 @@ static getSizePrefixedRootAsUnknownDevice(bb:flatbuffers.ByteBuffer, obj?:Unknow
   return (obj || new UnknownDevice()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-macAddress():string|null
-macAddress(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-macAddress(optionalEncoding?:any):string|Uint8Array|null {
+/**
+ * MAC address, or IP address for firmware that sends no MAC
+ */
+hardwareId():string|null
+hardwareId(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+hardwareId(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
@@ -63,8 +66,8 @@ static startUnknownDevice(builder:flatbuffers.Builder) {
   builder.startObject(6);
 }
 
-static addMacAddress(builder:flatbuffers.Builder, macAddressOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, macAddressOffset, 0);
+static addHardwareId(builder:flatbuffers.Builder, hardwareIdOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, hardwareIdOffset, 0);
 }
 
 static addIpAddress(builder:flatbuffers.Builder, ipAddress:number) {
@@ -92,9 +95,9 @@ static endUnknownDevice(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createUnknownDevice(builder:flatbuffers.Builder, macAddressOffset:flatbuffers.Offset, ipAddress:number, boardType:BoardType, mcuType:McuType, firmwareVersionOffset:flatbuffers.Offset, status:UnknownDeviceStatus):flatbuffers.Offset {
+static createUnknownDevice(builder:flatbuffers.Builder, hardwareIdOffset:flatbuffers.Offset, ipAddress:number, boardType:BoardType, mcuType:McuType, firmwareVersionOffset:flatbuffers.Offset, status:UnknownDeviceStatus):flatbuffers.Offset {
   UnknownDevice.startUnknownDevice(builder);
-  UnknownDevice.addMacAddress(builder, macAddressOffset);
+  UnknownDevice.addHardwareId(builder, hardwareIdOffset);
   UnknownDevice.addIpAddress(builder, ipAddress);
   UnknownDevice.addBoardType(builder, boardType);
   UnknownDevice.addMcuType(builder, mcuType);
@@ -105,7 +108,7 @@ static createUnknownDevice(builder:flatbuffers.Builder, macAddressOffset:flatbuf
 
 unpack(): UnknownDeviceT {
   return new UnknownDeviceT(
-    this.macAddress(),
+    this.hardwareId(),
     this.ipAddress(),
     this.boardType(),
     this.mcuType(),
@@ -116,7 +119,7 @@ unpack(): UnknownDeviceT {
 
 
 unpackTo(_o: UnknownDeviceT): void {
-  _o.macAddress = this.macAddress();
+  _o.hardwareId = this.hardwareId();
   _o.ipAddress = this.ipAddress();
   _o.boardType = this.boardType();
   _o.mcuType = this.mcuType();
@@ -127,7 +130,7 @@ unpackTo(_o: UnknownDeviceT): void {
 
 export class UnknownDeviceT implements flatbuffers.IGeneratedObject {
 constructor(
-  public macAddress: string|Uint8Array|null = null,
+  public hardwareId: string|Uint8Array|null = null,
   public ipAddress: number = 0,
   public boardType: BoardType = BoardType.UNKNOWN,
   public mcuType: McuType = McuType.UNKNOWN,
@@ -137,11 +140,11 @@ constructor(
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const macAddress = (this.macAddress !== null ? builder.createString(this.macAddress!) : 0);
+  const hardwareId = (this.hardwareId !== null ? builder.createString(this.hardwareId!) : 0);
   const firmwareVersion = (this.firmwareVersion !== null ? builder.createString(this.firmwareVersion!) : 0);
 
   return UnknownDevice.createUnknownDevice(builder,
-    macAddress,
+    hardwareId,
     this.ipAddress,
     this.boardType,
     this.mcuType,

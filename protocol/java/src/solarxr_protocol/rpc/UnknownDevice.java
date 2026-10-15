@@ -15,9 +15,12 @@ public final class UnknownDevice extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public UnknownDevice __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public String macAddress() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer macAddressAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
-  public ByteBuffer macAddressInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
+  /**
+   * MAC address, or IP address for firmware that sends no MAC
+   */
+  public String hardwareId() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer hardwareIdAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
+  public ByteBuffer hardwareIdInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
   public long ipAddress() { int o = __offset(6); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
   public int boardType() { int o = __offset(8); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   public int mcuType() { int o = __offset(10); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
@@ -27,7 +30,7 @@ public final class UnknownDevice extends Table {
   public int status() { int o = __offset(14); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 1; }
 
   public static int createUnknownDevice(FlatBufferBuilder builder,
-      int macAddressOffset,
+      int hardwareIdOffset,
       long ipAddress,
       int boardType,
       int mcuType,
@@ -36,7 +39,7 @@ public final class UnknownDevice extends Table {
     builder.startTable(6);
     UnknownDevice.addFirmwareVersion(builder, firmwareVersionOffset);
     UnknownDevice.addIpAddress(builder, ipAddress);
-    UnknownDevice.addMacAddress(builder, macAddressOffset);
+    UnknownDevice.addHardwareId(builder, hardwareIdOffset);
     UnknownDevice.addMcuType(builder, mcuType);
     UnknownDevice.addBoardType(builder, boardType);
     UnknownDevice.addStatus(builder, status);
@@ -44,7 +47,7 @@ public final class UnknownDevice extends Table {
   }
 
   public static void startUnknownDevice(FlatBufferBuilder builder) { builder.startTable(6); }
-  public static void addMacAddress(FlatBufferBuilder builder, int macAddressOffset) { builder.addOffset(0, macAddressOffset, 0); }
+  public static void addHardwareId(FlatBufferBuilder builder, int hardwareIdOffset) { builder.addOffset(0, hardwareIdOffset, 0); }
   public static void addIpAddress(FlatBufferBuilder builder, long ipAddress) { builder.addInt(1, (int) ipAddress, (int) 0L); }
   public static void addBoardType(FlatBufferBuilder builder, int boardType) { builder.addShort(2, (short) boardType, (short) 0); }
   public static void addMcuType(FlatBufferBuilder builder, int mcuType) { builder.addShort(3, (short) mcuType, (short) 0); }
@@ -67,8 +70,8 @@ public final class UnknownDevice extends Table {
     return _o;
   }
   public void unpackTo(UnknownDeviceT _o) {
-    String _oMacAddress = macAddress();
-    _o.setMacAddress(_oMacAddress);
+    String _oHardwareId = hardwareId();
+    _o.setHardwareId(_oHardwareId);
     long _oIpAddress = ipAddress();
     _o.setIpAddress(_oIpAddress);
     int _oBoardType = boardType();
@@ -82,11 +85,11 @@ public final class UnknownDevice extends Table {
   }
   public static int pack(FlatBufferBuilder builder, UnknownDeviceT _o) {
     if (_o == null) return 0;
-    int _macAddress = _o.getMacAddress() == null ? 0 : builder.createString(_o.getMacAddress());
+    int _hardwareId = _o.getHardwareId() == null ? 0 : builder.createString(_o.getHardwareId());
     int _firmwareVersion = _o.getFirmwareVersion() == null ? 0 : builder.createString(_o.getFirmwareVersion());
     return createUnknownDevice(
       builder,
-      _macAddress,
+      _hardwareId,
       _o.getIpAddress(),
       _o.getBoardType(),
       _o.getMcuType(),

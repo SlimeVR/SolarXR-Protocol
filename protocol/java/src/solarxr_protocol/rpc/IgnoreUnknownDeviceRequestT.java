@@ -8,15 +8,15 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class IgnoreUnknownDeviceRequestT {
-  private String macAddress;
+  private String hardwareId;
 
-  public String getMacAddress() { return macAddress; }
+  public String getHardwareId() { return hardwareId; }
 
-  public void setMacAddress(String macAddress) { this.macAddress = macAddress; }
+  public void setHardwareId(String hardwareId) { this.hardwareId = hardwareId; }
 
 
   public IgnoreUnknownDeviceRequestT() {
-    this.macAddress = null;
+    this.hardwareId = null;
   }
 }
 

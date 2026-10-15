@@ -8136,15 +8136,16 @@ inline flatbuffers::Offset<RecordBVHStatusRequest> CreateRecordBVHStatusRequest(
 struct UnknownDevice FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UnknownDeviceBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_MAC_ADDRESS = 4,
+    VT_HARDWARE_ID = 4,
     VT_IP_ADDRESS = 6,
     VT_BOARD_TYPE = 8,
     VT_MCU_TYPE = 10,
     VT_FIRMWARE_VERSION = 12,
     VT_STATUS = 14
   };
-  const flatbuffers::String *mac_address() const {
-    return GetPointer<const flatbuffers::String *>(VT_MAC_ADDRESS);
+  /// MAC address, or IP address for firmware that sends no MAC
+  const flatbuffers::String *hardware_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_HARDWARE_ID);
   }
   uint32_t ip_address() const {
     return GetField<uint32_t>(VT_IP_ADDRESS, 0);
@@ -8163,8 +8164,8 @@ struct UnknownDevice FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_MAC_ADDRESS) &&
-           verifier.VerifyString(mac_address()) &&
+           VerifyOffset(verifier, VT_HARDWARE_ID) &&
+           verifier.VerifyString(hardware_id()) &&
            VerifyField<uint32_t>(verifier, VT_IP_ADDRESS, 4) &&
            VerifyField<uint16_t>(verifier, VT_BOARD_TYPE, 2) &&
            VerifyField<uint16_t>(verifier, VT_MCU_TYPE, 2) &&
@@ -8179,8 +8180,8 @@ struct UnknownDeviceBuilder {
   typedef UnknownDevice Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_mac_address(flatbuffers::Offset<flatbuffers::String> mac_address) {
-    fbb_.AddOffset(UnknownDevice::VT_MAC_ADDRESS, mac_address);
+  void add_hardware_id(flatbuffers::Offset<flatbuffers::String> hardware_id) {
+    fbb_.AddOffset(UnknownDevice::VT_HARDWARE_ID, hardware_id);
   }
   void add_ip_address(uint32_t ip_address) {
     fbb_.AddElement<uint32_t>(UnknownDevice::VT_IP_ADDRESS, ip_address, 0);
@@ -8210,7 +8211,7 @@ struct UnknownDeviceBuilder {
 
 inline flatbuffers::Offset<UnknownDevice> CreateUnknownDevice(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> mac_address = 0,
+    flatbuffers::Offset<flatbuffers::String> hardware_id = 0,
     uint32_t ip_address = 0,
     solarxr_protocol::datatypes::hardware_info::BoardType board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
     solarxr_protocol::datatypes::hardware_info::McuType mcu_type = solarxr_protocol::datatypes::hardware_info::McuType::UNKNOWN,
@@ -8219,7 +8220,7 @@ inline flatbuffers::Offset<UnknownDevice> CreateUnknownDevice(
   UnknownDeviceBuilder builder_(_fbb);
   builder_.add_firmware_version(firmware_version);
   builder_.add_ip_address(ip_address);
-  builder_.add_mac_address(mac_address);
+  builder_.add_hardware_id(hardware_id);
   builder_.add_mcu_type(mcu_type);
   builder_.add_board_type(board_type);
   builder_.add_status(status);
@@ -8228,17 +8229,17 @@ inline flatbuffers::Offset<UnknownDevice> CreateUnknownDevice(
 
 inline flatbuffers::Offset<UnknownDevice> CreateUnknownDeviceDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *mac_address = nullptr,
+    const char *hardware_id = nullptr,
     uint32_t ip_address = 0,
     solarxr_protocol::datatypes::hardware_info::BoardType board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
     solarxr_protocol::datatypes::hardware_info::McuType mcu_type = solarxr_protocol::datatypes::hardware_info::McuType::UNKNOWN,
     const char *firmware_version = nullptr,
     solarxr_protocol::rpc::UnknownDeviceStatus status = solarxr_protocol::rpc::UnknownDeviceStatus::WAITING) {
-  auto mac_address__ = mac_address ? _fbb.CreateString(mac_address) : 0;
+  auto hardware_id__ = hardware_id ? _fbb.CreateString(hardware_id) : 0;
   auto firmware_version__ = firmware_version ? _fbb.CreateString(firmware_version) : 0;
   return solarxr_protocol::rpc::CreateUnknownDevice(
       _fbb,
-      mac_address__,
+      hardware_id__,
       ip_address,
       board_type,
       mcu_type,
@@ -8301,15 +8302,15 @@ inline flatbuffers::Offset<UnknownDevicesResponse> CreateUnknownDevicesResponseD
 struct IgnoreUnknownDeviceRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef IgnoreUnknownDeviceRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_MAC_ADDRESS = 4
+    VT_HARDWARE_ID = 4
   };
-  const flatbuffers::String *mac_address() const {
-    return GetPointer<const flatbuffers::String *>(VT_MAC_ADDRESS);
+  const flatbuffers::String *hardware_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_HARDWARE_ID);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_MAC_ADDRESS) &&
-           verifier.VerifyString(mac_address()) &&
+           VerifyOffset(verifier, VT_HARDWARE_ID) &&
+           verifier.VerifyString(hardware_id()) &&
            verifier.EndTable();
   }
 };
@@ -8318,8 +8319,8 @@ struct IgnoreUnknownDeviceRequestBuilder {
   typedef IgnoreUnknownDeviceRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_mac_address(flatbuffers::Offset<flatbuffers::String> mac_address) {
-    fbb_.AddOffset(IgnoreUnknownDeviceRequest::VT_MAC_ADDRESS, mac_address);
+  void add_hardware_id(flatbuffers::Offset<flatbuffers::String> hardware_id) {
+    fbb_.AddOffset(IgnoreUnknownDeviceRequest::VT_HARDWARE_ID, hardware_id);
   }
   explicit IgnoreUnknownDeviceRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -8334,33 +8335,33 @@ struct IgnoreUnknownDeviceRequestBuilder {
 
 inline flatbuffers::Offset<IgnoreUnknownDeviceRequest> CreateIgnoreUnknownDeviceRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> mac_address = 0) {
+    flatbuffers::Offset<flatbuffers::String> hardware_id = 0) {
   IgnoreUnknownDeviceRequestBuilder builder_(_fbb);
-  builder_.add_mac_address(mac_address);
+  builder_.add_hardware_id(hardware_id);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<IgnoreUnknownDeviceRequest> CreateIgnoreUnknownDeviceRequestDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *mac_address = nullptr) {
-  auto mac_address__ = mac_address ? _fbb.CreateString(mac_address) : 0;
+    const char *hardware_id = nullptr) {
+  auto hardware_id__ = hardware_id ? _fbb.CreateString(hardware_id) : 0;
   return solarxr_protocol::rpc::CreateIgnoreUnknownDeviceRequest(
       _fbb,
-      mac_address__);
+      hardware_id__);
 }
 
 struct AddUnknownDeviceRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef AddUnknownDeviceRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_MAC_ADDRESS = 4
+    VT_HARDWARE_ID = 4
   };
-  const flatbuffers::String *mac_address() const {
-    return GetPointer<const flatbuffers::String *>(VT_MAC_ADDRESS);
+  const flatbuffers::String *hardware_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_HARDWARE_ID);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_MAC_ADDRESS) &&
-           verifier.VerifyString(mac_address()) &&
+           VerifyOffset(verifier, VT_HARDWARE_ID) &&
+           verifier.VerifyString(hardware_id()) &&
            verifier.EndTable();
   }
 };
@@ -8369,8 +8370,8 @@ struct AddUnknownDeviceRequestBuilder {
   typedef AddUnknownDeviceRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_mac_address(flatbuffers::Offset<flatbuffers::String> mac_address) {
-    fbb_.AddOffset(AddUnknownDeviceRequest::VT_MAC_ADDRESS, mac_address);
+  void add_hardware_id(flatbuffers::Offset<flatbuffers::String> hardware_id) {
+    fbb_.AddOffset(AddUnknownDeviceRequest::VT_HARDWARE_ID, hardware_id);
   }
   explicit AddUnknownDeviceRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -8385,33 +8386,33 @@ struct AddUnknownDeviceRequestBuilder {
 
 inline flatbuffers::Offset<AddUnknownDeviceRequest> CreateAddUnknownDeviceRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> mac_address = 0) {
+    flatbuffers::Offset<flatbuffers::String> hardware_id = 0) {
   AddUnknownDeviceRequestBuilder builder_(_fbb);
-  builder_.add_mac_address(mac_address);
+  builder_.add_hardware_id(hardware_id);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<AddUnknownDeviceRequest> CreateAddUnknownDeviceRequestDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *mac_address = nullptr) {
-  auto mac_address__ = mac_address ? _fbb.CreateString(mac_address) : 0;
+    const char *hardware_id = nullptr) {
+  auto hardware_id__ = hardware_id ? _fbb.CreateString(hardware_id) : 0;
   return solarxr_protocol::rpc::CreateAddUnknownDeviceRequest(
       _fbb,
-      mac_address__);
+      hardware_id__);
 }
 
 struct ForgetDeviceRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ForgetDeviceRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_MAC_ADDRESS = 4
+    VT_HARDWARE_ID = 4
   };
-  const flatbuffers::String *mac_address() const {
-    return GetPointer<const flatbuffers::String *>(VT_MAC_ADDRESS);
+  const flatbuffers::String *hardware_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_HARDWARE_ID);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_MAC_ADDRESS) &&
-           verifier.VerifyString(mac_address()) &&
+           VerifyOffset(verifier, VT_HARDWARE_ID) &&
+           verifier.VerifyString(hardware_id()) &&
            verifier.EndTable();
   }
 };
@@ -8420,8 +8421,8 @@ struct ForgetDeviceRequestBuilder {
   typedef ForgetDeviceRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_mac_address(flatbuffers::Offset<flatbuffers::String> mac_address) {
-    fbb_.AddOffset(ForgetDeviceRequest::VT_MAC_ADDRESS, mac_address);
+  void add_hardware_id(flatbuffers::Offset<flatbuffers::String> hardware_id) {
+    fbb_.AddOffset(ForgetDeviceRequest::VT_HARDWARE_ID, hardware_id);
   }
   explicit ForgetDeviceRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -8436,19 +8437,19 @@ struct ForgetDeviceRequestBuilder {
 
 inline flatbuffers::Offset<ForgetDeviceRequest> CreateForgetDeviceRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> mac_address = 0) {
+    flatbuffers::Offset<flatbuffers::String> hardware_id = 0) {
   ForgetDeviceRequestBuilder builder_(_fbb);
-  builder_.add_mac_address(mac_address);
+  builder_.add_hardware_id(hardware_id);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<ForgetDeviceRequest> CreateForgetDeviceRequestDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *mac_address = nullptr) {
-  auto mac_address__ = mac_address ? _fbb.CreateString(mac_address) : 0;
+    const char *hardware_id = nullptr) {
+  auto hardware_id__ = hardware_id ? _fbb.CreateString(hardware_id) : 0;
   return solarxr_protocol::rpc::CreateForgetDeviceRequest(
       _fbb,
-      mac_address__);
+      hardware_id__);
 }
 
 struct ChangeDongleSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

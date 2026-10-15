@@ -8,7 +8,7 @@ enum UnknownDeviceStatus: uint8 {
 }
 
 table UnknownDevice {
-    mac_address: string;
+    hardware_id: string;
     ip_address: uint32;
     board_type: solarxr_protocol.datatypes.hardware_info.BoardType;
     mcu_type: solarxr_protocol.datatypes.hardware_info.McuType;
@@ -21,13 +21,13 @@ table UnknownDevicesResponse {
 }
 
 table IgnoreUnknownDeviceRequest {
-    mac_address: string;
+    hardware_id: string;
 }
 
 table AddUnknownDeviceRequest {
-    mac_address: string;
+    hardware_id: string;
 }
 
 table ForgetDeviceRequest {
-    mac_address: string;
+    hardware_id: string;
 }

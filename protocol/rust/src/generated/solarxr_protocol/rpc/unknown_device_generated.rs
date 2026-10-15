@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for UnknownDevice<'a> {
 }
 
 impl<'a> UnknownDevice<'a> {
-  pub const VT_MAC_ADDRESS: flatbuffers::VOffsetT = 4;
+  pub const VT_HARDWARE_ID: flatbuffers::VOffsetT = 4;
   pub const VT_IP_ADDRESS: flatbuffers::VOffsetT = 6;
   pub const VT_BOARD_TYPE: flatbuffers::VOffsetT = 8;
   pub const VT_MCU_TYPE: flatbuffers::VOffsetT = 10;
@@ -44,7 +44,7 @@ impl<'a> UnknownDevice<'a> {
     let mut builder = UnknownDeviceBuilder::new(_fbb);
     if let Some(x) = args.firmware_version { builder.add_firmware_version(x); }
     builder.add_ip_address(args.ip_address);
-    if let Some(x) = args.mac_address { builder.add_mac_address(x); }
+    if let Some(x) = args.hardware_id { builder.add_hardware_id(x); }
     builder.add_mcu_type(args.mcu_type);
     builder.add_board_type(args.board_type);
     builder.add_status(args.status);
@@ -52,12 +52,13 @@ impl<'a> UnknownDevice<'a> {
   }
 
 
+  /// MAC address, or IP address for firmware that sends no MAC
   #[inline]
-  pub fn mac_address(&self) -> Option<&'a str> {
+  pub fn hardware_id(&self) -> Option<&'a str> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(UnknownDevice::VT_MAC_ADDRESS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(UnknownDevice::VT_HARDWARE_ID, None)}
   }
   #[inline]
   pub fn ip_address(&self) -> u32 {
@@ -103,7 +104,7 @@ impl flatbuffers::Verifiable for UnknownDevice<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("mac_address", Self::VT_MAC_ADDRESS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_id", Self::VT_HARDWARE_ID, false)?
      .visit_field::<u32>("ip_address", Self::VT_IP_ADDRESS, false)?
      .visit_field::<super::datatypes::hardware_info::BoardType>("board_type", Self::VT_BOARD_TYPE, false)?
      .visit_field::<super::datatypes::hardware_info::McuType>("mcu_type", Self::VT_MCU_TYPE, false)?
@@ -114,7 +115,7 @@ impl flatbuffers::Verifiable for UnknownDevice<'_> {
   }
 }
 pub struct UnknownDeviceArgs<'a> {
-    pub mac_address: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub hardware_id: Option<flatbuffers::WIPOffset<&'a str>>,
     pub ip_address: u32,
     pub board_type: super::datatypes::hardware_info::BoardType,
     pub mcu_type: super::datatypes::hardware_info::McuType,
@@ -125,7 +126,7 @@ impl<'a> Default for UnknownDeviceArgs<'a> {
   #[inline]
   fn default() -> Self {
     UnknownDeviceArgs {
-      mac_address: None,
+      hardware_id: None,
       ip_address: 0,
       board_type: super::datatypes::hardware_info::BoardType::UNKNOWN,
       mcu_type: super::datatypes::hardware_info::McuType::UNKNOWN,
@@ -141,8 +142,8 @@ pub struct UnknownDeviceBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> UnknownDeviceBuilder<'a, 'b> {
   #[inline]
-  pub fn add_mac_address(&mut self, mac_address: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(UnknownDevice::VT_MAC_ADDRESS, mac_address);
+  pub fn add_hardware_id(&mut self, hardware_id: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(UnknownDevice::VT_HARDWARE_ID, hardware_id);
   }
   #[inline]
   pub fn add_ip_address(&mut self, ip_address: u32) {
@@ -182,7 +183,7 @@ impl<'a: 'b, 'b> UnknownDeviceBuilder<'a, 'b> {
 impl core::fmt::Debug for UnknownDevice<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("UnknownDevice");
-      ds.field("mac_address", &self.mac_address());
+      ds.field("hardware_id", &self.hardware_id());
       ds.field("ip_address", &self.ip_address());
       ds.field("board_type", &self.board_type());
       ds.field("mcu_type", &self.mcu_type());
