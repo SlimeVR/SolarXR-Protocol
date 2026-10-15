@@ -95,7 +95,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.TrackingPauseStateRequestT asTrackingPauseStateRequest() { return (solarxr_protocol.rpc.TrackingPauseStateRequestT) value; }
   public solarxr_protocol.rpc.TrackingPauseStateResponseT asTrackingPauseStateResponse() { return (solarxr_protocol.rpc.TrackingPauseStateResponseT) value; }
   public solarxr_protocol.rpc.SerialTrackerGetWifiScanRequestT asSerialTrackerGetWifiScanRequest() { return (solarxr_protocol.rpc.SerialTrackerGetWifiScanRequestT) value; }
-  public solarxr_protocol.rpc.UnknownDeviceHandshakeNotificationT asUnknownDeviceHandshakeNotification() { return (solarxr_protocol.rpc.UnknownDeviceHandshakeNotificationT) value; }
+  public solarxr_protocol.rpc.UnknownDevicesResponseT asUnknownDevicesResponse() { return (solarxr_protocol.rpc.UnknownDevicesResponseT) value; }
   public solarxr_protocol.rpc.AddUnknownDeviceRequestT asAddUnknownDeviceRequest() { return (solarxr_protocol.rpc.AddUnknownDeviceRequestT) value; }
   public solarxr_protocol.rpc.ForgetDeviceRequestT asForgetDeviceRequest() { return (solarxr_protocol.rpc.ForgetDeviceRequestT) value; }
   public solarxr_protocol.rpc.FirmwareUpdateRequestT asFirmwareUpdateRequest() { return (solarxr_protocol.rpc.FirmwareUpdateRequestT) value; }
@@ -168,6 +168,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StartTrackerImuTelemetryRequestT asStartTrackerImuTelemetryRequest() { return (solarxr_protocol.rpc.StartTrackerImuTelemetryRequestT) value; }
   public solarxr_protocol.rpc.StopTrackerImuTelemetryRequestT asStopTrackerImuTelemetryRequest() { return (solarxr_protocol.rpc.StopTrackerImuTelemetryRequestT) value; }
   public solarxr_protocol.rpc.TrackerImuTelemetryResponseT asTrackerImuTelemetryResponse() { return (solarxr_protocol.rpc.TrackerImuTelemetryResponseT) value; }
+  public solarxr_protocol.rpc.IgnoreUnknownDeviceRequestT asIgnoreUnknownDeviceRequest() { return (solarxr_protocol.rpc.IgnoreUnknownDeviceRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -245,7 +246,7 @@ public class RpcMessageUnion {
       case RpcMessage.TrackingPauseStateRequest: return solarxr_protocol.rpc.TrackingPauseStateRequest.pack(builder, _o.asTrackingPauseStateRequest());
       case RpcMessage.TrackingPauseStateResponse: return solarxr_protocol.rpc.TrackingPauseStateResponse.pack(builder, _o.asTrackingPauseStateResponse());
       case RpcMessage.SerialTrackerGetWifiScanRequest: return solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest.pack(builder, _o.asSerialTrackerGetWifiScanRequest());
-      case RpcMessage.UnknownDeviceHandshakeNotification: return solarxr_protocol.rpc.UnknownDeviceHandshakeNotification.pack(builder, _o.asUnknownDeviceHandshakeNotification());
+      case RpcMessage.UnknownDevicesResponse: return solarxr_protocol.rpc.UnknownDevicesResponse.pack(builder, _o.asUnknownDevicesResponse());
       case RpcMessage.AddUnknownDeviceRequest: return solarxr_protocol.rpc.AddUnknownDeviceRequest.pack(builder, _o.asAddUnknownDeviceRequest());
       case RpcMessage.ForgetDeviceRequest: return solarxr_protocol.rpc.ForgetDeviceRequest.pack(builder, _o.asForgetDeviceRequest());
       case RpcMessage.FirmwareUpdateRequest: return solarxr_protocol.rpc.FirmwareUpdateRequest.pack(builder, _o.asFirmwareUpdateRequest());
@@ -318,6 +319,7 @@ public class RpcMessageUnion {
       case RpcMessage.StartTrackerImuTelemetryRequest: return solarxr_protocol.rpc.StartTrackerImuTelemetryRequest.pack(builder, _o.asStartTrackerImuTelemetryRequest());
       case RpcMessage.StopTrackerImuTelemetryRequest: return solarxr_protocol.rpc.StopTrackerImuTelemetryRequest.pack(builder, _o.asStopTrackerImuTelemetryRequest());
       case RpcMessage.TrackerImuTelemetryResponse: return solarxr_protocol.rpc.TrackerImuTelemetryResponse.pack(builder, _o.asTrackerImuTelemetryResponse());
+      case RpcMessage.IgnoreUnknownDeviceRequest: return solarxr_protocol.rpc.IgnoreUnknownDeviceRequest.pack(builder, _o.asIgnoreUnknownDeviceRequest());
       default: return 0;
     }
   }

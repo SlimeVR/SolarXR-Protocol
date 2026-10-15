@@ -1,9 +1,26 @@
 namespace solarxr_protocol.rpc;
 
-/// Server notifies connection of an unknown device.
-/// If the notification is no longer sent, it means the device connected to another
-/// server, got connected to this server or it was turned off.
-table UnknownDeviceHandshakeNotification {
+enum UnknownDeviceStatus: uint8 {
+    /// Handshaking but not on the allowed list.
+    WAITING = 1,
+    /// Allowed, waiting for its next handshake to connect.
+    ADDING = 2,
+}
+
+table UnknownDevice {
+    mac_address: string;
+    ip_address: uint32;
+    board_type: solarxr_protocol.datatypes.hardware_info.BoardType;
+    mcu_type: solarxr_protocol.datatypes.hardware_info.McuType;
+    firmware_version: string;
+    status: UnknownDeviceStatus = WAITING;
+}
+
+table UnknownDevicesResponse {
+    devices: [UnknownDevice];
+}
+
+table IgnoreUnknownDeviceRequest {
     mac_address: string;
 }
 

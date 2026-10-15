@@ -110,7 +110,7 @@ union RpcMessage {
     TrackingPauseStateRequest,
     TrackingPauseStateResponse,
     SerialTrackerGetWifiScanRequest,
-    UnknownDeviceHandshakeNotification,
+    UnknownDevicesResponse,
     AddUnknownDeviceRequest,
     ForgetDeviceRequest,
     FirmwareUpdateRequest,
@@ -183,6 +183,7 @@ union RpcMessage {
     StartTrackerImuTelemetryRequest,
     StopTrackerImuTelemetryRequest,
     TrackerImuTelemetryResponse,
+    IgnoreUnknownDeviceRequest,
 }
 
 table RpcMessageHeader {

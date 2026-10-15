@@ -137,6 +137,8 @@ pub mod solarxr_protocol {
     pub use self::routing_output_generated::*;
     mod routing_output_state_generated;
     pub use self::routing_output_state_generated::*;
+    mod unknown_device_status_generated;
+    pub use self::unknown_device_status_generated::*;
     mod error_reporting_consent_generated;
     pub use self::error_reporting_consent_generated::*;
     mod driver_connection_state_generated;
@@ -249,8 +251,12 @@ pub mod solarxr_protocol {
     pub use self::record_bvhstatus_generated::*;
     mod record_bvhstatus_request_generated;
     pub use self::record_bvhstatus_request_generated::*;
-    mod unknown_device_handshake_notification_generated;
-    pub use self::unknown_device_handshake_notification_generated::*;
+    mod unknown_device_generated;
+    pub use self::unknown_device_generated::*;
+    mod unknown_devices_response_generated;
+    pub use self::unknown_devices_response_generated::*;
+    mod ignore_unknown_device_request_generated;
+    pub use self::ignore_unknown_device_request_generated::*;
     mod add_unknown_device_request_generated;
     pub use self::add_unknown_device_request_generated::*;
     mod forget_device_request_generated;

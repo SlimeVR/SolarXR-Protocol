@@ -1191,13 +1191,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_unknown_device_handshake_notification(&self) -> Option<UnknownDeviceHandshakeNotification<'a>> {
-    if self.message_type() == RpcMessage::UnknownDeviceHandshakeNotification {
+  pub fn message_as_unknown_devices_response(&self) -> Option<UnknownDevicesResponse<'a>> {
+    if self.message_type() == RpcMessage::UnknownDevicesResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { UnknownDeviceHandshakeNotification::init_from_table(t) }
+       unsafe { UnknownDevicesResponse::init_from_table(t) }
      })
     } else {
       None
@@ -2284,6 +2284,21 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_ignore_unknown_device_request(&self) -> Option<IgnoreUnknownDeviceRequest<'a>> {
+    if self.message_type() == RpcMessage::IgnoreUnknownDeviceRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { IgnoreUnknownDeviceRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -2371,7 +2386,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::TrackingPauseStateRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingPauseStateRequest>>("RpcMessage::TrackingPauseStateRequest", pos),
           RpcMessage::TrackingPauseStateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingPauseStateResponse>>("RpcMessage::TrackingPauseStateResponse", pos),
           RpcMessage::SerialTrackerGetWifiScanRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerGetWifiScanRequest>>("RpcMessage::SerialTrackerGetWifiScanRequest", pos),
-          RpcMessage::UnknownDeviceHandshakeNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UnknownDeviceHandshakeNotification>>("RpcMessage::UnknownDeviceHandshakeNotification", pos),
+          RpcMessage::UnknownDevicesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UnknownDevicesResponse>>("RpcMessage::UnknownDevicesResponse", pos),
           RpcMessage::AddUnknownDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AddUnknownDeviceRequest>>("RpcMessage::AddUnknownDeviceRequest", pos),
           RpcMessage::ForgetDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ForgetDeviceRequest>>("RpcMessage::ForgetDeviceRequest", pos),
           RpcMessage::FirmwareUpdateRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdateRequest>>("RpcMessage::FirmwareUpdateRequest", pos),
@@ -2444,6 +2459,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StartTrackerImuTelemetryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartTrackerImuTelemetryRequest>>("RpcMessage::StartTrackerImuTelemetryRequest", pos),
           RpcMessage::StopTrackerImuTelemetryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopTrackerImuTelemetryRequest>>("RpcMessage::StopTrackerImuTelemetryRequest", pos),
           RpcMessage::TrackerImuTelemetryResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackerImuTelemetryResponse>>("RpcMessage::TrackerImuTelemetryResponse", pos),
+          RpcMessage::IgnoreUnknownDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<IgnoreUnknownDeviceRequest>>("RpcMessage::IgnoreUnknownDeviceRequest", pos),
           _ => Ok(()),
         }
      })?
@@ -3030,8 +3046,8 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::UnknownDeviceHandshakeNotification => {
-          if let Some(x) = self.message_as_unknown_device_handshake_notification() {
+        RpcMessage::UnknownDevicesResponse => {
+          if let Some(x) = self.message_as_unknown_devices_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
@@ -3536,6 +3552,13 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::TrackerImuTelemetryResponse => {
           if let Some(x) = self.message_as_tracker_imu_telemetry_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::IgnoreUnknownDeviceRequest => {
+          if let Some(x) = self.message_as_ignore_unknown_device_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

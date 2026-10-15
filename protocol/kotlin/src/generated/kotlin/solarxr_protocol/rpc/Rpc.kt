@@ -91,7 +91,7 @@ public sealed interface RpcMessage {
       72 -> TrackingPauseStateRequest.decode(bb, offset)
       73 -> TrackingPauseStateResponse.decode(bb, offset)
       74 -> SerialTrackerGetWifiScanRequest.decode(bb, offset)
-      75 -> UnknownDeviceHandshakeNotification.decode(bb, offset)
+      75 -> UnknownDevicesResponse.decode(bb, offset)
       76 -> AddUnknownDeviceRequest.decode(bb, offset)
       77 -> ForgetDeviceRequest.decode(bb, offset)
       78 -> FirmwareUpdateRequest.decode(bb, offset)
@@ -164,6 +164,7 @@ public sealed interface RpcMessage {
       145 -> StartTrackerImuTelemetryRequest.decode(bb, offset)
       146 -> StopTrackerImuTelemetryRequest.decode(bb, offset)
       147 -> TrackerImuTelemetryResponse.decode(bb, offset)
+      148 -> IgnoreUnknownDeviceRequest.decode(bb, offset)
       else -> null
     }
 
@@ -242,7 +243,7 @@ public sealed interface RpcMessage {
       is TrackingPauseStateRequest -> 72.toUByte()
       is TrackingPauseStateResponse -> 73.toUByte()
       is SerialTrackerGetWifiScanRequest -> 74.toUByte()
-      is UnknownDeviceHandshakeNotification -> 75.toUByte()
+      is UnknownDevicesResponse -> 75.toUByte()
       is AddUnknownDeviceRequest -> 76.toUByte()
       is ForgetDeviceRequest -> 77.toUByte()
       is FirmwareUpdateRequest -> 78.toUByte()
@@ -315,6 +316,7 @@ public sealed interface RpcMessage {
       is StartTrackerImuTelemetryRequest -> 145.toUByte()
       is StopTrackerImuTelemetryRequest -> 146.toUByte()
       is TrackerImuTelemetryResponse -> 147.toUByte()
+      is IgnoreUnknownDeviceRequest -> 148.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -392,7 +394,7 @@ public sealed interface RpcMessage {
       is TrackingPauseStateRequest -> value.encode(builder)
       is TrackingPauseStateResponse -> value.encode(builder)
       is SerialTrackerGetWifiScanRequest -> value.encode(builder)
-      is UnknownDeviceHandshakeNotification -> value.encode(builder)
+      is UnknownDevicesResponse -> value.encode(builder)
       is AddUnknownDeviceRequest -> value.encode(builder)
       is ForgetDeviceRequest -> value.encode(builder)
       is FirmwareUpdateRequest -> value.encode(builder)
@@ -465,6 +467,7 @@ public sealed interface RpcMessage {
       is StartTrackerImuTelemetryRequest -> value.encode(builder)
       is StopTrackerImuTelemetryRequest -> value.encode(builder)
       is TrackerImuTelemetryResponse -> value.encode(builder)
+      is IgnoreUnknownDeviceRequest -> value.encode(builder)
     }
   }
 }

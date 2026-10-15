@@ -118,6 +118,7 @@ export { HIDSettingsResponse, HIDSettingsResponseT } from './solarxr-protocol/rp
 export { HeartbeatRequest, HeartbeatRequestT } from './solarxr-protocol/rpc/heartbeat-request.js';
 export { HeartbeatResponse, HeartbeatResponseT } from './solarxr-protocol/rpc/heartbeat-response.js';
 export { IgnoreTrackingChecklistStepRequest, IgnoreTrackingChecklistStepRequestT } from './solarxr-protocol/rpc/ignore-tracking-checklist-step-request.js';
+export { IgnoreUnknownDeviceRequest, IgnoreUnknownDeviceRequestT } from './solarxr-protocol/rpc/ignore-unknown-device-request.js';
 export { InstalledInfoRequest, InstalledInfoRequestT } from './solarxr-protocol/rpc/installed-info-request.js';
 export { InstalledInfoResponse, InstalledInfoResponseT } from './solarxr-protocol/rpc/installed-info-response.js';
 export { Keybind, KeybindT } from './solarxr-protocol/rpc/keybind.js';
@@ -236,7 +237,9 @@ export { TrackingChecklistTrackerReset, TrackingChecklistTrackerResetT } from '.
 export { TrackingChecklistUnassignedReliableReference, TrackingChecklistUnassignedReliableReferenceT } from './solarxr-protocol/rpc/tracking-checklist-unassigned-reliable-reference.js';
 export { TrackingPauseStateRequest, TrackingPauseStateRequestT } from './solarxr-protocol/rpc/tracking-pause-state-request.js';
 export { TrackingPauseStateResponse, TrackingPauseStateResponseT } from './solarxr-protocol/rpc/tracking-pause-state-response.js';
-export { UnknownDeviceHandshakeNotification, UnknownDeviceHandshakeNotificationT } from './solarxr-protocol/rpc/unknown-device-handshake-notification.js';
+export { UnknownDevice, UnknownDeviceT } from './solarxr-protocol/rpc/unknown-device.js';
+export { UnknownDeviceStatus } from './solarxr-protocol/rpc/unknown-device-status.js';
+export { UnknownDevicesResponse, UnknownDevicesResponseT } from './solarxr-protocol/rpc/unknown-devices-response.js';
 export { UpdateTrackerRequest, UpdateTrackerRequestT } from './solarxr-protocol/rpc/update-tracker-request.js';
 export { UserHeightCalibrationStatus } from './solarxr-protocol/rpc/user-height-calibration-status.js';
 export { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from './solarxr-protocol/rpc/user-height-recording-status-response.js';

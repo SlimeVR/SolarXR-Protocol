@@ -367,9 +367,9 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.UnknownDeviceHandshakeNotification:
-        _oMessageValue = message(new solarxr_protocol.rpc.UnknownDeviceHandshakeNotification());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UnknownDeviceHandshakeNotification) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.UnknownDevicesResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.UnknownDevicesResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UnknownDevicesResponse) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.AddUnknownDeviceRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.AddUnknownDeviceRequest());
@@ -658,6 +658,10 @@ public final class RpcMessageHeader extends Table {
       case solarxr_protocol.rpc.RpcMessage.TrackerImuTelemetryResponse:
         _oMessageValue = message(new solarxr_protocol.rpc.TrackerImuTelemetryResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackerImuTelemetryResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.IgnoreUnknownDeviceRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.IgnoreUnknownDeviceRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.IgnoreUnknownDeviceRequest) _oMessageValue).unpack() : null);
         break;
       default: break;
     }

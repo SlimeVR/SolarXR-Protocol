@@ -167,8 +167,14 @@ struct RecordBVHStatusBuilder;
 struct RecordBVHStatusRequest;
 struct RecordBVHStatusRequestBuilder;
 
-struct UnknownDeviceHandshakeNotification;
-struct UnknownDeviceHandshakeNotificationBuilder;
+struct UnknownDevice;
+struct UnknownDeviceBuilder;
+
+struct UnknownDevicesResponse;
+struct UnknownDevicesResponseBuilder;
+
+struct IgnoreUnknownDeviceRequest;
+struct IgnoreUnknownDeviceRequestBuilder;
 
 struct AddUnknownDeviceRequest;
 struct AddUnknownDeviceRequestBuilder;
@@ -1643,6 +1649,38 @@ inline const char *EnumNameRoutingOutputState(RoutingOutputState e) {
   if (flatbuffers::IsOutRange(e, RoutingOutputState::UNSUPPORTED, RoutingOutputState::ENABLED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRoutingOutputState()[index];
+}
+
+enum class UnknownDeviceStatus : uint8_t {
+  /// Handshaking but not on the allowed list.
+  WAITING = 1,
+  /// Allowed, waiting for its next handshake to connect.
+  ADDING = 2,
+  MIN = WAITING,
+  MAX = ADDING
+};
+
+inline const UnknownDeviceStatus (&EnumValuesUnknownDeviceStatus())[2] {
+  static const UnknownDeviceStatus values[] = {
+    UnknownDeviceStatus::WAITING,
+    UnknownDeviceStatus::ADDING
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesUnknownDeviceStatus() {
+  static const char * const names[3] = {
+    "WAITING",
+    "ADDING",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameUnknownDeviceStatus(UnknownDeviceStatus e) {
+  if (flatbuffers::IsOutRange(e, UnknownDeviceStatus::WAITING, UnknownDeviceStatus::ADDING)) return "";
+  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(UnknownDeviceStatus::WAITING);
+  return EnumNamesUnknownDeviceStatus()[index];
 }
 
 /// Whether the user agreed to send error reports and diagnostics.
@@ -3297,7 +3335,7 @@ enum class RpcMessage : uint8_t {
   TrackingPauseStateRequest = 72,
   TrackingPauseStateResponse = 73,
   SerialTrackerGetWifiScanRequest = 74,
-  UnknownDeviceHandshakeNotification = 75,
+  UnknownDevicesResponse = 75,
   AddUnknownDeviceRequest = 76,
   ForgetDeviceRequest = 77,
   FirmwareUpdateRequest = 78,
@@ -3370,11 +3408,12 @@ enum class RpcMessage : uint8_t {
   StartTrackerImuTelemetryRequest = 145,
   StopTrackerImuTelemetryRequest = 146,
   TrackerImuTelemetryResponse = 147,
+  IgnoreUnknownDeviceRequest = 148,
   MIN = NONE,
-  MAX = TrackerImuTelemetryResponse
+  MAX = IgnoreUnknownDeviceRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[148] {
+inline const RpcMessage (&EnumValuesRpcMessage())[149] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -3451,7 +3490,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[148] {
     RpcMessage::TrackingPauseStateRequest,
     RpcMessage::TrackingPauseStateResponse,
     RpcMessage::SerialTrackerGetWifiScanRequest,
-    RpcMessage::UnknownDeviceHandshakeNotification,
+    RpcMessage::UnknownDevicesResponse,
     RpcMessage::AddUnknownDeviceRequest,
     RpcMessage::ForgetDeviceRequest,
     RpcMessage::FirmwareUpdateRequest,
@@ -3523,13 +3562,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[148] {
     RpcMessage::ProfileOperationResponse,
     RpcMessage::StartTrackerImuTelemetryRequest,
     RpcMessage::StopTrackerImuTelemetryRequest,
-    RpcMessage::TrackerImuTelemetryResponse
+    RpcMessage::TrackerImuTelemetryResponse,
+    RpcMessage::IgnoreUnknownDeviceRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[149] = {
+  static const char * const names[150] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -3605,7 +3645,7 @@ inline const char * const *EnumNamesRpcMessage() {
     "TrackingPauseStateRequest",
     "TrackingPauseStateResponse",
     "SerialTrackerGetWifiScanRequest",
-    "UnknownDeviceHandshakeNotification",
+    "UnknownDevicesResponse",
     "AddUnknownDeviceRequest",
     "ForgetDeviceRequest",
     "FirmwareUpdateRequest",
@@ -3678,13 +3718,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "StartTrackerImuTelemetryRequest",
     "StopTrackerImuTelemetryRequest",
     "TrackerImuTelemetryResponse",
+    "IgnoreUnknownDeviceRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::TrackerImuTelemetryResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::IgnoreUnknownDeviceRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -3989,8 +4030,8 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::SerialTrackerGetWifiSc
   static const RpcMessage enum_value = RpcMessage::SerialTrackerGetWifiScanRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::UnknownDeviceHandshakeNotification> {
-  static const RpcMessage enum_value = RpcMessage::UnknownDeviceHandshakeNotification;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::UnknownDevicesResponse> {
+  static const RpcMessage enum_value = RpcMessage::UnknownDevicesResponse;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::AddUnknownDeviceRequest> {
@@ -4279,6 +4320,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::StopTrackerImuTelemetr
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackerImuTelemetryResponse> {
   static const RpcMessage enum_value = RpcMessage::TrackerImuTelemetryResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::IgnoreUnknownDeviceRequest> {
+  static const RpcMessage enum_value = RpcMessage::IgnoreUnknownDeviceRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -8088,11 +8133,173 @@ inline flatbuffers::Offset<RecordBVHStatusRequest> CreateRecordBVHStatusRequest(
   return builder_.Finish();
 }
 
-/// Server notifies connection of an unknown device.
-/// If the notification is no longer sent, it means the device connected to another
-/// server, got connected to this server or it was turned off.
-struct UnknownDeviceHandshakeNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef UnknownDeviceHandshakeNotificationBuilder Builder;
+struct UnknownDevice FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UnknownDeviceBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_MAC_ADDRESS = 4,
+    VT_IP_ADDRESS = 6,
+    VT_BOARD_TYPE = 8,
+    VT_MCU_TYPE = 10,
+    VT_FIRMWARE_VERSION = 12,
+    VT_STATUS = 14
+  };
+  const flatbuffers::String *mac_address() const {
+    return GetPointer<const flatbuffers::String *>(VT_MAC_ADDRESS);
+  }
+  uint32_t ip_address() const {
+    return GetField<uint32_t>(VT_IP_ADDRESS, 0);
+  }
+  solarxr_protocol::datatypes::hardware_info::BoardType board_type() const {
+    return static_cast<solarxr_protocol::datatypes::hardware_info::BoardType>(GetField<uint16_t>(VT_BOARD_TYPE, 0));
+  }
+  solarxr_protocol::datatypes::hardware_info::McuType mcu_type() const {
+    return static_cast<solarxr_protocol::datatypes::hardware_info::McuType>(GetField<uint16_t>(VT_MCU_TYPE, 0));
+  }
+  const flatbuffers::String *firmware_version() const {
+    return GetPointer<const flatbuffers::String *>(VT_FIRMWARE_VERSION);
+  }
+  solarxr_protocol::rpc::UnknownDeviceStatus status() const {
+    return static_cast<solarxr_protocol::rpc::UnknownDeviceStatus>(GetField<uint8_t>(VT_STATUS, 1));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_MAC_ADDRESS) &&
+           verifier.VerifyString(mac_address()) &&
+           VerifyField<uint32_t>(verifier, VT_IP_ADDRESS, 4) &&
+           VerifyField<uint16_t>(verifier, VT_BOARD_TYPE, 2) &&
+           VerifyField<uint16_t>(verifier, VT_MCU_TYPE, 2) &&
+           VerifyOffset(verifier, VT_FIRMWARE_VERSION) &&
+           verifier.VerifyString(firmware_version()) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct UnknownDeviceBuilder {
+  typedef UnknownDevice Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_mac_address(flatbuffers::Offset<flatbuffers::String> mac_address) {
+    fbb_.AddOffset(UnknownDevice::VT_MAC_ADDRESS, mac_address);
+  }
+  void add_ip_address(uint32_t ip_address) {
+    fbb_.AddElement<uint32_t>(UnknownDevice::VT_IP_ADDRESS, ip_address, 0);
+  }
+  void add_board_type(solarxr_protocol::datatypes::hardware_info::BoardType board_type) {
+    fbb_.AddElement<uint16_t>(UnknownDevice::VT_BOARD_TYPE, static_cast<uint16_t>(board_type), 0);
+  }
+  void add_mcu_type(solarxr_protocol::datatypes::hardware_info::McuType mcu_type) {
+    fbb_.AddElement<uint16_t>(UnknownDevice::VT_MCU_TYPE, static_cast<uint16_t>(mcu_type), 0);
+  }
+  void add_firmware_version(flatbuffers::Offset<flatbuffers::String> firmware_version) {
+    fbb_.AddOffset(UnknownDevice::VT_FIRMWARE_VERSION, firmware_version);
+  }
+  void add_status(solarxr_protocol::rpc::UnknownDeviceStatus status) {
+    fbb_.AddElement<uint8_t>(UnknownDevice::VT_STATUS, static_cast<uint8_t>(status), 1);
+  }
+  explicit UnknownDeviceBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UnknownDevice> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UnknownDevice>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UnknownDevice> CreateUnknownDevice(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> mac_address = 0,
+    uint32_t ip_address = 0,
+    solarxr_protocol::datatypes::hardware_info::BoardType board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
+    solarxr_protocol::datatypes::hardware_info::McuType mcu_type = solarxr_protocol::datatypes::hardware_info::McuType::UNKNOWN,
+    flatbuffers::Offset<flatbuffers::String> firmware_version = 0,
+    solarxr_protocol::rpc::UnknownDeviceStatus status = solarxr_protocol::rpc::UnknownDeviceStatus::WAITING) {
+  UnknownDeviceBuilder builder_(_fbb);
+  builder_.add_firmware_version(firmware_version);
+  builder_.add_ip_address(ip_address);
+  builder_.add_mac_address(mac_address);
+  builder_.add_mcu_type(mcu_type);
+  builder_.add_board_type(board_type);
+  builder_.add_status(status);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<UnknownDevice> CreateUnknownDeviceDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *mac_address = nullptr,
+    uint32_t ip_address = 0,
+    solarxr_protocol::datatypes::hardware_info::BoardType board_type = solarxr_protocol::datatypes::hardware_info::BoardType::UNKNOWN,
+    solarxr_protocol::datatypes::hardware_info::McuType mcu_type = solarxr_protocol::datatypes::hardware_info::McuType::UNKNOWN,
+    const char *firmware_version = nullptr,
+    solarxr_protocol::rpc::UnknownDeviceStatus status = solarxr_protocol::rpc::UnknownDeviceStatus::WAITING) {
+  auto mac_address__ = mac_address ? _fbb.CreateString(mac_address) : 0;
+  auto firmware_version__ = firmware_version ? _fbb.CreateString(firmware_version) : 0;
+  return solarxr_protocol::rpc::CreateUnknownDevice(
+      _fbb,
+      mac_address__,
+      ip_address,
+      board_type,
+      mcu_type,
+      firmware_version__,
+      status);
+}
+
+struct UnknownDevicesResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef UnknownDevicesResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICES = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UnknownDevice>> *devices() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UnknownDevice>> *>(VT_DEVICES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DEVICES) &&
+           verifier.VerifyVector(devices()) &&
+           verifier.VerifyVectorOfTables(devices()) &&
+           verifier.EndTable();
+  }
+};
+
+struct UnknownDevicesResponseBuilder {
+  typedef UnknownDevicesResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_devices(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UnknownDevice>>> devices) {
+    fbb_.AddOffset(UnknownDevicesResponse::VT_DEVICES, devices);
+  }
+  explicit UnknownDevicesResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UnknownDevicesResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UnknownDevicesResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UnknownDevicesResponse> CreateUnknownDevicesResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::UnknownDevice>>> devices = 0) {
+  UnknownDevicesResponseBuilder builder_(_fbb);
+  builder_.add_devices(devices);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<UnknownDevicesResponse> CreateUnknownDevicesResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::UnknownDevice>> *devices = nullptr) {
+  auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::UnknownDevice>>(*devices) : 0;
+  return solarxr_protocol::rpc::CreateUnknownDevicesResponse(
+      _fbb,
+      devices__);
+}
+
+struct IgnoreUnknownDeviceRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef IgnoreUnknownDeviceRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MAC_ADDRESS = 4
   };
@@ -8107,37 +8314,37 @@ struct UnknownDeviceHandshakeNotification FLATBUFFERS_FINAL_CLASS : private flat
   }
 };
 
-struct UnknownDeviceHandshakeNotificationBuilder {
-  typedef UnknownDeviceHandshakeNotification Table;
+struct IgnoreUnknownDeviceRequestBuilder {
+  typedef IgnoreUnknownDeviceRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_mac_address(flatbuffers::Offset<flatbuffers::String> mac_address) {
-    fbb_.AddOffset(UnknownDeviceHandshakeNotification::VT_MAC_ADDRESS, mac_address);
+    fbb_.AddOffset(IgnoreUnknownDeviceRequest::VT_MAC_ADDRESS, mac_address);
   }
-  explicit UnknownDeviceHandshakeNotificationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit IgnoreUnknownDeviceRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<UnknownDeviceHandshakeNotification> Finish() {
+  flatbuffers::Offset<IgnoreUnknownDeviceRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<UnknownDeviceHandshakeNotification>(end);
+    auto o = flatbuffers::Offset<IgnoreUnknownDeviceRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<UnknownDeviceHandshakeNotification> CreateUnknownDeviceHandshakeNotification(
+inline flatbuffers::Offset<IgnoreUnknownDeviceRequest> CreateIgnoreUnknownDeviceRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> mac_address = 0) {
-  UnknownDeviceHandshakeNotificationBuilder builder_(_fbb);
+  IgnoreUnknownDeviceRequestBuilder builder_(_fbb);
   builder_.add_mac_address(mac_address);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<UnknownDeviceHandshakeNotification> CreateUnknownDeviceHandshakeNotificationDirect(
+inline flatbuffers::Offset<IgnoreUnknownDeviceRequest> CreateIgnoreUnknownDeviceRequestDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *mac_address = nullptr) {
   auto mac_address__ = mac_address ? _fbb.CreateString(mac_address) : 0;
-  return solarxr_protocol::rpc::CreateUnknownDeviceHandshakeNotification(
+  return solarxr_protocol::rpc::CreateIgnoreUnknownDeviceRequest(
       _fbb,
       mac_address__);
 }
@@ -17530,8 +17737,8 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *message_as_SerialTrackerGetWifiScanRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::SerialTrackerGetWifiScanRequest ? static_cast<const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::UnknownDeviceHandshakeNotification *message_as_UnknownDeviceHandshakeNotification() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::UnknownDeviceHandshakeNotification ? static_cast<const solarxr_protocol::rpc::UnknownDeviceHandshakeNotification *>(message()) : nullptr;
+  const solarxr_protocol::rpc::UnknownDevicesResponse *message_as_UnknownDevicesResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::UnknownDevicesResponse ? static_cast<const solarxr_protocol::rpc::UnknownDevicesResponse *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::AddUnknownDeviceRequest *message_as_AddUnknownDeviceRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::AddUnknownDeviceRequest ? static_cast<const solarxr_protocol::rpc::AddUnknownDeviceRequest *>(message()) : nullptr;
@@ -17748,6 +17955,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   const solarxr_protocol::rpc::TrackerImuTelemetryResponse *message_as_TrackerImuTelemetryResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::TrackerImuTelemetryResponse ? static_cast<const solarxr_protocol::rpc::TrackerImuTelemetryResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::IgnoreUnknownDeviceRequest *message_as_IgnoreUnknownDeviceRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::IgnoreUnknownDeviceRequest ? static_cast<const solarxr_protocol::rpc::IgnoreUnknownDeviceRequest *>(message()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -18056,8 +18266,8 @@ template<> inline const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *
   return message_as_SerialTrackerGetWifiScanRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::UnknownDeviceHandshakeNotification *RpcMessageHeader::message_as<solarxr_protocol::rpc::UnknownDeviceHandshakeNotification>() const {
-  return message_as_UnknownDeviceHandshakeNotification();
+template<> inline const solarxr_protocol::rpc::UnknownDevicesResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::UnknownDevicesResponse>() const {
+  return message_as_UnknownDevicesResponse();
 }
 
 template<> inline const solarxr_protocol::rpc::AddUnknownDeviceRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::AddUnknownDeviceRequest>() const {
@@ -18346,6 +18556,10 @@ template<> inline const solarxr_protocol::rpc::StopTrackerImuTelemetryRequest *R
 
 template<> inline const solarxr_protocol::rpc::TrackerImuTelemetryResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackerImuTelemetryResponse>() const {
   return message_as_TrackerImuTelemetryResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::IgnoreUnknownDeviceRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::IgnoreUnknownDeviceRequest>() const {
+  return message_as_IgnoreUnknownDeviceRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -20112,8 +20326,8 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::SerialTrackerGetWifiScanRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::UnknownDeviceHandshakeNotification: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UnknownDeviceHandshakeNotification *>(obj);
+    case RpcMessage::UnknownDevicesResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::UnknownDevicesResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::AddUnknownDeviceRequest: {
@@ -20402,6 +20616,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::TrackerImuTelemetryResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackerImuTelemetryResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::IgnoreUnknownDeviceRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::IgnoreUnknownDeviceRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

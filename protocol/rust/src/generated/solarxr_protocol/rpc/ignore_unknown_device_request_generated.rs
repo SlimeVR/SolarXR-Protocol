@@ -9,37 +9,34 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum UnknownDeviceHandshakeNotificationOffset {}
+pub enum IgnoreUnknownDeviceRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Server notifies connection of an unknown device.
-/// If the notification is no longer sent, it means the device connected to another
-/// server, got connected to this server or it was turned off.
-pub struct UnknownDeviceHandshakeNotification<'a> {
+pub struct IgnoreUnknownDeviceRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for UnknownDeviceHandshakeNotification<'a> {
-  type Inner = UnknownDeviceHandshakeNotification<'a>;
+impl<'a> flatbuffers::Follow<'a> for IgnoreUnknownDeviceRequest<'a> {
+  type Inner = IgnoreUnknownDeviceRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> UnknownDeviceHandshakeNotification<'a> {
+impl<'a> IgnoreUnknownDeviceRequest<'a> {
   pub const VT_MAC_ADDRESS: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    UnknownDeviceHandshakeNotification { _tab: table }
+    IgnoreUnknownDeviceRequest { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args UnknownDeviceHandshakeNotificationArgs<'args>
-  ) -> flatbuffers::WIPOffset<UnknownDeviceHandshakeNotification<'bldr>> {
-    let mut builder = UnknownDeviceHandshakeNotificationBuilder::new(_fbb);
+    args: &'args IgnoreUnknownDeviceRequestArgs<'args>
+  ) -> flatbuffers::WIPOffset<IgnoreUnknownDeviceRequest<'bldr>> {
+    let mut builder = IgnoreUnknownDeviceRequestBuilder::new(_fbb);
     if let Some(x) = args.mac_address { builder.add_mac_address(x); }
     builder.finish()
   }
@@ -50,11 +47,11 @@ impl<'a> UnknownDeviceHandshakeNotification<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(UnknownDeviceHandshakeNotification::VT_MAC_ADDRESS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(IgnoreUnknownDeviceRequest::VT_MAC_ADDRESS, None)}
   }
 }
 
-impl flatbuffers::Verifiable for UnknownDeviceHandshakeNotification<'_> {
+impl flatbuffers::Verifiable for IgnoreUnknownDeviceRequest<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -66,45 +63,45 @@ impl flatbuffers::Verifiable for UnknownDeviceHandshakeNotification<'_> {
     Ok(())
   }
 }
-pub struct UnknownDeviceHandshakeNotificationArgs<'a> {
+pub struct IgnoreUnknownDeviceRequestArgs<'a> {
     pub mac_address: Option<flatbuffers::WIPOffset<&'a str>>,
 }
-impl<'a> Default for UnknownDeviceHandshakeNotificationArgs<'a> {
+impl<'a> Default for IgnoreUnknownDeviceRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
-    UnknownDeviceHandshakeNotificationArgs {
+    IgnoreUnknownDeviceRequestArgs {
       mac_address: None,
     }
   }
 }
 
-pub struct UnknownDeviceHandshakeNotificationBuilder<'a: 'b, 'b> {
+pub struct IgnoreUnknownDeviceRequestBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> UnknownDeviceHandshakeNotificationBuilder<'a, 'b> {
+impl<'a: 'b, 'b> IgnoreUnknownDeviceRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_mac_address(&mut self, mac_address: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(UnknownDeviceHandshakeNotification::VT_MAC_ADDRESS, mac_address);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(IgnoreUnknownDeviceRequest::VT_MAC_ADDRESS, mac_address);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> UnknownDeviceHandshakeNotificationBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> IgnoreUnknownDeviceRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    UnknownDeviceHandshakeNotificationBuilder {
+    IgnoreUnknownDeviceRequestBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<UnknownDeviceHandshakeNotification<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<IgnoreUnknownDeviceRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for UnknownDeviceHandshakeNotification<'_> {
+impl core::fmt::Debug for IgnoreUnknownDeviceRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("UnknownDeviceHandshakeNotification");
+    let mut ds = f.debug_struct("IgnoreUnknownDeviceRequest");
       ds.field("mac_address", &self.mac_address());
       ds.finish()
   }

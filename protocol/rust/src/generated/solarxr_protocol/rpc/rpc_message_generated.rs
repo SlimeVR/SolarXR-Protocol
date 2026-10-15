@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 147;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 148;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 148] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 149] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -91,7 +91,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 148] = [
   RpcMessage::TrackingPauseStateRequest,
   RpcMessage::TrackingPauseStateResponse,
   RpcMessage::SerialTrackerGetWifiScanRequest,
-  RpcMessage::UnknownDeviceHandshakeNotification,
+  RpcMessage::UnknownDevicesResponse,
   RpcMessage::AddUnknownDeviceRequest,
   RpcMessage::ForgetDeviceRequest,
   RpcMessage::FirmwareUpdateRequest,
@@ -164,6 +164,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 148] = [
   RpcMessage::StartTrackerImuTelemetryRequest,
   RpcMessage::StopTrackerImuTelemetryRequest,
   RpcMessage::TrackerImuTelemetryResponse,
+  RpcMessage::IgnoreUnknownDeviceRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -246,7 +247,7 @@ impl RpcMessage {
   pub const TrackingPauseStateRequest: Self = Self(72);
   pub const TrackingPauseStateResponse: Self = Self(73);
   pub const SerialTrackerGetWifiScanRequest: Self = Self(74);
-  pub const UnknownDeviceHandshakeNotification: Self = Self(75);
+  pub const UnknownDevicesResponse: Self = Self(75);
   pub const AddUnknownDeviceRequest: Self = Self(76);
   pub const ForgetDeviceRequest: Self = Self(77);
   pub const FirmwareUpdateRequest: Self = Self(78);
@@ -319,9 +320,10 @@ impl RpcMessage {
   pub const StartTrackerImuTelemetryRequest: Self = Self(145);
   pub const StopTrackerImuTelemetryRequest: Self = Self(146);
   pub const TrackerImuTelemetryResponse: Self = Self(147);
+  pub const IgnoreUnknownDeviceRequest: Self = Self(148);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 147;
+  pub const ENUM_MAX: u8 = 148;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -398,7 +400,7 @@ impl RpcMessage {
     Self::TrackingPauseStateRequest,
     Self::TrackingPauseStateResponse,
     Self::SerialTrackerGetWifiScanRequest,
-    Self::UnknownDeviceHandshakeNotification,
+    Self::UnknownDevicesResponse,
     Self::AddUnknownDeviceRequest,
     Self::ForgetDeviceRequest,
     Self::FirmwareUpdateRequest,
@@ -471,6 +473,7 @@ impl RpcMessage {
     Self::StartTrackerImuTelemetryRequest,
     Self::StopTrackerImuTelemetryRequest,
     Self::TrackerImuTelemetryResponse,
+    Self::IgnoreUnknownDeviceRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -550,7 +553,7 @@ impl RpcMessage {
       Self::TrackingPauseStateRequest => Some("TrackingPauseStateRequest"),
       Self::TrackingPauseStateResponse => Some("TrackingPauseStateResponse"),
       Self::SerialTrackerGetWifiScanRequest => Some("SerialTrackerGetWifiScanRequest"),
-      Self::UnknownDeviceHandshakeNotification => Some("UnknownDeviceHandshakeNotification"),
+      Self::UnknownDevicesResponse => Some("UnknownDevicesResponse"),
       Self::AddUnknownDeviceRequest => Some("AddUnknownDeviceRequest"),
       Self::ForgetDeviceRequest => Some("ForgetDeviceRequest"),
       Self::FirmwareUpdateRequest => Some("FirmwareUpdateRequest"),
@@ -623,6 +626,7 @@ impl RpcMessage {
       Self::StartTrackerImuTelemetryRequest => Some("StartTrackerImuTelemetryRequest"),
       Self::StopTrackerImuTelemetryRequest => Some("StopTrackerImuTelemetryRequest"),
       Self::TrackerImuTelemetryResponse => Some("TrackerImuTelemetryResponse"),
+      Self::IgnoreUnknownDeviceRequest => Some("IgnoreUnknownDeviceRequest"),
       _ => None,
     }
   }

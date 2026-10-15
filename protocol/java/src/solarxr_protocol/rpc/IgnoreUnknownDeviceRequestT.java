@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class UnknownDeviceHandshakeNotificationT {
+public class IgnoreUnknownDeviceRequestT {
   private String macAddress;
 
   public String getMacAddress() { return macAddress; }
@@ -15,7 +15,7 @@ public class UnknownDeviceHandshakeNotificationT {
   public void setMacAddress(String macAddress) { this.macAddress = macAddress; }
 
 
-  public UnknownDeviceHandshakeNotificationT() {
+  public IgnoreUnknownDeviceRequestT() {
     this.macAddress = null;
   }
 }
