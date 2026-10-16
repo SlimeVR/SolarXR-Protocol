@@ -171,6 +171,9 @@ public sealed interface RpcMessage {
       152 -> LogStreamResponse.decode(bb, offset)
       153 -> LogFileChunkRequest.decode(bb, offset)
       154 -> LogFileChunkResponse.decode(bb, offset)
+      155 -> CustomOSCSettingsRequest.decode(bb, offset)
+      156 -> CustomOSCSettingsResponse.decode(bb, offset)
+      157 -> ChangeCustomOSCSettingsRequest.decode(bb, offset)
       else -> null
     }
 
@@ -329,6 +332,9 @@ public sealed interface RpcMessage {
       is LogStreamResponse -> 152.toUByte()
       is LogFileChunkRequest -> 153.toUByte()
       is LogFileChunkResponse -> 154.toUByte()
+      is CustomOSCSettingsRequest -> 155.toUByte()
+      is CustomOSCSettingsResponse -> 156.toUByte()
+      is ChangeCustomOSCSettingsRequest -> 157.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -486,6 +492,9 @@ public sealed interface RpcMessage {
       is LogStreamResponse -> value.encode(builder)
       is LogFileChunkRequest -> value.encode(builder)
       is LogFileChunkResponse -> value.encode(builder)
+      is CustomOSCSettingsRequest -> value.encode(builder)
+      is CustomOSCSettingsResponse -> value.encode(builder)
+      is ChangeCustomOSCSettingsRequest -> value.encode(builder)
     }
   }
 }

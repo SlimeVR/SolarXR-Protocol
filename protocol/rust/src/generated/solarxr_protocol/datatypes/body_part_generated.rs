@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_BODY_PART: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_BODY_PART: u8 = 61;
+pub const ENUM_MAX_BODY_PART: u8 = 72;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_BODY_PART: [BodyPart; 62] = [
+pub const ENUM_VALUES_BODY_PART: [BodyPart; 73] = [
   BodyPart::NONE,
   BodyPart::HEAD,
   BodyPart::NECK,
@@ -78,6 +78,17 @@ pub const ENUM_VALUES_BODY_PART: [BodyPart; 62] = [
   BodyPart::RIGHT_MIDDLE_TOE,
   BodyPart::RIGHT_RING_TOE,
   BodyPart::RIGHT_LITTLE_TOE,
+  BodyPart::LEFT_BUST,
+  BodyPart::RIGHT_BUST,
+  BodyPart::LEFT_POSTERIOR,
+  BodyPart::RIGHT_POSTERIOR,
+  BodyPart::TAIL,
+  BodyPart::TAIL_1,
+  BodyPart::TAIL_2,
+  BodyPart::TAIL_3,
+  BodyPart::TAIL_4,
+  BodyPart::TAIL_5,
+  BodyPart::TAIL_6,
 ];
 
 /// Different parts of the body. Maps to each possible bone in the skeleton.
@@ -149,9 +160,20 @@ impl BodyPart {
   pub const RIGHT_MIDDLE_TOE: Self = Self(59);
   pub const RIGHT_RING_TOE: Self = Self(60);
   pub const RIGHT_LITTLE_TOE: Self = Self(61);
+  pub const LEFT_BUST: Self = Self(62);
+  pub const RIGHT_BUST: Self = Self(63);
+  pub const LEFT_POSTERIOR: Self = Self(64);
+  pub const RIGHT_POSTERIOR: Self = Self(65);
+  pub const TAIL: Self = Self(66);
+  pub const TAIL_1: Self = Self(67);
+  pub const TAIL_2: Self = Self(68);
+  pub const TAIL_3: Self = Self(69);
+  pub const TAIL_4: Self = Self(70);
+  pub const TAIL_5: Self = Self(71);
+  pub const TAIL_6: Self = Self(72);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 61;
+  pub const ENUM_MAX: u8 = 72;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HEAD,
@@ -215,6 +237,17 @@ impl BodyPart {
     Self::RIGHT_MIDDLE_TOE,
     Self::RIGHT_RING_TOE,
     Self::RIGHT_LITTLE_TOE,
+    Self::LEFT_BUST,
+    Self::RIGHT_BUST,
+    Self::LEFT_POSTERIOR,
+    Self::RIGHT_POSTERIOR,
+    Self::TAIL,
+    Self::TAIL_1,
+    Self::TAIL_2,
+    Self::TAIL_3,
+    Self::TAIL_4,
+    Self::TAIL_5,
+    Self::TAIL_6,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -281,6 +314,17 @@ impl BodyPart {
       Self::RIGHT_MIDDLE_TOE => Some("RIGHT_MIDDLE_TOE"),
       Self::RIGHT_RING_TOE => Some("RIGHT_RING_TOE"),
       Self::RIGHT_LITTLE_TOE => Some("RIGHT_LITTLE_TOE"),
+      Self::LEFT_BUST => Some("LEFT_BUST"),
+      Self::RIGHT_BUST => Some("RIGHT_BUST"),
+      Self::LEFT_POSTERIOR => Some("LEFT_POSTERIOR"),
+      Self::RIGHT_POSTERIOR => Some("RIGHT_POSTERIOR"),
+      Self::TAIL => Some("TAIL"),
+      Self::TAIL_1 => Some("TAIL_1"),
+      Self::TAIL_2 => Some("TAIL_2"),
+      Self::TAIL_3 => Some("TAIL_3"),
+      Self::TAIL_4 => Some("TAIL_4"),
+      Self::TAIL_5 => Some("TAIL_5"),
+      Self::TAIL_6 => Some("TAIL_6"),
       _ => None,
     }
   }

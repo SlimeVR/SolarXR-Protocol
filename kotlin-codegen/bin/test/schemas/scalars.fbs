@@ -1,0 +1,43 @@
+namespace fixture.scalars;
+
+struct AllScalarStruct {
+    b: bool;
+    i8: int8;
+    u8: uint8;
+    i16: int16;
+    u16: uint16;
+    i32: int32;
+    u32: uint32;
+    i64: int64;
+    u64: uint64;
+    f32: float32;
+    f64: float64;
+}
+
+table OptionalScalars {
+    obool: bool = null;
+    oi8: int8 = null;
+    ou8: uint8 = null;
+    oi16: int16 = null;
+    ou16: uint16 = null;
+    oi32: int32 = null;
+    ou32: uint32 = null;
+    oi64: int64 = null;
+    ou64: uint64 = null;
+    of32: float32 = null;
+    of64: float64 = null;
+}
+
+table DefaultScalars {
+    dbool: bool = true;
+    di8: int8 = -12;
+    du8: uint8 = 250;
+    di16: int16 = -1234;
+    du16: uint16 = 65000;
+    di32: int32 = -12345678;
+    du32: uint32 = 4000000000;
+    di64: int64 = -1234567890123;
+    du64: uint64 = 9000000000000000000;
+    df32: float32 = 1.5;
+    df64: float64 = -2.25;
+}

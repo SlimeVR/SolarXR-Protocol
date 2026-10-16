@@ -175,6 +175,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.LogStreamResponseT asLogStreamResponse() { return (solarxr_protocol.rpc.LogStreamResponseT) value; }
   public solarxr_protocol.rpc.LogFileChunkRequestT asLogFileChunkRequest() { return (solarxr_protocol.rpc.LogFileChunkRequestT) value; }
   public solarxr_protocol.rpc.LogFileChunkResponseT asLogFileChunkResponse() { return (solarxr_protocol.rpc.LogFileChunkResponseT) value; }
+  public solarxr_protocol.rpc.CustomOSCSettingsRequestT asCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.CustomOSCSettingsRequestT) value; }
+  public solarxr_protocol.rpc.CustomOSCSettingsResponseT asCustomOSCSettingsResponse() { return (solarxr_protocol.rpc.CustomOSCSettingsResponseT) value; }
+  public solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT asChangeCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -332,6 +335,9 @@ public class RpcMessageUnion {
       case RpcMessage.LogStreamResponse: return solarxr_protocol.rpc.LogStreamResponse.pack(builder, _o.asLogStreamResponse());
       case RpcMessage.LogFileChunkRequest: return solarxr_protocol.rpc.LogFileChunkRequest.pack(builder, _o.asLogFileChunkRequest());
       case RpcMessage.LogFileChunkResponse: return solarxr_protocol.rpc.LogFileChunkResponse.pack(builder, _o.asLogFileChunkResponse());
+      case RpcMessage.CustomOSCSettingsRequest: return solarxr_protocol.rpc.CustomOSCSettingsRequest.pack(builder, _o.asCustomOSCSettingsRequest());
+      case RpcMessage.CustomOSCSettingsResponse: return solarxr_protocol.rpc.CustomOSCSettingsResponse.pack(builder, _o.asCustomOSCSettingsResponse());
+      case RpcMessage.ChangeCustomOSCSettingsRequest: return solarxr_protocol.rpc.ChangeCustomOSCSettingsRequest.pack(builder, _o.asChangeCustomOSCSettingsRequest());
       default: return 0;
     }
   }

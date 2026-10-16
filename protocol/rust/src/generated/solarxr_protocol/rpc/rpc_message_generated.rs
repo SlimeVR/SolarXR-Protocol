@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 154;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 157;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 155] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 158] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -171,6 +171,9 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 155] = [
   RpcMessage::LogStreamResponse,
   RpcMessage::LogFileChunkRequest,
   RpcMessage::LogFileChunkResponse,
+  RpcMessage::CustomOSCSettingsRequest,
+  RpcMessage::CustomOSCSettingsResponse,
+  RpcMessage::ChangeCustomOSCSettingsRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -333,9 +336,12 @@ impl RpcMessage {
   pub const LogStreamResponse: Self = Self(152);
   pub const LogFileChunkRequest: Self = Self(153);
   pub const LogFileChunkResponse: Self = Self(154);
+  pub const CustomOSCSettingsRequest: Self = Self(155);
+  pub const CustomOSCSettingsResponse: Self = Self(156);
+  pub const ChangeCustomOSCSettingsRequest: Self = Self(157);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 154;
+  pub const ENUM_MAX: u8 = 157;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -492,6 +498,9 @@ impl RpcMessage {
     Self::LogStreamResponse,
     Self::LogFileChunkRequest,
     Self::LogFileChunkResponse,
+    Self::CustomOSCSettingsRequest,
+    Self::CustomOSCSettingsResponse,
+    Self::ChangeCustomOSCSettingsRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -651,6 +660,9 @@ impl RpcMessage {
       Self::LogStreamResponse => Some("LogStreamResponse"),
       Self::LogFileChunkRequest => Some("LogFileChunkRequest"),
       Self::LogFileChunkResponse => Some("LogFileChunkResponse"),
+      Self::CustomOSCSettingsRequest => Some("CustomOSCSettingsRequest"),
+      Self::CustomOSCSettingsResponse => Some("CustomOSCSettingsResponse"),
+      Self::ChangeCustomOSCSettingsRequest => Some("ChangeCustomOSCSettingsRequest"),
       _ => None,
     }
   }
