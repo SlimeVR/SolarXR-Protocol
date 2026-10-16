@@ -1,0 +1,62 @@
+namespace solarxr_protocol.rpc;
+
+// VMC settings request and response
+table VMCOSCSettingsRequest {}
+table VMCOSCSettingsResponse {
+    enabled: bool;
+    port_in: uint16;
+    port_out: uint16;
+    address: string;
+    anchor_hip: bool;
+    mirror_tracking: bool;
+}
+table ChangeVMCOSCSettingsRequest {
+    enabled: bool;
+    port_in: uint16;
+    port_out: uint16;
+    address: string;
+    anchor_hip: bool;
+    mirror_tracking: bool;
+}
+
+enum VMCOSCInputState : ubyte {
+    IDLE = 0,
+    LISTENING,
+    ERROR,
+}
+
+enum VMCOSCOutputState : ubyte {
+    IDLE = 0,
+    READY,
+    ERROR,
+}
+
+enum VMCOSCVrmState : ubyte {
+    NONE = 0,
+    LOADED,
+    ERROR,
+}
+
+table VMCOSCStatusRequest {}
+table VMCOSCStatusChangeResponse {
+    input_state: VMCOSCInputState;
+    input_port: uint16 = null;
+    input_error: string;
+    last_received_input_millis: uint64 = null;
+    output_state: VMCOSCOutputState;
+    output_error: string;
+    target_address: string;
+    target_port: uint16 = null;
+    last_frame_sent_millis: uint64 = null;
+    vrm_state: VMCOSCVrmState;
+    vrm_error: string;
+}
+
+// VRM settings request and response
+table VRMSettingsRequest {}
+table VRMSettingsResponse {
+    vrm_json: string;
+}
+table ChangeVRMSettingsRequest {
+    vrm_json: string;
+}

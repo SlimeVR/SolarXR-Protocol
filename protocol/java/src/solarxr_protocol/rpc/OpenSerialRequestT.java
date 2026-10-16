@@ -8,12 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class OpenSerialRequestT {
-  private boolean auto;
   private String port;
-
-  public boolean getAuto() { return auto; }
-
-  public void setAuto(boolean auto) { this.auto = auto; }
 
   public String getPort() { return port; }
 
@@ -21,7 +16,6 @@ public class OpenSerialRequestT {
 
 
   public OpenSerialRequestT() {
-    this.auto = false;
     this.port = null;
   }
 }

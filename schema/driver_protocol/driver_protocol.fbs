@@ -1,0 +1,131 @@
+include "../datatypes/datatypes.fbs";
+
+namespace solarxr_protocol.driver_protocol;
+
+enum HandshakeStatus: uint8 {
+    ACCEPTED,
+    /// The driver name is blank.
+    REJECTED_UNNAMED,
+    /// Another driver with the same name is already connected.
+    REJECTED_DUPLICATE,
+    /// Driver is disabled by the user.
+    REJECTED_DISABLED,
+}
+
+/// Signals that you may send a HandshakeRequest to initiate driver communication.
+table HandshakeAvailable {}
+
+/// Request to initiate driver communication with the server.
+table HandshakeRequest {
+    /// A short string identifying your driver. This may be used in a UI to display connected drivers, and as a
+    /// configuration key for per-driver settings.
+    driver_name: string (required);
+    /// Controls which fields are serialised in SkeletonUpdate messages. If this is null, SkeletonUpdate messages will
+    /// not be sent.
+    bone_mask: solarxr_protocol.datatypes.BoneMask;
+}
+
+/// Response to a HandshakeRequest. You may receive this message after the initial handshake if the server wishes to
+/// stop communication with your driver for whatever reason, e.g. the user has disabled the driver in settings.
+table HandshakeResponse {
+    status: HandshakeStatus;
+}
+
+enum AddTrackerStatus: uint8 {
+    /// The tracker has been created successfully, tracker_id is valid.
+    CREATED,
+    /// A tracker matching the hardware identifier already exists, tracker_id is valid.
+    ALREADY_EXISTS,
+    /// Not allowed to create the tracker, tracker_id should not be read.
+    ERROR,
+}
+
+/// Request to add a tracker. You must have successfully completed a handshake for this to succeed.
+/// The server will reply with an AddTrackerResponse.
+table AddTrackerRequest {
+    /// A unique identifier, such as a serial number, for the tracker. This field is mandatory.
+    hardware_identifier: string (required);
+    /// A human-friendly name to display as the name of the tracker.
+    display_name: string;
+    /// A human-friendly string for the manufacturer of the tracker.
+    manufacturer: string;
+    /// The body part the tracker should be assigned to by default.
+    body_part: solarxr_protocol.datatypes.BodyPart;
+}
+
+table AddTrackerResponse {
+    /// The result of the request.
+    status: AddTrackerStatus;
+    /// The ID of the new tracker.
+    tracker_id: uint16;
+}
+
+/// Update the status of a created tracker. Will be ignored if you have not successfully completed a handshake.
+table UpdateTrackerStatus {
+    /// The ID of the tracker this is targeting. You should only target trackers you have created.
+    tracker_id: uint16;
+    /// The new status for the tracker.
+    status: solarxr_protocol.datatypes.TrackerStatus;
+}
+
+/// Update the battery information of a created tracker. If this is never sent, it is assumed the tracker does not
+/// report battery information.
+/// Will be ignored if you have not successfully completed a handshake.
+table UpdateTrackerBattery {
+    /// The ID of the tracker this is targeting. You should only target trackers you have created.
+    tracker_id: uint16;
+    /// The new battery level of the tracker. (0..=100)
+    battery_level: uint8;
+    /// If the tracker is currently charging.
+    charging: bool;
+}
+
+/// Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
+/// Will be ignored if you have not successfully completed a handshake.
+table UpdateTrackerPosition {
+    /// The ID of the tracker this is targeting. You should only target trackers you have created.
+    tracker_id: uint16;
+    rotation: solarxr_protocol.datatypes.math.Quat;
+    position: solarxr_protocol.datatypes.math.Vec3f;
+    angular_velocity: solarxr_protocol.datatypes.math.Vec3f;
+    linear_velocity: solarxr_protocol.datatypes.math.Vec3f;
+}
+
+/// The full skeleton is always provided in case a driver must always expose the full body skeleton, possibly alongside
+/// individual trackers. If you need to expose individual trackers controlled by the enabled trackers, you must perform
+/// the filtering yourself.
+table SkeletonUpdate {
+    bones: [solarxr_protocol.datatypes.Bone];
+}
+
+/// The battery information for the tracker associated with this bone has changed. This event will not be sent if the
+/// associated tracker does not transmit battery information.
+table BoneBatteryUpdate {
+    bone: solarxr_protocol.datatypes.BodyPart;
+    /// The current battery level. (0..=100)
+    battery_level: uint8;
+    /// If the tracker is charging.
+    charging: bool;
+}
+
+union DriverMessage {
+    HandshakeAvailable,
+    HandshakeRequest,
+    HandshakeResponse,
+    AddTrackerRequest,
+    AddTrackerResponse,
+    UpdateTrackerStatus,
+    UpdateTrackerBattery,
+    UpdateTrackerPosition,
+    SkeletonUpdate,
+    BoneBatteryUpdate,
+}
+
+table DriverMessageHeader {
+    /// Set by whoever originates this message, so a future reply can reference it.
+    /// Absent for one-way notifications that expect no reply.
+    tx_id: uint32;
+    /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
+    reply_to: uint32;
+    message: DriverMessage;
+}

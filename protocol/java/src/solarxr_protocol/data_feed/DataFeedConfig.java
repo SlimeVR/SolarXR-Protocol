@@ -26,36 +26,33 @@ public final class DataFeedConfig extends Table {
   public int minimumTimeSinceLast() { int o = __offset(4); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   public solarxr_protocol.data_feed.device_data.DeviceDataMask dataMask() { return dataMask(new solarxr_protocol.data_feed.device_data.DeviceDataMask()); }
   public solarxr_protocol.data_feed.device_data.DeviceDataMask dataMask(solarxr_protocol.data_feed.device_data.DeviceDataMask obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public solarxr_protocol.data_feed.tracker.TrackerDataMask syntheticTrackersMask() { return syntheticTrackersMask(new solarxr_protocol.data_feed.tracker.TrackerDataMask()); }
-  public solarxr_protocol.data_feed.tracker.TrackerDataMask syntheticTrackersMask(solarxr_protocol.data_feed.tracker.TrackerDataMask obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public boolean boneMask() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean stayAlignedPoseMask() { int o = __offset(12); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean serverGuardsMask() { int o = __offset(14); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public solarxr_protocol.datatypes.BoneMask boneMask() { return boneMask(new solarxr_protocol.datatypes.BoneMask()); }
+  public solarxr_protocol.datatypes.BoneMask boneMask(solarxr_protocol.datatypes.BoneMask obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public boolean serverGuardsMask() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public solarxr_protocol.data_feed.dongle_data.DongleDataMask dongleMask() { return dongleMask(new solarxr_protocol.data_feed.dongle_data.DongleDataMask()); }
+  public solarxr_protocol.data_feed.dongle_data.DongleDataMask dongleMask(solarxr_protocol.data_feed.dongle_data.DongleDataMask obj) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createDataFeedConfig(FlatBufferBuilder builder,
       int minimumTimeSinceLast,
       int dataMaskOffset,
-      int syntheticTrackersMaskOffset,
-      boolean boneMask,
-      boolean stayAlignedPoseMask,
-      boolean serverGuardsMask) {
-    builder.startTable(6);
-    DataFeedConfig.addSyntheticTrackersMask(builder, syntheticTrackersMaskOffset);
+      int boneMaskOffset,
+      boolean serverGuardsMask,
+      int dongleMaskOffset) {
+    builder.startTable(5);
+    DataFeedConfig.addDongleMask(builder, dongleMaskOffset);
+    DataFeedConfig.addBoneMask(builder, boneMaskOffset);
     DataFeedConfig.addDataMask(builder, dataMaskOffset);
     DataFeedConfig.addMinimumTimeSinceLast(builder, minimumTimeSinceLast);
     DataFeedConfig.addServerGuardsMask(builder, serverGuardsMask);
-    DataFeedConfig.addStayAlignedPoseMask(builder, stayAlignedPoseMask);
-    DataFeedConfig.addBoneMask(builder, boneMask);
     return DataFeedConfig.endDataFeedConfig(builder);
   }
 
-  public static void startDataFeedConfig(FlatBufferBuilder builder) { builder.startTable(6); }
+  public static void startDataFeedConfig(FlatBufferBuilder builder) { builder.startTable(5); }
   public static void addMinimumTimeSinceLast(FlatBufferBuilder builder, int minimumTimeSinceLast) { builder.addShort(0, (short) minimumTimeSinceLast, (short) 0); }
   public static void addDataMask(FlatBufferBuilder builder, int dataMaskOffset) { builder.addOffset(1, dataMaskOffset, 0); }
-  public static void addSyntheticTrackersMask(FlatBufferBuilder builder, int syntheticTrackersMaskOffset) { builder.addOffset(2, syntheticTrackersMaskOffset, 0); }
-  public static void addBoneMask(FlatBufferBuilder builder, boolean boneMask) { builder.addBoolean(3, boneMask, false); }
-  public static void addStayAlignedPoseMask(FlatBufferBuilder builder, boolean stayAlignedPoseMask) { builder.addBoolean(4, stayAlignedPoseMask, false); }
-  public static void addServerGuardsMask(FlatBufferBuilder builder, boolean serverGuardsMask) { builder.addBoolean(5, serverGuardsMask, false); }
+  public static void addBoneMask(FlatBufferBuilder builder, int boneMaskOffset) { builder.addOffset(2, boneMaskOffset, 0); }
+  public static void addServerGuardsMask(FlatBufferBuilder builder, boolean serverGuardsMask) { builder.addBoolean(3, serverGuardsMask, false); }
+  public static void addDongleMask(FlatBufferBuilder builder, int dongleMaskOffset) { builder.addOffset(4, dongleMaskOffset, 0); }
   public static int endDataFeedConfig(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -77,27 +74,25 @@ public final class DataFeedConfig extends Table {
     _o.setMinimumTimeSinceLast(_oMinimumTimeSinceLast);
     if (dataMask() != null) _o.setDataMask(dataMask().unpack());
     else _o.setDataMask(null);
-    if (syntheticTrackersMask() != null) _o.setSyntheticTrackersMask(syntheticTrackersMask().unpack());
-    else _o.setSyntheticTrackersMask(null);
-    boolean _oBoneMask = boneMask();
-    _o.setBoneMask(_oBoneMask);
-    boolean _oStayAlignedPoseMask = stayAlignedPoseMask();
-    _o.setStayAlignedPoseMask(_oStayAlignedPoseMask);
+    if (boneMask() != null) _o.setBoneMask(boneMask().unpack());
+    else _o.setBoneMask(null);
     boolean _oServerGuardsMask = serverGuardsMask();
     _o.setServerGuardsMask(_oServerGuardsMask);
+    if (dongleMask() != null) _o.setDongleMask(dongleMask().unpack());
+    else _o.setDongleMask(null);
   }
   public static int pack(FlatBufferBuilder builder, DataFeedConfigT _o) {
     if (_o == null) return 0;
     int _dataMask = _o.getDataMask() == null ? 0 : solarxr_protocol.data_feed.device_data.DeviceDataMask.pack(builder, _o.getDataMask());
-    int _syntheticTrackersMask = _o.getSyntheticTrackersMask() == null ? 0 : solarxr_protocol.data_feed.tracker.TrackerDataMask.pack(builder, _o.getSyntheticTrackersMask());
+    int _boneMask = _o.getBoneMask() == null ? 0 : solarxr_protocol.datatypes.BoneMask.pack(builder, _o.getBoneMask());
+    int _dongleMask = _o.getDongleMask() == null ? 0 : solarxr_protocol.data_feed.dongle_data.DongleDataMask.pack(builder, _o.getDongleMask());
     return createDataFeedConfig(
       builder,
       _o.getMinimumTimeSinceLast(),
       _dataMask,
-      _syntheticTrackersMask,
-      _o.getBoneMask(),
-      _o.getStayAlignedPoseMask(),
-      _o.getServerGuardsMask());
+      _boneMask,
+      _o.getServerGuardsMask(),
+      _dongleMask);
   }
 }
 

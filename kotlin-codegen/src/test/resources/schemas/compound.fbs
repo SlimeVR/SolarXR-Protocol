@@ -1,0 +1,36 @@
+include "scalars.fbs";
+
+namespace fixture.compound;
+
+table ScalarVectors {
+    bools: [bool];
+    i8s: [int8];
+    u8s: [uint8];
+    i16s: [int16];
+    u16s: [uint16];
+    i32s: [int32];
+    u32s: [uint32];
+    i64s: [int64];
+    u64s: [uint64];
+    f32s: [float32];
+    f64s: [float64];
+    names: [string];
+    structs: [fixture.scalars.AllScalarStruct];
+}
+
+struct NestedStruct {
+    prefix: uint8;
+    inner: fixture.scalars.AllScalarStruct;
+    suffix: int16;
+}
+
+table RootTable {
+    inline_struct: fixture.scalars.AllScalarStruct;
+    nested_struct: NestedStruct;
+    optional_scalars: fixture.scalars.OptionalScalars;
+    default_scalars: fixture.scalars.DefaultScalars;
+    vectors: ScalarVectors;
+    label: string;
+}
+
+root_type RootTable;

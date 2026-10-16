@@ -1,0 +1,69 @@
+namespace solarxr_protocol.rpc;
+
+enum LogSource: uint8 {
+    SLIMEVR_SERVER = 0,
+    OPENVR_DRIVER = 1,
+    BINDINGS_PROVIDER = 2,
+    /// Never sent by the server, the GUI adds its own logs
+    GUI = 3,
+}
+
+enum LogLevel: uint8 {
+    TRACE = 0,
+    DEBUG = 1,
+    INFO = 2,
+    WARN = 3,
+    ERROR = 4,
+    FATAL = 5,
+}
+
+table LogEvent {
+    source: LogSource;
+    time_ms: uint64;
+    level: LogLevel;
+    logger: string;
+    message: string;
+    stack_trace: string;
+}
+
+table LogSourceInfo {
+    source: LogSource;
+    live: bool;
+}
+
+table LogStreamRequest {
+    sources: [LogSource];
+}
+
+table LogStreamResponse {
+    events: [LogEvent];
+}
+
+table LogFile {
+    source: LogSource;
+    name: string;
+    size: uint64;
+    modified_ms: uint64;
+    current: bool;
+}
+
+table LogsRequest {}
+
+table LogsResponse {
+    sources: [LogSourceInfo];
+    files: [LogFile];
+}
+
+table LogFileChunkRequest {
+    source: LogSource;
+    name: string;
+    offset: uint64;
+}
+
+table LogFileChunkResponse {
+    source: LogSource;
+    name: string;
+    offset: uint64;
+    data: [uint8];
+    eof: bool;
+}

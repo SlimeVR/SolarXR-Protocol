@@ -42,6 +42,7 @@ impl<'a> VRCConfigSettingToggleMute<'a> {
   }
 
 
+  /// Key from VRCConfigValidity
   #[inline]
   pub fn key(&self) -> Option<&'a str> {
     // Safety:

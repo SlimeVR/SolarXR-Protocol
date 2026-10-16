@@ -79,13 +79,13 @@ impl<'a> FirmwareUpdateStatusResponse<'a> {
   }
   #[inline]
   #[allow(non_snake_case)]
-  pub fn device_id_as_solarxr_protocol_datatypes_device_id_table(&self) -> Option<super::datatypes::DeviceIdTable<'a>> {
-    if self.device_id_type() == FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable {
+  pub fn device_id_as_firmware_device_id_table(&self) -> Option<FirmwareDeviceIdTable<'a>> {
+    if self.device_id_type() == FirmwareUpdateDeviceId::FirmwareDeviceIdTable {
       self.device_id().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { super::datatypes::DeviceIdTable::init_from_table(t) }
+       unsafe { FirmwareDeviceIdTable::init_from_table(t) }
      })
     } else {
       None
@@ -118,7 +118,7 @@ impl flatbuffers::Verifiable for FirmwareUpdateStatusResponse<'_> {
     v.visit_table(pos)?
      .visit_union::<FirmwareUpdateDeviceId, _>("device_id_type", Self::VT_DEVICE_ID_TYPE, "device_id", Self::VT_DEVICE_ID, false, |key, v, pos| {
         match key {
-          FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<super::datatypes::DeviceIdTable>>("FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable", pos),
+          FirmwareUpdateDeviceId::FirmwareDeviceIdTable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareDeviceIdTable>>("FirmwareUpdateDeviceId::FirmwareDeviceIdTable", pos),
           FirmwareUpdateDeviceId::SerialDevicePort => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDevicePort>>("FirmwareUpdateDeviceId::SerialDevicePort", pos),
           _ => Ok(()),
         }
@@ -188,8 +188,8 @@ impl core::fmt::Debug for FirmwareUpdateStatusResponse<'_> {
     let mut ds = f.debug_struct("FirmwareUpdateStatusResponse");
       ds.field("device_id_type", &self.device_id_type());
       match self.device_id_type() {
-        FirmwareUpdateDeviceId::solarxr_protocol_datatypes_DeviceIdTable => {
-          if let Some(x) = self.device_id_as_solarxr_protocol_datatypes_device_id_table() {
+        FirmwareUpdateDeviceId::FirmwareDeviceIdTable => {
+          if let Some(x) = self.device_id_as_firmware_device_id_table() {
             ds.field("device_id", &x)
           } else {
             ds.field("device_id", &"InvalidFlatbuffer: Union discriminant does not match value.")
