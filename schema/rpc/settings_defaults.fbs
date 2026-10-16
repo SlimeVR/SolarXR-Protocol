@@ -1,0 +1,30 @@
+include "bone_routing.fbs";
+include "driver.fbs";
+include "error_reporting.fbs";
+include "resets.fbs";
+include "serial.fbs";
+include "skeleton.fbs";
+include "stay_aligned.fbs";
+include "tracker.fbs";
+include "vmc.fbs";
+include "vrcosc.fbs";
+
+namespace solarxr_protocol.rpc;
+
+table SettingsDefaultsRequest {}
+
+table SettingsDefaultsResponse {
+    skeleton: SkeletonSettingsResponse;
+    resets: ResetsSettingsResponse;
+    stay_aligned: StayAlignedSettingsResponse;
+    tap_detection: TapDetectionSettingsResponse;
+    timeout: TimeoutSettingsResponse;
+    hid: HIDSettingsResponse;
+    driver: DriverSettingsResponse;
+    vrcosc: VRCOSCSettingsResponse;
+    vmcosc: VMCOSCSettingsResponse;
+    vrm: VRMSettingsResponse;
+    bone_routing: BoneRoutingSettingsResponse;
+    error_reporting: ErrorReportingSettingsResponse;
+    mag: MagToggleResponse;
+}

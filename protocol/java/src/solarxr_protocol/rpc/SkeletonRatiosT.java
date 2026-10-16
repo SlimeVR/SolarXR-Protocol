@@ -8,23 +8,18 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class SkeletonRatiosT {
+  private Float spineCurvature;
   private Float imputeSpineFromUpperToLower;
-  private Float imputeSpineCurvature;
-  private Float interpolateHipWithUpperLegs;
   private Float interpolateUpperLegsTwistWithLowerLegs;
   private Float skatingCorrectionStrength;
+
+  public Float getSpineCurvature() { return spineCurvature; }
+
+  public void setSpineCurvature(Float spineCurvature) { this.spineCurvature = spineCurvature; }
 
   public Float getImputeSpineFromUpperToLower() { return imputeSpineFromUpperToLower; }
 
   public void setImputeSpineFromUpperToLower(Float imputeSpineFromUpperToLower) { this.imputeSpineFromUpperToLower = imputeSpineFromUpperToLower; }
-
-  public Float getImputeSpineCurvature() { return imputeSpineCurvature; }
-
-  public void setImputeSpineCurvature(Float imputeSpineCurvature) { this.imputeSpineCurvature = imputeSpineCurvature; }
-
-  public Float getInterpolateHipWithUpperLegs() { return interpolateHipWithUpperLegs; }
-
-  public void setInterpolateHipWithUpperLegs(Float interpolateHipWithUpperLegs) { this.interpolateHipWithUpperLegs = interpolateHipWithUpperLegs; }
 
   public Float getInterpolateUpperLegsTwistWithLowerLegs() { return interpolateUpperLegsTwistWithLowerLegs; }
 
@@ -36,9 +31,8 @@ public class SkeletonRatiosT {
 
 
   public SkeletonRatiosT() {
+    this.spineCurvature = null;
     this.imputeSpineFromUpperToLower = null;
-    this.imputeSpineCurvature = null;
-    this.interpolateHipWithUpperLegs = null;
     this.interpolateUpperLegsTwistWithLowerLegs = null;
     this.skatingCorrectionStrength = null;
   }

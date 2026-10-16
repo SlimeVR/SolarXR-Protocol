@@ -367,9 +367,9 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.UnknownDeviceHandshakeNotification:
-        _oMessageValue = message(new solarxr_protocol.rpc.UnknownDeviceHandshakeNotification());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UnknownDeviceHandshakeNotification) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.UnknownDevicesResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.UnknownDevicesResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.UnknownDevicesResponse) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.AddUnknownDeviceRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.AddUnknownDeviceRequest());
@@ -610,6 +610,82 @@ public final class RpcMessageHeader extends Table {
       case solarxr_protocol.rpc.RpcMessage.SerialKeepaliveRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.SerialKeepaliveRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SerialKeepaliveRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.SettingsDefaultsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SettingsDefaultsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SettingsDefaultsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.SettingsDefaultsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.SettingsDefaultsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SettingsDefaultsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ProfilesRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ProfilesRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ProfilesRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ProfilesResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.ProfilesResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ProfilesResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.SwitchProfileRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.SwitchProfileRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.SwitchProfileRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.CreateProfileRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.CreateProfileRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.CreateProfileRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.RenameProfileRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.RenameProfileRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.RenameProfileRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.DeleteProfileRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.DeleteProfileRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DeleteProfileRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.ProfileOperationResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.ProfileOperationResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ProfileOperationResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StartTrackerImuTelemetryRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StartTrackerImuTelemetryRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StartTrackerImuTelemetryRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StopTrackerImuTelemetryRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StopTrackerImuTelemetryRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StopTrackerImuTelemetryRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.TrackerImuTelemetryResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackerImuTelemetryResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackerImuTelemetryResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.IgnoreUnknownDeviceRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.IgnoreUnknownDeviceRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.IgnoreUnknownDeviceRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.LogsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.LogsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.LogStreamRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogStreamRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogStreamRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.LogStreamResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogStreamResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogStreamResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.LogFileChunkRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogFileChunkRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogFileChunkRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.LogFileChunkResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogFileChunkResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogFileChunkResponse) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.CustomOSCSettingsRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.CustomOSCSettingsRequest());

@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 138;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 157;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 139] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 158] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -91,7 +91,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 139] = [
   RpcMessage::TrackingPauseStateRequest,
   RpcMessage::TrackingPauseStateResponse,
   RpcMessage::SerialTrackerGetWifiScanRequest,
-  RpcMessage::UnknownDeviceHandshakeNotification,
+  RpcMessage::UnknownDevicesResponse,
   RpcMessage::AddUnknownDeviceRequest,
   RpcMessage::ForgetDeviceRequest,
   RpcMessage::FirmwareUpdateRequest,
@@ -152,6 +152,25 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 139] = [
   RpcMessage::BodyPartPrerequisitesRequest,
   RpcMessage::BodyPartPrerequisitesResponse,
   RpcMessage::SerialKeepaliveRequest,
+  RpcMessage::SettingsDefaultsRequest,
+  RpcMessage::SettingsDefaultsResponse,
+  RpcMessage::ProfilesRequest,
+  RpcMessage::ProfilesResponse,
+  RpcMessage::SwitchProfileRequest,
+  RpcMessage::CreateProfileRequest,
+  RpcMessage::RenameProfileRequest,
+  RpcMessage::DeleteProfileRequest,
+  RpcMessage::ProfileOperationResponse,
+  RpcMessage::StartTrackerImuTelemetryRequest,
+  RpcMessage::StopTrackerImuTelemetryRequest,
+  RpcMessage::TrackerImuTelemetryResponse,
+  RpcMessage::IgnoreUnknownDeviceRequest,
+  RpcMessage::LogsRequest,
+  RpcMessage::LogsResponse,
+  RpcMessage::LogStreamRequest,
+  RpcMessage::LogStreamResponse,
+  RpcMessage::LogFileChunkRequest,
+  RpcMessage::LogFileChunkResponse,
   RpcMessage::CustomOSCSettingsRequest,
   RpcMessage::CustomOSCSettingsResponse,
   RpcMessage::ChangeCustomOSCSettingsRequest,
@@ -237,7 +256,7 @@ impl RpcMessage {
   pub const TrackingPauseStateRequest: Self = Self(72);
   pub const TrackingPauseStateResponse: Self = Self(73);
   pub const SerialTrackerGetWifiScanRequest: Self = Self(74);
-  pub const UnknownDeviceHandshakeNotification: Self = Self(75);
+  pub const UnknownDevicesResponse: Self = Self(75);
   pub const AddUnknownDeviceRequest: Self = Self(76);
   pub const ForgetDeviceRequest: Self = Self(77);
   pub const FirmwareUpdateRequest: Self = Self(78);
@@ -298,12 +317,31 @@ impl RpcMessage {
   pub const BodyPartPrerequisitesRequest: Self = Self(133);
   pub const BodyPartPrerequisitesResponse: Self = Self(134);
   pub const SerialKeepaliveRequest: Self = Self(135);
-  pub const CustomOSCSettingsRequest: Self = Self(136);
-  pub const CustomOSCSettingsResponse: Self = Self(137);
-  pub const ChangeCustomOSCSettingsRequest: Self = Self(138);
+  pub const SettingsDefaultsRequest: Self = Self(136);
+  pub const SettingsDefaultsResponse: Self = Self(137);
+  pub const ProfilesRequest: Self = Self(138);
+  pub const ProfilesResponse: Self = Self(139);
+  pub const SwitchProfileRequest: Self = Self(140);
+  pub const CreateProfileRequest: Self = Self(141);
+  pub const RenameProfileRequest: Self = Self(142);
+  pub const DeleteProfileRequest: Self = Self(143);
+  pub const ProfileOperationResponse: Self = Self(144);
+  pub const StartTrackerImuTelemetryRequest: Self = Self(145);
+  pub const StopTrackerImuTelemetryRequest: Self = Self(146);
+  pub const TrackerImuTelemetryResponse: Self = Self(147);
+  pub const IgnoreUnknownDeviceRequest: Self = Self(148);
+  pub const LogsRequest: Self = Self(149);
+  pub const LogsResponse: Self = Self(150);
+  pub const LogStreamRequest: Self = Self(151);
+  pub const LogStreamResponse: Self = Self(152);
+  pub const LogFileChunkRequest: Self = Self(153);
+  pub const LogFileChunkResponse: Self = Self(154);
+  pub const CustomOSCSettingsRequest: Self = Self(155);
+  pub const CustomOSCSettingsResponse: Self = Self(156);
+  pub const ChangeCustomOSCSettingsRequest: Self = Self(157);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 138;
+  pub const ENUM_MAX: u8 = 157;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -380,7 +418,7 @@ impl RpcMessage {
     Self::TrackingPauseStateRequest,
     Self::TrackingPauseStateResponse,
     Self::SerialTrackerGetWifiScanRequest,
-    Self::UnknownDeviceHandshakeNotification,
+    Self::UnknownDevicesResponse,
     Self::AddUnknownDeviceRequest,
     Self::ForgetDeviceRequest,
     Self::FirmwareUpdateRequest,
@@ -441,6 +479,25 @@ impl RpcMessage {
     Self::BodyPartPrerequisitesRequest,
     Self::BodyPartPrerequisitesResponse,
     Self::SerialKeepaliveRequest,
+    Self::SettingsDefaultsRequest,
+    Self::SettingsDefaultsResponse,
+    Self::ProfilesRequest,
+    Self::ProfilesResponse,
+    Self::SwitchProfileRequest,
+    Self::CreateProfileRequest,
+    Self::RenameProfileRequest,
+    Self::DeleteProfileRequest,
+    Self::ProfileOperationResponse,
+    Self::StartTrackerImuTelemetryRequest,
+    Self::StopTrackerImuTelemetryRequest,
+    Self::TrackerImuTelemetryResponse,
+    Self::IgnoreUnknownDeviceRequest,
+    Self::LogsRequest,
+    Self::LogsResponse,
+    Self::LogStreamRequest,
+    Self::LogStreamResponse,
+    Self::LogFileChunkRequest,
+    Self::LogFileChunkResponse,
     Self::CustomOSCSettingsRequest,
     Self::CustomOSCSettingsResponse,
     Self::ChangeCustomOSCSettingsRequest,
@@ -523,7 +580,7 @@ impl RpcMessage {
       Self::TrackingPauseStateRequest => Some("TrackingPauseStateRequest"),
       Self::TrackingPauseStateResponse => Some("TrackingPauseStateResponse"),
       Self::SerialTrackerGetWifiScanRequest => Some("SerialTrackerGetWifiScanRequest"),
-      Self::UnknownDeviceHandshakeNotification => Some("UnknownDeviceHandshakeNotification"),
+      Self::UnknownDevicesResponse => Some("UnknownDevicesResponse"),
       Self::AddUnknownDeviceRequest => Some("AddUnknownDeviceRequest"),
       Self::ForgetDeviceRequest => Some("ForgetDeviceRequest"),
       Self::FirmwareUpdateRequest => Some("FirmwareUpdateRequest"),
@@ -584,6 +641,25 @@ impl RpcMessage {
       Self::BodyPartPrerequisitesRequest => Some("BodyPartPrerequisitesRequest"),
       Self::BodyPartPrerequisitesResponse => Some("BodyPartPrerequisitesResponse"),
       Self::SerialKeepaliveRequest => Some("SerialKeepaliveRequest"),
+      Self::SettingsDefaultsRequest => Some("SettingsDefaultsRequest"),
+      Self::SettingsDefaultsResponse => Some("SettingsDefaultsResponse"),
+      Self::ProfilesRequest => Some("ProfilesRequest"),
+      Self::ProfilesResponse => Some("ProfilesResponse"),
+      Self::SwitchProfileRequest => Some("SwitchProfileRequest"),
+      Self::CreateProfileRequest => Some("CreateProfileRequest"),
+      Self::RenameProfileRequest => Some("RenameProfileRequest"),
+      Self::DeleteProfileRequest => Some("DeleteProfileRequest"),
+      Self::ProfileOperationResponse => Some("ProfileOperationResponse"),
+      Self::StartTrackerImuTelemetryRequest => Some("StartTrackerImuTelemetryRequest"),
+      Self::StopTrackerImuTelemetryRequest => Some("StopTrackerImuTelemetryRequest"),
+      Self::TrackerImuTelemetryResponse => Some("TrackerImuTelemetryResponse"),
+      Self::IgnoreUnknownDeviceRequest => Some("IgnoreUnknownDeviceRequest"),
+      Self::LogsRequest => Some("LogsRequest"),
+      Self::LogsResponse => Some("LogsResponse"),
+      Self::LogStreamRequest => Some("LogStreamRequest"),
+      Self::LogStreamResponse => Some("LogStreamResponse"),
+      Self::LogFileChunkRequest => Some("LogFileChunkRequest"),
+      Self::LogFileChunkResponse => Some("LogFileChunkResponse"),
       Self::CustomOSCSettingsRequest => Some("CustomOSCSettingsRequest"),
       Self::CustomOSCSettingsResponse => Some("CustomOSCSettingsResponse"),
       Self::ChangeCustomOSCSettingsRequest => Some("ChangeCustomOSCSettingsRequest"),

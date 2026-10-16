@@ -17,14 +17,18 @@ include "driver.fbs";
 include "firmware.fbs";
 include "height_calibration.fbs";
 include "keybinding.fbs";
+include "logs.fbs";
 include "overlay.fbs";
+include "profiles.fbs";
 include "provisioning.fbs";
 include "resets.fbs";
 include "serial.fbs";
+include "settings_defaults.fbs";
 include "skeleton.fbs";
 include "stay_aligned.fbs";
 include "telemetry.fbs";
 include "tracker.fbs";
+include "tracker_imu_telemetry.fbs";
 include "tracking_checklist.fbs";
 include "vmc.fbs";
 include "vrchat.fbs";
@@ -108,7 +112,7 @@ union RpcMessage {
     TrackingPauseStateRequest,
     TrackingPauseStateResponse,
     SerialTrackerGetWifiScanRequest,
-    UnknownDeviceHandshakeNotification,
+    UnknownDevicesResponse,
     AddUnknownDeviceRequest,
     ForgetDeviceRequest,
     FirmwareUpdateRequest,
@@ -169,6 +173,25 @@ union RpcMessage {
     BodyPartPrerequisitesRequest,
     BodyPartPrerequisitesResponse,
     SerialKeepaliveRequest,
+    SettingsDefaultsRequest,
+    SettingsDefaultsResponse,
+    ProfilesRequest,
+    ProfilesResponse,
+    SwitchProfileRequest,
+    CreateProfileRequest,
+    RenameProfileRequest,
+    DeleteProfileRequest,
+    ProfileOperationResponse,
+    StartTrackerImuTelemetryRequest,
+    StopTrackerImuTelemetryRequest,
+    TrackerImuTelemetryResponse,
+    IgnoreUnknownDeviceRequest,
+    LogsRequest,
+    LogsResponse,
+    LogStreamRequest,
+    LogStreamResponse,
+    LogFileChunkRequest,
+    LogFileChunkResponse,
     CustomOSCSettingsRequest,
     CustomOSCSettingsResponse,
     ChangeCustomOSCSettingsRequest,

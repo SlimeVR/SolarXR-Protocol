@@ -95,7 +95,7 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.TrackingPauseStateRequestT asTrackingPauseStateRequest() { return (solarxr_protocol.rpc.TrackingPauseStateRequestT) value; }
   public solarxr_protocol.rpc.TrackingPauseStateResponseT asTrackingPauseStateResponse() { return (solarxr_protocol.rpc.TrackingPauseStateResponseT) value; }
   public solarxr_protocol.rpc.SerialTrackerGetWifiScanRequestT asSerialTrackerGetWifiScanRequest() { return (solarxr_protocol.rpc.SerialTrackerGetWifiScanRequestT) value; }
-  public solarxr_protocol.rpc.UnknownDeviceHandshakeNotificationT asUnknownDeviceHandshakeNotification() { return (solarxr_protocol.rpc.UnknownDeviceHandshakeNotificationT) value; }
+  public solarxr_protocol.rpc.UnknownDevicesResponseT asUnknownDevicesResponse() { return (solarxr_protocol.rpc.UnknownDevicesResponseT) value; }
   public solarxr_protocol.rpc.AddUnknownDeviceRequestT asAddUnknownDeviceRequest() { return (solarxr_protocol.rpc.AddUnknownDeviceRequestT) value; }
   public solarxr_protocol.rpc.ForgetDeviceRequestT asForgetDeviceRequest() { return (solarxr_protocol.rpc.ForgetDeviceRequestT) value; }
   public solarxr_protocol.rpc.FirmwareUpdateRequestT asFirmwareUpdateRequest() { return (solarxr_protocol.rpc.FirmwareUpdateRequestT) value; }
@@ -156,6 +156,25 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.BodyPartPrerequisitesRequestT asBodyPartPrerequisitesRequest() { return (solarxr_protocol.rpc.BodyPartPrerequisitesRequestT) value; }
   public solarxr_protocol.rpc.BodyPartPrerequisitesResponseT asBodyPartPrerequisitesResponse() { return (solarxr_protocol.rpc.BodyPartPrerequisitesResponseT) value; }
   public solarxr_protocol.rpc.SerialKeepaliveRequestT asSerialKeepaliveRequest() { return (solarxr_protocol.rpc.SerialKeepaliveRequestT) value; }
+  public solarxr_protocol.rpc.SettingsDefaultsRequestT asSettingsDefaultsRequest() { return (solarxr_protocol.rpc.SettingsDefaultsRequestT) value; }
+  public solarxr_protocol.rpc.SettingsDefaultsResponseT asSettingsDefaultsResponse() { return (solarxr_protocol.rpc.SettingsDefaultsResponseT) value; }
+  public solarxr_protocol.rpc.ProfilesRequestT asProfilesRequest() { return (solarxr_protocol.rpc.ProfilesRequestT) value; }
+  public solarxr_protocol.rpc.ProfilesResponseT asProfilesResponse() { return (solarxr_protocol.rpc.ProfilesResponseT) value; }
+  public solarxr_protocol.rpc.SwitchProfileRequestT asSwitchProfileRequest() { return (solarxr_protocol.rpc.SwitchProfileRequestT) value; }
+  public solarxr_protocol.rpc.CreateProfileRequestT asCreateProfileRequest() { return (solarxr_protocol.rpc.CreateProfileRequestT) value; }
+  public solarxr_protocol.rpc.RenameProfileRequestT asRenameProfileRequest() { return (solarxr_protocol.rpc.RenameProfileRequestT) value; }
+  public solarxr_protocol.rpc.DeleteProfileRequestT asDeleteProfileRequest() { return (solarxr_protocol.rpc.DeleteProfileRequestT) value; }
+  public solarxr_protocol.rpc.ProfileOperationResponseT asProfileOperationResponse() { return (solarxr_protocol.rpc.ProfileOperationResponseT) value; }
+  public solarxr_protocol.rpc.StartTrackerImuTelemetryRequestT asStartTrackerImuTelemetryRequest() { return (solarxr_protocol.rpc.StartTrackerImuTelemetryRequestT) value; }
+  public solarxr_protocol.rpc.StopTrackerImuTelemetryRequestT asStopTrackerImuTelemetryRequest() { return (solarxr_protocol.rpc.StopTrackerImuTelemetryRequestT) value; }
+  public solarxr_protocol.rpc.TrackerImuTelemetryResponseT asTrackerImuTelemetryResponse() { return (solarxr_protocol.rpc.TrackerImuTelemetryResponseT) value; }
+  public solarxr_protocol.rpc.IgnoreUnknownDeviceRequestT asIgnoreUnknownDeviceRequest() { return (solarxr_protocol.rpc.IgnoreUnknownDeviceRequestT) value; }
+  public solarxr_protocol.rpc.LogsRequestT asLogsRequest() { return (solarxr_protocol.rpc.LogsRequestT) value; }
+  public solarxr_protocol.rpc.LogsResponseT asLogsResponse() { return (solarxr_protocol.rpc.LogsResponseT) value; }
+  public solarxr_protocol.rpc.LogStreamRequestT asLogStreamRequest() { return (solarxr_protocol.rpc.LogStreamRequestT) value; }
+  public solarxr_protocol.rpc.LogStreamResponseT asLogStreamResponse() { return (solarxr_protocol.rpc.LogStreamResponseT) value; }
+  public solarxr_protocol.rpc.LogFileChunkRequestT asLogFileChunkRequest() { return (solarxr_protocol.rpc.LogFileChunkRequestT) value; }
+  public solarxr_protocol.rpc.LogFileChunkResponseT asLogFileChunkResponse() { return (solarxr_protocol.rpc.LogFileChunkResponseT) value; }
   public solarxr_protocol.rpc.CustomOSCSettingsRequestT asCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.CustomOSCSettingsRequestT) value; }
   public solarxr_protocol.rpc.CustomOSCSettingsResponseT asCustomOSCSettingsResponse() { return (solarxr_protocol.rpc.CustomOSCSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT asChangeCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT) value; }
@@ -236,7 +255,7 @@ public class RpcMessageUnion {
       case RpcMessage.TrackingPauseStateRequest: return solarxr_protocol.rpc.TrackingPauseStateRequest.pack(builder, _o.asTrackingPauseStateRequest());
       case RpcMessage.TrackingPauseStateResponse: return solarxr_protocol.rpc.TrackingPauseStateResponse.pack(builder, _o.asTrackingPauseStateResponse());
       case RpcMessage.SerialTrackerGetWifiScanRequest: return solarxr_protocol.rpc.SerialTrackerGetWifiScanRequest.pack(builder, _o.asSerialTrackerGetWifiScanRequest());
-      case RpcMessage.UnknownDeviceHandshakeNotification: return solarxr_protocol.rpc.UnknownDeviceHandshakeNotification.pack(builder, _o.asUnknownDeviceHandshakeNotification());
+      case RpcMessage.UnknownDevicesResponse: return solarxr_protocol.rpc.UnknownDevicesResponse.pack(builder, _o.asUnknownDevicesResponse());
       case RpcMessage.AddUnknownDeviceRequest: return solarxr_protocol.rpc.AddUnknownDeviceRequest.pack(builder, _o.asAddUnknownDeviceRequest());
       case RpcMessage.ForgetDeviceRequest: return solarxr_protocol.rpc.ForgetDeviceRequest.pack(builder, _o.asForgetDeviceRequest());
       case RpcMessage.FirmwareUpdateRequest: return solarxr_protocol.rpc.FirmwareUpdateRequest.pack(builder, _o.asFirmwareUpdateRequest());
@@ -297,6 +316,25 @@ public class RpcMessageUnion {
       case RpcMessage.BodyPartPrerequisitesRequest: return solarxr_protocol.rpc.BodyPartPrerequisitesRequest.pack(builder, _o.asBodyPartPrerequisitesRequest());
       case RpcMessage.BodyPartPrerequisitesResponse: return solarxr_protocol.rpc.BodyPartPrerequisitesResponse.pack(builder, _o.asBodyPartPrerequisitesResponse());
       case RpcMessage.SerialKeepaliveRequest: return solarxr_protocol.rpc.SerialKeepaliveRequest.pack(builder, _o.asSerialKeepaliveRequest());
+      case RpcMessage.SettingsDefaultsRequest: return solarxr_protocol.rpc.SettingsDefaultsRequest.pack(builder, _o.asSettingsDefaultsRequest());
+      case RpcMessage.SettingsDefaultsResponse: return solarxr_protocol.rpc.SettingsDefaultsResponse.pack(builder, _o.asSettingsDefaultsResponse());
+      case RpcMessage.ProfilesRequest: return solarxr_protocol.rpc.ProfilesRequest.pack(builder, _o.asProfilesRequest());
+      case RpcMessage.ProfilesResponse: return solarxr_protocol.rpc.ProfilesResponse.pack(builder, _o.asProfilesResponse());
+      case RpcMessage.SwitchProfileRequest: return solarxr_protocol.rpc.SwitchProfileRequest.pack(builder, _o.asSwitchProfileRequest());
+      case RpcMessage.CreateProfileRequest: return solarxr_protocol.rpc.CreateProfileRequest.pack(builder, _o.asCreateProfileRequest());
+      case RpcMessage.RenameProfileRequest: return solarxr_protocol.rpc.RenameProfileRequest.pack(builder, _o.asRenameProfileRequest());
+      case RpcMessage.DeleteProfileRequest: return solarxr_protocol.rpc.DeleteProfileRequest.pack(builder, _o.asDeleteProfileRequest());
+      case RpcMessage.ProfileOperationResponse: return solarxr_protocol.rpc.ProfileOperationResponse.pack(builder, _o.asProfileOperationResponse());
+      case RpcMessage.StartTrackerImuTelemetryRequest: return solarxr_protocol.rpc.StartTrackerImuTelemetryRequest.pack(builder, _o.asStartTrackerImuTelemetryRequest());
+      case RpcMessage.StopTrackerImuTelemetryRequest: return solarxr_protocol.rpc.StopTrackerImuTelemetryRequest.pack(builder, _o.asStopTrackerImuTelemetryRequest());
+      case RpcMessage.TrackerImuTelemetryResponse: return solarxr_protocol.rpc.TrackerImuTelemetryResponse.pack(builder, _o.asTrackerImuTelemetryResponse());
+      case RpcMessage.IgnoreUnknownDeviceRequest: return solarxr_protocol.rpc.IgnoreUnknownDeviceRequest.pack(builder, _o.asIgnoreUnknownDeviceRequest());
+      case RpcMessage.LogsRequest: return solarxr_protocol.rpc.LogsRequest.pack(builder, _o.asLogsRequest());
+      case RpcMessage.LogsResponse: return solarxr_protocol.rpc.LogsResponse.pack(builder, _o.asLogsResponse());
+      case RpcMessage.LogStreamRequest: return solarxr_protocol.rpc.LogStreamRequest.pack(builder, _o.asLogStreamRequest());
+      case RpcMessage.LogStreamResponse: return solarxr_protocol.rpc.LogStreamResponse.pack(builder, _o.asLogStreamResponse());
+      case RpcMessage.LogFileChunkRequest: return solarxr_protocol.rpc.LogFileChunkRequest.pack(builder, _o.asLogFileChunkRequest());
+      case RpcMessage.LogFileChunkResponse: return solarxr_protocol.rpc.LogFileChunkResponse.pack(builder, _o.asLogFileChunkResponse());
       case RpcMessage.CustomOSCSettingsRequest: return solarxr_protocol.rpc.CustomOSCSettingsRequest.pack(builder, _o.asCustomOSCSettingsRequest());
       case RpcMessage.CustomOSCSettingsResponse: return solarxr_protocol.rpc.CustomOSCSettingsResponse.pack(builder, _o.asCustomOSCSettingsResponse());
       case RpcMessage.ChangeCustomOSCSettingsRequest: return solarxr_protocol.rpc.ChangeCustomOSCSettingsRequest.pack(builder, _o.asChangeCustomOSCSettingsRequest());

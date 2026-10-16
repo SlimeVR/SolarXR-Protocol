@@ -1191,13 +1191,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_unknown_device_handshake_notification(&self) -> Option<UnknownDeviceHandshakeNotification<'a>> {
-    if self.message_type() == RpcMessage::UnknownDeviceHandshakeNotification {
+  pub fn message_as_unknown_devices_response(&self) -> Option<UnknownDevicesResponse<'a>> {
+    if self.message_type() == RpcMessage::UnknownDevicesResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { UnknownDeviceHandshakeNotification::init_from_table(t) }
+       unsafe { UnknownDevicesResponse::init_from_table(t) }
      })
     } else {
       None
@@ -2106,6 +2106,291 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_settings_defaults_request(&self) -> Option<SettingsDefaultsRequest<'a>> {
+    if self.message_type() == RpcMessage::SettingsDefaultsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { SettingsDefaultsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_settings_defaults_response(&self) -> Option<SettingsDefaultsResponse<'a>> {
+    if self.message_type() == RpcMessage::SettingsDefaultsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { SettingsDefaultsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_profiles_request(&self) -> Option<ProfilesRequest<'a>> {
+    if self.message_type() == RpcMessage::ProfilesRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ProfilesRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_profiles_response(&self) -> Option<ProfilesResponse<'a>> {
+    if self.message_type() == RpcMessage::ProfilesResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ProfilesResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_switch_profile_request(&self) -> Option<SwitchProfileRequest<'a>> {
+    if self.message_type() == RpcMessage::SwitchProfileRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { SwitchProfileRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_create_profile_request(&self) -> Option<CreateProfileRequest<'a>> {
+    if self.message_type() == RpcMessage::CreateProfileRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { CreateProfileRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_rename_profile_request(&self) -> Option<RenameProfileRequest<'a>> {
+    if self.message_type() == RpcMessage::RenameProfileRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { RenameProfileRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_delete_profile_request(&self) -> Option<DeleteProfileRequest<'a>> {
+    if self.message_type() == RpcMessage::DeleteProfileRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { DeleteProfileRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_profile_operation_response(&self) -> Option<ProfileOperationResponse<'a>> {
+    if self.message_type() == RpcMessage::ProfileOperationResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { ProfileOperationResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_start_tracker_imu_telemetry_request(&self) -> Option<StartTrackerImuTelemetryRequest<'a>> {
+    if self.message_type() == RpcMessage::StartTrackerImuTelemetryRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StartTrackerImuTelemetryRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_stop_tracker_imu_telemetry_request(&self) -> Option<StopTrackerImuTelemetryRequest<'a>> {
+    if self.message_type() == RpcMessage::StopTrackerImuTelemetryRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StopTrackerImuTelemetryRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_tracker_imu_telemetry_response(&self) -> Option<TrackerImuTelemetryResponse<'a>> {
+    if self.message_type() == RpcMessage::TrackerImuTelemetryResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { TrackerImuTelemetryResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_ignore_unknown_device_request(&self) -> Option<IgnoreUnknownDeviceRequest<'a>> {
+    if self.message_type() == RpcMessage::IgnoreUnknownDeviceRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { IgnoreUnknownDeviceRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_logs_request(&self) -> Option<LogsRequest<'a>> {
+    if self.message_type() == RpcMessage::LogsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_logs_response(&self) -> Option<LogsResponse<'a>> {
+    if self.message_type() == RpcMessage::LogsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_log_stream_request(&self) -> Option<LogStreamRequest<'a>> {
+    if self.message_type() == RpcMessage::LogStreamRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogStreamRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_log_stream_response(&self) -> Option<LogStreamResponse<'a>> {
+    if self.message_type() == RpcMessage::LogStreamResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogStreamResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_log_file_chunk_request(&self) -> Option<LogFileChunkRequest<'a>> {
+    if self.message_type() == RpcMessage::LogFileChunkRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogFileChunkRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_log_file_chunk_response(&self) -> Option<LogFileChunkResponse<'a>> {
+    if self.message_type() == RpcMessage::LogFileChunkResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogFileChunkResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_custom_oscsettings_request(&self) -> Option<CustomOSCSettingsRequest<'a>> {
     if self.message_type() == RpcMessage::CustomOSCSettingsRequest {
       self.message().map(|t| {
@@ -2236,7 +2521,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::TrackingPauseStateRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingPauseStateRequest>>("RpcMessage::TrackingPauseStateRequest", pos),
           RpcMessage::TrackingPauseStateResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingPauseStateResponse>>("RpcMessage::TrackingPauseStateResponse", pos),
           RpcMessage::SerialTrackerGetWifiScanRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialTrackerGetWifiScanRequest>>("RpcMessage::SerialTrackerGetWifiScanRequest", pos),
-          RpcMessage::UnknownDeviceHandshakeNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UnknownDeviceHandshakeNotification>>("RpcMessage::UnknownDeviceHandshakeNotification", pos),
+          RpcMessage::UnknownDevicesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UnknownDevicesResponse>>("RpcMessage::UnknownDevicesResponse", pos),
           RpcMessage::AddUnknownDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AddUnknownDeviceRequest>>("RpcMessage::AddUnknownDeviceRequest", pos),
           RpcMessage::ForgetDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ForgetDeviceRequest>>("RpcMessage::ForgetDeviceRequest", pos),
           RpcMessage::FirmwareUpdateRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdateRequest>>("RpcMessage::FirmwareUpdateRequest", pos),
@@ -2297,6 +2582,25 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::BodyPartPrerequisitesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BodyPartPrerequisitesRequest>>("RpcMessage::BodyPartPrerequisitesRequest", pos),
           RpcMessage::BodyPartPrerequisitesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<BodyPartPrerequisitesResponse>>("RpcMessage::BodyPartPrerequisitesResponse", pos),
           RpcMessage::SerialKeepaliveRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialKeepaliveRequest>>("RpcMessage::SerialKeepaliveRequest", pos),
+          RpcMessage::SettingsDefaultsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsDefaultsRequest>>("RpcMessage::SettingsDefaultsRequest", pos),
+          RpcMessage::SettingsDefaultsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SettingsDefaultsResponse>>("RpcMessage::SettingsDefaultsResponse", pos),
+          RpcMessage::ProfilesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ProfilesRequest>>("RpcMessage::ProfilesRequest", pos),
+          RpcMessage::ProfilesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ProfilesResponse>>("RpcMessage::ProfilesResponse", pos),
+          RpcMessage::SwitchProfileRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SwitchProfileRequest>>("RpcMessage::SwitchProfileRequest", pos),
+          RpcMessage::CreateProfileRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CreateProfileRequest>>("RpcMessage::CreateProfileRequest", pos),
+          RpcMessage::RenameProfileRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RenameProfileRequest>>("RpcMessage::RenameProfileRequest", pos),
+          RpcMessage::DeleteProfileRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DeleteProfileRequest>>("RpcMessage::DeleteProfileRequest", pos),
+          RpcMessage::ProfileOperationResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ProfileOperationResponse>>("RpcMessage::ProfileOperationResponse", pos),
+          RpcMessage::StartTrackerImuTelemetryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartTrackerImuTelemetryRequest>>("RpcMessage::StartTrackerImuTelemetryRequest", pos),
+          RpcMessage::StopTrackerImuTelemetryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopTrackerImuTelemetryRequest>>("RpcMessage::StopTrackerImuTelemetryRequest", pos),
+          RpcMessage::TrackerImuTelemetryResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackerImuTelemetryResponse>>("RpcMessage::TrackerImuTelemetryResponse", pos),
+          RpcMessage::IgnoreUnknownDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<IgnoreUnknownDeviceRequest>>("RpcMessage::IgnoreUnknownDeviceRequest", pos),
+          RpcMessage::LogsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogsRequest>>("RpcMessage::LogsRequest", pos),
+          RpcMessage::LogsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogsResponse>>("RpcMessage::LogsResponse", pos),
+          RpcMessage::LogStreamRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogStreamRequest>>("RpcMessage::LogStreamRequest", pos),
+          RpcMessage::LogStreamResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogStreamResponse>>("RpcMessage::LogStreamResponse", pos),
+          RpcMessage::LogFileChunkRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogFileChunkRequest>>("RpcMessage::LogFileChunkRequest", pos),
+          RpcMessage::LogFileChunkResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogFileChunkResponse>>("RpcMessage::LogFileChunkResponse", pos),
           RpcMessage::CustomOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CustomOSCSettingsRequest>>("RpcMessage::CustomOSCSettingsRequest", pos),
           RpcMessage::CustomOSCSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CustomOSCSettingsResponse>>("RpcMessage::CustomOSCSettingsResponse", pos),
           RpcMessage::ChangeCustomOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeCustomOSCSettingsRequest>>("RpcMessage::ChangeCustomOSCSettingsRequest", pos),
@@ -2886,8 +3190,8 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::UnknownDeviceHandshakeNotification => {
-          if let Some(x) = self.message_as_unknown_device_handshake_notification() {
+        RpcMessage::UnknownDevicesResponse => {
+          if let Some(x) = self.message_as_unknown_devices_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
@@ -3308,6 +3612,139 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::SerialKeepaliveRequest => {
           if let Some(x) = self.message_as_serial_keepalive_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SettingsDefaultsRequest => {
+          if let Some(x) = self.message_as_settings_defaults_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SettingsDefaultsResponse => {
+          if let Some(x) = self.message_as_settings_defaults_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ProfilesRequest => {
+          if let Some(x) = self.message_as_profiles_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ProfilesResponse => {
+          if let Some(x) = self.message_as_profiles_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::SwitchProfileRequest => {
+          if let Some(x) = self.message_as_switch_profile_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::CreateProfileRequest => {
+          if let Some(x) = self.message_as_create_profile_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::RenameProfileRequest => {
+          if let Some(x) = self.message_as_rename_profile_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::DeleteProfileRequest => {
+          if let Some(x) = self.message_as_delete_profile_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::ProfileOperationResponse => {
+          if let Some(x) = self.message_as_profile_operation_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StartTrackerImuTelemetryRequest => {
+          if let Some(x) = self.message_as_start_tracker_imu_telemetry_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StopTrackerImuTelemetryRequest => {
+          if let Some(x) = self.message_as_stop_tracker_imu_telemetry_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::TrackerImuTelemetryResponse => {
+          if let Some(x) = self.message_as_tracker_imu_telemetry_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::IgnoreUnknownDeviceRequest => {
+          if let Some(x) = self.message_as_ignore_unknown_device_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogsRequest => {
+          if let Some(x) = self.message_as_logs_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogsResponse => {
+          if let Some(x) = self.message_as_logs_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogStreamRequest => {
+          if let Some(x) = self.message_as_log_stream_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogStreamResponse => {
+          if let Some(x) = self.message_as_log_stream_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogFileChunkRequest => {
+          if let Some(x) = self.message_as_log_file_chunk_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogFileChunkResponse => {
+          if let Some(x) = self.message_as_log_file_chunk_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
