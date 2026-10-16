@@ -25,9 +25,6 @@ static getSizePrefixedRootAsUnknownDevice(bb:flatbuffers.ByteBuffer, obj?:Unknow
   return (obj || new UnknownDevice()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-/**
- * MAC address, or IP address for firmware that sends no MAC
- */
 hardwareId():string|null
 hardwareId(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 hardwareId(optionalEncoding?:any):string|Uint8Array|null {

@@ -169,6 +169,12 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StopTrackerImuTelemetryRequestT asStopTrackerImuTelemetryRequest() { return (solarxr_protocol.rpc.StopTrackerImuTelemetryRequestT) value; }
   public solarxr_protocol.rpc.TrackerImuTelemetryResponseT asTrackerImuTelemetryResponse() { return (solarxr_protocol.rpc.TrackerImuTelemetryResponseT) value; }
   public solarxr_protocol.rpc.IgnoreUnknownDeviceRequestT asIgnoreUnknownDeviceRequest() { return (solarxr_protocol.rpc.IgnoreUnknownDeviceRequestT) value; }
+  public solarxr_protocol.rpc.LogsRequestT asLogsRequest() { return (solarxr_protocol.rpc.LogsRequestT) value; }
+  public solarxr_protocol.rpc.LogsResponseT asLogsResponse() { return (solarxr_protocol.rpc.LogsResponseT) value; }
+  public solarxr_protocol.rpc.LogStreamRequestT asLogStreamRequest() { return (solarxr_protocol.rpc.LogStreamRequestT) value; }
+  public solarxr_protocol.rpc.LogStreamResponseT asLogStreamResponse() { return (solarxr_protocol.rpc.LogStreamResponseT) value; }
+  public solarxr_protocol.rpc.LogFileChunkRequestT asLogFileChunkRequest() { return (solarxr_protocol.rpc.LogFileChunkRequestT) value; }
+  public solarxr_protocol.rpc.LogFileChunkResponseT asLogFileChunkResponse() { return (solarxr_protocol.rpc.LogFileChunkResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -320,6 +326,12 @@ public class RpcMessageUnion {
       case RpcMessage.StopTrackerImuTelemetryRequest: return solarxr_protocol.rpc.StopTrackerImuTelemetryRequest.pack(builder, _o.asStopTrackerImuTelemetryRequest());
       case RpcMessage.TrackerImuTelemetryResponse: return solarxr_protocol.rpc.TrackerImuTelemetryResponse.pack(builder, _o.asTrackerImuTelemetryResponse());
       case RpcMessage.IgnoreUnknownDeviceRequest: return solarxr_protocol.rpc.IgnoreUnknownDeviceRequest.pack(builder, _o.asIgnoreUnknownDeviceRequest());
+      case RpcMessage.LogsRequest: return solarxr_protocol.rpc.LogsRequest.pack(builder, _o.asLogsRequest());
+      case RpcMessage.LogsResponse: return solarxr_protocol.rpc.LogsResponse.pack(builder, _o.asLogsResponse());
+      case RpcMessage.LogStreamRequest: return solarxr_protocol.rpc.LogStreamRequest.pack(builder, _o.asLogStreamRequest());
+      case RpcMessage.LogStreamResponse: return solarxr_protocol.rpc.LogStreamResponse.pack(builder, _o.asLogStreamResponse());
+      case RpcMessage.LogFileChunkRequest: return solarxr_protocol.rpc.LogFileChunkRequest.pack(builder, _o.asLogFileChunkRequest());
+      case RpcMessage.LogFileChunkResponse: return solarxr_protocol.rpc.LogFileChunkResponse.pack(builder, _o.asLogFileChunkResponse());
       default: return 0;
     }
   }

@@ -15,9 +15,6 @@ public final class UnknownDevice extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public UnknownDevice __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  /**
-   * MAC address, or IP address for firmware that sends no MAC
-   */
   public String hardwareId() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer hardwareIdAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
   public ByteBuffer hardwareIdInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }

@@ -165,6 +165,12 @@ public sealed interface RpcMessage {
       146 -> StopTrackerImuTelemetryRequest.decode(bb, offset)
       147 -> TrackerImuTelemetryResponse.decode(bb, offset)
       148 -> IgnoreUnknownDeviceRequest.decode(bb, offset)
+      149 -> LogsRequest.decode(bb, offset)
+      150 -> LogsResponse.decode(bb, offset)
+      151 -> LogStreamRequest.decode(bb, offset)
+      152 -> LogStreamResponse.decode(bb, offset)
+      153 -> LogFileChunkRequest.decode(bb, offset)
+      154 -> LogFileChunkResponse.decode(bb, offset)
       else -> null
     }
 
@@ -317,6 +323,12 @@ public sealed interface RpcMessage {
       is StopTrackerImuTelemetryRequest -> 146.toUByte()
       is TrackerImuTelemetryResponse -> 147.toUByte()
       is IgnoreUnknownDeviceRequest -> 148.toUByte()
+      is LogsRequest -> 149.toUByte()
+      is LogsResponse -> 150.toUByte()
+      is LogStreamRequest -> 151.toUByte()
+      is LogStreamResponse -> 152.toUByte()
+      is LogFileChunkRequest -> 153.toUByte()
+      is LogFileChunkResponse -> 154.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -468,6 +480,12 @@ public sealed interface RpcMessage {
       is StopTrackerImuTelemetryRequest -> value.encode(builder)
       is TrackerImuTelemetryResponse -> value.encode(builder)
       is IgnoreUnknownDeviceRequest -> value.encode(builder)
+      is LogsRequest -> value.encode(builder)
+      is LogsResponse -> value.encode(builder)
+      is LogStreamRequest -> value.encode(builder)
+      is LogStreamResponse -> value.encode(builder)
+      is LogFileChunkRequest -> value.encode(builder)
+      is LogFileChunkResponse -> value.encode(builder)
     }
   }
 }

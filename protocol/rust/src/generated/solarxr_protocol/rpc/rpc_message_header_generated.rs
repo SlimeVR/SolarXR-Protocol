@@ -2299,6 +2299,96 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_logs_request(&self) -> Option<LogsRequest<'a>> {
+    if self.message_type() == RpcMessage::LogsRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogsRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_logs_response(&self) -> Option<LogsResponse<'a>> {
+    if self.message_type() == RpcMessage::LogsResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogsResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_log_stream_request(&self) -> Option<LogStreamRequest<'a>> {
+    if self.message_type() == RpcMessage::LogStreamRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogStreamRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_log_stream_response(&self) -> Option<LogStreamResponse<'a>> {
+    if self.message_type() == RpcMessage::LogStreamResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogStreamResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_log_file_chunk_request(&self) -> Option<LogFileChunkRequest<'a>> {
+    if self.message_type() == RpcMessage::LogFileChunkRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogFileChunkRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_log_file_chunk_response(&self) -> Option<LogFileChunkResponse<'a>> {
+    if self.message_type() == RpcMessage::LogFileChunkResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { LogFileChunkResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -2460,6 +2550,12 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StopTrackerImuTelemetryRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopTrackerImuTelemetryRequest>>("RpcMessage::StopTrackerImuTelemetryRequest", pos),
           RpcMessage::TrackerImuTelemetryResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackerImuTelemetryResponse>>("RpcMessage::TrackerImuTelemetryResponse", pos),
           RpcMessage::IgnoreUnknownDeviceRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<IgnoreUnknownDeviceRequest>>("RpcMessage::IgnoreUnknownDeviceRequest", pos),
+          RpcMessage::LogsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogsRequest>>("RpcMessage::LogsRequest", pos),
+          RpcMessage::LogsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogsResponse>>("RpcMessage::LogsResponse", pos),
+          RpcMessage::LogStreamRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogStreamRequest>>("RpcMessage::LogStreamRequest", pos),
+          RpcMessage::LogStreamResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogStreamResponse>>("RpcMessage::LogStreamResponse", pos),
+          RpcMessage::LogFileChunkRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogFileChunkRequest>>("RpcMessage::LogFileChunkRequest", pos),
+          RpcMessage::LogFileChunkResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogFileChunkResponse>>("RpcMessage::LogFileChunkResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -3559,6 +3655,48 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::IgnoreUnknownDeviceRequest => {
           if let Some(x) = self.message_as_ignore_unknown_device_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogsRequest => {
+          if let Some(x) = self.message_as_logs_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogsResponse => {
+          if let Some(x) = self.message_as_logs_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogStreamRequest => {
+          if let Some(x) = self.message_as_log_stream_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogStreamResponse => {
+          if let Some(x) = self.message_as_log_stream_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogFileChunkRequest => {
+          if let Some(x) = self.message_as_log_file_chunk_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::LogFileChunkResponse => {
+          if let Some(x) = self.message_as_log_file_chunk_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

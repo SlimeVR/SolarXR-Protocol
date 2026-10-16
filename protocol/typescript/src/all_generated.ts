@@ -129,6 +129,17 @@ export { KeybindResponse, KeybindResponseT } from './solarxr-protocol/rpc/keybin
 export { KeybindSupport } from './solarxr-protocol/rpc/keybind-support.js';
 export { LegTweaksTmpChange, LegTweaksTmpChangeT } from './solarxr-protocol/rpc/leg-tweaks-tmp-change.js';
 export { LegTweaksTmpClear, LegTweaksTmpClearT } from './solarxr-protocol/rpc/leg-tweaks-tmp-clear.js';
+export { LogEvent, LogEventT } from './solarxr-protocol/rpc/log-event.js';
+export { LogFile, LogFileT } from './solarxr-protocol/rpc/log-file.js';
+export { LogFileChunkRequest, LogFileChunkRequestT } from './solarxr-protocol/rpc/log-file-chunk-request.js';
+export { LogFileChunkResponse, LogFileChunkResponseT } from './solarxr-protocol/rpc/log-file-chunk-response.js';
+export { LogLevel } from './solarxr-protocol/rpc/log-level.js';
+export { LogSource } from './solarxr-protocol/rpc/log-source.js';
+export { LogSourceInfo, LogSourceInfoT } from './solarxr-protocol/rpc/log-source-info.js';
+export { LogStreamRequest, LogStreamRequestT } from './solarxr-protocol/rpc/log-stream-request.js';
+export { LogStreamResponse, LogStreamResponseT } from './solarxr-protocol/rpc/log-stream-response.js';
+export { LogsRequest, LogsRequestT } from './solarxr-protocol/rpc/logs-request.js';
+export { LogsResponse, LogsResponseT } from './solarxr-protocol/rpc/logs-response.js';
 export { MagToggleRequest, MagToggleRequestT } from './solarxr-protocol/rpc/mag-toggle-request.js';
 export { MagToggleResponse, MagToggleResponseT } from './solarxr-protocol/rpc/mag-toggle-response.js';
 export { OTAFirmwareUpdate, OTAFirmwareUpdateT } from './solarxr-protocol/rpc/otafirmware-update.js';

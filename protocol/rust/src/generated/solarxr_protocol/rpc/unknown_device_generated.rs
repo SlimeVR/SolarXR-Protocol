@@ -52,7 +52,6 @@ impl<'a> UnknownDevice<'a> {
   }
 
 
-  /// MAC address, or IP address for firmware that sends no MAC
   #[inline]
   pub fn hardware_id(&self) -> Option<&'a str> {
     // Safety:

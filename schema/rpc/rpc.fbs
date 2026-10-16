@@ -17,6 +17,7 @@ include "driver.fbs";
 include "firmware.fbs";
 include "height_calibration.fbs";
 include "keybinding.fbs";
+include "logs.fbs";
 include "overlay.fbs";
 include "profiles.fbs";
 include "provisioning.fbs";
@@ -184,6 +185,12 @@ union RpcMessage {
     StopTrackerImuTelemetryRequest,
     TrackerImuTelemetryResponse,
     IgnoreUnknownDeviceRequest,
+    LogsRequest,
+    LogsResponse,
+    LogStreamRequest,
+    LogStreamResponse,
+    LogFileChunkRequest,
+    LogFileChunkResponse,
 }
 
 table RpcMessageHeader {

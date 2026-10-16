@@ -663,6 +663,30 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.IgnoreUnknownDeviceRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.IgnoreUnknownDeviceRequest) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.LogsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogsRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.LogsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogsResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.LogStreamRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogStreamRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogStreamRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.LogStreamResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogStreamResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogStreamResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.LogFileChunkRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogFileChunkRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogFileChunkRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.LogFileChunkResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.LogFileChunkResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogFileChunkResponse) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

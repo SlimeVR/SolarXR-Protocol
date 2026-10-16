@@ -266,6 +266,33 @@ struct SetKeybindRecordingRequestBuilder;
 struct KeybindActivatedResponse;
 struct KeybindActivatedResponseBuilder;
 
+struct LogEvent;
+struct LogEventBuilder;
+
+struct LogSourceInfo;
+struct LogSourceInfoBuilder;
+
+struct LogStreamRequest;
+struct LogStreamRequestBuilder;
+
+struct LogStreamResponse;
+struct LogStreamResponseBuilder;
+
+struct LogFile;
+struct LogFileBuilder;
+
+struct LogsRequest;
+struct LogsRequestBuilder;
+
+struct LogsResponse;
+struct LogsResponseBuilder;
+
+struct LogFileChunkRequest;
+struct LogFileChunkRequestBuilder;
+
+struct LogFileChunkResponse;
+struct LogFileChunkResponseBuilder;
+
 struct OverlayDisplayModeRequest;
 struct OverlayDisplayModeRequestBuilder;
 
@@ -2072,6 +2099,85 @@ inline const char *EnumNameKeybindSupport(KeybindSupport e) {
   return EnumNamesKeybindSupport()[index];
 }
 
+enum class LogSource : uint8_t {
+  SLIMEVR_SERVER = 0,
+  OPENVR_DRIVER = 1,
+  BINDINGS_PROVIDER = 2,
+  /// Never sent by the server, the GUI adds its own logs
+  GUI = 3,
+  MIN = SLIMEVR_SERVER,
+  MAX = GUI
+};
+
+inline const LogSource (&EnumValuesLogSource())[4] {
+  static const LogSource values[] = {
+    LogSource::SLIMEVR_SERVER,
+    LogSource::OPENVR_DRIVER,
+    LogSource::BINDINGS_PROVIDER,
+    LogSource::GUI
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesLogSource() {
+  static const char * const names[5] = {
+    "SLIMEVR_SERVER",
+    "OPENVR_DRIVER",
+    "BINDINGS_PROVIDER",
+    "GUI",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameLogSource(LogSource e) {
+  if (flatbuffers::IsOutRange(e, LogSource::SLIMEVR_SERVER, LogSource::GUI)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesLogSource()[index];
+}
+
+enum class LogLevel : uint8_t {
+  TRACE = 0,
+  DEBUG = 1,
+  INFO = 2,
+  WARN = 3,
+  ERROR = 4,
+  FATAL = 5,
+  MIN = TRACE,
+  MAX = FATAL
+};
+
+inline const LogLevel (&EnumValuesLogLevel())[6] {
+  static const LogLevel values[] = {
+    LogLevel::TRACE,
+    LogLevel::DEBUG,
+    LogLevel::INFO,
+    LogLevel::WARN,
+    LogLevel::ERROR,
+    LogLevel::FATAL
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesLogLevel() {
+  static const char * const names[7] = {
+    "TRACE",
+    "DEBUG",
+    "INFO",
+    "WARN",
+    "ERROR",
+    "FATAL",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameLogLevel(LogLevel e) {
+  if (flatbuffers::IsOutRange(e, LogLevel::TRACE, LogLevel::FATAL)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesLogLevel()[index];
+}
+
 enum class ProfileKind : uint8_t {
   /// Not set, a request with this kind is rejected.
   UNKNOWN = 0,
@@ -3409,11 +3515,17 @@ enum class RpcMessage : uint8_t {
   StopTrackerImuTelemetryRequest = 146,
   TrackerImuTelemetryResponse = 147,
   IgnoreUnknownDeviceRequest = 148,
+  LogsRequest = 149,
+  LogsResponse = 150,
+  LogStreamRequest = 151,
+  LogStreamResponse = 152,
+  LogFileChunkRequest = 153,
+  LogFileChunkResponse = 154,
   MIN = NONE,
-  MAX = IgnoreUnknownDeviceRequest
+  MAX = LogFileChunkResponse
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[149] {
+inline const RpcMessage (&EnumValuesRpcMessage())[155] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -3563,13 +3675,19 @@ inline const RpcMessage (&EnumValuesRpcMessage())[149] {
     RpcMessage::StartTrackerImuTelemetryRequest,
     RpcMessage::StopTrackerImuTelemetryRequest,
     RpcMessage::TrackerImuTelemetryResponse,
-    RpcMessage::IgnoreUnknownDeviceRequest
+    RpcMessage::IgnoreUnknownDeviceRequest,
+    RpcMessage::LogsRequest,
+    RpcMessage::LogsResponse,
+    RpcMessage::LogStreamRequest,
+    RpcMessage::LogStreamResponse,
+    RpcMessage::LogFileChunkRequest,
+    RpcMessage::LogFileChunkResponse
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[150] = {
+  static const char * const names[156] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -3719,13 +3837,19 @@ inline const char * const *EnumNamesRpcMessage() {
     "StopTrackerImuTelemetryRequest",
     "TrackerImuTelemetryResponse",
     "IgnoreUnknownDeviceRequest",
+    "LogsRequest",
+    "LogsResponse",
+    "LogStreamRequest",
+    "LogStreamResponse",
+    "LogFileChunkRequest",
+    "LogFileChunkResponse",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::IgnoreUnknownDeviceRequest)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::LogFileChunkResponse)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -4324,6 +4448,30 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackerImuTelemetryRes
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::IgnoreUnknownDeviceRequest> {
   static const RpcMessage enum_value = RpcMessage::IgnoreUnknownDeviceRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::LogsRequest> {
+  static const RpcMessage enum_value = RpcMessage::LogsRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::LogsResponse> {
+  static const RpcMessage enum_value = RpcMessage::LogsResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::LogStreamRequest> {
+  static const RpcMessage enum_value = RpcMessage::LogStreamRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::LogStreamResponse> {
+  static const RpcMessage enum_value = RpcMessage::LogStreamResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::LogFileChunkRequest> {
+  static const RpcMessage enum_value = RpcMessage::LogFileChunkRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::LogFileChunkResponse> {
+  static const RpcMessage enum_value = RpcMessage::LogFileChunkResponse;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -8143,7 +8291,6 @@ struct UnknownDevice FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_FIRMWARE_VERSION = 12,
     VT_STATUS = 14
   };
-  /// MAC address, or IP address for firmware that sends no MAC
   const flatbuffers::String *hardware_id() const {
     return GetPointer<const flatbuffers::String *>(VT_HARDWARE_ID);
   }
@@ -9906,6 +10053,646 @@ inline flatbuffers::Offset<KeybindActivatedResponse> CreateKeybindActivatedRespo
   KeybindActivatedResponseBuilder builder_(_fbb);
   builder_.add_keybind_id(keybind_id);
   return builder_.Finish();
+}
+
+struct LogEvent FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LogEventBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SOURCE = 4,
+    VT_TIME_MS = 6,
+    VT_LEVEL = 8,
+    VT_LOGGER = 10,
+    VT_MESSAGE = 12,
+    VT_STACK_TRACE = 14
+  };
+  solarxr_protocol::rpc::LogSource source() const {
+    return static_cast<solarxr_protocol::rpc::LogSource>(GetField<uint8_t>(VT_SOURCE, 0));
+  }
+  uint64_t time_ms() const {
+    return GetField<uint64_t>(VT_TIME_MS, 0);
+  }
+  solarxr_protocol::rpc::LogLevel level() const {
+    return static_cast<solarxr_protocol::rpc::LogLevel>(GetField<uint8_t>(VT_LEVEL, 0));
+  }
+  const flatbuffers::String *logger() const {
+    return GetPointer<const flatbuffers::String *>(VT_LOGGER);
+  }
+  const flatbuffers::String *message() const {
+    return GetPointer<const flatbuffers::String *>(VT_MESSAGE);
+  }
+  const flatbuffers::String *stack_trace() const {
+    return GetPointer<const flatbuffers::String *>(VT_STACK_TRACE);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SOURCE, 1) &&
+           VerifyField<uint64_t>(verifier, VT_TIME_MS, 8) &&
+           VerifyField<uint8_t>(verifier, VT_LEVEL, 1) &&
+           VerifyOffset(verifier, VT_LOGGER) &&
+           verifier.VerifyString(logger()) &&
+           VerifyOffset(verifier, VT_MESSAGE) &&
+           verifier.VerifyString(message()) &&
+           VerifyOffset(verifier, VT_STACK_TRACE) &&
+           verifier.VerifyString(stack_trace()) &&
+           verifier.EndTable();
+  }
+};
+
+struct LogEventBuilder {
+  typedef LogEvent Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_source(solarxr_protocol::rpc::LogSource source) {
+    fbb_.AddElement<uint8_t>(LogEvent::VT_SOURCE, static_cast<uint8_t>(source), 0);
+  }
+  void add_time_ms(uint64_t time_ms) {
+    fbb_.AddElement<uint64_t>(LogEvent::VT_TIME_MS, time_ms, 0);
+  }
+  void add_level(solarxr_protocol::rpc::LogLevel level) {
+    fbb_.AddElement<uint8_t>(LogEvent::VT_LEVEL, static_cast<uint8_t>(level), 0);
+  }
+  void add_logger(flatbuffers::Offset<flatbuffers::String> logger) {
+    fbb_.AddOffset(LogEvent::VT_LOGGER, logger);
+  }
+  void add_message(flatbuffers::Offset<flatbuffers::String> message) {
+    fbb_.AddOffset(LogEvent::VT_MESSAGE, message);
+  }
+  void add_stack_trace(flatbuffers::Offset<flatbuffers::String> stack_trace) {
+    fbb_.AddOffset(LogEvent::VT_STACK_TRACE, stack_trace);
+  }
+  explicit LogEventBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LogEvent> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LogEvent>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LogEvent> CreateLogEvent(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::LogSource source = solarxr_protocol::rpc::LogSource::SLIMEVR_SERVER,
+    uint64_t time_ms = 0,
+    solarxr_protocol::rpc::LogLevel level = solarxr_protocol::rpc::LogLevel::TRACE,
+    flatbuffers::Offset<flatbuffers::String> logger = 0,
+    flatbuffers::Offset<flatbuffers::String> message = 0,
+    flatbuffers::Offset<flatbuffers::String> stack_trace = 0) {
+  LogEventBuilder builder_(_fbb);
+  builder_.add_time_ms(time_ms);
+  builder_.add_stack_trace(stack_trace);
+  builder_.add_message(message);
+  builder_.add_logger(logger);
+  builder_.add_level(level);
+  builder_.add_source(source);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<LogEvent> CreateLogEventDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::LogSource source = solarxr_protocol::rpc::LogSource::SLIMEVR_SERVER,
+    uint64_t time_ms = 0,
+    solarxr_protocol::rpc::LogLevel level = solarxr_protocol::rpc::LogLevel::TRACE,
+    const char *logger = nullptr,
+    const char *message = nullptr,
+    const char *stack_trace = nullptr) {
+  auto logger__ = logger ? _fbb.CreateString(logger) : 0;
+  auto message__ = message ? _fbb.CreateString(message) : 0;
+  auto stack_trace__ = stack_trace ? _fbb.CreateString(stack_trace) : 0;
+  return solarxr_protocol::rpc::CreateLogEvent(
+      _fbb,
+      source,
+      time_ms,
+      level,
+      logger__,
+      message__,
+      stack_trace__);
+}
+
+struct LogSourceInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LogSourceInfoBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SOURCE = 4,
+    VT_LIVE = 6
+  };
+  solarxr_protocol::rpc::LogSource source() const {
+    return static_cast<solarxr_protocol::rpc::LogSource>(GetField<uint8_t>(VT_SOURCE, 0));
+  }
+  bool live() const {
+    return GetField<uint8_t>(VT_LIVE, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SOURCE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LIVE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct LogSourceInfoBuilder {
+  typedef LogSourceInfo Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_source(solarxr_protocol::rpc::LogSource source) {
+    fbb_.AddElement<uint8_t>(LogSourceInfo::VT_SOURCE, static_cast<uint8_t>(source), 0);
+  }
+  void add_live(bool live) {
+    fbb_.AddElement<uint8_t>(LogSourceInfo::VT_LIVE, static_cast<uint8_t>(live), 0);
+  }
+  explicit LogSourceInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LogSourceInfo> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LogSourceInfo>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LogSourceInfo> CreateLogSourceInfo(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::LogSource source = solarxr_protocol::rpc::LogSource::SLIMEVR_SERVER,
+    bool live = false) {
+  LogSourceInfoBuilder builder_(_fbb);
+  builder_.add_live(live);
+  builder_.add_source(source);
+  return builder_.Finish();
+}
+
+struct LogStreamRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LogStreamRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SOURCES = 4
+  };
+  const flatbuffers::Vector<solarxr_protocol::rpc::LogSource> *sources() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::rpc::LogSource> *>(VT_SOURCES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_SOURCES) &&
+           verifier.VerifyVector(sources()) &&
+           verifier.EndTable();
+  }
+};
+
+struct LogStreamRequestBuilder {
+  typedef LogStreamRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_sources(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::LogSource>> sources) {
+    fbb_.AddOffset(LogStreamRequest::VT_SOURCES, sources);
+  }
+  explicit LogStreamRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LogStreamRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LogStreamRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LogStreamRequest> CreateLogStreamRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::LogSource>> sources = 0) {
+  LogStreamRequestBuilder builder_(_fbb);
+  builder_.add_sources(sources);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<LogStreamRequest> CreateLogStreamRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<solarxr_protocol::rpc::LogSource> *sources = nullptr) {
+  auto sources__ = sources ? _fbb.CreateVector<solarxr_protocol::rpc::LogSource>(*sources) : 0;
+  return solarxr_protocol::rpc::CreateLogStreamRequest(
+      _fbb,
+      sources__);
+}
+
+struct LogStreamResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LogStreamResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENTS = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogEvent>> *events() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogEvent>> *>(VT_EVENTS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_EVENTS) &&
+           verifier.VerifyVector(events()) &&
+           verifier.VerifyVectorOfTables(events()) &&
+           verifier.EndTable();
+  }
+};
+
+struct LogStreamResponseBuilder {
+  typedef LogStreamResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_events(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogEvent>>> events) {
+    fbb_.AddOffset(LogStreamResponse::VT_EVENTS, events);
+  }
+  explicit LogStreamResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LogStreamResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LogStreamResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LogStreamResponse> CreateLogStreamResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogEvent>>> events = 0) {
+  LogStreamResponseBuilder builder_(_fbb);
+  builder_.add_events(events);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<LogStreamResponse> CreateLogStreamResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::LogEvent>> *events = nullptr) {
+  auto events__ = events ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::LogEvent>>(*events) : 0;
+  return solarxr_protocol::rpc::CreateLogStreamResponse(
+      _fbb,
+      events__);
+}
+
+struct LogFile FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LogFileBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SOURCE = 4,
+    VT_NAME = 6,
+    VT_SIZE = 8,
+    VT_MODIFIED_MS = 10,
+    VT_CURRENT = 12
+  };
+  solarxr_protocol::rpc::LogSource source() const {
+    return static_cast<solarxr_protocol::rpc::LogSource>(GetField<uint8_t>(VT_SOURCE, 0));
+  }
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  uint64_t size() const {
+    return GetField<uint64_t>(VT_SIZE, 0);
+  }
+  uint64_t modified_ms() const {
+    return GetField<uint64_t>(VT_MODIFIED_MS, 0);
+  }
+  bool current() const {
+    return GetField<uint8_t>(VT_CURRENT, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SOURCE, 1) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           VerifyField<uint64_t>(verifier, VT_SIZE, 8) &&
+           VerifyField<uint64_t>(verifier, VT_MODIFIED_MS, 8) &&
+           VerifyField<uint8_t>(verifier, VT_CURRENT, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct LogFileBuilder {
+  typedef LogFile Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_source(solarxr_protocol::rpc::LogSource source) {
+    fbb_.AddElement<uint8_t>(LogFile::VT_SOURCE, static_cast<uint8_t>(source), 0);
+  }
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(LogFile::VT_NAME, name);
+  }
+  void add_size(uint64_t size) {
+    fbb_.AddElement<uint64_t>(LogFile::VT_SIZE, size, 0);
+  }
+  void add_modified_ms(uint64_t modified_ms) {
+    fbb_.AddElement<uint64_t>(LogFile::VT_MODIFIED_MS, modified_ms, 0);
+  }
+  void add_current(bool current) {
+    fbb_.AddElement<uint8_t>(LogFile::VT_CURRENT, static_cast<uint8_t>(current), 0);
+  }
+  explicit LogFileBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LogFile> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LogFile>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LogFile> CreateLogFile(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::LogSource source = solarxr_protocol::rpc::LogSource::SLIMEVR_SERVER,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    uint64_t size = 0,
+    uint64_t modified_ms = 0,
+    bool current = false) {
+  LogFileBuilder builder_(_fbb);
+  builder_.add_modified_ms(modified_ms);
+  builder_.add_size(size);
+  builder_.add_name(name);
+  builder_.add_current(current);
+  builder_.add_source(source);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<LogFile> CreateLogFileDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::LogSource source = solarxr_protocol::rpc::LogSource::SLIMEVR_SERVER,
+    const char *name = nullptr,
+    uint64_t size = 0,
+    uint64_t modified_ms = 0,
+    bool current = false) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  return solarxr_protocol::rpc::CreateLogFile(
+      _fbb,
+      source,
+      name__,
+      size,
+      modified_ms,
+      current);
+}
+
+struct LogsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LogsRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct LogsRequestBuilder {
+  typedef LogsRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit LogsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LogsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LogsRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LogsRequest> CreateLogsRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  LogsRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct LogsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LogsResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SOURCES = 4,
+    VT_FILES = 6
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogSourceInfo>> *sources() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogSourceInfo>> *>(VT_SOURCES);
+  }
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogFile>> *files() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogFile>> *>(VT_FILES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_SOURCES) &&
+           verifier.VerifyVector(sources()) &&
+           verifier.VerifyVectorOfTables(sources()) &&
+           VerifyOffset(verifier, VT_FILES) &&
+           verifier.VerifyVector(files()) &&
+           verifier.VerifyVectorOfTables(files()) &&
+           verifier.EndTable();
+  }
+};
+
+struct LogsResponseBuilder {
+  typedef LogsResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_sources(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogSourceInfo>>> sources) {
+    fbb_.AddOffset(LogsResponse::VT_SOURCES, sources);
+  }
+  void add_files(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogFile>>> files) {
+    fbb_.AddOffset(LogsResponse::VT_FILES, files);
+  }
+  explicit LogsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LogsResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LogsResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LogsResponse> CreateLogsResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogSourceInfo>>> sources = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::LogFile>>> files = 0) {
+  LogsResponseBuilder builder_(_fbb);
+  builder_.add_files(files);
+  builder_.add_sources(sources);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<LogsResponse> CreateLogsResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::LogSourceInfo>> *sources = nullptr,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::LogFile>> *files = nullptr) {
+  auto sources__ = sources ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::LogSourceInfo>>(*sources) : 0;
+  auto files__ = files ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::LogFile>>(*files) : 0;
+  return solarxr_protocol::rpc::CreateLogsResponse(
+      _fbb,
+      sources__,
+      files__);
+}
+
+struct LogFileChunkRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LogFileChunkRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SOURCE = 4,
+    VT_NAME = 6,
+    VT_OFFSET = 8
+  };
+  solarxr_protocol::rpc::LogSource source() const {
+    return static_cast<solarxr_protocol::rpc::LogSource>(GetField<uint8_t>(VT_SOURCE, 0));
+  }
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  uint64_t offset() const {
+    return GetField<uint64_t>(VT_OFFSET, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SOURCE, 1) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           VerifyField<uint64_t>(verifier, VT_OFFSET, 8) &&
+           verifier.EndTable();
+  }
+};
+
+struct LogFileChunkRequestBuilder {
+  typedef LogFileChunkRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_source(solarxr_protocol::rpc::LogSource source) {
+    fbb_.AddElement<uint8_t>(LogFileChunkRequest::VT_SOURCE, static_cast<uint8_t>(source), 0);
+  }
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(LogFileChunkRequest::VT_NAME, name);
+  }
+  void add_offset(uint64_t offset) {
+    fbb_.AddElement<uint64_t>(LogFileChunkRequest::VT_OFFSET, offset, 0);
+  }
+  explicit LogFileChunkRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LogFileChunkRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LogFileChunkRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LogFileChunkRequest> CreateLogFileChunkRequest(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::LogSource source = solarxr_protocol::rpc::LogSource::SLIMEVR_SERVER,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    uint64_t offset = 0) {
+  LogFileChunkRequestBuilder builder_(_fbb);
+  builder_.add_offset(offset);
+  builder_.add_name(name);
+  builder_.add_source(source);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<LogFileChunkRequest> CreateLogFileChunkRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::LogSource source = solarxr_protocol::rpc::LogSource::SLIMEVR_SERVER,
+    const char *name = nullptr,
+    uint64_t offset = 0) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  return solarxr_protocol::rpc::CreateLogFileChunkRequest(
+      _fbb,
+      source,
+      name__,
+      offset);
+}
+
+struct LogFileChunkResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef LogFileChunkResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SOURCE = 4,
+    VT_NAME = 6,
+    VT_OFFSET = 8,
+    VT_DATA = 10,
+    VT_EOF = 12
+  };
+  solarxr_protocol::rpc::LogSource source() const {
+    return static_cast<solarxr_protocol::rpc::LogSource>(GetField<uint8_t>(VT_SOURCE, 0));
+  }
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  uint64_t offset() const {
+    return GetField<uint64_t>(VT_OFFSET, 0);
+  }
+  const flatbuffers::Vector<uint8_t> *data() const {
+    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_DATA);
+  }
+  bool eof() const {
+    return GetField<uint8_t>(VT_EOF, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SOURCE, 1) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           VerifyField<uint64_t>(verifier, VT_OFFSET, 8) &&
+           VerifyOffset(verifier, VT_DATA) &&
+           verifier.VerifyVector(data()) &&
+           VerifyField<uint8_t>(verifier, VT_EOF, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct LogFileChunkResponseBuilder {
+  typedef LogFileChunkResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_source(solarxr_protocol::rpc::LogSource source) {
+    fbb_.AddElement<uint8_t>(LogFileChunkResponse::VT_SOURCE, static_cast<uint8_t>(source), 0);
+  }
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(LogFileChunkResponse::VT_NAME, name);
+  }
+  void add_offset(uint64_t offset) {
+    fbb_.AddElement<uint64_t>(LogFileChunkResponse::VT_OFFSET, offset, 0);
+  }
+  void add_data(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data) {
+    fbb_.AddOffset(LogFileChunkResponse::VT_DATA, data);
+  }
+  void add_eof(bool eof) {
+    fbb_.AddElement<uint8_t>(LogFileChunkResponse::VT_EOF, static_cast<uint8_t>(eof), 0);
+  }
+  explicit LogFileChunkResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<LogFileChunkResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<LogFileChunkResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<LogFileChunkResponse> CreateLogFileChunkResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::LogSource source = solarxr_protocol::rpc::LogSource::SLIMEVR_SERVER,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    uint64_t offset = 0,
+    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data = 0,
+    bool eof = false) {
+  LogFileChunkResponseBuilder builder_(_fbb);
+  builder_.add_offset(offset);
+  builder_.add_data(data);
+  builder_.add_name(name);
+  builder_.add_eof(eof);
+  builder_.add_source(source);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<LogFileChunkResponse> CreateLogFileChunkResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::LogSource source = solarxr_protocol::rpc::LogSource::SLIMEVR_SERVER,
+    const char *name = nullptr,
+    uint64_t offset = 0,
+    const std::vector<uint8_t> *data = nullptr,
+    bool eof = false) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  auto data__ = data ? _fbb.CreateVector<uint8_t>(*data) : 0;
+  return solarxr_protocol::rpc::CreateLogFileChunkResponse(
+      _fbb,
+      source,
+      name__,
+      offset,
+      data__,
+      eof);
 }
 
 /// Requests the current state of `OverlayDisplayModeResponse`.
@@ -17960,6 +18747,24 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::IgnoreUnknownDeviceRequest *message_as_IgnoreUnknownDeviceRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::IgnoreUnknownDeviceRequest ? static_cast<const solarxr_protocol::rpc::IgnoreUnknownDeviceRequest *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::LogsRequest *message_as_LogsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::LogsRequest ? static_cast<const solarxr_protocol::rpc::LogsRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::LogsResponse *message_as_LogsResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::LogsResponse ? static_cast<const solarxr_protocol::rpc::LogsResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::LogStreamRequest *message_as_LogStreamRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::LogStreamRequest ? static_cast<const solarxr_protocol::rpc::LogStreamRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::LogStreamResponse *message_as_LogStreamResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::LogStreamResponse ? static_cast<const solarxr_protocol::rpc::LogStreamResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::LogFileChunkRequest *message_as_LogFileChunkRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::LogFileChunkRequest ? static_cast<const solarxr_protocol::rpc::LogFileChunkRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::LogFileChunkResponse *message_as_LogFileChunkResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::LogFileChunkResponse ? static_cast<const solarxr_protocol::rpc::LogFileChunkResponse *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -18561,6 +19366,30 @@ template<> inline const solarxr_protocol::rpc::TrackerImuTelemetryResponse *RpcM
 
 template<> inline const solarxr_protocol::rpc::IgnoreUnknownDeviceRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::IgnoreUnknownDeviceRequest>() const {
   return message_as_IgnoreUnknownDeviceRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::LogsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::LogsRequest>() const {
+  return message_as_LogsRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::LogsResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::LogsResponse>() const {
+  return message_as_LogsResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::LogStreamRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::LogStreamRequest>() const {
+  return message_as_LogStreamRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::LogStreamResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::LogStreamResponse>() const {
+  return message_as_LogStreamResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::LogFileChunkRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::LogFileChunkRequest>() const {
+  return message_as_LogFileChunkRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::LogFileChunkResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::LogFileChunkResponse>() const {
+  return message_as_LogFileChunkResponse();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -20621,6 +21450,30 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::IgnoreUnknownDeviceRequest: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::IgnoreUnknownDeviceRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::LogsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::LogsRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::LogsResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::LogsResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::LogStreamRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::LogStreamRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::LogStreamResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::LogStreamResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::LogFileChunkRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::LogFileChunkRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::LogFileChunkResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::LogFileChunkResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 148;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 154;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 149] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 155] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -165,6 +165,12 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 149] = [
   RpcMessage::StopTrackerImuTelemetryRequest,
   RpcMessage::TrackerImuTelemetryResponse,
   RpcMessage::IgnoreUnknownDeviceRequest,
+  RpcMessage::LogsRequest,
+  RpcMessage::LogsResponse,
+  RpcMessage::LogStreamRequest,
+  RpcMessage::LogStreamResponse,
+  RpcMessage::LogFileChunkRequest,
+  RpcMessage::LogFileChunkResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -321,9 +327,15 @@ impl RpcMessage {
   pub const StopTrackerImuTelemetryRequest: Self = Self(146);
   pub const TrackerImuTelemetryResponse: Self = Self(147);
   pub const IgnoreUnknownDeviceRequest: Self = Self(148);
+  pub const LogsRequest: Self = Self(149);
+  pub const LogsResponse: Self = Self(150);
+  pub const LogStreamRequest: Self = Self(151);
+  pub const LogStreamResponse: Self = Self(152);
+  pub const LogFileChunkRequest: Self = Self(153);
+  pub const LogFileChunkResponse: Self = Self(154);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 148;
+  pub const ENUM_MAX: u8 = 154;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -474,6 +486,12 @@ impl RpcMessage {
     Self::StopTrackerImuTelemetryRequest,
     Self::TrackerImuTelemetryResponse,
     Self::IgnoreUnknownDeviceRequest,
+    Self::LogsRequest,
+    Self::LogsResponse,
+    Self::LogStreamRequest,
+    Self::LogStreamResponse,
+    Self::LogFileChunkRequest,
+    Self::LogFileChunkResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -627,6 +645,12 @@ impl RpcMessage {
       Self::StopTrackerImuTelemetryRequest => Some("StopTrackerImuTelemetryRequest"),
       Self::TrackerImuTelemetryResponse => Some("TrackerImuTelemetryResponse"),
       Self::IgnoreUnknownDeviceRequest => Some("IgnoreUnknownDeviceRequest"),
+      Self::LogsRequest => Some("LogsRequest"),
+      Self::LogsResponse => Some("LogsResponse"),
+      Self::LogStreamRequest => Some("LogStreamRequest"),
+      Self::LogStreamResponse => Some("LogStreamResponse"),
+      Self::LogFileChunkRequest => Some("LogFileChunkRequest"),
+      Self::LogFileChunkResponse => Some("LogFileChunkResponse"),
       _ => None,
     }
   }
