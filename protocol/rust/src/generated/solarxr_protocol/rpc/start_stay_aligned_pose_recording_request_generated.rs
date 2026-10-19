@@ -9,34 +9,34 @@ use core::mem;
 use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
-pub enum DetectStayAlignedRelaxedPoseRequestOffset {}
+pub enum StartStayAlignedPoseRecordingRequestOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct DetectStayAlignedRelaxedPoseRequest<'a> {
+pub struct StartStayAlignedPoseRecordingRequest<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for DetectStayAlignedRelaxedPoseRequest<'a> {
-  type Inner = DetectStayAlignedRelaxedPoseRequest<'a>;
+impl<'a> flatbuffers::Follow<'a> for StartStayAlignedPoseRecordingRequest<'a> {
+  type Inner = StartStayAlignedPoseRecordingRequest<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: flatbuffers::Table::new(buf, loc) }
   }
 }
 
-impl<'a> DetectStayAlignedRelaxedPoseRequest<'a> {
+impl<'a> StartStayAlignedPoseRecordingRequest<'a> {
   pub const VT_POSE: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    DetectStayAlignedRelaxedPoseRequest { _tab: table }
+    StartStayAlignedPoseRecordingRequest { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args DetectStayAlignedRelaxedPoseRequestArgs
-  ) -> flatbuffers::WIPOffset<DetectStayAlignedRelaxedPoseRequest<'bldr>> {
-    let mut builder = DetectStayAlignedRelaxedPoseRequestBuilder::new(_fbb);
+    args: &'args StartStayAlignedPoseRecordingRequestArgs
+  ) -> flatbuffers::WIPOffset<StartStayAlignedPoseRecordingRequest<'bldr>> {
+    let mut builder = StartStayAlignedPoseRecordingRequestBuilder::new(_fbb);
     builder.add_pose(args.pose);
     builder.finish()
   }
@@ -47,11 +47,11 @@ impl<'a> DetectStayAlignedRelaxedPoseRequest<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<StayAlignedRelaxedPose>(DetectStayAlignedRelaxedPoseRequest::VT_POSE, Some(StayAlignedRelaxedPose::STANDING)).unwrap()}
+    unsafe { self._tab.get::<StayAlignedRelaxedPose>(StartStayAlignedPoseRecordingRequest::VT_POSE, Some(StayAlignedRelaxedPose::UNKNOWN)).unwrap()}
   }
 }
 
-impl flatbuffers::Verifiable for DetectStayAlignedRelaxedPoseRequest<'_> {
+impl flatbuffers::Verifiable for StartStayAlignedPoseRecordingRequest<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -63,45 +63,45 @@ impl flatbuffers::Verifiable for DetectStayAlignedRelaxedPoseRequest<'_> {
     Ok(())
   }
 }
-pub struct DetectStayAlignedRelaxedPoseRequestArgs {
+pub struct StartStayAlignedPoseRecordingRequestArgs {
     pub pose: StayAlignedRelaxedPose,
 }
-impl<'a> Default for DetectStayAlignedRelaxedPoseRequestArgs {
+impl<'a> Default for StartStayAlignedPoseRecordingRequestArgs {
   #[inline]
   fn default() -> Self {
-    DetectStayAlignedRelaxedPoseRequestArgs {
-      pose: StayAlignedRelaxedPose::STANDING,
+    StartStayAlignedPoseRecordingRequestArgs {
+      pose: StayAlignedRelaxedPose::UNKNOWN,
     }
   }
 }
 
-pub struct DetectStayAlignedRelaxedPoseRequestBuilder<'a: 'b, 'b> {
+pub struct StartStayAlignedPoseRecordingRequestBuilder<'a: 'b, 'b> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b> DetectStayAlignedRelaxedPoseRequestBuilder<'a, 'b> {
+impl<'a: 'b, 'b> StartStayAlignedPoseRecordingRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_pose(&mut self, pose: StayAlignedRelaxedPose) {
-    self.fbb_.push_slot::<StayAlignedRelaxedPose>(DetectStayAlignedRelaxedPoseRequest::VT_POSE, pose, StayAlignedRelaxedPose::STANDING);
+    self.fbb_.push_slot::<StayAlignedRelaxedPose>(StartStayAlignedPoseRecordingRequest::VT_POSE, pose, StayAlignedRelaxedPose::UNKNOWN);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DetectStayAlignedRelaxedPoseRequestBuilder<'a, 'b> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> StartStayAlignedPoseRecordingRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
-    DetectStayAlignedRelaxedPoseRequestBuilder {
+    StartStayAlignedPoseRecordingRequestBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<DetectStayAlignedRelaxedPoseRequest<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<StartStayAlignedPoseRecordingRequest<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for DetectStayAlignedRelaxedPoseRequest<'_> {
+impl core::fmt::Debug for StartStayAlignedPoseRecordingRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("DetectStayAlignedRelaxedPoseRequest");
+    let mut ds = f.debug_struct("StartStayAlignedPoseRecordingRequest");
       ds.field("pose", &self.pose());
       ds.finish()
   }

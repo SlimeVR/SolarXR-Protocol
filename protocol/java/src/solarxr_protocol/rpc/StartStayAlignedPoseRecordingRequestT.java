@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class DetectStayAlignedRelaxedPoseRequestT {
+public class StartStayAlignedPoseRecordingRequestT {
   private int pose;
 
   public int getPose() { return pose; }
@@ -15,7 +15,7 @@ public class DetectStayAlignedRelaxedPoseRequestT {
   public void setPose(int pose) { this.pose = pose; }
 
 
-  public DetectStayAlignedRelaxedPoseRequestT() {
+  public StartStayAlignedPoseRecordingRequestT() {
     this.pose = 0;
   }
 }

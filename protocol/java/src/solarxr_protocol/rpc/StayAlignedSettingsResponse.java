@@ -15,69 +15,27 @@ public final class StayAlignedSettingsResponse extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public StayAlignedSettingsResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public boolean setupComplete() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean enabled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean standingEnabled() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public float standingUpperLegAngle() { int o = __offset(10); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float standingLowerLegAngle() { int o = __offset(12); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float standingFootAngle() { int o = __offset(14); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public boolean sittingEnabled() { int o = __offset(16); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public float sittingUpperLegAngle() { int o = __offset(18); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float sittingLowerLegAngle() { int o = __offset(20); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float sittingFootAngle() { int o = __offset(22); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public boolean flatEnabled() { int o = __offset(24); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public float flatUpperLegAngle() { int o = __offset(26); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float flatLowerLegAngle() { int o = __offset(28); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
-  public float flatFootAngle() { int o = __offset(30); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public solarxr_protocol.rpc.StayAlignedPose poses(int j) { return poses(new solarxr_protocol.rpc.StayAlignedPose(), j); }
+  public solarxr_protocol.rpc.StayAlignedPose poses(solarxr_protocol.rpc.StayAlignedPose obj, int j) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public int posesLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
+  public solarxr_protocol.rpc.StayAlignedPose.Vector posesVector() { return posesVector(new solarxr_protocol.rpc.StayAlignedPose.Vector()); }
+  public solarxr_protocol.rpc.StayAlignedPose.Vector posesVector(solarxr_protocol.rpc.StayAlignedPose.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createStayAlignedSettingsResponse(FlatBufferBuilder builder,
-      boolean setupComplete,
       boolean enabled,
-      boolean standingEnabled,
-      float standingUpperLegAngle,
-      float standingLowerLegAngle,
-      float standingFootAngle,
-      boolean sittingEnabled,
-      float sittingUpperLegAngle,
-      float sittingLowerLegAngle,
-      float sittingFootAngle,
-      boolean flatEnabled,
-      float flatUpperLegAngle,
-      float flatLowerLegAngle,
-      float flatFootAngle) {
-    builder.startTable(14);
-    StayAlignedSettingsResponse.addFlatFootAngle(builder, flatFootAngle);
-    StayAlignedSettingsResponse.addFlatLowerLegAngle(builder, flatLowerLegAngle);
-    StayAlignedSettingsResponse.addFlatUpperLegAngle(builder, flatUpperLegAngle);
-    StayAlignedSettingsResponse.addSittingFootAngle(builder, sittingFootAngle);
-    StayAlignedSettingsResponse.addSittingLowerLegAngle(builder, sittingLowerLegAngle);
-    StayAlignedSettingsResponse.addSittingUpperLegAngle(builder, sittingUpperLegAngle);
-    StayAlignedSettingsResponse.addStandingFootAngle(builder, standingFootAngle);
-    StayAlignedSettingsResponse.addStandingLowerLegAngle(builder, standingLowerLegAngle);
-    StayAlignedSettingsResponse.addStandingUpperLegAngle(builder, standingUpperLegAngle);
-    StayAlignedSettingsResponse.addFlatEnabled(builder, flatEnabled);
-    StayAlignedSettingsResponse.addSittingEnabled(builder, sittingEnabled);
-    StayAlignedSettingsResponse.addStandingEnabled(builder, standingEnabled);
+      int posesOffset) {
+    builder.startTable(2);
+    StayAlignedSettingsResponse.addPoses(builder, posesOffset);
     StayAlignedSettingsResponse.addEnabled(builder, enabled);
-    StayAlignedSettingsResponse.addSetupComplete(builder, setupComplete);
     return StayAlignedSettingsResponse.endStayAlignedSettingsResponse(builder);
   }
 
-  public static void startStayAlignedSettingsResponse(FlatBufferBuilder builder) { builder.startTable(14); }
-  public static void addSetupComplete(FlatBufferBuilder builder, boolean setupComplete) { builder.addBoolean(0, setupComplete, false); }
-  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(1, enabled, false); }
-  public static void addStandingEnabled(FlatBufferBuilder builder, boolean standingEnabled) { builder.addBoolean(2, standingEnabled, false); }
-  public static void addStandingUpperLegAngle(FlatBufferBuilder builder, float standingUpperLegAngle) { builder.addFloat(3, standingUpperLegAngle, 0.0f); }
-  public static void addStandingLowerLegAngle(FlatBufferBuilder builder, float standingLowerLegAngle) { builder.addFloat(4, standingLowerLegAngle, 0.0f); }
-  public static void addStandingFootAngle(FlatBufferBuilder builder, float standingFootAngle) { builder.addFloat(5, standingFootAngle, 0.0f); }
-  public static void addSittingEnabled(FlatBufferBuilder builder, boolean sittingEnabled) { builder.addBoolean(6, sittingEnabled, false); }
-  public static void addSittingUpperLegAngle(FlatBufferBuilder builder, float sittingUpperLegAngle) { builder.addFloat(7, sittingUpperLegAngle, 0.0f); }
-  public static void addSittingLowerLegAngle(FlatBufferBuilder builder, float sittingLowerLegAngle) { builder.addFloat(8, sittingLowerLegAngle, 0.0f); }
-  public static void addSittingFootAngle(FlatBufferBuilder builder, float sittingFootAngle) { builder.addFloat(9, sittingFootAngle, 0.0f); }
-  public static void addFlatEnabled(FlatBufferBuilder builder, boolean flatEnabled) { builder.addBoolean(10, flatEnabled, false); }
-  public static void addFlatUpperLegAngle(FlatBufferBuilder builder, float flatUpperLegAngle) { builder.addFloat(11, flatUpperLegAngle, 0.0f); }
-  public static void addFlatLowerLegAngle(FlatBufferBuilder builder, float flatLowerLegAngle) { builder.addFloat(12, flatLowerLegAngle, 0.0f); }
-  public static void addFlatFootAngle(FlatBufferBuilder builder, float flatFootAngle) { builder.addFloat(13, flatFootAngle, 0.0f); }
+  public static void startStayAlignedSettingsResponse(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
+  public static void addPoses(FlatBufferBuilder builder, int posesOffset) { builder.addOffset(1, posesOffset, 0); }
+  public static int createPosesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startPosesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endStayAlignedSettingsResponse(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -95,53 +53,25 @@ public final class StayAlignedSettingsResponse extends Table {
     return _o;
   }
   public void unpackTo(StayAlignedSettingsResponseT _o) {
-    boolean _oSetupComplete = setupComplete();
-    _o.setSetupComplete(_oSetupComplete);
     boolean _oEnabled = enabled();
     _o.setEnabled(_oEnabled);
-    boolean _oStandingEnabled = standingEnabled();
-    _o.setStandingEnabled(_oStandingEnabled);
-    float _oStandingUpperLegAngle = standingUpperLegAngle();
-    _o.setStandingUpperLegAngle(_oStandingUpperLegAngle);
-    float _oStandingLowerLegAngle = standingLowerLegAngle();
-    _o.setStandingLowerLegAngle(_oStandingLowerLegAngle);
-    float _oStandingFootAngle = standingFootAngle();
-    _o.setStandingFootAngle(_oStandingFootAngle);
-    boolean _oSittingEnabled = sittingEnabled();
-    _o.setSittingEnabled(_oSittingEnabled);
-    float _oSittingUpperLegAngle = sittingUpperLegAngle();
-    _o.setSittingUpperLegAngle(_oSittingUpperLegAngle);
-    float _oSittingLowerLegAngle = sittingLowerLegAngle();
-    _o.setSittingLowerLegAngle(_oSittingLowerLegAngle);
-    float _oSittingFootAngle = sittingFootAngle();
-    _o.setSittingFootAngle(_oSittingFootAngle);
-    boolean _oFlatEnabled = flatEnabled();
-    _o.setFlatEnabled(_oFlatEnabled);
-    float _oFlatUpperLegAngle = flatUpperLegAngle();
-    _o.setFlatUpperLegAngle(_oFlatUpperLegAngle);
-    float _oFlatLowerLegAngle = flatLowerLegAngle();
-    _o.setFlatLowerLegAngle(_oFlatLowerLegAngle);
-    float _oFlatFootAngle = flatFootAngle();
-    _o.setFlatFootAngle(_oFlatFootAngle);
+    solarxr_protocol.rpc.StayAlignedPoseT[] _oPoses = new solarxr_protocol.rpc.StayAlignedPoseT[posesLength()];
+    for (int _j = 0; _j < posesLength(); ++_j) {_oPoses[_j] = (poses(_j) != null ? poses(_j).unpack() : null);}
+    _o.setPoses(_oPoses);
   }
   public static int pack(FlatBufferBuilder builder, StayAlignedSettingsResponseT _o) {
     if (_o == null) return 0;
+    int _poses = 0;
+    if (_o.getPoses() != null) {
+      int[] __poses = new int[_o.getPoses().length];
+      int _j = 0;
+      for (solarxr_protocol.rpc.StayAlignedPoseT _e : _o.getPoses()) { __poses[_j] = solarxr_protocol.rpc.StayAlignedPose.pack(builder, _e); _j++;}
+      _poses = createPosesVector(builder, __poses);
+    }
     return createStayAlignedSettingsResponse(
       builder,
-      _o.getSetupComplete(),
       _o.getEnabled(),
-      _o.getStandingEnabled(),
-      _o.getStandingUpperLegAngle(),
-      _o.getStandingLowerLegAngle(),
-      _o.getStandingFootAngle(),
-      _o.getSittingEnabled(),
-      _o.getSittingUpperLegAngle(),
-      _o.getSittingLowerLegAngle(),
-      _o.getSittingFootAngle(),
-      _o.getFlatEnabled(),
-      _o.getFlatUpperLegAngle(),
-      _o.getFlatLowerLegAngle(),
-      _o.getFlatFootAngle());
+      _poses);
   }
 }
 

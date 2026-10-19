@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 154;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 158;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 155] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 159] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -45,8 +45,8 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 155] = [
   RpcMessage::StayAlignedSettingsRequest,
   RpcMessage::StayAlignedSettingsResponse,
   RpcMessage::ChangeStayAlignedSettingsRequest,
-  RpcMessage::ChangeStayAlignedEnabledRequest,
-  RpcMessage::DetectStayAlignedRelaxedPoseRequest,
+  RpcMessage::StartStayAlignedPoseRecordingRequest,
+  RpcMessage::CancelStayAlignedPoseRecordingRequest,
   RpcMessage::ResetStayAlignedRelaxedPoseRequest,
   RpcMessage::HIDSettingsRequest,
   RpcMessage::HIDSettingsResponse,
@@ -171,6 +171,10 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 155] = [
   RpcMessage::LogStreamResponse,
   RpcMessage::LogFileChunkRequest,
   RpcMessage::LogFileChunkResponse,
+  RpcMessage::StayAlignedPoseRecordingStatusResponse,
+  RpcMessage::StartStayAlignedStatusRequest,
+  RpcMessage::StopStayAlignedStatusRequest,
+  RpcMessage::StayAlignedStatusResponse,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -207,8 +211,8 @@ impl RpcMessage {
   pub const StayAlignedSettingsRequest: Self = Self(26);
   pub const StayAlignedSettingsResponse: Self = Self(27);
   pub const ChangeStayAlignedSettingsRequest: Self = Self(28);
-  pub const ChangeStayAlignedEnabledRequest: Self = Self(29);
-  pub const DetectStayAlignedRelaxedPoseRequest: Self = Self(30);
+  pub const StartStayAlignedPoseRecordingRequest: Self = Self(29);
+  pub const CancelStayAlignedPoseRecordingRequest: Self = Self(30);
   pub const ResetStayAlignedRelaxedPoseRequest: Self = Self(31);
   pub const HIDSettingsRequest: Self = Self(32);
   pub const HIDSettingsResponse: Self = Self(33);
@@ -333,9 +337,13 @@ impl RpcMessage {
   pub const LogStreamResponse: Self = Self(152);
   pub const LogFileChunkRequest: Self = Self(153);
   pub const LogFileChunkResponse: Self = Self(154);
+  pub const StayAlignedPoseRecordingStatusResponse: Self = Self(155);
+  pub const StartStayAlignedStatusRequest: Self = Self(156);
+  pub const StopStayAlignedStatusRequest: Self = Self(157);
+  pub const StayAlignedStatusResponse: Self = Self(158);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 154;
+  pub const ENUM_MAX: u8 = 158;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -366,8 +374,8 @@ impl RpcMessage {
     Self::StayAlignedSettingsRequest,
     Self::StayAlignedSettingsResponse,
     Self::ChangeStayAlignedSettingsRequest,
-    Self::ChangeStayAlignedEnabledRequest,
-    Self::DetectStayAlignedRelaxedPoseRequest,
+    Self::StartStayAlignedPoseRecordingRequest,
+    Self::CancelStayAlignedPoseRecordingRequest,
     Self::ResetStayAlignedRelaxedPoseRequest,
     Self::HIDSettingsRequest,
     Self::HIDSettingsResponse,
@@ -492,6 +500,10 @@ impl RpcMessage {
     Self::LogStreamResponse,
     Self::LogFileChunkRequest,
     Self::LogFileChunkResponse,
+    Self::StayAlignedPoseRecordingStatusResponse,
+    Self::StartStayAlignedStatusRequest,
+    Self::StopStayAlignedStatusRequest,
+    Self::StayAlignedStatusResponse,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -525,8 +537,8 @@ impl RpcMessage {
       Self::StayAlignedSettingsRequest => Some("StayAlignedSettingsRequest"),
       Self::StayAlignedSettingsResponse => Some("StayAlignedSettingsResponse"),
       Self::ChangeStayAlignedSettingsRequest => Some("ChangeStayAlignedSettingsRequest"),
-      Self::ChangeStayAlignedEnabledRequest => Some("ChangeStayAlignedEnabledRequest"),
-      Self::DetectStayAlignedRelaxedPoseRequest => Some("DetectStayAlignedRelaxedPoseRequest"),
+      Self::StartStayAlignedPoseRecordingRequest => Some("StartStayAlignedPoseRecordingRequest"),
+      Self::CancelStayAlignedPoseRecordingRequest => Some("CancelStayAlignedPoseRecordingRequest"),
       Self::ResetStayAlignedRelaxedPoseRequest => Some("ResetStayAlignedRelaxedPoseRequest"),
       Self::HIDSettingsRequest => Some("HIDSettingsRequest"),
       Self::HIDSettingsResponse => Some("HIDSettingsResponse"),
@@ -651,6 +663,10 @@ impl RpcMessage {
       Self::LogStreamResponse => Some("LogStreamResponse"),
       Self::LogFileChunkRequest => Some("LogFileChunkRequest"),
       Self::LogFileChunkResponse => Some("LogFileChunkResponse"),
+      Self::StayAlignedPoseRecordingStatusResponse => Some("StayAlignedPoseRecordingStatusResponse"),
+      Self::StartStayAlignedStatusRequest => Some("StartStayAlignedStatusRequest"),
+      Self::StopStayAlignedStatusRequest => Some("StopStayAlignedStatusRequest"),
+      Self::StayAlignedStatusResponse => Some("StayAlignedStatusResponse"),
       _ => None,
     }
   }

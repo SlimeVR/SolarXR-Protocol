@@ -16,28 +16,26 @@ public final class ChangeStayAlignedSettingsRequest extends Table {
   public ChangeStayAlignedSettingsRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public boolean enabled() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean standingEnabled() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean sittingEnabled() { int o = __offset(8); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public boolean flatEnabled() { int o = __offset(10); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
+  public solarxr_protocol.rpc.StayAlignedPoseToggle poseToggles(int j) { return poseToggles(new solarxr_protocol.rpc.StayAlignedPoseToggle(), j); }
+  public solarxr_protocol.rpc.StayAlignedPoseToggle poseToggles(solarxr_protocol.rpc.StayAlignedPoseToggle obj, int j) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(__vector(o) + j * 4), bb) : null; }
+  public int poseTogglesLength() { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; }
+  public solarxr_protocol.rpc.StayAlignedPoseToggle.Vector poseTogglesVector() { return poseTogglesVector(new solarxr_protocol.rpc.StayAlignedPoseToggle.Vector()); }
+  public solarxr_protocol.rpc.StayAlignedPoseToggle.Vector poseTogglesVector(solarxr_protocol.rpc.StayAlignedPoseToggle.Vector obj) { int o = __offset(6); return o != 0 ? obj.__assign(__vector(o), 4, bb) : null; }
 
   public static int createChangeStayAlignedSettingsRequest(FlatBufferBuilder builder,
       boolean enabled,
-      boolean standingEnabled,
-      boolean sittingEnabled,
-      boolean flatEnabled) {
-    builder.startTable(4);
-    ChangeStayAlignedSettingsRequest.addFlatEnabled(builder, flatEnabled);
-    ChangeStayAlignedSettingsRequest.addSittingEnabled(builder, sittingEnabled);
-    ChangeStayAlignedSettingsRequest.addStandingEnabled(builder, standingEnabled);
+      int poseTogglesOffset) {
+    builder.startTable(2);
+    ChangeStayAlignedSettingsRequest.addPoseToggles(builder, poseTogglesOffset);
     ChangeStayAlignedSettingsRequest.addEnabled(builder, enabled);
     return ChangeStayAlignedSettingsRequest.endChangeStayAlignedSettingsRequest(builder);
   }
 
-  public static void startChangeStayAlignedSettingsRequest(FlatBufferBuilder builder) { builder.startTable(4); }
+  public static void startChangeStayAlignedSettingsRequest(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addEnabled(FlatBufferBuilder builder, boolean enabled) { builder.addBoolean(0, enabled, false); }
-  public static void addStandingEnabled(FlatBufferBuilder builder, boolean standingEnabled) { builder.addBoolean(1, standingEnabled, false); }
-  public static void addSittingEnabled(FlatBufferBuilder builder, boolean sittingEnabled) { builder.addBoolean(2, sittingEnabled, false); }
-  public static void addFlatEnabled(FlatBufferBuilder builder, boolean flatEnabled) { builder.addBoolean(3, flatEnabled, false); }
+  public static void addPoseToggles(FlatBufferBuilder builder, int poseTogglesOffset) { builder.addOffset(1, poseTogglesOffset, 0); }
+  public static int createPoseTogglesVector(FlatBufferBuilder builder, int[] data) { builder.startVector(4, data.length, 4); for (int i = data.length - 1; i >= 0; i--) builder.addOffset(data[i]); return builder.endVector(); }
+  public static void startPoseTogglesVector(FlatBufferBuilder builder, int numElems) { builder.startVector(4, numElems, 4); }
   public static int endChangeStayAlignedSettingsRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -57,21 +55,23 @@ public final class ChangeStayAlignedSettingsRequest extends Table {
   public void unpackTo(ChangeStayAlignedSettingsRequestT _o) {
     boolean _oEnabled = enabled();
     _o.setEnabled(_oEnabled);
-    boolean _oStandingEnabled = standingEnabled();
-    _o.setStandingEnabled(_oStandingEnabled);
-    boolean _oSittingEnabled = sittingEnabled();
-    _o.setSittingEnabled(_oSittingEnabled);
-    boolean _oFlatEnabled = flatEnabled();
-    _o.setFlatEnabled(_oFlatEnabled);
+    solarxr_protocol.rpc.StayAlignedPoseToggleT[] _oPoseToggles = new solarxr_protocol.rpc.StayAlignedPoseToggleT[poseTogglesLength()];
+    for (int _j = 0; _j < poseTogglesLength(); ++_j) {_oPoseToggles[_j] = (poseToggles(_j) != null ? poseToggles(_j).unpack() : null);}
+    _o.setPoseToggles(_oPoseToggles);
   }
   public static int pack(FlatBufferBuilder builder, ChangeStayAlignedSettingsRequestT _o) {
     if (_o == null) return 0;
+    int _poseToggles = 0;
+    if (_o.getPoseToggles() != null) {
+      int[] __poseToggles = new int[_o.getPoseToggles().length];
+      int _j = 0;
+      for (solarxr_protocol.rpc.StayAlignedPoseToggleT _e : _o.getPoseToggles()) { __poseToggles[_j] = solarxr_protocol.rpc.StayAlignedPoseToggle.pack(builder, _e); _j++;}
+      _poseToggles = createPoseTogglesVector(builder, __poseToggles);
+    }
     return createChangeStayAlignedSettingsRequest(
       builder,
       _o.getEnabled(),
-      _o.getStandingEnabled(),
-      _o.getSittingEnabled(),
-      _o.getFlatEnabled());
+      _poseToggles);
   }
 }
 

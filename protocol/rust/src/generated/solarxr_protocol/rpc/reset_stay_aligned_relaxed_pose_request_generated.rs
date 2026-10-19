@@ -47,7 +47,7 @@ impl<'a> ResetStayAlignedRelaxedPoseRequest<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<StayAlignedRelaxedPose>(ResetStayAlignedRelaxedPoseRequest::VT_POSE, Some(StayAlignedRelaxedPose::STANDING)).unwrap()}
+    unsafe { self._tab.get::<StayAlignedRelaxedPose>(ResetStayAlignedRelaxedPoseRequest::VT_POSE, Some(StayAlignedRelaxedPose::UNKNOWN)).unwrap()}
   }
 }
 
@@ -70,7 +70,7 @@ impl<'a> Default for ResetStayAlignedRelaxedPoseRequestArgs {
   #[inline]
   fn default() -> Self {
     ResetStayAlignedRelaxedPoseRequestArgs {
-      pose: StayAlignedRelaxedPose::STANDING,
+      pose: StayAlignedRelaxedPose::UNKNOWN,
     }
   }
 }
@@ -82,7 +82,7 @@ pub struct ResetStayAlignedRelaxedPoseRequestBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> ResetStayAlignedRelaxedPoseRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_pose(&mut self, pose: StayAlignedRelaxedPose) {
-    self.fbb_.push_slot::<StayAlignedRelaxedPose>(ResetStayAlignedRelaxedPoseRequest::VT_POSE, pose, StayAlignedRelaxedPose::STANDING);
+    self.fbb_.push_slot::<StayAlignedRelaxedPose>(ResetStayAlignedRelaxedPoseRequest::VT_POSE, pose, StayAlignedRelaxedPose::UNKNOWN);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ResetStayAlignedRelaxedPoseRequestBuilder<'a, 'b> {

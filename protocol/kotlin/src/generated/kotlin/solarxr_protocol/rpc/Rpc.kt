@@ -45,8 +45,8 @@ public sealed interface RpcMessage {
       26 -> StayAlignedSettingsRequest.decode(bb, offset)
       27 -> StayAlignedSettingsResponse.decode(bb, offset)
       28 -> ChangeStayAlignedSettingsRequest.decode(bb, offset)
-      29 -> ChangeStayAlignedEnabledRequest.decode(bb, offset)
-      30 -> DetectStayAlignedRelaxedPoseRequest.decode(bb, offset)
+      29 -> StartStayAlignedPoseRecordingRequest.decode(bb, offset)
+      30 -> CancelStayAlignedPoseRecordingRequest.decode(bb, offset)
       31 -> ResetStayAlignedRelaxedPoseRequest.decode(bb, offset)
       32 -> HIDSettingsRequest.decode(bb, offset)
       33 -> HIDSettingsResponse.decode(bb, offset)
@@ -171,6 +171,10 @@ public sealed interface RpcMessage {
       152 -> LogStreamResponse.decode(bb, offset)
       153 -> LogFileChunkRequest.decode(bb, offset)
       154 -> LogFileChunkResponse.decode(bb, offset)
+      155 -> StayAlignedPoseRecordingStatusResponse.decode(bb, offset)
+      156 -> StartStayAlignedStatusRequest.decode(bb, offset)
+      157 -> StopStayAlignedStatusRequest.decode(bb, offset)
+      158 -> StayAlignedStatusResponse.decode(bb, offset)
       else -> null
     }
 
@@ -203,8 +207,8 @@ public sealed interface RpcMessage {
       is StayAlignedSettingsRequest -> 26.toUByte()
       is StayAlignedSettingsResponse -> 27.toUByte()
       is ChangeStayAlignedSettingsRequest -> 28.toUByte()
-      is ChangeStayAlignedEnabledRequest -> 29.toUByte()
-      is DetectStayAlignedRelaxedPoseRequest -> 30.toUByte()
+      is StartStayAlignedPoseRecordingRequest -> 29.toUByte()
+      is CancelStayAlignedPoseRecordingRequest -> 30.toUByte()
       is ResetStayAlignedRelaxedPoseRequest -> 31.toUByte()
       is HIDSettingsRequest -> 32.toUByte()
       is HIDSettingsResponse -> 33.toUByte()
@@ -329,6 +333,10 @@ public sealed interface RpcMessage {
       is LogStreamResponse -> 152.toUByte()
       is LogFileChunkRequest -> 153.toUByte()
       is LogFileChunkResponse -> 154.toUByte()
+      is StayAlignedPoseRecordingStatusResponse -> 155.toUByte()
+      is StartStayAlignedStatusRequest -> 156.toUByte()
+      is StopStayAlignedStatusRequest -> 157.toUByte()
+      is StayAlignedStatusResponse -> 158.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -360,8 +368,8 @@ public sealed interface RpcMessage {
       is StayAlignedSettingsRequest -> value.encode(builder)
       is StayAlignedSettingsResponse -> value.encode(builder)
       is ChangeStayAlignedSettingsRequest -> value.encode(builder)
-      is ChangeStayAlignedEnabledRequest -> value.encode(builder)
-      is DetectStayAlignedRelaxedPoseRequest -> value.encode(builder)
+      is StartStayAlignedPoseRecordingRequest -> value.encode(builder)
+      is CancelStayAlignedPoseRecordingRequest -> value.encode(builder)
       is ResetStayAlignedRelaxedPoseRequest -> value.encode(builder)
       is HIDSettingsRequest -> value.encode(builder)
       is HIDSettingsResponse -> value.encode(builder)
@@ -486,6 +494,10 @@ public sealed interface RpcMessage {
       is LogStreamResponse -> value.encode(builder)
       is LogFileChunkRequest -> value.encode(builder)
       is LogFileChunkResponse -> value.encode(builder)
+      is StayAlignedPoseRecordingStatusResponse -> value.encode(builder)
+      is StartStayAlignedStatusRequest -> value.encode(builder)
+      is StopStayAlignedStatusRequest -> value.encode(builder)
+      is StayAlignedStatusResponse -> value.encode(builder)
     }
   }
 }

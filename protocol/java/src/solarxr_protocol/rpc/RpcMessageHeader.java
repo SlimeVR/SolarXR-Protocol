@@ -183,13 +183,13 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeStayAlignedEnabledRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeStayAlignedEnabledRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeStayAlignedEnabledRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.StartStayAlignedPoseRecordingRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StartStayAlignedPoseRecordingRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StartStayAlignedPoseRecordingRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.DetectStayAlignedRelaxedPoseRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.CancelStayAlignedPoseRecordingRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.CancelStayAlignedPoseRecordingRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.CancelStayAlignedPoseRecordingRequest) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.ResetStayAlignedRelaxedPoseRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest());
@@ -686,6 +686,22 @@ public final class RpcMessageHeader extends Table {
       case solarxr_protocol.rpc.RpcMessage.LogFileChunkResponse:
         _oMessageValue = message(new solarxr_protocol.rpc.LogFileChunkResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LogFileChunkResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StayAlignedPoseRecordingStatusResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.StayAlignedPoseRecordingStatusResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StayAlignedPoseRecordingStatusResponse) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StartStayAlignedStatusRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StartStayAlignedStatusRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StartStayAlignedStatusRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StopStayAlignedStatusRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.StopStayAlignedStatusRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StopStayAlignedStatusRequest) _oMessageValue).unpack() : null);
+        break;
+      case solarxr_protocol.rpc.RpcMessage.StayAlignedStatusResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.StayAlignedStatusResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.StayAlignedStatusResponse) _oMessageValue).unpack() : null);
         break;
       default: break;
     }

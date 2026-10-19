@@ -65,8 +65,8 @@ union RpcMessage {
     StayAlignedSettingsRequest,
     StayAlignedSettingsResponse,
     ChangeStayAlignedSettingsRequest,
-    ChangeStayAlignedEnabledRequest,
-    DetectStayAlignedRelaxedPoseRequest,
+    StartStayAlignedPoseRecordingRequest,
+    CancelStayAlignedPoseRecordingRequest,
     ResetStayAlignedRelaxedPoseRequest,
     HIDSettingsRequest,
     HIDSettingsResponse,
@@ -191,6 +191,10 @@ union RpcMessage {
     LogStreamResponse,
     LogFileChunkRequest,
     LogFileChunkResponse,
+    StayAlignedPoseRecordingStatusResponse,
+    StartStayAlignedStatusRequest,
+    StopStayAlignedStatusRequest,
+    StayAlignedStatusResponse,
 }
 
 table RpcMessageHeader {

@@ -49,8 +49,8 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StayAlignedSettingsRequestT asStayAlignedSettingsRequest() { return (solarxr_protocol.rpc.StayAlignedSettingsRequestT) value; }
   public solarxr_protocol.rpc.StayAlignedSettingsResponseT asStayAlignedSettingsResponse() { return (solarxr_protocol.rpc.StayAlignedSettingsResponseT) value; }
   public solarxr_protocol.rpc.ChangeStayAlignedSettingsRequestT asChangeStayAlignedSettingsRequest() { return (solarxr_protocol.rpc.ChangeStayAlignedSettingsRequestT) value; }
-  public solarxr_protocol.rpc.ChangeStayAlignedEnabledRequestT asChangeStayAlignedEnabledRequest() { return (solarxr_protocol.rpc.ChangeStayAlignedEnabledRequestT) value; }
-  public solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT asDetectStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequestT) value; }
+  public solarxr_protocol.rpc.StartStayAlignedPoseRecordingRequestT asStartStayAlignedPoseRecordingRequest() { return (solarxr_protocol.rpc.StartStayAlignedPoseRecordingRequestT) value; }
+  public solarxr_protocol.rpc.CancelStayAlignedPoseRecordingRequestT asCancelStayAlignedPoseRecordingRequest() { return (solarxr_protocol.rpc.CancelStayAlignedPoseRecordingRequestT) value; }
   public solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT asResetStayAlignedRelaxedPoseRequest() { return (solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequestT) value; }
   public solarxr_protocol.rpc.HIDSettingsRequestT asHIDSettingsRequest() { return (solarxr_protocol.rpc.HIDSettingsRequestT) value; }
   public solarxr_protocol.rpc.HIDSettingsResponseT asHIDSettingsResponse() { return (solarxr_protocol.rpc.HIDSettingsResponseT) value; }
@@ -175,6 +175,10 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.LogStreamResponseT asLogStreamResponse() { return (solarxr_protocol.rpc.LogStreamResponseT) value; }
   public solarxr_protocol.rpc.LogFileChunkRequestT asLogFileChunkRequest() { return (solarxr_protocol.rpc.LogFileChunkRequestT) value; }
   public solarxr_protocol.rpc.LogFileChunkResponseT asLogFileChunkResponse() { return (solarxr_protocol.rpc.LogFileChunkResponseT) value; }
+  public solarxr_protocol.rpc.StayAlignedPoseRecordingStatusResponseT asStayAlignedPoseRecordingStatusResponse() { return (solarxr_protocol.rpc.StayAlignedPoseRecordingStatusResponseT) value; }
+  public solarxr_protocol.rpc.StartStayAlignedStatusRequestT asStartStayAlignedStatusRequest() { return (solarxr_protocol.rpc.StartStayAlignedStatusRequestT) value; }
+  public solarxr_protocol.rpc.StopStayAlignedStatusRequestT asStopStayAlignedStatusRequest() { return (solarxr_protocol.rpc.StopStayAlignedStatusRequestT) value; }
+  public solarxr_protocol.rpc.StayAlignedStatusResponseT asStayAlignedStatusResponse() { return (solarxr_protocol.rpc.StayAlignedStatusResponseT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -206,8 +210,8 @@ public class RpcMessageUnion {
       case RpcMessage.StayAlignedSettingsRequest: return solarxr_protocol.rpc.StayAlignedSettingsRequest.pack(builder, _o.asStayAlignedSettingsRequest());
       case RpcMessage.StayAlignedSettingsResponse: return solarxr_protocol.rpc.StayAlignedSettingsResponse.pack(builder, _o.asStayAlignedSettingsResponse());
       case RpcMessage.ChangeStayAlignedSettingsRequest: return solarxr_protocol.rpc.ChangeStayAlignedSettingsRequest.pack(builder, _o.asChangeStayAlignedSettingsRequest());
-      case RpcMessage.ChangeStayAlignedEnabledRequest: return solarxr_protocol.rpc.ChangeStayAlignedEnabledRequest.pack(builder, _o.asChangeStayAlignedEnabledRequest());
-      case RpcMessage.DetectStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.DetectStayAlignedRelaxedPoseRequest.pack(builder, _o.asDetectStayAlignedRelaxedPoseRequest());
+      case RpcMessage.StartStayAlignedPoseRecordingRequest: return solarxr_protocol.rpc.StartStayAlignedPoseRecordingRequest.pack(builder, _o.asStartStayAlignedPoseRecordingRequest());
+      case RpcMessage.CancelStayAlignedPoseRecordingRequest: return solarxr_protocol.rpc.CancelStayAlignedPoseRecordingRequest.pack(builder, _o.asCancelStayAlignedPoseRecordingRequest());
       case RpcMessage.ResetStayAlignedRelaxedPoseRequest: return solarxr_protocol.rpc.ResetStayAlignedRelaxedPoseRequest.pack(builder, _o.asResetStayAlignedRelaxedPoseRequest());
       case RpcMessage.HIDSettingsRequest: return solarxr_protocol.rpc.HIDSettingsRequest.pack(builder, _o.asHIDSettingsRequest());
       case RpcMessage.HIDSettingsResponse: return solarxr_protocol.rpc.HIDSettingsResponse.pack(builder, _o.asHIDSettingsResponse());
@@ -332,6 +336,10 @@ public class RpcMessageUnion {
       case RpcMessage.LogStreamResponse: return solarxr_protocol.rpc.LogStreamResponse.pack(builder, _o.asLogStreamResponse());
       case RpcMessage.LogFileChunkRequest: return solarxr_protocol.rpc.LogFileChunkRequest.pack(builder, _o.asLogFileChunkRequest());
       case RpcMessage.LogFileChunkResponse: return solarxr_protocol.rpc.LogFileChunkResponse.pack(builder, _o.asLogFileChunkResponse());
+      case RpcMessage.StayAlignedPoseRecordingStatusResponse: return solarxr_protocol.rpc.StayAlignedPoseRecordingStatusResponse.pack(builder, _o.asStayAlignedPoseRecordingStatusResponse());
+      case RpcMessage.StartStayAlignedStatusRequest: return solarxr_protocol.rpc.StartStayAlignedStatusRequest.pack(builder, _o.asStartStayAlignedStatusRequest());
+      case RpcMessage.StopStayAlignedStatusRequest: return solarxr_protocol.rpc.StopStayAlignedStatusRequest.pack(builder, _o.asStopStayAlignedStatusRequest());
+      case RpcMessage.StayAlignedStatusResponse: return solarxr_protocol.rpc.StayAlignedStatusResponse.pack(builder, _o.asStayAlignedStatusResponse());
       default: return 0;
     }
   }

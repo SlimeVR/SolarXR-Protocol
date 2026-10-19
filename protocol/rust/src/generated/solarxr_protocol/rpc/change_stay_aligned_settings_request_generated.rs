@@ -26,9 +26,7 @@ impl<'a> flatbuffers::Follow<'a> for ChangeStayAlignedSettingsRequest<'a> {
 
 impl<'a> ChangeStayAlignedSettingsRequest<'a> {
   pub const VT_ENABLED: flatbuffers::VOffsetT = 4;
-  pub const VT_STANDING_ENABLED: flatbuffers::VOffsetT = 6;
-  pub const VT_SITTING_ENABLED: flatbuffers::VOffsetT = 8;
-  pub const VT_FLAT_ENABLED: flatbuffers::VOffsetT = 10;
+  pub const VT_POSE_TOGGLES: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,12 +35,10 @@ impl<'a> ChangeStayAlignedSettingsRequest<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args ChangeStayAlignedSettingsRequestArgs
+    args: &'args ChangeStayAlignedSettingsRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<ChangeStayAlignedSettingsRequest<'bldr>> {
     let mut builder = ChangeStayAlignedSettingsRequestBuilder::new(_fbb);
-    builder.add_flat_enabled(args.flat_enabled);
-    builder.add_sitting_enabled(args.sitting_enabled);
-    builder.add_standing_enabled(args.standing_enabled);
+    if let Some(x) = args.pose_toggles { builder.add_pose_toggles(x); }
     builder.add_enabled(args.enabled);
     builder.finish()
   }
@@ -56,25 +52,11 @@ impl<'a> ChangeStayAlignedSettingsRequest<'a> {
     unsafe { self._tab.get::<bool>(ChangeStayAlignedSettingsRequest::VT_ENABLED, Some(false)).unwrap()}
   }
   #[inline]
-  pub fn standing_enabled(&self) -> bool {
+  pub fn pose_toggles(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<StayAlignedPoseToggle<'a>>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ChangeStayAlignedSettingsRequest::VT_STANDING_ENABLED, Some(false)).unwrap()}
-  }
-  #[inline]
-  pub fn sitting_enabled(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ChangeStayAlignedSettingsRequest::VT_SITTING_ENABLED, Some(false)).unwrap()}
-  }
-  #[inline]
-  pub fn flat_enabled(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(ChangeStayAlignedSettingsRequest::VT_FLAT_ENABLED, Some(false)).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<StayAlignedPoseToggle>>>>(ChangeStayAlignedSettingsRequest::VT_POSE_TOGGLES, None)}
   }
 }
 
@@ -86,27 +68,21 @@ impl flatbuffers::Verifiable for ChangeStayAlignedSettingsRequest<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<bool>("enabled", Self::VT_ENABLED, false)?
-     .visit_field::<bool>("standing_enabled", Self::VT_STANDING_ENABLED, false)?
-     .visit_field::<bool>("sitting_enabled", Self::VT_SITTING_ENABLED, false)?
-     .visit_field::<bool>("flat_enabled", Self::VT_FLAT_ENABLED, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<StayAlignedPoseToggle>>>>("pose_toggles", Self::VT_POSE_TOGGLES, false)?
      .finish();
     Ok(())
   }
 }
-pub struct ChangeStayAlignedSettingsRequestArgs {
+pub struct ChangeStayAlignedSettingsRequestArgs<'a> {
     pub enabled: bool,
-    pub standing_enabled: bool,
-    pub sitting_enabled: bool,
-    pub flat_enabled: bool,
+    pub pose_toggles: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<StayAlignedPoseToggle<'a>>>>>,
 }
-impl<'a> Default for ChangeStayAlignedSettingsRequestArgs {
+impl<'a> Default for ChangeStayAlignedSettingsRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
     ChangeStayAlignedSettingsRequestArgs {
       enabled: false,
-      standing_enabled: false,
-      sitting_enabled: false,
-      flat_enabled: false,
+      pose_toggles: None,
     }
   }
 }
@@ -121,16 +97,8 @@ impl<'a: 'b, 'b> ChangeStayAlignedSettingsRequestBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(ChangeStayAlignedSettingsRequest::VT_ENABLED, enabled, false);
   }
   #[inline]
-  pub fn add_standing_enabled(&mut self, standing_enabled: bool) {
-    self.fbb_.push_slot::<bool>(ChangeStayAlignedSettingsRequest::VT_STANDING_ENABLED, standing_enabled, false);
-  }
-  #[inline]
-  pub fn add_sitting_enabled(&mut self, sitting_enabled: bool) {
-    self.fbb_.push_slot::<bool>(ChangeStayAlignedSettingsRequest::VT_SITTING_ENABLED, sitting_enabled, false);
-  }
-  #[inline]
-  pub fn add_flat_enabled(&mut self, flat_enabled: bool) {
-    self.fbb_.push_slot::<bool>(ChangeStayAlignedSettingsRequest::VT_FLAT_ENABLED, flat_enabled, false);
+  pub fn add_pose_toggles(&mut self, pose_toggles: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<StayAlignedPoseToggle<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ChangeStayAlignedSettingsRequest::VT_POSE_TOGGLES, pose_toggles);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeStayAlignedSettingsRequestBuilder<'a, 'b> {
@@ -151,9 +119,7 @@ impl core::fmt::Debug for ChangeStayAlignedSettingsRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ChangeStayAlignedSettingsRequest");
       ds.field("enabled", &self.enabled());
-      ds.field("standing_enabled", &self.standing_enabled());
-      ds.field("sitting_enabled", &self.sitting_enabled());
-      ds.field("flat_enabled", &self.flat_enabled());
+      ds.field("pose_toggles", &self.pose_toggles());
       ds.finish()
   }
 }

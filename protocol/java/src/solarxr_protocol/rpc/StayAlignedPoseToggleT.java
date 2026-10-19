@@ -7,15 +7,21 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class ChangeStayAlignedEnabledRequestT {
+public class StayAlignedPoseToggleT {
+  private int pose;
   private boolean enabled;
+
+  public int getPose() { return pose; }
+
+  public void setPose(int pose) { this.pose = pose; }
 
   public boolean getEnabled() { return enabled; }
 
   public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
 
-  public ChangeStayAlignedEnabledRequestT() {
+  public StayAlignedPoseToggleT() {
+    this.pose = 0;
     this.enabled = false;
   }
 }
