@@ -4,6 +4,9 @@ import * as flatbuffers from 'flatbuffers';
 
 
 
+/**
+ * Resets the server settings
+ */
 export class SettingsResetRequest implements flatbuffers.IUnpackableObject<SettingsResetRequestT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

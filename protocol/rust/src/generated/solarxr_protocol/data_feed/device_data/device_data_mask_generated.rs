@@ -52,11 +52,11 @@ impl<'a> DeviceDataMask<'a> {
 
   /// Which tracker data should be sent in this data feed
   #[inline]
-  pub fn tracker_data(&self) -> Option<super::tracker::TrackerDataMask<'a>> {
+  pub fn tracker_data(&self) -> Option<super::tracker_data::TrackerDataMask<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::tracker::TrackerDataMask>>(DeviceDataMask::VT_TRACKER_DATA, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::tracker_data::TrackerDataMask>>(DeviceDataMask::VT_TRACKER_DATA, None)}
   }
   /// true if device data should be sent in this data feed
   #[inline]
@@ -75,14 +75,14 @@ impl flatbuffers::Verifiable for DeviceDataMask<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<super::tracker::TrackerDataMask>>("tracker_data", Self::VT_TRACKER_DATA, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<super::tracker_data::TrackerDataMask>>("tracker_data", Self::VT_TRACKER_DATA, false)?
      .visit_field::<bool>("device_data", Self::VT_DEVICE_DATA, false)?
      .finish();
     Ok(())
   }
 }
 pub struct DeviceDataMaskArgs<'a> {
-    pub tracker_data: Option<flatbuffers::WIPOffset<super::tracker::TrackerDataMask<'a>>>,
+    pub tracker_data: Option<flatbuffers::WIPOffset<super::tracker_data::TrackerDataMask<'a>>>,
     pub device_data: bool,
 }
 impl<'a> Default for DeviceDataMaskArgs<'a> {
@@ -101,8 +101,8 @@ pub struct DeviceDataMaskBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> DeviceDataMaskBuilder<'a, 'b> {
   #[inline]
-  pub fn add_tracker_data(&mut self, tracker_data: flatbuffers::WIPOffset<super::tracker::TrackerDataMask<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::tracker::TrackerDataMask>>(DeviceDataMask::VT_TRACKER_DATA, tracker_data);
+  pub fn add_tracker_data(&mut self, tracker_data: flatbuffers::WIPOffset<super::tracker_data::TrackerDataMask<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::tracker_data::TrackerDataMask>>(DeviceDataMask::VT_TRACKER_DATA, tracker_data);
   }
   #[inline]
   pub fn add_device_data(&mut self, device_data: bool) {

@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_TRACKING_CHECKLIST_STEP_ID: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_TRACKING_CHECKLIST_STEP_ID: u8 = 12;
+pub const ENUM_MAX_TRACKING_CHECKLIST_STEP_ID: u8 = 14;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_TRACKING_CHECKLIST_STEP_ID: [TrackingChecklistStepId; 13] = [
+pub const ENUM_VALUES_TRACKING_CHECKLIST_STEP_ID: [TrackingChecklistStepId; 15] = [
   TrackingChecklistStepId::UNKNOWN,
   TrackingChecklistStepId::TRACKERS_REST_CALIBRATION,
   TrackingChecklistStepId::FULL_RESET,
@@ -29,6 +29,8 @@ pub const ENUM_VALUES_TRACKING_CHECKLIST_STEP_ID: [TrackingChecklistStepId; 13] 
   TrackingChecklistStepId::STAY_ALIGNED_CONFIGURED,
   TrackingChecklistStepId::STEAMVR_HANDS_ENABLED,
   TrackingChecklistStepId::STANDABLE_INSTALLED,
+  TrackingChecklistStepId::VRCHAT_OSC_TRACKING_DISABLED,
+  TrackingChecklistStepId::MOUNTING_METHOD,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -49,9 +51,11 @@ impl TrackingChecklistStepId {
   pub const STAY_ALIGNED_CONFIGURED: Self = Self(10);
   pub const STEAMVR_HANDS_ENABLED: Self = Self(11);
   pub const STANDABLE_INSTALLED: Self = Self(12);
+  pub const VRCHAT_OSC_TRACKING_DISABLED: Self = Self(13);
+  pub const MOUNTING_METHOD: Self = Self(14);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 12;
+  pub const ENUM_MAX: u8 = 14;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::UNKNOWN,
     Self::TRACKERS_REST_CALIBRATION,
@@ -66,6 +70,8 @@ impl TrackingChecklistStepId {
     Self::STAY_ALIGNED_CONFIGURED,
     Self::STEAMVR_HANDS_ENABLED,
     Self::STANDABLE_INSTALLED,
+    Self::VRCHAT_OSC_TRACKING_DISABLED,
+    Self::MOUNTING_METHOD,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -83,6 +89,8 @@ impl TrackingChecklistStepId {
       Self::STAY_ALIGNED_CONFIGURED => Some("STAY_ALIGNED_CONFIGURED"),
       Self::STEAMVR_HANDS_ENABLED => Some("STEAMVR_HANDS_ENABLED"),
       Self::STANDABLE_INSTALLED => Some("STANDABLE_INSTALLED"),
+      Self::VRCHAT_OSC_TRACKING_DISABLED => Some("VRCHAT_OSC_TRACKING_DISABLED"),
+      Self::MOUNTING_METHOD => Some("MOUNTING_METHOD"),
       _ => None,
     }
   }

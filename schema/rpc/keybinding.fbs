@@ -1,0 +1,63 @@
+namespace solarxr_protocol.rpc;
+
+enum KeybindId: uint8 {
+    NONE = 0,
+    FULL_RESET = 1,
+    YAW_RESET = 2,
+    MOUNTING_RESET = 3,
+    PAUSE_TRACKING = 4,
+    FEET_MOUNTING_RESET = 5
+}
+
+table Keybind {
+    keybind_id: KeybindId;
+    keybind_name_id: string;
+    keybind_value: string;
+    keybind_delay: float;
+}
+
+/// Requests specified keybind eg. FULL_RESET -> KeybindResponse sends the keybind back to gui
+table KeybindRequest {
+    keybind_id: KeybindId;
+}
+
+/// How global keybinds are handled on the platform the server runs on
+enum KeybindSupport: uint8 {
+    /// Global keybinds are not available at all (eg. macOS)
+    UNSUPPORTED = 0,
+    /// The compositor owns the bindings, so the user rebinds them from the system settings (eg. KDE)
+    SYSTEM_MANAGED = 1,
+    /// The server applies keybind changes itself, so the gui can offer a full editor (eg. Windows, GNOME)
+    APP_MANAGED = 2
+}
+
+/// Returns keybinds for displaying in gui
+table KeybindResponse {
+    keybind: [Keybind];
+    default_keybinds: [Keybind];
+    support: KeybindSupport;
+}
+
+table ChangeKeybindRequest {
+    keybind: Keybind;
+}
+
+/// Opens the system settings page where the compositor's global shortcuts are configured.
+/// Only meaningful when KeybindSupport is SYSTEM_MANAGED.
+table OpenKeybindSettingsRequest {}
+table OpenKeybindSettingsResponse {
+    success: bool;
+}
+
+/// Tells the server the gui keybind recorder is open, so the server suppresses keybind
+/// actions and instead reports which keybind was pressed (see KeybindActivatedResponse).
+/// This lets the gui detect a combo already grabbed by the compositor, which never reaches
+/// the web view as a keypress.
+table SetKeybindRecordingRequest {
+    recording: bool;
+}
+
+/// Sent while recording when a keybind fires, so the gui can flag the combo as already used.
+table KeybindActivatedResponse {
+    keybind_id: KeybindId;
+}

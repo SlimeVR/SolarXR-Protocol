@@ -10,10 +10,9 @@ import com.google.flatbuffers.*;
 public class DataFeedConfigT {
   private int minimumTimeSinceLast;
   private solarxr_protocol.data_feed.device_data.DeviceDataMaskT dataMask;
-  private solarxr_protocol.data_feed.tracker.TrackerDataMaskT syntheticTrackersMask;
-  private boolean boneMask;
-  private boolean stayAlignedPoseMask;
+  private solarxr_protocol.datatypes.BoneMaskT boneMask;
   private boolean serverGuardsMask;
+  private solarxr_protocol.data_feed.dongle_data.DongleDataMaskT dongleMask;
 
   public int getMinimumTimeSinceLast() { return minimumTimeSinceLast; }
 
@@ -23,30 +22,25 @@ public class DataFeedConfigT {
 
   public void setDataMask(solarxr_protocol.data_feed.device_data.DeviceDataMaskT dataMask) { this.dataMask = dataMask; }
 
-  public solarxr_protocol.data_feed.tracker.TrackerDataMaskT getSyntheticTrackersMask() { return syntheticTrackersMask; }
+  public solarxr_protocol.datatypes.BoneMaskT getBoneMask() { return boneMask; }
 
-  public void setSyntheticTrackersMask(solarxr_protocol.data_feed.tracker.TrackerDataMaskT syntheticTrackersMask) { this.syntheticTrackersMask = syntheticTrackersMask; }
-
-  public boolean getBoneMask() { return boneMask; }
-
-  public void setBoneMask(boolean boneMask) { this.boneMask = boneMask; }
-
-  public boolean getStayAlignedPoseMask() { return stayAlignedPoseMask; }
-
-  public void setStayAlignedPoseMask(boolean stayAlignedPoseMask) { this.stayAlignedPoseMask = stayAlignedPoseMask; }
+  public void setBoneMask(solarxr_protocol.datatypes.BoneMaskT boneMask) { this.boneMask = boneMask; }
 
   public boolean getServerGuardsMask() { return serverGuardsMask; }
 
   public void setServerGuardsMask(boolean serverGuardsMask) { this.serverGuardsMask = serverGuardsMask; }
 
+  public solarxr_protocol.data_feed.dongle_data.DongleDataMaskT getDongleMask() { return dongleMask; }
+
+  public void setDongleMask(solarxr_protocol.data_feed.dongle_data.DongleDataMaskT dongleMask) { this.dongleMask = dongleMask; }
+
 
   public DataFeedConfigT() {
     this.minimumTimeSinceLast = 0;
     this.dataMask = null;
-    this.syntheticTrackersMask = null;
-    this.boneMask = false;
-    this.stayAlignedPoseMask = false;
+    this.boneMask = null;
     this.serverGuardsMask = false;
+    this.dongleMask = null;
   }
 }
 

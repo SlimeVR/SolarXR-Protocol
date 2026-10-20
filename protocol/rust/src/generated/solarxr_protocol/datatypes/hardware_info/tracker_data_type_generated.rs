@@ -21,7 +21,7 @@ pub const ENUM_VALUES_TRACKER_DATA_TYPE: [TrackerDataType; 3] = [
   TrackerDataType::FLEX_ANGLE,
 ];
 
-/// What kind of data the tracker supports.The received data gets computed into a Quaternion rotation in any case.
+/// What kind of data the tracker supports. The received data gets transformed into a Quaternion rotation in any case.
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
 pub struct TrackerDataType(pub u8);

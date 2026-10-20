@@ -15,19 +15,19 @@ public final class AddUnknownDeviceRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public AddUnknownDeviceRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public String macAddress() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer macAddressAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
-  public ByteBuffer macAddressInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
+  public String hardwareId() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer hardwareIdAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
+  public ByteBuffer hardwareIdInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
 
   public static int createAddUnknownDeviceRequest(FlatBufferBuilder builder,
-      int macAddressOffset) {
+      int hardwareIdOffset) {
     builder.startTable(1);
-    AddUnknownDeviceRequest.addMacAddress(builder, macAddressOffset);
+    AddUnknownDeviceRequest.addHardwareId(builder, hardwareIdOffset);
     return AddUnknownDeviceRequest.endAddUnknownDeviceRequest(builder);
   }
 
   public static void startAddUnknownDeviceRequest(FlatBufferBuilder builder) { builder.startTable(1); }
-  public static void addMacAddress(FlatBufferBuilder builder, int macAddressOffset) { builder.addOffset(0, macAddressOffset, 0); }
+  public static void addHardwareId(FlatBufferBuilder builder, int hardwareIdOffset) { builder.addOffset(0, hardwareIdOffset, 0); }
   public static int endAddUnknownDeviceRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -45,15 +45,15 @@ public final class AddUnknownDeviceRequest extends Table {
     return _o;
   }
   public void unpackTo(AddUnknownDeviceRequestT _o) {
-    String _oMacAddress = macAddress();
-    _o.setMacAddress(_oMacAddress);
+    String _oHardwareId = hardwareId();
+    _o.setHardwareId(_oHardwareId);
   }
   public static int pack(FlatBufferBuilder builder, AddUnknownDeviceRequestT _o) {
     if (_o == null) return 0;
-    int _macAddress = _o.getMacAddress() == null ? 0 : builder.createString(_o.getMacAddress());
+    int _hardwareId = _o.getHardwareId() == null ? 0 : builder.createString(_o.getHardwareId());
     return createAddUnknownDeviceRequest(
       builder,
-      _macAddress);
+      _hardwareId);
   }
 }
 

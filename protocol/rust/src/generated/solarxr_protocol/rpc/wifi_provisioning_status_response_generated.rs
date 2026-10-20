@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for WifiProvisioningStatusResponse<'a> {
 }
 
 impl<'a> WifiProvisioningStatusResponse<'a> {
-  pub const VT_STATUS: flatbuffers::VOffsetT = 4;
+  pub const VT_TRACKERS: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -34,20 +34,20 @@ impl<'a> WifiProvisioningStatusResponse<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args WifiProvisioningStatusResponseArgs
+    args: &'args WifiProvisioningStatusResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<WifiProvisioningStatusResponse<'bldr>> {
     let mut builder = WifiProvisioningStatusResponseBuilder::new(_fbb);
-    builder.add_status(args.status);
+    if let Some(x) = args.trackers { builder.add_trackers(x); }
     builder.finish()
   }
 
 
   #[inline]
-  pub fn status(&self) -> WifiProvisioningStatus {
+  pub fn trackers(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TrackerProvisioningState<'a>>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<WifiProvisioningStatus>(WifiProvisioningStatusResponse::VT_STATUS, Some(WifiProvisioningStatus::NONE)).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TrackerProvisioningState>>>>(WifiProvisioningStatusResponse::VT_TRACKERS, None)}
   }
 }
 
@@ -58,19 +58,19 @@ impl flatbuffers::Verifiable for WifiProvisioningStatusResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<WifiProvisioningStatus>("status", Self::VT_STATUS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<TrackerProvisioningState>>>>("trackers", Self::VT_TRACKERS, false)?
      .finish();
     Ok(())
   }
 }
-pub struct WifiProvisioningStatusResponseArgs {
-    pub status: WifiProvisioningStatus,
+pub struct WifiProvisioningStatusResponseArgs<'a> {
+    pub trackers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TrackerProvisioningState<'a>>>>>,
 }
-impl<'a> Default for WifiProvisioningStatusResponseArgs {
+impl<'a> Default for WifiProvisioningStatusResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
     WifiProvisioningStatusResponseArgs {
-      status: WifiProvisioningStatus::NONE,
+      trackers: None,
     }
   }
 }
@@ -81,8 +81,8 @@ pub struct WifiProvisioningStatusResponseBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> WifiProvisioningStatusResponseBuilder<'a, 'b> {
   #[inline]
-  pub fn add_status(&mut self, status: WifiProvisioningStatus) {
-    self.fbb_.push_slot::<WifiProvisioningStatus>(WifiProvisioningStatusResponse::VT_STATUS, status, WifiProvisioningStatus::NONE);
+  pub fn add_trackers(&mut self, trackers: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<TrackerProvisioningState<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(WifiProvisioningStatusResponse::VT_TRACKERS, trackers);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> WifiProvisioningStatusResponseBuilder<'a, 'b> {
@@ -102,7 +102,7 @@ impl<'a: 'b, 'b> WifiProvisioningStatusResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for WifiProvisioningStatusResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("WifiProvisioningStatusResponse");
-      ds.field("status", &self.status());
+      ds.field("trackers", &self.trackers());
       ds.finish()
   }
 }

@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_TRACKER_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_TRACKER_STATUS: u8 = 6;
+pub const ENUM_MAX_TRACKER_STATUS: u8 = 7;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_TRACKER_STATUS: [TrackerStatus; 7] = [
+pub const ENUM_VALUES_TRACKER_STATUS: [TrackerStatus; 8] = [
   TrackerStatus::NONE,
   TrackerStatus::DISCONNECTED,
   TrackerStatus::OK,
@@ -23,6 +23,7 @@ pub const ENUM_VALUES_TRACKER_STATUS: [TrackerStatus; 7] = [
   TrackerStatus::ERROR,
   TrackerStatus::OCCLUDED,
   TrackerStatus::TIMED_OUT,
+  TrackerStatus::SLEEPING,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -37,9 +38,10 @@ impl TrackerStatus {
   pub const ERROR: Self = Self(4);
   pub const OCCLUDED: Self = Self(5);
   pub const TIMED_OUT: Self = Self(6);
+  pub const SLEEPING: Self = Self(7);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 6;
+  pub const ENUM_MAX: u8 = 7;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::DISCONNECTED,
@@ -48,6 +50,7 @@ impl TrackerStatus {
     Self::ERROR,
     Self::OCCLUDED,
     Self::TIMED_OUT,
+    Self::SLEEPING,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -59,6 +62,7 @@ impl TrackerStatus {
       Self::ERROR => Some("ERROR"),
       Self::OCCLUDED => Some("OCCLUDED"),
       Self::TIMED_OUT => Some("TIMED_OUT"),
+      Self::SLEEPING => Some("SLEEPING"),
       _ => None,
     }
   }
