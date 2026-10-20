@@ -662,8 +662,8 @@ struct TrackingChecklistSteamVRDisconnectedBuilder;
 struct EnableSteamVRDriverRequest;
 struct EnableSteamVRDriverRequestBuilder;
 
-struct TrackingChecklistUnassignedReliableReference;
-struct TrackingChecklistUnassignedReliableReferenceBuilder;
+struct TrackingChecklistUnassignedHMD;
+struct TrackingChecklistUnassignedHMDBuilder;
 
 struct TrackingChecklistPublicNetworks;
 struct TrackingChecklistPublicNetworksBuilder;
@@ -3497,7 +3497,7 @@ enum class TrackingChecklistExtraData : uint8_t {
   TrackingChecklistTrackerReset = 1,
   TrackingChecklistTrackerError = 2,
   TrackingChecklistSteamVRDisconnected = 3,
-  TrackingChecklistUnassignedReliableReference = 4,
+  TrackingChecklistUnassignedHMD = 4,
   TrackingChecklistNeedCalibration = 5,
   TrackingChecklistPublicNetworks = 6,
   MIN = NONE,
@@ -3510,7 +3510,7 @@ inline const TrackingChecklistExtraData (&EnumValuesTrackingChecklistExtraData()
     TrackingChecklistExtraData::TrackingChecklistTrackerReset,
     TrackingChecklistExtraData::TrackingChecklistTrackerError,
     TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected,
-    TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference,
+    TrackingChecklistExtraData::TrackingChecklistUnassignedHMD,
     TrackingChecklistExtraData::TrackingChecklistNeedCalibration,
     TrackingChecklistExtraData::TrackingChecklistPublicNetworks
   };
@@ -3523,7 +3523,7 @@ inline const char * const *EnumNamesTrackingChecklistExtraData() {
     "TrackingChecklistTrackerReset",
     "TrackingChecklistTrackerError",
     "TrackingChecklistSteamVRDisconnected",
-    "TrackingChecklistUnassignedReliableReference",
+    "TrackingChecklistUnassignedHMD",
     "TrackingChecklistNeedCalibration",
     "TrackingChecklistPublicNetworks",
     nullptr
@@ -3553,8 +3553,8 @@ template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::Tracki
   static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected;
 };
 
-template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference> {
-  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference;
+template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistUnassignedHMD> {
+  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistUnassignedHMD;
 };
 
 template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistNeedCalibration> {
@@ -12404,7 +12404,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_ARMS_MOUNTING_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_RELIABLE_REFERENCE_ATTITUDE = 12,
+    VT_RESET_HMD_ATTITUDE = 12,
     VT_MOUNTING_METHOD = 14
   };
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
@@ -12423,8 +12423,8 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
   /// Reset VR headset's pitch and roll
-  bool reset_reliable_reference_attitude() const {
-    return GetField<uint8_t>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 0) != 0;
+  bool reset_hmd_attitude() const {
+    return GetField<uint8_t>(VT_RESET_HMD_ATTITUDE, 0) != 0;
   }
   /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
   solarxr_protocol::datatypes::MountingMethod mounting_method() const {
@@ -12436,7 +12436,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_HMD_ATTITUDE, 1) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_METHOD, 1) &&
            verifier.EndTable();
   }
@@ -12458,8 +12458,8 @@ struct ResetsSettingsResponseBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
-  void add_reset_reliable_reference_attitude(bool reset_reliable_reference_attitude) {
-    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, static_cast<uint8_t>(reset_reliable_reference_attitude), 0);
+  void add_reset_hmd_attitude(bool reset_hmd_attitude) {
+    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_HMD_ATTITUDE, static_cast<uint8_t>(reset_hmd_attitude), 0);
   }
   void add_mounting_method(solarxr_protocol::datatypes::MountingMethod mounting_method) {
     fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_MOUNTING_METHOD, static_cast<uint8_t>(mounting_method), 0);
@@ -12481,12 +12481,12 @@ inline flatbuffers::Offset<ResetsSettingsResponse> CreateResetsSettingsResponse(
     solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_reliable_reference_attitude = false,
+    bool reset_hmd_attitude = false,
     solarxr_protocol::datatypes::MountingMethod mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN) {
   ResetsSettingsResponseBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
   builder_.add_mounting_method(mounting_method);
-  builder_.add_reset_reliable_reference_attitude(reset_reliable_reference_attitude);
+  builder_.add_reset_hmd_attitude(reset_hmd_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
@@ -12500,7 +12500,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
     VT_ARMS_MOUNTING_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_RELIABLE_REFERENCE_ATTITUDE = 12,
+    VT_RESET_HMD_ATTITUDE = 12,
     VT_MOUNTING_METHOD = 14
   };
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
@@ -12519,8 +12519,8 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
   /// Reset VR headset's pitch and roll
-  bool reset_reliable_reference_attitude() const {
-    return GetField<uint8_t>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 0) != 0;
+  bool reset_hmd_attitude() const {
+    return GetField<uint8_t>(VT_RESET_HMD_ATTITUDE, 0) != 0;
   }
   /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
   solarxr_protocol::datatypes::MountingMethod mounting_method() const {
@@ -12532,7 +12532,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
            VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_HMD_ATTITUDE, 1) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_METHOD, 1) &&
            verifier.EndTable();
   }
@@ -12554,8 +12554,8 @@ struct ChangeResetsSettingsRequestBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
-  void add_reset_reliable_reference_attitude(bool reset_reliable_reference_attitude) {
-    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, static_cast<uint8_t>(reset_reliable_reference_attitude), 0);
+  void add_reset_hmd_attitude(bool reset_hmd_attitude) {
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_HMD_ATTITUDE, static_cast<uint8_t>(reset_hmd_attitude), 0);
   }
   void add_mounting_method(solarxr_protocol::datatypes::MountingMethod mounting_method) {
     fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, static_cast<uint8_t>(mounting_method), 0);
@@ -12577,12 +12577,12 @@ inline flatbuffers::Offset<ChangeResetsSettingsRequest> CreateChangeResetsSettin
     solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_reliable_reference_attitude = false,
+    bool reset_hmd_attitude = false,
     solarxr_protocol::datatypes::MountingMethod mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN) {
   ChangeResetsSettingsRequestBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
   builder_.add_mounting_method(mounting_method);
-  builder_.add_reset_reliable_reference_attitude(reset_reliable_reference_attitude);
+  builder_.add_reset_hmd_attitude(reset_hmd_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
@@ -18293,54 +18293,44 @@ inline flatbuffers::Offset<EnableSteamVRDriverRequest> CreateEnableSteamVRDriver
   return builder_.Finish();
 }
 
-struct TrackingChecklistUnassignedReliableReference FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TrackingChecklistUnassignedReliableReferenceBuilder Builder;
+struct TrackingChecklistUnassignedHMD FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistUnassignedHMDBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TRACKER_ID = 4,
-    VT_INTENDED_BODY_PART = 6
+    VT_TRACKER_ID = 4
   };
   uint16_t tracker_id() const {
     return GetField<uint16_t>(VT_TRACKER_ID, 0);
   }
-  solarxr_protocol::datatypes::BodyPart intended_body_part() const {
-    return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_INTENDED_BODY_PART, 0));
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
-           VerifyField<uint8_t>(verifier, VT_INTENDED_BODY_PART, 1) &&
            verifier.EndTable();
   }
 };
 
-struct TrackingChecklistUnassignedReliableReferenceBuilder {
-  typedef TrackingChecklistUnassignedReliableReference Table;
+struct TrackingChecklistUnassignedHMDBuilder {
+  typedef TrackingChecklistUnassignedHMD Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_tracker_id(uint16_t tracker_id) {
-    fbb_.AddElement<uint16_t>(TrackingChecklistUnassignedReliableReference::VT_TRACKER_ID, tracker_id, 0);
+    fbb_.AddElement<uint16_t>(TrackingChecklistUnassignedHMD::VT_TRACKER_ID, tracker_id, 0);
   }
-  void add_intended_body_part(solarxr_protocol::datatypes::BodyPart intended_body_part) {
-    fbb_.AddElement<uint8_t>(TrackingChecklistUnassignedReliableReference::VT_INTENDED_BODY_PART, static_cast<uint8_t>(intended_body_part), 0);
-  }
-  explicit TrackingChecklistUnassignedReliableReferenceBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TrackingChecklistUnassignedHMDBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TrackingChecklistUnassignedReliableReference> Finish() {
+  flatbuffers::Offset<TrackingChecklistUnassignedHMD> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TrackingChecklistUnassignedReliableReference>(end);
+    auto o = flatbuffers::Offset<TrackingChecklistUnassignedHMD>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TrackingChecklistUnassignedReliableReference> CreateTrackingChecklistUnassignedReliableReference(
+inline flatbuffers::Offset<TrackingChecklistUnassignedHMD> CreateTrackingChecklistUnassignedHMD(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t tracker_id = 0,
-    solarxr_protocol::datatypes::BodyPart intended_body_part = solarxr_protocol::datatypes::BodyPart::NONE) {
-  TrackingChecklistUnassignedReliableReferenceBuilder builder_(_fbb);
+    uint16_t tracker_id = 0) {
+  TrackingChecklistUnassignedHMDBuilder builder_(_fbb);
   builder_.add_tracker_id(tracker_id);
-  builder_.add_intended_body_part(intended_body_part);
   return builder_.Finish();
 }
 
@@ -18442,8 +18432,8 @@ struct TrackingChecklistStep FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *extra_data_as_TrackingChecklistSteamVRDisconnected() const {
     return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected ? static_cast<const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *>(extra_data()) : nullptr;
   }
-  const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *extra_data_as_TrackingChecklistUnassignedReliableReference() const {
-    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference ? static_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *>(extra_data()) : nullptr;
+  const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *extra_data_as_TrackingChecklistUnassignedHMD() const {
+    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistUnassignedHMD ? static_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *>(extra_data()) : nullptr;
   }
   const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *extra_data_as_TrackingChecklistNeedCalibration() const {
     return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistNeedCalibration ? static_cast<const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *>(extra_data()) : nullptr;
@@ -18478,8 +18468,8 @@ template<> inline const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnec
   return extra_data_as_TrackingChecklistSteamVRDisconnected();
 }
 
-template<> inline const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference>() const {
-  return extra_data_as_TrackingChecklistUnassignedReliableReference();
+template<> inline const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistUnassignedHMD>() const {
+  return extra_data_as_TrackingChecklistUnassignedHMD();
 }
 
 template<> inline const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistNeedCalibration>() const {
@@ -21762,8 +21752,8 @@ inline bool VerifyTrackingChecklistExtraData(flatbuffers::Verifier &verifier, co
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *>(obj);
+    case TrackingChecklistExtraData::TrackingChecklistUnassignedHMD: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case TrackingChecklistExtraData::TrackingChecklistNeedCalibration: {

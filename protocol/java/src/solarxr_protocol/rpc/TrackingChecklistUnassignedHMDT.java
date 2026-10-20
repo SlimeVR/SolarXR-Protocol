@@ -7,22 +7,16 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class TrackingChecklistUnassignedReliableReferenceT {
+public class TrackingChecklistUnassignedHMDT {
   private int trackerId;
-  private int intendedBodyPart;
 
   public int getTrackerId() { return trackerId; }
 
   public void setTrackerId(int trackerId) { this.trackerId = trackerId; }
 
-  public int getIntendedBodyPart() { return intendedBodyPart; }
 
-  public void setIntendedBodyPart(int intendedBodyPart) { this.intendedBodyPart = intendedBodyPart; }
-
-
-  public TrackingChecklistUnassignedReliableReferenceT() {
+  public TrackingChecklistUnassignedHMDT() {
     this.trackerId = 0;
-    this.intendedBodyPart = 0;
   }
 }
 
