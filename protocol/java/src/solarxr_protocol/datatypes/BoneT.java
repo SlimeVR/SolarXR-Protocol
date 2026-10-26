@@ -16,7 +16,6 @@ public class BoneT {
   private solarxr_protocol.datatypes.math.Vec3fT tailPosition;
   private solarxr_protocol.datatypes.math.Vec3fT linearVelocity;
   private solarxr_protocol.datatypes.math.Vec3fT angularVelocity;
-  private solarxr_protocol.datatypes.math.Vec3fT trackerOffset;
 
   public int getBodyPart() { return bodyPart; }
 
@@ -50,10 +49,6 @@ public class BoneT {
 
   public void setAngularVelocity(solarxr_protocol.datatypes.math.Vec3fT angularVelocity) { this.angularVelocity = angularVelocity; }
 
-  public solarxr_protocol.datatypes.math.Vec3fT getTrackerOffset() { return trackerOffset; }
-
-  public void setTrackerOffset(solarxr_protocol.datatypes.math.Vec3fT trackerOffset) { this.trackerOffset = trackerOffset; }
-
 
   public BoneT() {
     this.bodyPart = 0;
@@ -64,7 +59,6 @@ public class BoneT {
     this.tailPosition = new solarxr_protocol.datatypes.math.Vec3fT();
     this.linearVelocity = new solarxr_protocol.datatypes.math.Vec3fT();
     this.angularVelocity = new solarxr_protocol.datatypes.math.Vec3fT();
-    this.trackerOffset = new solarxr_protocol.datatypes.math.Vec3fT();
   }
 }
 

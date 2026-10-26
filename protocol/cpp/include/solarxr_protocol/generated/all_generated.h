@@ -5672,8 +5672,7 @@ struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HEAD_POSITION = 12,
     VT_TAIL_POSITION = 14,
     VT_LINEAR_VELOCITY = 16,
-    VT_ANGULAR_VELOCITY = 18,
-    VT_TRACKER_OFFSET = 20
+    VT_ANGULAR_VELOCITY = 18
   };
   solarxr_protocol::datatypes::BodyPart body_part() const {
     return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
@@ -5710,10 +5709,6 @@ struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::math::Vec3f *angular_velocity() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_ANGULAR_VELOCITY);
   }
-  /// Similar to TrackerInfo.position_offset, position offset from the head of the bone to the tracker.
-  const solarxr_protocol::datatypes::math::Vec3f *tracker_offset() const {
-    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_TRACKER_OFFSET);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
@@ -5724,7 +5719,6 @@ struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_TAIL_POSITION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_VELOCITY, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_ANGULAR_VELOCITY, 4) &&
-           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_TRACKER_OFFSET, 4) &&
            verifier.EndTable();
   }
 };
@@ -5757,9 +5751,6 @@ struct BoneBuilder {
   void add_angular_velocity(const solarxr_protocol::datatypes::math::Vec3f *angular_velocity) {
     fbb_.AddStruct(Bone::VT_ANGULAR_VELOCITY, angular_velocity);
   }
-  void add_tracker_offset(const solarxr_protocol::datatypes::math::Vec3f *tracker_offset) {
-    fbb_.AddStruct(Bone::VT_TRACKER_OFFSET, tracker_offset);
-  }
   explicit BoneBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5780,10 +5771,8 @@ inline flatbuffers::Offset<Bone> CreateBone(
     const solarxr_protocol::datatypes::math::Vec3f *head_position = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *tail_position = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *linear_velocity = nullptr,
-    const solarxr_protocol::datatypes::math::Vec3f *angular_velocity = nullptr,
-    const solarxr_protocol::datatypes::math::Vec3f *tracker_offset = nullptr) {
+    const solarxr_protocol::datatypes::math::Vec3f *angular_velocity = nullptr) {
   BoneBuilder builder_(_fbb);
-  builder_.add_tracker_offset(tracker_offset);
   builder_.add_angular_velocity(angular_velocity);
   builder_.add_linear_velocity(linear_velocity);
   builder_.add_tail_position(tail_position);
@@ -5805,8 +5794,7 @@ struct BoneMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HEAD_POSITION = 12,
     VT_TAIL_POSITION = 14,
     VT_LINEAR_VELOCITY = 16,
-    VT_ANGULAR_VELOCITY = 18,
-    VT_TRACKER_OFFSET = 20
+    VT_ANGULAR_VELOCITY = 18
   };
   bool body_part() const {
     return GetField<uint8_t>(VT_BODY_PART, 0) != 0;
@@ -5832,9 +5820,6 @@ struct BoneMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool angular_velocity() const {
     return GetField<uint8_t>(VT_ANGULAR_VELOCITY, 0) != 0;
   }
-  bool tracker_offset() const {
-    return GetField<uint8_t>(VT_TRACKER_OFFSET, 0) != 0;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
@@ -5845,7 +5830,6 @@ struct BoneMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_TAIL_POSITION, 1) &&
            VerifyField<uint8_t>(verifier, VT_LINEAR_VELOCITY, 1) &&
            VerifyField<uint8_t>(verifier, VT_ANGULAR_VELOCITY, 1) &&
-           VerifyField<uint8_t>(verifier, VT_TRACKER_OFFSET, 1) &&
            verifier.EndTable();
   }
 };
@@ -5878,9 +5862,6 @@ struct BoneMaskBuilder {
   void add_angular_velocity(bool angular_velocity) {
     fbb_.AddElement<uint8_t>(BoneMask::VT_ANGULAR_VELOCITY, static_cast<uint8_t>(angular_velocity), 0);
   }
-  void add_tracker_offset(bool tracker_offset) {
-    fbb_.AddElement<uint8_t>(BoneMask::VT_TRACKER_OFFSET, static_cast<uint8_t>(tracker_offset), 0);
-  }
   explicit BoneMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5901,10 +5882,8 @@ inline flatbuffers::Offset<BoneMask> CreateBoneMask(
     bool head_position = false,
     bool tail_position = false,
     bool linear_velocity = false,
-    bool angular_velocity = false,
-    bool tracker_offset = false) {
+    bool angular_velocity = false) {
   BoneMaskBuilder builder_(_fbb);
-  builder_.add_tracker_offset(tracker_offset);
   builder_.add_angular_velocity(angular_velocity);
   builder_.add_linear_velocity(linear_velocity);
   builder_.add_tail_position(tail_position);

@@ -93,16 +93,8 @@ angularVelocity(obj?:Vec3f):Vec3f|null {
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-/**
- * Similar to TrackerInfo.position_offset, position offset from the head of the bone to the tracker.
- */
-trackerOffset(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
-  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
-}
-
 static startBone(builder:flatbuffers.Builder) {
-  builder.startObject(9);
+  builder.startObject(8);
 }
 
 static addBodyPart(builder:flatbuffers.Builder, bodyPart:BodyPart) {
@@ -137,10 +129,6 @@ static addAngularVelocity(builder:flatbuffers.Builder, angularVelocityOffset:fla
   builder.addFieldStruct(7, angularVelocityOffset, 0);
 }
 
-static addTrackerOffset(builder:flatbuffers.Builder, trackerOffsetOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(8, trackerOffsetOffset, 0);
-}
-
 static endBone(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -156,8 +144,7 @@ unpack(): BoneT {
     (this.headPosition() !== null ? this.headPosition()!.unpack() : null),
     (this.tailPosition() !== null ? this.tailPosition()!.unpack() : null),
     (this.linearVelocity() !== null ? this.linearVelocity()!.unpack() : null),
-    (this.angularVelocity() !== null ? this.angularVelocity()!.unpack() : null),
-    (this.trackerOffset() !== null ? this.trackerOffset()!.unpack() : null)
+    (this.angularVelocity() !== null ? this.angularVelocity()!.unpack() : null)
   );
 }
 
@@ -171,7 +158,6 @@ unpackTo(_o: BoneT): void {
   _o.tailPosition = (this.tailPosition() !== null ? this.tailPosition()!.unpack() : null);
   _o.linearVelocity = (this.linearVelocity() !== null ? this.linearVelocity()!.unpack() : null);
   _o.angularVelocity = (this.angularVelocity() !== null ? this.angularVelocity()!.unpack() : null);
-  _o.trackerOffset = (this.trackerOffset() !== null ? this.trackerOffset()!.unpack() : null);
 }
 }
 
@@ -184,8 +170,7 @@ constructor(
   public headPosition: Vec3fT|null = null,
   public tailPosition: Vec3fT|null = null,
   public linearVelocity: Vec3fT|null = null,
-  public angularVelocity: Vec3fT|null = null,
-  public trackerOffset: Vec3fT|null = null
+  public angularVelocity: Vec3fT|null = null
 ){}
 
 
@@ -199,7 +184,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   Bone.addTailPosition(builder, (this.tailPosition !== null ? this.tailPosition!.pack(builder) : 0));
   Bone.addLinearVelocity(builder, (this.linearVelocity !== null ? this.linearVelocity!.pack(builder) : 0));
   Bone.addAngularVelocity(builder, (this.angularVelocity !== null ? this.angularVelocity!.pack(builder) : 0));
-  Bone.addTrackerOffset(builder, (this.trackerOffset !== null ? this.trackerOffset!.pack(builder) : 0));
 
   return Bone.endBone(builder);
 }
