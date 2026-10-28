@@ -458,9 +458,6 @@ struct SkeletonTogglesBuilder;
 struct SkeletonRatios;
 struct SkeletonRatiosBuilder;
 
-struct SkeletonFiltering;
-struct SkeletonFilteringBuilder;
-
 struct SkeletonSettingsRequest;
 struct SkeletonSettingsRequestBuilder;
 
@@ -2813,39 +2810,6 @@ inline const char *EnumNameSkeletonBone(SkeletonBone e) {
   if (flatbuffers::IsOutRange(e, SkeletonBone::NONE, SkeletonBone::HAND)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesSkeletonBone()[index];
-}
-
-enum class FilteringType : uint8_t {
-  NONE = 0,
-  SMOOTHING = 1,
-  PREDICTION = 2,
-  MIN = NONE,
-  MAX = PREDICTION
-};
-
-inline const FilteringType (&EnumValuesFilteringType())[3] {
-  static const FilteringType values[] = {
-    FilteringType::NONE,
-    FilteringType::SMOOTHING,
-    FilteringType::PREDICTION
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesFilteringType() {
-  static const char * const names[4] = {
-    "NONE",
-    "SMOOTHING",
-    "PREDICTION",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameFilteringType(FilteringType e) {
-  if (flatbuffers::IsOutRange(e, FilteringType::NONE, FilteringType::PREDICTION)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesFilteringType()[index];
 }
 
 enum class StayAlignedRelaxedPose : uint8_t {
@@ -13847,11 +13811,19 @@ inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
 struct SkeletonRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SkeletonRatiosBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SPINE_CURVATURE = 4,
-    VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER = 6,
-    VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS = 8,
-    VT_SKATING_CORRECTION_STRENGTH = 10
+    VT_SMOOTHING_STRENGTH = 4,
+    VT_PREDICTION_STRENGTH = 6,
+    VT_SPINE_CURVATURE = 8,
+    VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER = 10,
+    VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS = 12,
+    VT_SKATING_CORRECTION_STRENGTH = 14
   };
+  flatbuffers::Optional<float> smoothing_strength() const {
+    return GetOptional<float, float>(VT_SMOOTHING_STRENGTH);
+  }
+  flatbuffers::Optional<float> prediction_strength() const {
+    return GetOptional<float, float>(VT_PREDICTION_STRENGTH);
+  }
   /// Used to compute the curvature of the spine. Higher = more curvature.
   flatbuffers::Optional<float> spine_curvature() const {
     return GetOptional<float, float>(VT_SPINE_CURVATURE);
@@ -13870,6 +13842,8 @@ struct SkeletonRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_SMOOTHING_STRENGTH, 4) &&
+           VerifyField<float>(verifier, VT_PREDICTION_STRENGTH, 4) &&
            VerifyField<float>(verifier, VT_SPINE_CURVATURE, 4) &&
            VerifyField<float>(verifier, VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, 4) &&
            VerifyField<float>(verifier, VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS, 4) &&
@@ -13882,6 +13856,12 @@ struct SkeletonRatiosBuilder {
   typedef SkeletonRatios Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_smoothing_strength(float smoothing_strength) {
+    fbb_.AddElement<float>(SkeletonRatios::VT_SMOOTHING_STRENGTH, smoothing_strength);
+  }
+  void add_prediction_strength(float prediction_strength) {
+    fbb_.AddElement<float>(SkeletonRatios::VT_PREDICTION_STRENGTH, prediction_strength);
+  }
   void add_spine_curvature(float spine_curvature) {
     fbb_.AddElement<float>(SkeletonRatios::VT_SPINE_CURVATURE, spine_curvature);
   }
@@ -13907,6 +13887,8 @@ struct SkeletonRatiosBuilder {
 
 inline flatbuffers::Offset<SkeletonRatios> CreateSkeletonRatios(
     flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<float> smoothing_strength = flatbuffers::nullopt,
+    flatbuffers::Optional<float> prediction_strength = flatbuffers::nullopt,
     flatbuffers::Optional<float> spine_curvature = flatbuffers::nullopt,
     flatbuffers::Optional<float> impute_spine_from_upper_to_lower = flatbuffers::nullopt,
     flatbuffers::Optional<float> interpolate_upper_legs_twist_with_lower_legs = flatbuffers::nullopt,
@@ -13916,59 +13898,8 @@ inline flatbuffers::Offset<SkeletonRatios> CreateSkeletonRatios(
   if(interpolate_upper_legs_twist_with_lower_legs) { builder_.add_interpolate_upper_legs_twist_with_lower_legs(*interpolate_upper_legs_twist_with_lower_legs); }
   if(impute_spine_from_upper_to_lower) { builder_.add_impute_spine_from_upper_to_lower(*impute_spine_from_upper_to_lower); }
   if(spine_curvature) { builder_.add_spine_curvature(*spine_curvature); }
-  return builder_.Finish();
-}
-
-/// Filtering (e.g smoothing) applied to the skeleton's movements
-struct SkeletonFiltering FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SkeletonFilteringBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TYPE = 4,
-    VT_AMOUNT = 6
-  };
-  solarxr_protocol::rpc::FilteringType type() const {
-    return static_cast<solarxr_protocol::rpc::FilteringType>(GetField<uint8_t>(VT_TYPE, 0));
-  }
-  /// A higher value results in more filtering (0 to 1).
-  float amount() const {
-    return GetField<float>(VT_AMOUNT, 0.0f);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_TYPE, 1) &&
-           VerifyField<float>(verifier, VT_AMOUNT, 4) &&
-           verifier.EndTable();
-  }
-};
-
-struct SkeletonFilteringBuilder {
-  typedef SkeletonFiltering Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_type(solarxr_protocol::rpc::FilteringType type) {
-    fbb_.AddElement<uint8_t>(SkeletonFiltering::VT_TYPE, static_cast<uint8_t>(type), 0);
-  }
-  void add_amount(float amount) {
-    fbb_.AddElement<float>(SkeletonFiltering::VT_AMOUNT, amount, 0.0f);
-  }
-  explicit SkeletonFilteringBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<SkeletonFiltering> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SkeletonFiltering>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<SkeletonFiltering> CreateSkeletonFiltering(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::FilteringType type = solarxr_protocol::rpc::FilteringType::NONE,
-    float amount = 0.0f) {
-  SkeletonFilteringBuilder builder_(_fbb);
-  builder_.add_amount(amount);
-  builder_.add_type(type);
+  if(prediction_strength) { builder_.add_prediction_strength(*prediction_strength); }
+  if(smoothing_strength) { builder_.add_smoothing_strength(*smoothing_strength); }
   return builder_.Finish();
 }
 
@@ -14005,8 +13936,7 @@ struct SkeletonSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
   typedef SkeletonSettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TOGGLES = 4,
-    VT_RATIOS = 6,
-    VT_FILTERING = 8
+    VT_RATIOS = 6
   };
   const solarxr_protocol::rpc::SkeletonToggles *toggles() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonToggles *>(VT_TOGGLES);
@@ -14014,17 +13944,12 @@ struct SkeletonSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
   const solarxr_protocol::rpc::SkeletonRatios *ratios() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonRatios *>(VT_RATIOS);
   }
-  const solarxr_protocol::rpc::SkeletonFiltering *filtering() const {
-    return GetPointer<const solarxr_protocol::rpc::SkeletonFiltering *>(VT_FILTERING);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TOGGLES) &&
            verifier.VerifyTable(toggles()) &&
            VerifyOffset(verifier, VT_RATIOS) &&
            verifier.VerifyTable(ratios()) &&
-           VerifyOffset(verifier, VT_FILTERING) &&
-           verifier.VerifyTable(filtering()) &&
            verifier.EndTable();
   }
 };
@@ -14038,9 +13963,6 @@ struct SkeletonSettingsResponseBuilder {
   }
   void add_ratios(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios) {
     fbb_.AddOffset(SkeletonSettingsResponse::VT_RATIOS, ratios);
-  }
-  void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering) {
-    fbb_.AddOffset(SkeletonSettingsResponse::VT_FILTERING, filtering);
   }
   explicit SkeletonSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -14056,10 +13978,8 @@ struct SkeletonSettingsResponseBuilder {
 inline flatbuffers::Offset<SkeletonSettingsResponse> CreateSkeletonSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SkeletonToggles> toggles = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios = 0) {
   SkeletonSettingsResponseBuilder builder_(_fbb);
-  builder_.add_filtering(filtering);
   builder_.add_ratios(ratios);
   builder_.add_toggles(toggles);
   return builder_.Finish();
@@ -14069,8 +13989,7 @@ struct ChangeSkeletonSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffe
   typedef ChangeSkeletonSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TOGGLES = 4,
-    VT_RATIOS = 6,
-    VT_FILTERING = 8
+    VT_RATIOS = 6
   };
   const solarxr_protocol::rpc::SkeletonToggles *toggles() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonToggles *>(VT_TOGGLES);
@@ -14078,17 +13997,12 @@ struct ChangeSkeletonSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffe
   const solarxr_protocol::rpc::SkeletonRatios *ratios() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonRatios *>(VT_RATIOS);
   }
-  const solarxr_protocol::rpc::SkeletonFiltering *filtering() const {
-    return GetPointer<const solarxr_protocol::rpc::SkeletonFiltering *>(VT_FILTERING);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TOGGLES) &&
            verifier.VerifyTable(toggles()) &&
            VerifyOffset(verifier, VT_RATIOS) &&
            verifier.VerifyTable(ratios()) &&
-           VerifyOffset(verifier, VT_FILTERING) &&
-           verifier.VerifyTable(filtering()) &&
            verifier.EndTable();
   }
 };
@@ -14102,9 +14016,6 @@ struct ChangeSkeletonSettingsRequestBuilder {
   }
   void add_ratios(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios) {
     fbb_.AddOffset(ChangeSkeletonSettingsRequest::VT_RATIOS, ratios);
-  }
-  void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering) {
-    fbb_.AddOffset(ChangeSkeletonSettingsRequest::VT_FILTERING, filtering);
   }
   explicit ChangeSkeletonSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -14120,10 +14031,8 @@ struct ChangeSkeletonSettingsRequestBuilder {
 inline flatbuffers::Offset<ChangeSkeletonSettingsRequest> CreateChangeSkeletonSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SkeletonToggles> toggles = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios = 0) {
   ChangeSkeletonSettingsRequestBuilder builder_(_fbb);
-  builder_.add_filtering(filtering);
   builder_.add_ratios(ratios);
   builder_.add_toggles(toggles);
   return builder_.Finish();

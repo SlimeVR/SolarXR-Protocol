@@ -27,7 +27,6 @@ impl<'a> flatbuffers::Follow<'a> for SkeletonSettingsResponse<'a> {
 impl<'a> SkeletonSettingsResponse<'a> {
   pub const VT_TOGGLES: flatbuffers::VOffsetT = 4;
   pub const VT_RATIOS: flatbuffers::VOffsetT = 6;
-  pub const VT_FILTERING: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,7 +38,6 @@ impl<'a> SkeletonSettingsResponse<'a> {
     args: &'args SkeletonSettingsResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<SkeletonSettingsResponse<'bldr>> {
     let mut builder = SkeletonSettingsResponseBuilder::new(_fbb);
-    if let Some(x) = args.filtering { builder.add_filtering(x); }
     if let Some(x) = args.ratios { builder.add_ratios(x); }
     if let Some(x) = args.toggles { builder.add_toggles(x); }
     builder.finish()
@@ -60,13 +58,6 @@ impl<'a> SkeletonSettingsResponse<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<SkeletonRatios>>(SkeletonSettingsResponse::VT_RATIOS, None)}
   }
-  #[inline]
-  pub fn filtering(&self) -> Option<SkeletonFiltering<'a>> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<SkeletonFiltering>>(SkeletonSettingsResponse::VT_FILTERING, None)}
-  }
 }
 
 impl flatbuffers::Verifiable for SkeletonSettingsResponse<'_> {
@@ -78,7 +69,6 @@ impl flatbuffers::Verifiable for SkeletonSettingsResponse<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<SkeletonToggles>>("toggles", Self::VT_TOGGLES, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<SkeletonRatios>>("ratios", Self::VT_RATIOS, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<SkeletonFiltering>>("filtering", Self::VT_FILTERING, false)?
      .finish();
     Ok(())
   }
@@ -86,7 +76,6 @@ impl flatbuffers::Verifiable for SkeletonSettingsResponse<'_> {
 pub struct SkeletonSettingsResponseArgs<'a> {
     pub toggles: Option<flatbuffers::WIPOffset<SkeletonToggles<'a>>>,
     pub ratios: Option<flatbuffers::WIPOffset<SkeletonRatios<'a>>>,
-    pub filtering: Option<flatbuffers::WIPOffset<SkeletonFiltering<'a>>>,
 }
 impl<'a> Default for SkeletonSettingsResponseArgs<'a> {
   #[inline]
@@ -94,7 +83,6 @@ impl<'a> Default for SkeletonSettingsResponseArgs<'a> {
     SkeletonSettingsResponseArgs {
       toggles: None,
       ratios: None,
-      filtering: None,
     }
   }
 }
@@ -111,10 +99,6 @@ impl<'a: 'b, 'b> SkeletonSettingsResponseBuilder<'a, 'b> {
   #[inline]
   pub fn add_ratios(&mut self, ratios: flatbuffers::WIPOffset<SkeletonRatios<'b >>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<SkeletonRatios>>(SkeletonSettingsResponse::VT_RATIOS, ratios);
-  }
-  #[inline]
-  pub fn add_filtering(&mut self, filtering: flatbuffers::WIPOffset<SkeletonFiltering<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<SkeletonFiltering>>(SkeletonSettingsResponse::VT_FILTERING, filtering);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SkeletonSettingsResponseBuilder<'a, 'b> {
@@ -136,7 +120,6 @@ impl core::fmt::Debug for SkeletonSettingsResponse<'_> {
     let mut ds = f.debug_struct("SkeletonSettingsResponse");
       ds.field("toggles", &self.toggles());
       ds.field("ratios", &self.ratios());
-      ds.field("filtering", &self.filtering());
       ds.finish()
   }
 }

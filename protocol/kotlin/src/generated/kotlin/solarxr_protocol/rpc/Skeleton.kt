@@ -347,6 +347,8 @@ public data class SkeletonToggles(
  * Ratios for the skeletal model. Accepted values for them range from 0 to 1
  */
 public data class SkeletonRatios(
+  public val smoothingStrength: Float? = null,
+  public val predictionStrength: Float? = null,
   public val spineCurvature: Float? = null,
   public val imputeSpineFromUpperToLower: Float? = null,
   public val interpolateUpperLegsTwistWithLowerLegs: Float? = null,
@@ -354,11 +356,13 @@ public data class SkeletonRatios(
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(4)
-    if (spineCurvature != null) { builder.forceDefaults(true); builder.addFloat(0, spineCurvature, 0.0); builder.forceDefaults(false) }
-    if (imputeSpineFromUpperToLower != null) { builder.forceDefaults(true); builder.addFloat(1, imputeSpineFromUpperToLower, 0.0); builder.forceDefaults(false) }
-    if (interpolateUpperLegsTwistWithLowerLegs != null) { builder.forceDefaults(true); builder.addFloat(2, interpolateUpperLegsTwistWithLowerLegs, 0.0); builder.forceDefaults(false) }
-    if (skatingCorrectionStrength != null) { builder.forceDefaults(true); builder.addFloat(3, skatingCorrectionStrength, 0.0); builder.forceDefaults(false) }
+    builder.startTable(6)
+    if (smoothingStrength != null) { builder.forceDefaults(true); builder.addFloat(0, smoothingStrength, 0.0); builder.forceDefaults(false) }
+    if (predictionStrength != null) { builder.forceDefaults(true); builder.addFloat(1, predictionStrength, 0.0); builder.forceDefaults(false) }
+    if (spineCurvature != null) { builder.forceDefaults(true); builder.addFloat(2, spineCurvature, 0.0); builder.forceDefaults(false) }
+    if (imputeSpineFromUpperToLower != null) { builder.forceDefaults(true); builder.addFloat(3, imputeSpineFromUpperToLower, 0.0); builder.forceDefaults(false) }
+    if (interpolateUpperLegsTwistWithLowerLegs != null) { builder.forceDefaults(true); builder.addFloat(4, interpolateUpperLegsTwistWithLowerLegs, 0.0); builder.forceDefaults(false) }
+    if (skatingCorrectionStrength != null) { builder.forceDefaults(true); builder.addFloat(5, skatingCorrectionStrength, 0.0); builder.forceDefaults(false) }
     return builder.endTable()
   }
 
@@ -367,60 +371,20 @@ public data class SkeletonRatios(
       val vtableOffset = tableOffset - bb.getInt(tableOffset)
       val vtableSize = bb.getShort(vtableOffset).toInt()
 
-      val __offset_spineCurvature = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_imputeSpineFromUpperToLower = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_interpolateUpperLegsTwistWithLowerLegs = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_skatingCorrectionStrength = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_smoothingStrength = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+      val __offset_predictionStrength = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_spineCurvature = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_imputeSpineFromUpperToLower = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_interpolateUpperLegsTwistWithLowerLegs = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_skatingCorrectionStrength = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return SkeletonRatios(
+              smoothingStrength = if (__offset_smoothingStrength != 0) bb.getFloat(tableOffset + __offset_smoothingStrength) else null,
+              predictionStrength = if (__offset_predictionStrength != 0) bb.getFloat(tableOffset + __offset_predictionStrength) else null,
               spineCurvature = if (__offset_spineCurvature != 0) bb.getFloat(tableOffset + __offset_spineCurvature) else null,
               imputeSpineFromUpperToLower = if (__offset_imputeSpineFromUpperToLower != 0) bb.getFloat(tableOffset + __offset_imputeSpineFromUpperToLower) else null,
               interpolateUpperLegsTwistWithLowerLegs = if (__offset_interpolateUpperLegsTwistWithLowerLegs != 0) bb.getFloat(tableOffset + __offset_interpolateUpperLegsTwistWithLowerLegs) else null,
               skatingCorrectionStrength = if (__offset_skatingCorrectionStrength != 0) bb.getFloat(tableOffset + __offset_skatingCorrectionStrength) else null
-          )
-    }
-  }
-}
-
-public enum class FilteringType(
-  public val `value`: UByte,
-) {
-  NONE(0.toUByte()),
-  SMOOTHING(1.toUByte()),
-  PREDICTION(2.toUByte()),
-  ;
-
-  public companion object {
-    public fun fromValue(`value`: UByte): FilteringType? = entries.firstOrNull { it.value == value }
-  }
-}
-
-/**
- * Filtering (e.g smoothing) applied to the skeleton's movements
- */
-public data class SkeletonFiltering(
-  public val type: FilteringType = FilteringType.NONE,
-  public val amount: Float = 0.0f,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-
-    builder.startTable(2)
-    builder.addByte(0, type.value.toByte(), 0)
-    builder.addFloat(1, amount, 0.0)
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): SkeletonFiltering {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_type = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_amount = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-
-      return SkeletonFiltering(
-              type = if (__offset_type != 0) FilteringType.fromValue(bb.get(tableOffset + __offset_type).toUByte()) ?: FilteringType.NONE else FilteringType.NONE,
-              amount = if (__offset_amount != 0) bb.getFloat(tableOffset + __offset_amount) else 0.0f
           )
     }
   }
@@ -440,17 +404,14 @@ public class SkeletonSettingsRequest : RpcMessage {
 public data class SkeletonSettingsResponse(
   public val toggles: SkeletonToggles? = null,
   public val ratios: SkeletonRatios? = null,
-  public val filtering: SkeletonFiltering? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_toggles = toggles?.encode(builder)
     val __off_ratios = ratios?.encode(builder)
-    val __off_filtering = filtering?.encode(builder)
 
-    builder.startTable(3)
+    builder.startTable(2)
     __off_toggles?.let { builder.addOffset(0, it, 0) }
     __off_ratios?.let { builder.addOffset(1, it, 0) }
-    __off_filtering?.let { builder.addOffset(2, it, 0) }
     return builder.endTable()
   }
 
@@ -461,12 +422,10 @@ public data class SkeletonSettingsResponse(
 
       val __offset_toggles = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_ratios = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_filtering = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return SkeletonSettingsResponse(
               toggles = if (__offset_toggles != 0) SkeletonToggles.decode(bb, tableOffset + __offset_toggles + bb.getInt(tableOffset + __offset_toggles)) else null,
-              ratios = if (__offset_ratios != 0) SkeletonRatios.decode(bb, tableOffset + __offset_ratios + bb.getInt(tableOffset + __offset_ratios)) else null,
-              filtering = if (__offset_filtering != 0) SkeletonFiltering.decode(bb, tableOffset + __offset_filtering + bb.getInt(tableOffset + __offset_filtering)) else null
+              ratios = if (__offset_ratios != 0) SkeletonRatios.decode(bb, tableOffset + __offset_ratios + bb.getInt(tableOffset + __offset_ratios)) else null
           )
     }
   }
@@ -475,17 +434,14 @@ public data class SkeletonSettingsResponse(
 public data class ChangeSkeletonSettingsRequest(
   public val toggles: SkeletonToggles? = null,
   public val ratios: SkeletonRatios? = null,
-  public val filtering: SkeletonFiltering? = null,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_toggles = toggles?.encode(builder)
     val __off_ratios = ratios?.encode(builder)
-    val __off_filtering = filtering?.encode(builder)
 
-    builder.startTable(3)
+    builder.startTable(2)
     __off_toggles?.let { builder.addOffset(0, it, 0) }
     __off_ratios?.let { builder.addOffset(1, it, 0) }
-    __off_filtering?.let { builder.addOffset(2, it, 0) }
     return builder.endTable()
   }
 
@@ -496,12 +452,10 @@ public data class ChangeSkeletonSettingsRequest(
 
       val __offset_toggles = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_ratios = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-      val __offset_filtering = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
 
       return ChangeSkeletonSettingsRequest(
               toggles = if (__offset_toggles != 0) SkeletonToggles.decode(bb, tableOffset + __offset_toggles + bb.getInt(tableOffset + __offset_toggles)) else null,
-              ratios = if (__offset_ratios != 0) SkeletonRatios.decode(bb, tableOffset + __offset_ratios + bb.getInt(tableOffset + __offset_ratios)) else null,
-              filtering = if (__offset_filtering != 0) SkeletonFiltering.decode(bb, tableOffset + __offset_filtering + bb.getInt(tableOffset + __offset_filtering)) else null
+              ratios = if (__offset_ratios != 0) SkeletonRatios.decode(bb, tableOffset + __offset_ratios + bb.getInt(tableOffset + __offset_ratios)) else null
           )
     }
   }

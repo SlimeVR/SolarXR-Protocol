@@ -82,6 +82,8 @@ table SkeletonToggles {
 
 /// Ratios for the skeletal model. Accepted values for them range from 0 to 1
 table SkeletonRatios {
+    smoothing_strength: float32 = null;
+    prediction_strength: float32 = null;
     /// Used to compute the curvature of the spine. Higher = more curvature.
     spine_curvature: float32 = null;
     /// Compute missing spine bones as a ratio of the next available upper and lower bones.
@@ -92,30 +94,15 @@ table SkeletonRatios {
     skating_correction_strength: float32 = null;
 }
 
-enum FilteringType: uint8 {
-	NONE = 0,
-	SMOOTHING = 1,
-	PREDICTION = 2
-}
-
-/// Filtering (e.g smoothing) applied to the skeleton's movements
-table SkeletonFiltering {
-    type: FilteringType;
-    /// A higher value results in more filtering (0 to 1).
-    amount: float32;
-}
-
 // Skeleton settings request and response
 table SkeletonSettingsRequest {}
 table SkeletonSettingsResponse {
     toggles: SkeletonToggles;
     ratios: SkeletonRatios;
-    filtering: SkeletonFiltering;
 }
 table ChangeSkeletonSettingsRequest {
     toggles: SkeletonToggles;
     ratios: SkeletonRatios;
-    filtering: SkeletonFiltering;
 }
 
 // User height request and response (used to compute the user's height)

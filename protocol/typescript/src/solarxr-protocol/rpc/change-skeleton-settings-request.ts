@@ -2,7 +2,6 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { SkeletonFiltering, SkeletonFilteringT } from '../../solarxr-protocol/rpc/skeleton-filtering.js';
 import { SkeletonRatios, SkeletonRatiosT } from '../../solarxr-protocol/rpc/skeleton-ratios.js';
 import { SkeletonToggles, SkeletonTogglesT } from '../../solarxr-protocol/rpc/skeleton-toggles.js';
 
@@ -35,13 +34,8 @@ ratios(obj?:SkeletonRatios):SkeletonRatios|null {
   return offset ? (obj || new SkeletonRatios()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-filtering(obj?:SkeletonFiltering):SkeletonFiltering|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new SkeletonFiltering()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
-
 static startChangeSkeletonSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(2);
 }
 
 static addToggles(builder:flatbuffers.Builder, togglesOffset:flatbuffers.Offset) {
@@ -50,10 +44,6 @@ static addToggles(builder:flatbuffers.Builder, togglesOffset:flatbuffers.Offset)
 
 static addRatios(builder:flatbuffers.Builder, ratiosOffset:flatbuffers.Offset) {
   builder.addFieldOffset(1, ratiosOffset, 0);
-}
-
-static addFiltering(builder:flatbuffers.Builder, filteringOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, filteringOffset, 0);
 }
 
 static endChangeSkeletonSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -65,8 +55,7 @@ static endChangeSkeletonSettingsRequest(builder:flatbuffers.Builder):flatbuffers
 unpack(): ChangeSkeletonSettingsRequestT {
   return new ChangeSkeletonSettingsRequestT(
     (this.toggles() !== null ? this.toggles()!.unpack() : null),
-    (this.ratios() !== null ? this.ratios()!.unpack() : null),
-    (this.filtering() !== null ? this.filtering()!.unpack() : null)
+    (this.ratios() !== null ? this.ratios()!.unpack() : null)
   );
 }
 
@@ -74,27 +63,23 @@ unpack(): ChangeSkeletonSettingsRequestT {
 unpackTo(_o: ChangeSkeletonSettingsRequestT): void {
   _o.toggles = (this.toggles() !== null ? this.toggles()!.unpack() : null);
   _o.ratios = (this.ratios() !== null ? this.ratios()!.unpack() : null);
-  _o.filtering = (this.filtering() !== null ? this.filtering()!.unpack() : null);
 }
 }
 
 export class ChangeSkeletonSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public toggles: SkeletonTogglesT|null = null,
-  public ratios: SkeletonRatiosT|null = null,
-  public filtering: SkeletonFilteringT|null = null
+  public ratios: SkeletonRatiosT|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const toggles = (this.toggles !== null ? this.toggles!.pack(builder) : 0);
   const ratios = (this.ratios !== null ? this.ratios!.pack(builder) : 0);
-  const filtering = (this.filtering !== null ? this.filtering!.pack(builder) : 0);
 
   ChangeSkeletonSettingsRequest.startChangeSkeletonSettingsRequest(builder);
   ChangeSkeletonSettingsRequest.addToggles(builder, toggles);
   ChangeSkeletonSettingsRequest.addRatios(builder, ratios);
-  ChangeSkeletonSettingsRequest.addFiltering(builder, filtering);
 
   return ChangeSkeletonSettingsRequest.endChangeSkeletonSettingsRequest(builder);
 }

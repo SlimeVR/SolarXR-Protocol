@@ -102,7 +102,6 @@ export { EnableSteamVRDriverRequest, EnableSteamVRDriverRequestT } from './solar
 export { ErrorReportingConsent } from './solarxr-protocol/rpc/error-reporting-consent.js';
 export { ErrorReportingSettingsRequest, ErrorReportingSettingsRequestT } from './solarxr-protocol/rpc/error-reporting-settings-request.js';
 export { ErrorReportingSettingsResponse, ErrorReportingSettingsResponseT } from './solarxr-protocol/rpc/error-reporting-settings-response.js';
-export { FilteringType } from './solarxr-protocol/rpc/filtering-type.js';
 export { FirmwareDeviceIdTable, FirmwareDeviceIdTableT } from './solarxr-protocol/rpc/firmware-device-id-table.js';
 export { FirmwarePart, FirmwarePartT } from './solarxr-protocol/rpc/firmware-part.js';
 export { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from './solarxr-protocol/rpc/firmware-update-device-id.js';
@@ -195,7 +194,6 @@ export { SettingsDefaultsRequest, SettingsDefaultsRequestT } from './solarxr-pro
 export { SettingsDefaultsResponse, SettingsDefaultsResponseT } from './solarxr-protocol/rpc/settings-defaults-response.js';
 export { SettingsResetRequest, SettingsResetRequestT } from './solarxr-protocol/rpc/settings-reset-request.js';
 export { SkeletonBone } from './solarxr-protocol/rpc/skeleton-bone.js';
-export { SkeletonFiltering, SkeletonFilteringT } from './solarxr-protocol/rpc/skeleton-filtering.js';
 export { SkeletonPart, SkeletonPartT } from './solarxr-protocol/rpc/skeleton-part.js';
 export { SkeletonProportionsRequest, SkeletonProportionsRequestT } from './solarxr-protocol/rpc/skeleton-proportions-request.js';
 export { SkeletonProportionsResetAllRequest, SkeletonProportionsResetAllRequestT } from './solarxr-protocol/rpc/skeleton-proportions-reset-all-request.js';

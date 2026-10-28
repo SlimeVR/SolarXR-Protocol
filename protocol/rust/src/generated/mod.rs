@@ -185,8 +185,6 @@ pub mod solarxr_protocol {
     pub use self::serial_console_status_generated::*;
     mod skeleton_bone_generated;
     pub use self::skeleton_bone_generated::*;
-    mod filtering_type_generated;
-    pub use self::filtering_type_generated::*;
     mod stay_aligned_relaxed_pose_generated;
     pub use self::stay_aligned_relaxed_pose_generated::*;
     mod stay_aligned_part_generated;
@@ -461,8 +459,6 @@ pub mod solarxr_protocol {
     pub use self::skeleton_toggles_generated::*;
     mod skeleton_ratios_generated;
     pub use self::skeleton_ratios_generated::*;
-    mod skeleton_filtering_generated;
-    pub use self::skeleton_filtering_generated::*;
     mod skeleton_settings_request_generated;
     pub use self::skeleton_settings_request_generated::*;
     mod skeleton_settings_response_generated;
