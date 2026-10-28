@@ -72,7 +72,12 @@ internal fun requireStructLayout(generator: Generator, decl: StructDecl, schema:
                 offset += fieldSize
             }
         }
-        StructLayout(fields, alignTo(offset, alignment), alignment)
+        val finalAlignment = decl.forceAlign?.also {
+            require(it >= alignment && (it and (it - 1)) == 0) {
+                "Struct '${decl.name}': force_align must be a power of two >= the natural alignment ($alignment), got $it"
+            }
+        } ?: alignment
+        StructLayout(fields, alignTo(offset, finalAlignment), finalAlignment)
     }
 
 private fun fixedInlineSize(generator: Generator, type: Type, schema: Schema): Int = when (type) {
@@ -80,14 +85,13 @@ private fun fixedInlineSize(generator: Generator, type: Type, schema: Schema): I
         require(type.kind != ScalarKind.STRING) { "Strings are not valid struct fields" }
         type.kind.info.size
     }
-    is RefType -> when (val decl = requireNotNull(generator.resolveDecl(type.name, schema)) {
-        "Unknown struct field type ${type.name}"
-    }) {
+    is RefType -> when (val decl = generator.resolveDecl(type.name, schema)) {
         is EnumDecl -> decl.baseType.info.size
         is StructDecl -> requireStructLayout(generator, decl, generator.resolveSchema(type.name, schema)).size
         else -> error("Struct fields must be scalars, enums, or structs: ${type.name}")
     }
     is VectorType -> error("Vectors are not valid struct fields")
+    is ArrayType -> fixedInlineSize(generator, type.element, schema) * type.size
 }
 
 private fun fixedInlineAlignment(generator: Generator, type: Type, schema: Schema): Int = when (type) {
@@ -95,14 +99,13 @@ private fun fixedInlineAlignment(generator: Generator, type: Type, schema: Schem
         require(type.kind != ScalarKind.STRING) { "Strings are not valid struct fields" }
         type.kind.info.alignment
     }
-    is RefType -> when (val decl = requireNotNull(generator.resolveDecl(type.name, schema)) {
-        "Unknown struct field type ${type.name}"
-    }) {
+    is RefType -> when (val decl = generator.resolveDecl(type.name, schema)) {
         is EnumDecl -> decl.baseType.info.alignment
         is StructDecl -> requireStructLayout(generator, decl, generator.resolveSchema(type.name, schema)).alignment
         else -> error("Struct fields must be scalars, enums, or structs: ${type.name}")
     }
     is VectorType -> error("Vectors are not valid struct fields")
+    is ArrayType -> fixedInlineAlignment(generator, type.element, schema)
 }
 
 private fun structFieldDecodeExpr(generator: Generator, type: Type, schema: Schema, absExpr: String): CodeBlock = when (type) {
@@ -114,9 +117,7 @@ private fun structFieldDecodeExpr(generator: Generator, type: Type, schema: Sche
             CodeBlock.of("bb.${info.bbGetter}($absExpr)${info.readConv}")
         }
     }
-    is RefType -> when (val decl = requireNotNull(generator.resolveDecl(type.name, schema)) {
-        "Unknown struct field type ${type.name}"
-    }) {
+    is RefType -> when (val decl = generator.resolveDecl(type.name, schema)) {
         is EnumDecl -> {
             val info = decl.baseType.info
             CodeBlock.of("%T.fromValue(bb.${info.bbGetter}($absExpr)${info.readConv})!!", generator.resolveRefTypeName(type.name, schema))
@@ -125,33 +126,44 @@ private fun structFieldDecodeExpr(generator: Generator, type: Type, schema: Sche
         else -> error("Struct fields must be scalars, enums, or structs: ${type.name}")
     }
     is VectorType -> error("Vectors are not valid struct fields")
+    is ArrayType -> {
+        val elemSize = fixedInlineSize(generator, type.element, schema)
+        val elemExpr = structFieldDecodeExpr(generator, type.element, schema, "$absExpr + i * $elemSize")
+        CodeBlock.of("(0 until %L).map { i -> %L }", type.size, elemExpr)
+    }
 }
 
 private fun structFieldEncodeBlock(generator: Generator, type: Type, schema: Schema, valueExpr: String): CodeBlock = when (type) {
     is ScalarType -> {
         val info = type.kind.info
-        CodeBlock.of("builder.%L(%L)\n", info.putter, scalarVectorWriteValue(valueExpr, type.kind))
+        CodeBlock.of("builder.%L(%L)\n", info.putter, type.kind.vectorWriteValue(valueExpr))
     }
-    is RefType -> when (val decl = requireNotNull(generator.resolveDecl(type.name, schema)) {
-        "Unknown struct field type ${type.name}"
-    }) {
+    is RefType -> when (val decl = generator.resolveDecl(type.name, schema)) {
         is EnumDecl -> {
             val info = decl.baseType.info
             CodeBlock.of(
                 "builder.%L(%L)\n",
                 info.putter,
-                scalarVectorWriteValue("$valueExpr.value", decl.baseType)
+                decl.baseType.vectorWriteValue("$valueExpr.value")
             )
         }
         is StructDecl -> CodeBlock.of("%L.encode(builder)\n", valueExpr)
         else -> error("Struct fields must be scalars, enums, or structs: ${type.name}")
     }
     is VectorType -> error("Vectors are not valid struct fields")
-}
-
-private fun scalarVectorWriteValue(valueExpr: String, kind: ScalarKind): CodeBlock = when (kind) {
-    ScalarKind.BOOL -> CodeBlock.of("if ($valueExpr) 1.toByte() else 0.toByte()")
-    else -> CodeBlock.of("$valueExpr${kind.info.writeConv}")
+    is ArrayType -> CodeBlock.builder()
+        .add("run {\n")
+        .indent()
+        .add("val __values = %L\n", valueExpr)
+        .add("require(__values.size == %L) { %S }\n", type.size, "expected ${type.size} elements")
+        .add("for (value in __values.asReversed()) {\n")
+        .indent()
+        .add(structFieldEncodeBlock(generator, type.element, schema, "value"))
+        .unindent()
+        .add("}\n")
+        .unindent()
+        .add("}\n")
+        .build()
 }
 
 internal data class StructFieldLayout(
