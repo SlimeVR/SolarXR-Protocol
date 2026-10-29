@@ -41,8 +41,8 @@ impl<'a> DriverMessageHeader<'a> {
   ) -> flatbuffers::WIPOffset<DriverMessageHeader<'bldr>> {
     let mut builder = DriverMessageHeaderBuilder::new(_fbb);
     if let Some(x) = args.message { builder.add_message(x); }
-    builder.add_reply_to(args.reply_to);
-    builder.add_tx_id(args.tx_id);
+    if let Some(x) = args.reply_to { builder.add_reply_to(x); }
+    if let Some(x) = args.tx_id { builder.add_tx_id(x); }
     builder.add_message_type(args.message_type);
     builder.finish()
   }
@@ -51,19 +51,19 @@ impl<'a> DriverMessageHeader<'a> {
   /// Set by whoever originates this message, so a future reply can reference it.
   /// Absent for one-way notifications that expect no reply.
   #[inline]
-  pub fn tx_id(&self) -> u32 {
+  pub fn tx_id(&self) -> Option<u32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<u32>(DriverMessageHeader::VT_TX_ID, Some(0)).unwrap()}
+    unsafe { self._tab.get::<u32>(DriverMessageHeader::VT_TX_ID, None)}
   }
   /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
   #[inline]
-  pub fn reply_to(&self) -> u32 {
+  pub fn reply_to(&self) -> Option<u32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<u32>(DriverMessageHeader::VT_REPLY_TO, Some(0)).unwrap()}
+    unsafe { self._tab.get::<u32>(DriverMessageHeader::VT_REPLY_TO, None)}
   }
   #[inline]
   pub fn message_type(&self) -> DriverMessage {
@@ -260,8 +260,8 @@ impl flatbuffers::Verifiable for DriverMessageHeader<'_> {
   }
 }
 pub struct DriverMessageHeaderArgs {
-    pub tx_id: u32,
-    pub reply_to: u32,
+    pub tx_id: Option<u32>,
+    pub reply_to: Option<u32>,
     pub message_type: DriverMessage,
     pub message: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
 }
@@ -269,8 +269,8 @@ impl<'a> Default for DriverMessageHeaderArgs {
   #[inline]
   fn default() -> Self {
     DriverMessageHeaderArgs {
-      tx_id: 0,
-      reply_to: 0,
+      tx_id: None,
+      reply_to: None,
       message_type: DriverMessage::NONE,
       message: None,
     }
@@ -284,11 +284,11 @@ pub struct DriverMessageHeaderBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> DriverMessageHeaderBuilder<'a, 'b> {
   #[inline]
   pub fn add_tx_id(&mut self, tx_id: u32) {
-    self.fbb_.push_slot::<u32>(DriverMessageHeader::VT_TX_ID, tx_id, 0);
+    self.fbb_.push_slot_always::<u32>(DriverMessageHeader::VT_TX_ID, tx_id);
   }
   #[inline]
   pub fn add_reply_to(&mut self, reply_to: u32) {
-    self.fbb_.push_slot::<u32>(DriverMessageHeader::VT_REPLY_TO, reply_to, 0);
+    self.fbb_.push_slot_always::<u32>(DriverMessageHeader::VT_REPLY_TO, reply_to);
   }
   #[inline]
   pub fn add_message_type(&mut self, message_type: DriverMessage) {

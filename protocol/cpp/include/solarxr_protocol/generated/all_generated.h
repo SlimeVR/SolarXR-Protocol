@@ -19045,12 +19045,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   };
   /// Set by whoever originates this message, so a future reply can reference it.
   /// Absent for one-way notifications that expect no reply.
-  uint32_t tx_id() const {
-    return GetField<uint32_t>(VT_TX_ID, 0);
+  flatbuffers::Optional<uint32_t> tx_id() const {
+    return GetOptional<uint32_t, uint32_t>(VT_TX_ID);
   }
   /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
-  uint32_t reply_to() const {
-    return GetField<uint32_t>(VT_REPLY_TO, 0);
+  flatbuffers::Optional<uint32_t> reply_to() const {
+    return GetOptional<uint32_t, uint32_t>(VT_REPLY_TO);
   }
   solarxr_protocol::rpc::RpcMessage message_type() const {
     return static_cast<solarxr_protocol::rpc::RpcMessage>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
@@ -20181,10 +20181,10 @@ struct RpcMessageHeaderBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_tx_id(uint32_t tx_id) {
-    fbb_.AddElement<uint32_t>(RpcMessageHeader::VT_TX_ID, tx_id, 0);
+    fbb_.AddElement<uint32_t>(RpcMessageHeader::VT_TX_ID, tx_id);
   }
   void add_reply_to(uint32_t reply_to) {
-    fbb_.AddElement<uint32_t>(RpcMessageHeader::VT_REPLY_TO, reply_to, 0);
+    fbb_.AddElement<uint32_t>(RpcMessageHeader::VT_REPLY_TO, reply_to);
   }
   void add_message_type(solarxr_protocol::rpc::RpcMessage message_type) {
     fbb_.AddElement<uint8_t>(RpcMessageHeader::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
@@ -20205,14 +20205,14 @@ struct RpcMessageHeaderBuilder {
 
 inline flatbuffers::Offset<RpcMessageHeader> CreateRpcMessageHeader(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint32_t tx_id = 0,
-    uint32_t reply_to = 0,
+    flatbuffers::Optional<uint32_t> tx_id = flatbuffers::nullopt,
+    flatbuffers::Optional<uint32_t> reply_to = flatbuffers::nullopt,
     solarxr_protocol::rpc::RpcMessage message_type = solarxr_protocol::rpc::RpcMessage::NONE,
     flatbuffers::Offset<void> message = 0) {
   RpcMessageHeaderBuilder builder_(_fbb);
   builder_.add_message(message);
-  builder_.add_reply_to(reply_to);
-  builder_.add_tx_id(tx_id);
+  if(reply_to) { builder_.add_reply_to(*reply_to); }
+  if(tx_id) { builder_.add_tx_id(*tx_id); }
   builder_.add_message_type(message_type);
   return builder_.Finish();
 }
@@ -21207,12 +21207,12 @@ struct DriverMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   };
   /// Set by whoever originates this message, so a future reply can reference it.
   /// Absent for one-way notifications that expect no reply.
-  uint32_t tx_id() const {
-    return GetField<uint32_t>(VT_TX_ID, 0);
+  flatbuffers::Optional<uint32_t> tx_id() const {
+    return GetOptional<uint32_t, uint32_t>(VT_TX_ID);
   }
   /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
-  uint32_t reply_to() const {
-    return GetField<uint32_t>(VT_REPLY_TO, 0);
+  flatbuffers::Optional<uint32_t> reply_to() const {
+    return GetOptional<uint32_t, uint32_t>(VT_REPLY_TO);
   }
   solarxr_protocol::driver_protocol::DriverMessage message_type() const {
     return static_cast<solarxr_protocol::driver_protocol::DriverMessage>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
@@ -21307,10 +21307,10 @@ struct DriverMessageHeaderBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_tx_id(uint32_t tx_id) {
-    fbb_.AddElement<uint32_t>(DriverMessageHeader::VT_TX_ID, tx_id, 0);
+    fbb_.AddElement<uint32_t>(DriverMessageHeader::VT_TX_ID, tx_id);
   }
   void add_reply_to(uint32_t reply_to) {
-    fbb_.AddElement<uint32_t>(DriverMessageHeader::VT_REPLY_TO, reply_to, 0);
+    fbb_.AddElement<uint32_t>(DriverMessageHeader::VT_REPLY_TO, reply_to);
   }
   void add_message_type(solarxr_protocol::driver_protocol::DriverMessage message_type) {
     fbb_.AddElement<uint8_t>(DriverMessageHeader::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
@@ -21331,14 +21331,14 @@ struct DriverMessageHeaderBuilder {
 
 inline flatbuffers::Offset<DriverMessageHeader> CreateDriverMessageHeader(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint32_t tx_id = 0,
-    uint32_t reply_to = 0,
+    flatbuffers::Optional<uint32_t> tx_id = flatbuffers::nullopt,
+    flatbuffers::Optional<uint32_t> reply_to = flatbuffers::nullopt,
     solarxr_protocol::driver_protocol::DriverMessage message_type = solarxr_protocol::driver_protocol::DriverMessage::NONE,
     flatbuffers::Offset<void> message = 0) {
   DriverMessageHeaderBuilder builder_(_fbb);
   builder_.add_message(message);
-  builder_.add_reply_to(reply_to);
-  builder_.add_tx_id(tx_id);
+  if(reply_to) { builder_.add_reply_to(*reply_to); }
+  if(tx_id) { builder_.add_tx_id(*tx_id); }
   builder_.add_message_type(message_type);
   return builder_.Finish();
 }

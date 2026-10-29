@@ -185,17 +185,17 @@ static getSizePrefixedRootAsRpcMessageHeader(bb:flatbuffers.ByteBuffer, obj?:Rpc
  * Set by whoever originates this message, so a future reply can reference it.
  * Absent for one-way notifications that expect no reply.
  */
-txId():number {
+txId():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : null;
 }
 
 /**
  * Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
  */
-replyTo():number {
+replyTo():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : null;
 }
 
 messageType():RpcMessage {
@@ -233,10 +233,12 @@ static endRpcMessageHeader(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createRpcMessageHeader(builder:flatbuffers.Builder, txId:number, replyTo:number, messageType:RpcMessage, messageOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createRpcMessageHeader(builder:flatbuffers.Builder, txId:number|null, replyTo:number|null, messageType:RpcMessage, messageOffset:flatbuffers.Offset):flatbuffers.Offset {
   RpcMessageHeader.startRpcMessageHeader(builder);
-  RpcMessageHeader.addTxId(builder, txId);
-  RpcMessageHeader.addReplyTo(builder, replyTo);
+  if (txId !== null)
+    RpcMessageHeader.addTxId(builder, txId);
+  if (replyTo !== null)
+    RpcMessageHeader.addReplyTo(builder, replyTo);
   RpcMessageHeader.addMessageType(builder, messageType);
   RpcMessageHeader.addMessage(builder, messageOffset);
   return RpcMessageHeader.endRpcMessageHeader(builder);
@@ -270,8 +272,8 @@ unpackTo(_o: RpcMessageHeaderT): void {
 
 export class RpcMessageHeaderT implements flatbuffers.IGeneratedObject {
 constructor(
-  public txId: number = 0,
-  public replyTo: number = 0,
+  public txId: number|null = null,
+  public replyTo: number|null = null,
   public messageType: RpcMessage = RpcMessage.NONE,
   public message: AddUnknownDeviceRequestT|AutoBoneApplyRequestT|AutoBoneCancelRecordingRequestT|AutoBoneEpochResponseT|AutoBoneProcessRequestT|AutoBoneProcessStatusResponseT|AutoBoneStopRecordingRequestT|BodyPartPrerequisitesRequestT|BodyPartPrerequisitesResponseT|BoneRoutingSettingsRequestT|BoneRoutingSettingsResponseT|CancelResetRequestT|CancelStayAlignedPoseRecordingRequestT|CancelUserHeightCalibrationT|ChangeBoneRoutingSettingsRequestT|ChangeDongleSettingsRequestT|ChangeDriverSettingsRequestT|ChangeErrorReportingSettingsRequestT|ChangeHIDSettingsRequestT|ChangeKeybindRequestT|ChangeMagToggleRequestT|ChangeResetsSettingsRequestT|ChangeSkeletonProportionsRequestT|ChangeSkeletonSettingsRequestT|ChangeStayAlignedSettingsRequestT|ChangeTapDetectionSettingsRequestT|ChangeTimeoutSettingsRequestT|ChangeUserHeightRequestT|ChangeVMCOSCSettingsRequestT|ChangeVRCOSCSettingsRequestT|ChangeVRMSettingsRequestT|ClearMountingResetRequestT|CloseSerialRequestT|CreateProfileRequestT|DeleteProfileRequestT|DriverSettingsRequestT|DriverSettingsResponseT|DriverStatusChangeResponseT|DriverStatusRequestT|EnableSteamVRDriverRequestT|ErrorReportingSettingsRequestT|ErrorReportingSettingsResponseT|FirmwareUpdateRequestT|FirmwareUpdateStatusResponseT|FirmwareUpdateStopQueuesRequestT|ForgetDeviceRequestT|HIDSettingsRequestT|HIDSettingsResponseT|HeartbeatRequestT|HeartbeatResponseT|IgnoreTrackingChecklistStepRequestT|IgnoreUnknownDeviceRequestT|InstalledInfoRequestT|InstalledInfoResponseT|KeybindActivatedResponseT|KeybindRequestT|KeybindResponseT|LegTweaksTmpChangeT|LegTweaksTmpClearT|LogFileChunkRequestT|LogFileChunkResponseT|LogStreamRequestT|LogStreamResponseT|LogsRequestT|LogsResponseT|MagToggleRequestT|MagToggleResponseT|OpenKeybindSettingsRequestT|OpenKeybindSettingsResponseT|OpenSerialRequestT|OverlayDisplayModeChangeRequestT|OverlayDisplayModeRequestT|OverlayDisplayModeResponseT|ProfileOperationResponseT|ProfilesRequestT|ProfilesResponseT|RecordBVHRequestT|RecordBVHStatusRequestT|RecordBVHStatusT|RenameProfileRequestT|ResetRequestT|ResetStatusResponseT|ResetStayAlignedRelaxedPoseRequestT|ResetTrackerAssignmentsT|ResetsSettingsRequestT|ResetsSettingsResponseT|SaveFileNotificationT|SerialDevicesRequestT|SerialDevicesResponseT|SerialKeepaliveRequestT|SerialTrackerCustomCommandRequestT|SerialTrackerFactoryResetRequestT|SerialTrackerGetInfoRequestT|SerialTrackerGetWifiScanRequestT|SerialTrackerRebootRequestT|SerialUpdateResponseT|ServerInfosRequestT|ServerInfosResponseT|SetKeybindRecordingRequestT|SetPauseTrackingRequestT|SettingsDefaultsRequestT|SettingsDefaultsResponseT|SettingsResetRequestT|SkeletonProportionsRequestT|SkeletonProportionsResetAllRequestT|SkeletonProportionsResponseT|SkeletonSettingsRequestT|SkeletonSettingsResponseT|StartStayAlignedPoseRecordingRequestT|StartStayAlignedStatusRequestT|StartTelemetryRequestT|StartTrackerImuTelemetryRequestT|StartUserHeightCalibrationT|StartWifiProvisioningRequestT|StartWifiScanRequestT|StayAlignedPoseRecordingStatusResponseT|StayAlignedSettingsRequestT|StayAlignedSettingsResponseT|StayAlignedStatusResponseT|StopStayAlignedStatusRequestT|StopTelemetryRequestT|StopTrackerImuTelemetryRequestT|StopWifiProvisioningRequestT|StopWifiScanRequestT|SwitchProfileRequestT|TapDetectionSettingsRequestT|TapDetectionSettingsResponseT|TapDetectionSetupModeRequestT|TapDetectionSetupNotificationT|TelemetryGapResponseT|TelemetryUpdateResponseT|TimeoutSettingsRequestT|TimeoutSettingsResponseT|TrackerImuTelemetryResponseT|TrackingChecklistRequestT|TrackingChecklistResponseT|TrackingPauseStateRequestT|TrackingPauseStateResponseT|UnknownDevicesResponseT|UpdateTrackerRequestT|UserHeightRecordingStatusResponseT|UserHeightRequestT|UserHeightResponseT|VMCOSCSettingsRequestT|VMCOSCSettingsResponseT|VMCOSCStatusChangeResponseT|VMCOSCStatusRequestT|VRCConfigSettingToggleMuteT|VRCConfigStateChangeResponseT|VRCConfigStateRequestT|VRCOSCSettingsRequestT|VRCOSCSettingsResponseT|VRCOSCStatusChangeResponseT|VRCOSCStatusRequestT|VRMSettingsRequestT|VRMSettingsResponseT|WifiProvisioningStatusResponseT|WifiScanStatusResponseT|null = null
 ){}

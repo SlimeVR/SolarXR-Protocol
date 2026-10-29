@@ -37,17 +37,17 @@ static getSizePrefixedRootAsDriverMessageHeader(bb:flatbuffers.ByteBuffer, obj?:
  * Set by whoever originates this message, so a future reply can reference it.
  * Absent for one-way notifications that expect no reply.
  */
-txId():number {
+txId():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : null;
 }
 
 /**
  * Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
  */
-replyTo():number {
+replyTo():number|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readUint32(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.readUint32(this.bb_pos + offset) : null;
 }
 
 messageType():DriverMessage {
@@ -85,10 +85,12 @@ static endDriverMessageHeader(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createDriverMessageHeader(builder:flatbuffers.Builder, txId:number, replyTo:number, messageType:DriverMessage, messageOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createDriverMessageHeader(builder:flatbuffers.Builder, txId:number|null, replyTo:number|null, messageType:DriverMessage, messageOffset:flatbuffers.Offset):flatbuffers.Offset {
   DriverMessageHeader.startDriverMessageHeader(builder);
-  DriverMessageHeader.addTxId(builder, txId);
-  DriverMessageHeader.addReplyTo(builder, replyTo);
+  if (txId !== null)
+    DriverMessageHeader.addTxId(builder, txId);
+  if (replyTo !== null)
+    DriverMessageHeader.addReplyTo(builder, replyTo);
   DriverMessageHeader.addMessageType(builder, messageType);
   DriverMessageHeader.addMessage(builder, messageOffset);
   return DriverMessageHeader.endDriverMessageHeader(builder);
@@ -122,8 +124,8 @@ unpackTo(_o: DriverMessageHeaderT): void {
 
 export class DriverMessageHeaderT implements flatbuffers.IGeneratedObject {
 constructor(
-  public txId: number = 0,
-  public replyTo: number = 0,
+  public txId: number|null = null,
+  public replyTo: number|null = null,
   public messageType: DriverMessage = DriverMessage.NONE,
   public message: AddTrackerRequestT|AddTrackerResponseT|BoneBatteryUpdateT|HandshakeAvailableT|HandshakeRequestT|HandshakeResponseT|SkeletonUpdateT|UpdateTrackerBatteryT|UpdateTrackerPositionT|UpdateTrackerStatusT|null = null
 ){}

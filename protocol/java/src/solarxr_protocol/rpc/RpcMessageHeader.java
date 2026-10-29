@@ -19,10 +19,12 @@ public final class RpcMessageHeader extends Table {
    * Set by whoever originates this message, so a future reply can reference it.
    * Absent for one-way notifications that expect no reply.
    */
+  public boolean hasTxId() { return 0 != __offset(4); }
   public long txId() { int o = __offset(4); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
   /**
    * Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
    */
+  public boolean hasReplyTo() { return 0 != __offset(6); }
   public long replyTo() { int o = __offset(6); return o != 0 ? (long)bb.getInt(o + bb_pos) & 0xFFFFFFFFL : 0L; }
   public byte messageType() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) : 0; }
   public Table message(Table obj) { int o = __offset(10); return o != 0 ? __union(obj, o + bb_pos) : null; }
@@ -62,9 +64,9 @@ public final class RpcMessageHeader extends Table {
     return _o;
   }
   public void unpackTo(RpcMessageHeaderT _o) {
-    long _oTxId = txId();
+    Long _oTxId = hasTxId() ? txId() : null;
     _o.setTxId(_oTxId);
-    long _oReplyTo = replyTo();
+    Long _oReplyTo = hasReplyTo() ? replyTo() : null;
     _o.setReplyTo(_oReplyTo);
     solarxr_protocol.rpc.RpcMessageUnion _oMessage = new solarxr_protocol.rpc.RpcMessageUnion();
     byte _oMessageType = messageType();

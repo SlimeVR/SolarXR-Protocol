@@ -200,9 +200,9 @@ union RpcMessage {
 table RpcMessageHeader {
     /// Set by whoever originates this message, so a future reply can reference it.
     /// Absent for one-way notifications that expect no reply.
-    tx_id: uint32;
+    tx_id: uint32 = null;
     /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
-    reply_to: uint32;
+    reply_to: uint32 = null;
     message: RpcMessage;
 }
 
