@@ -175,6 +175,8 @@ public sealed interface RpcMessage {
       156 -> StartStayAlignedStatusRequest.decode(bb, offset)
       157 -> StopStayAlignedStatusRequest.decode(bb, offset)
       158 -> StayAlignedStatusResponse.decode(bb, offset)
+      159 -> FirmwareUpdatesRequest.decode(bb, offset)
+      160 -> FirmwareUpdatesResponse.decode(bb, offset)
       else -> null
     }
 
@@ -337,6 +339,8 @@ public sealed interface RpcMessage {
       is StartStayAlignedStatusRequest -> 156.toUByte()
       is StopStayAlignedStatusRequest -> 157.toUByte()
       is StayAlignedStatusResponse -> 158.toUByte()
+      is FirmwareUpdatesRequest -> 159.toUByte()
+      is FirmwareUpdatesResponse -> 160.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -498,6 +502,8 @@ public sealed interface RpcMessage {
       is StartStayAlignedStatusRequest -> value.encode(builder)
       is StopStayAlignedStatusRequest -> value.encode(builder)
       is StayAlignedStatusResponse -> value.encode(builder)
+      is FirmwareUpdatesRequest -> value.encode(builder)
+      is FirmwareUpdatesResponse -> value.encode(builder)
     }
   }
 }

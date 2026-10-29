@@ -2,35 +2,39 @@
 
 import { OTAFirmwareUpdate, OTAFirmwareUpdateT } from '../../solarxr-protocol/rpc/otafirmware-update.js';
 import { SerialFirmwareUpdate, SerialFirmwareUpdateT } from '../../solarxr-protocol/rpc/serial-firmware-update.js';
+import { UsbFirmwareUpdate, UsbFirmwareUpdateT } from '../../solarxr-protocol/rpc/usb-firmware-update.js';
 
 
 export enum FirmwareUpdateMethod {
   NONE = 0,
   OTAFirmwareUpdate = 1,
-  SerialFirmwareUpdate = 2
+  SerialFirmwareUpdate = 2,
+  UsbFirmwareUpdate = 3
 }
 
 export function unionToFirmwareUpdateMethod(
   type: FirmwareUpdateMethod,
-  accessor: (obj:OTAFirmwareUpdate|SerialFirmwareUpdate) => OTAFirmwareUpdate|SerialFirmwareUpdate|null
-): OTAFirmwareUpdate|SerialFirmwareUpdate|null {
+  accessor: (obj:OTAFirmwareUpdate|SerialFirmwareUpdate|UsbFirmwareUpdate) => OTAFirmwareUpdate|SerialFirmwareUpdate|UsbFirmwareUpdate|null
+): OTAFirmwareUpdate|SerialFirmwareUpdate|UsbFirmwareUpdate|null {
   switch(FirmwareUpdateMethod[type]) {
     case 'NONE': return null; 
     case 'OTAFirmwareUpdate': return accessor(new OTAFirmwareUpdate())! as OTAFirmwareUpdate;
     case 'SerialFirmwareUpdate': return accessor(new SerialFirmwareUpdate())! as SerialFirmwareUpdate;
+    case 'UsbFirmwareUpdate': return accessor(new UsbFirmwareUpdate())! as UsbFirmwareUpdate;
     default: return null;
   }
 }
 
 export function unionListToFirmwareUpdateMethod(
   type: FirmwareUpdateMethod, 
-  accessor: (index: number, obj:OTAFirmwareUpdate|SerialFirmwareUpdate) => OTAFirmwareUpdate|SerialFirmwareUpdate|null, 
+  accessor: (index: number, obj:OTAFirmwareUpdate|SerialFirmwareUpdate|UsbFirmwareUpdate) => OTAFirmwareUpdate|SerialFirmwareUpdate|UsbFirmwareUpdate|null, 
   index: number
-): OTAFirmwareUpdate|SerialFirmwareUpdate|null {
+): OTAFirmwareUpdate|SerialFirmwareUpdate|UsbFirmwareUpdate|null {
   switch(FirmwareUpdateMethod[type]) {
     case 'NONE': return null; 
     case 'OTAFirmwareUpdate': return accessor(index, new OTAFirmwareUpdate())! as OTAFirmwareUpdate;
     case 'SerialFirmwareUpdate': return accessor(index, new SerialFirmwareUpdate())! as SerialFirmwareUpdate;
+    case 'UsbFirmwareUpdate': return accessor(index, new UsbFirmwareUpdate())! as UsbFirmwareUpdate;
     default: return null;
   }
 }

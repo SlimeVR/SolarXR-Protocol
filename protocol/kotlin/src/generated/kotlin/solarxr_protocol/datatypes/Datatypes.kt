@@ -145,6 +145,10 @@ public enum class TrackerStatus(
   OCCLUDED(5.toUByte()),
   TIMED_OUT(6.toUByte()),
   SLEEPING(7.toUByte()),
+  /**
+   * Connected but not used until its firmware is updated
+   */
+  UPDATE_REQUIRED(8.toUByte()),
   ;
 
   public companion object {

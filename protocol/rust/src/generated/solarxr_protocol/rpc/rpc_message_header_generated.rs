@@ -2449,6 +2449,36 @@ impl<'a> RpcMessageHeader<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_firmware_updates_request(&self) -> Option<FirmwareUpdatesRequest<'a>> {
+    if self.message_type() == RpcMessage::FirmwareUpdatesRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { FirmwareUpdatesRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_firmware_updates_response(&self) -> Option<FirmwareUpdatesResponse<'a>> {
+    if self.message_type() == RpcMessage::FirmwareUpdatesResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { FirmwareUpdatesResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
 }
 
 impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
@@ -2620,6 +2650,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::StartStayAlignedStatusRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartStayAlignedStatusRequest>>("RpcMessage::StartStayAlignedStatusRequest", pos),
           RpcMessage::StopStayAlignedStatusRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopStayAlignedStatusRequest>>("RpcMessage::StopStayAlignedStatusRequest", pos),
           RpcMessage::StayAlignedStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedStatusResponse>>("RpcMessage::StayAlignedStatusResponse", pos),
+          RpcMessage::FirmwareUpdatesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdatesRequest>>("RpcMessage::FirmwareUpdatesRequest", pos),
+          RpcMessage::FirmwareUpdatesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdatesResponse>>("RpcMessage::FirmwareUpdatesResponse", pos),
           _ => Ok(()),
         }
      })?
@@ -3789,6 +3821,20 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::StayAlignedStatusResponse => {
           if let Some(x) = self.message_as_stay_aligned_status_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::FirmwareUpdatesRequest => {
+          if let Some(x) = self.message_as_firmware_updates_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::FirmwareUpdatesResponse => {
+          if let Some(x) = self.message_as_firmware_updates_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

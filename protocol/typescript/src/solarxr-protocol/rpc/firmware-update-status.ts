@@ -77,5 +77,15 @@ export enum FirmwareUpdateStatus {
    * An unsupported Flashing method was used
    */
   ERROR_UNSUPPORTED_METHOD = 14,
-  ERROR_UNKNOWN = 15
+  ERROR_UNKNOWN = 15,
+
+  /**
+   * The server asked the device to reboot into its USB bootloader
+   */
+  ENTERING_BOOTLOADER = 16,
+
+  /**
+   * The server is waiting for the bootloader drive of the device to appear
+   */
+  WAITING_FOR_DRIVE = 17
 }

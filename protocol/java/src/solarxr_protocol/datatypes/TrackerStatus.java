@@ -13,8 +13,12 @@ public final class TrackerStatus {
   public static final int OCCLUDED = 5;
   public static final int TIMED_OUT = 6;
   public static final int SLEEPING = 7;
+  /**
+   * Connected but not used until its firmware is updated
+   */
+  public static final int UPDATE_REQUIRED = 8;
 
-  public static final String[] names = { "NONE", "DISCONNECTED", "OK", "BUSY", "ERROR", "OCCLUDED", "TIMED_OUT", "SLEEPING", };
+  public static final String[] names = { "NONE", "DISCONNECTED", "OK", "BUSY", "ERROR", "OCCLUDED", "TIMED_OUT", "SLEEPING", "UPDATE_REQUIRED", };
 
   public static String name(int e) { return names[e]; }
 }

@@ -112,6 +112,10 @@ public final class TrackingChecklistStep extends Table {
         _oExtraDataValue = extraData(new solarxr_protocol.rpc.TrackingChecklistPublicNetworks());
         _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.TrackingChecklistPublicNetworks) _oExtraDataValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.TrackingChecklistExtraData.TrackingChecklistFirmwareUpdate:
+        _oExtraDataValue = extraData(new solarxr_protocol.rpc.TrackingChecklistFirmwareUpdate());
+        _oExtraData.setValue(_oExtraDataValue != null ? ((solarxr_protocol.rpc.TrackingChecklistFirmwareUpdate) _oExtraDataValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setExtraData(_oExtraData);

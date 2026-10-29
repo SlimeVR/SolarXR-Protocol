@@ -1,3 +1,5 @@
+include "firmware.fbs";
+
 namespace solarxr_protocol.rpc;
 
 enum TrackingChecklistStepId : uint8 {
@@ -16,6 +18,7 @@ enum TrackingChecklistStepId : uint8 {
     STANDABLE_INSTALLED = 12,
     VRCHAT_OSC_TRACKING_DISABLED = 13,
     MOUNTING_METHOD = 14,
+    FIRMWARE_UPDATE = 15,
 }
 
 enum TrackingChecklistStepVisibility : uint8 {
@@ -48,6 +51,15 @@ table TrackingChecklistSteamVRDisconnected {
     driver_enabled: bool;
 }
 
+table TrackingChecklistFirmwareUpdateDevice {
+    device_id: FirmwareUpdateDeviceId;
+}
+
+/// Devices that require a firmware update
+table TrackingChecklistFirmwareUpdate {
+    devices: [TrackingChecklistFirmwareUpdateDevice];
+}
+
 table EnableSteamVRDriverRequest {}
 
 table TrackingChecklistUnassignedHMD {
@@ -64,7 +76,8 @@ union TrackingChecklistExtraData {
     TrackingChecklistSteamVRDisconnected,
     TrackingChecklistUnassignedHMD,
     TrackingChecklistNeedCalibration,
-    TrackingChecklistPublicNetworks
+    TrackingChecklistPublicNetworks,
+    TrackingChecklistFirmwareUpdate
 }
 
 table TrackingChecklistStep {

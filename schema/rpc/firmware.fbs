@@ -34,6 +34,10 @@ enum FirmwareUpdateStatus: uint8 {
     /// An unsupported Flashing method was used
     ERROR_UNSUPPORTED_METHOD,
     ERROR_UNKNOWN,
+    /// The server asked the device to reboot into its USB bootloader
+    ENTERING_BOOTLOADER,
+    /// The server is waiting for the bootloader drive of the device to appear
+    WAITING_FOR_DRIVE,
 }
 
 table SerialDevicePort {
@@ -44,9 +48,15 @@ table FirmwareDeviceIdTable {
     id: uint16;
 }
 
+/// Hardware id reported by the device, the same in application and bootloader mode
+table FirmwareHardwareId {
+    id: string;
+}
+
 union FirmwareUpdateDeviceId {
     FirmwareDeviceIdTable,
     SerialDevicePort,
+    FirmwareHardwareId,
 }
 
 table FirmwarePart {
@@ -61,7 +71,8 @@ table FirmwarePart {
 
 union FirmwareUpdateMethod {
     OTAFirmwareUpdate,
-    SerialFirmwareUpdate
+    SerialFirmwareUpdate,
+    UsbFirmwareUpdate
 }
 
 table FirmwareUpdateRequest {
@@ -89,6 +100,12 @@ table SerialFirmwareUpdate {
     firmware_part: [FirmwarePart];
 }
 
+table UsbFirmwareUpdate {
+    device_id: FirmwareHardwareId;
+    /// The uf2 files to copy to the bootloader drive, in order. A bootloader update goes first
+    firmware_part: [FirmwarePart];
+}
+
 table FirmwareUpdateStatusResponse {
     device_id: FirmwareUpdateDeviceId;
     status: FirmwareUpdateStatus;
@@ -98,3 +115,50 @@ table FirmwareUpdateStatusResponse {
 
 // This will cancel all pending updates
 table FirmwareUpdateStopQueuesRequest {}
+
+/// How the firmware of a device compares to the latest release
+enum FirmwareVersionStatus: uint8 {
+    /// No release info yet, or the device version could not be parsed
+    UNKNOWN = 0,
+    UP_TO_DATE = 1,
+    AVAILABLE = 2,
+    /// The device is below the minimum version of the release
+    REQUIRED = 3,
+    /// An update exists but this user is outside its rollout
+    BLOCKED = 4,
+    /// The server does not check updates for this device
+    UNSUPPORTED = 5,
+}
+
+/// Why an available or required update cannot start right now
+enum FirmwareUpdateBlocker: uint8 {
+    NONE = 0,
+    /// The battery is too low to update safely
+    LOW_BATTERY = 1,
+    /// The device needs to be plugged in with USB first
+    NEEDS_USB = 2,
+}
+
+enum FirmwareUpdatePolicy: uint8 {
+    /// Trackers on a device that requires an update are not used
+    BLOCK = 0,
+    /// Required updates are only shown
+    WARN = 1,
+}
+
+table FirmwareUpdateDevice {
+    device_id: FirmwareUpdateDeviceId;
+    status: FirmwareVersionStatus;
+    blocker: FirmwareUpdateBlocker;
+    method: FirmwareUpdateMethod;
+    latest_version: string;
+    min_version: string;
+    policy: FirmwareUpdatePolicy;
+}
+
+table FirmwareUpdatesRequest {}
+
+/// Sent in full every time the update status of any device changes
+table FirmwareUpdatesResponse {
+    devices: [FirmwareUpdateDevice];
+}

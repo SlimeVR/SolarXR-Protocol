@@ -23,11 +23,13 @@ public class FirmwareUpdateMethodUnion {
 
   public solarxr_protocol.rpc.OTAFirmwareUpdateT asOTAFirmwareUpdate() { return (solarxr_protocol.rpc.OTAFirmwareUpdateT) value; }
   public solarxr_protocol.rpc.SerialFirmwareUpdateT asSerialFirmwareUpdate() { return (solarxr_protocol.rpc.SerialFirmwareUpdateT) value; }
+  public solarxr_protocol.rpc.UsbFirmwareUpdateT asUsbFirmwareUpdate() { return (solarxr_protocol.rpc.UsbFirmwareUpdateT) value; }
 
   public static int pack(FlatBufferBuilder builder, FirmwareUpdateMethodUnion _o) {
     switch (_o.type) {
       case FirmwareUpdateMethod.OTAFirmwareUpdate: return solarxr_protocol.rpc.OTAFirmwareUpdate.pack(builder, _o.asOTAFirmwareUpdate());
       case FirmwareUpdateMethod.SerialFirmwareUpdate: return solarxr_protocol.rpc.SerialFirmwareUpdate.pack(builder, _o.asSerialFirmwareUpdate());
+      case FirmwareUpdateMethod.UsbFirmwareUpdate: return solarxr_protocol.rpc.UsbFirmwareUpdate.pack(builder, _o.asUsbFirmwareUpdate());
       default: return 0;
     }
   }

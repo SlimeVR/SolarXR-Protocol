@@ -68,8 +68,16 @@ public final class FirmwareUpdateStatus {
    */
   public static final int ERROR_UNSUPPORTED_METHOD = 14;
   public static final int ERROR_UNKNOWN = 15;
+  /**
+   * The server asked the device to reboot into its USB bootloader
+   */
+  public static final int ENTERING_BOOTLOADER = 16;
+  /**
+   * The server is waiting for the bootloader drive of the device to appear
+   */
+  public static final int WAITING_FOR_DRIVE = 17;
 
-  public static final String[] names = { "DOWNLOADING", "NEED_MANUAL_REBOOT", "AUTHENTICATING", "UPLOADING", "SYNCING_WITH_MCU", "REBOOTING", "PROVISIONING", "DONE", "ERROR_DEVICE_NOT_FOUND", "ERROR_TIMEOUT", "ERROR_DOWNLOAD_FAILED", "ERROR_AUTHENTICATION_FAILED", "ERROR_UPLOAD_FAILED", "ERROR_PROVISIONING_FAILED", "ERROR_UNSUPPORTED_METHOD", "ERROR_UNKNOWN", };
+  public static final String[] names = { "DOWNLOADING", "NEED_MANUAL_REBOOT", "AUTHENTICATING", "UPLOADING", "SYNCING_WITH_MCU", "REBOOTING", "PROVISIONING", "DONE", "ERROR_DEVICE_NOT_FOUND", "ERROR_TIMEOUT", "ERROR_DOWNLOAD_FAILED", "ERROR_AUTHENTICATION_FAILED", "ERROR_UPLOAD_FAILED", "ERROR_PROVISIONING_FAILED", "ERROR_UNSUPPORTED_METHOD", "ERROR_UNKNOWN", "ENTERING_BOOTLOADER", "WAITING_FOR_DRIVE", };
 
   public static String name(int e) { return names[e]; }
 }

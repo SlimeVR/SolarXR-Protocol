@@ -103,13 +103,20 @@ export { ErrorReportingConsent } from './solarxr-protocol/rpc/error-reporting-co
 export { ErrorReportingSettingsRequest, ErrorReportingSettingsRequestT } from './solarxr-protocol/rpc/error-reporting-settings-request.js';
 export { ErrorReportingSettingsResponse, ErrorReportingSettingsResponseT } from './solarxr-protocol/rpc/error-reporting-settings-response.js';
 export { FirmwareDeviceIdTable, FirmwareDeviceIdTableT } from './solarxr-protocol/rpc/firmware-device-id-table.js';
+export { FirmwareHardwareId, FirmwareHardwareIdT } from './solarxr-protocol/rpc/firmware-hardware-id.js';
 export { FirmwarePart, FirmwarePartT } from './solarxr-protocol/rpc/firmware-part.js';
+export { FirmwareUpdateBlocker } from './solarxr-protocol/rpc/firmware-update-blocker.js';
+export { FirmwareUpdateDevice, FirmwareUpdateDeviceT } from './solarxr-protocol/rpc/firmware-update-device.js';
 export { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from './solarxr-protocol/rpc/firmware-update-device-id.js';
 export { FirmwareUpdateMethod, unionToFirmwareUpdateMethod, unionListToFirmwareUpdateMethod } from './solarxr-protocol/rpc/firmware-update-method.js';
+export { FirmwareUpdatePolicy } from './solarxr-protocol/rpc/firmware-update-policy.js';
 export { FirmwareUpdateRequest, FirmwareUpdateRequestT } from './solarxr-protocol/rpc/firmware-update-request.js';
 export { FirmwareUpdateStatus } from './solarxr-protocol/rpc/firmware-update-status.js';
 export { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from './solarxr-protocol/rpc/firmware-update-status-response.js';
 export { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from './solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
+export { FirmwareUpdatesRequest, FirmwareUpdatesRequestT } from './solarxr-protocol/rpc/firmware-updates-request.js';
+export { FirmwareUpdatesResponse, FirmwareUpdatesResponseT } from './solarxr-protocol/rpc/firmware-updates-response.js';
+export { FirmwareVersionStatus } from './solarxr-protocol/rpc/firmware-version-status.js';
 export { ForgetDeviceRequest, ForgetDeviceRequestT } from './solarxr-protocol/rpc/forget-device-request.js';
 export { HIDSettingsRequest, HIDSettingsRequestT } from './solarxr-protocol/rpc/hidsettings-request.js';
 export { HIDSettingsResponse, HIDSettingsResponseT } from './solarxr-protocol/rpc/hidsettings-response.js';
@@ -250,6 +257,8 @@ export { TrackerImuTelemetryResponse, TrackerImuTelemetryResponseT } from './sol
 export { TrackerProvisioningState, TrackerProvisioningStateT } from './solarxr-protocol/rpc/tracker-provisioning-state.js';
 export { TrackerProvisioningStatus } from './solarxr-protocol/rpc/tracker-provisioning-status.js';
 export { TrackingChecklistExtraData, unionToTrackingChecklistExtraData, unionListToTrackingChecklistExtraData } from './solarxr-protocol/rpc/tracking-checklist-extra-data.js';
+export { TrackingChecklistFirmwareUpdate, TrackingChecklistFirmwareUpdateT } from './solarxr-protocol/rpc/tracking-checklist-firmware-update.js';
+export { TrackingChecklistFirmwareUpdateDevice, TrackingChecklistFirmwareUpdateDeviceT } from './solarxr-protocol/rpc/tracking-checklist-firmware-update-device.js';
 export { TrackingChecklistNeedCalibration, TrackingChecklistNeedCalibrationT } from './solarxr-protocol/rpc/tracking-checklist-need-calibration.js';
 export { TrackingChecklistPublicNetworks, TrackingChecklistPublicNetworksT } from './solarxr-protocol/rpc/tracking-checklist-public-networks.js';
 export { TrackingChecklistRequest, TrackingChecklistRequestT } from './solarxr-protocol/rpc/tracking-checklist-request.js';
@@ -267,6 +276,7 @@ export { UnknownDevice, UnknownDeviceT } from './solarxr-protocol/rpc/unknown-de
 export { UnknownDeviceStatus } from './solarxr-protocol/rpc/unknown-device-status.js';
 export { UnknownDevicesResponse, UnknownDevicesResponseT } from './solarxr-protocol/rpc/unknown-devices-response.js';
 export { UpdateTrackerRequest, UpdateTrackerRequestT } from './solarxr-protocol/rpc/update-tracker-request.js';
+export { UsbFirmwareUpdate, UsbFirmwareUpdateT } from './solarxr-protocol/rpc/usb-firmware-update.js';
 export { UserHeightCalibrationStatus } from './solarxr-protocol/rpc/user-height-calibration-status.js';
 export { UserHeightRecordingStatusResponse, UserHeightRecordingStatusResponseT } from './solarxr-protocol/rpc/user-height-recording-status-response.js';
 export { UserHeightRequest, UserHeightRequestT } from './solarxr-protocol/rpc/user-height-request.js';

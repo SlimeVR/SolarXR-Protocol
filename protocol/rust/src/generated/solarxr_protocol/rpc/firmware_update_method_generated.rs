@@ -12,13 +12,14 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_FIRMWARE_UPDATE_METHOD: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_FIRMWARE_UPDATE_METHOD: u8 = 2;
+pub const ENUM_MAX_FIRMWARE_UPDATE_METHOD: u8 = 3;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_FIRMWARE_UPDATE_METHOD: [FirmwareUpdateMethod; 3] = [
+pub const ENUM_VALUES_FIRMWARE_UPDATE_METHOD: [FirmwareUpdateMethod; 4] = [
   FirmwareUpdateMethod::NONE,
   FirmwareUpdateMethod::OTAFirmwareUpdate,
   FirmwareUpdateMethod::SerialFirmwareUpdate,
+  FirmwareUpdateMethod::UsbFirmwareUpdate,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -29,13 +30,15 @@ impl FirmwareUpdateMethod {
   pub const NONE: Self = Self(0);
   pub const OTAFirmwareUpdate: Self = Self(1);
   pub const SerialFirmwareUpdate: Self = Self(2);
+  pub const UsbFirmwareUpdate: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 2;
+  pub const ENUM_MAX: u8 = 3;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::OTAFirmwareUpdate,
     Self::SerialFirmwareUpdate,
+    Self::UsbFirmwareUpdate,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -43,6 +46,7 @@ impl FirmwareUpdateMethod {
       Self::NONE => Some("NONE"),
       Self::OTAFirmwareUpdate => Some("OTAFirmwareUpdate"),
       Self::SerialFirmwareUpdate => Some("SerialFirmwareUpdate"),
+      Self::UsbFirmwareUpdate => Some("UsbFirmwareUpdate"),
       _ => None,
     }
   }

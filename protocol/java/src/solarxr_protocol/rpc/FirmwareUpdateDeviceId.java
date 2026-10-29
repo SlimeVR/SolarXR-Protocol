@@ -8,8 +8,9 @@ public final class FirmwareUpdateDeviceId {
   public static final byte NONE = 0;
   public static final byte FirmwareDeviceIdTable = 1;
   public static final byte SerialDevicePort = 2;
+  public static final byte FirmwareHardwareId = 3;
 
-  public static final String[] names = { "NONE", "FirmwareDeviceIdTable", "SerialDevicePort", };
+  public static final String[] names = { "NONE", "FirmwareDeviceIdTable", "SerialDevicePort", "FirmwareHardwareId", };
 
   public static String name(int e) { return names[e]; }
 }
