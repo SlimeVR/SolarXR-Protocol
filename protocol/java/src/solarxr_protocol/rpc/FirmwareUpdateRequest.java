@@ -60,10 +60,6 @@ public final class FirmwareUpdateRequest extends Table {
         _oMethodValue = method(new solarxr_protocol.rpc.SerialFirmwareUpdate());
         _oMethod.setValue(_oMethodValue != null ? ((solarxr_protocol.rpc.SerialFirmwareUpdate) _oMethodValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.FirmwareUpdateMethod.UsbFirmwareUpdate:
-        _oMethodValue = method(new solarxr_protocol.rpc.UsbFirmwareUpdate());
-        _oMethod.setValue(_oMethodValue != null ? ((solarxr_protocol.rpc.UsbFirmwareUpdate) _oMethodValue).unpack() : null);
-        break;
       default: break;
     }
     _o.setMethod(_oMethod);

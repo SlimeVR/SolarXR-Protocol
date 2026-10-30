@@ -20,14 +20,13 @@ public final class FirmwareUpdateDevice extends Table {
   public int status() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public int blocker() { int o = __offset(10); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public byte methodType() { int o = __offset(12); return o != 0 ? bb.get(o + bb_pos) : 0; }
+  /**
+   * Ready to send update request, null when the device cannot be updated from where it is connected
+   */
   public Table method(Table obj) { int o = __offset(14); return o != 0 ? __union(obj, o + bb_pos) : null; }
   public String latestVersion() { int o = __offset(16); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer latestVersionAsByteBuffer() { return __vector_as_bytebuffer(16, 1); }
   public ByteBuffer latestVersionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 16, 1); }
-  public String minVersion() { int o = __offset(18); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer minVersionAsByteBuffer() { return __vector_as_bytebuffer(18, 1); }
-  public ByteBuffer minVersionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 18, 1); }
-  public int policy() { int o = __offset(20); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
 
   public static int createFirmwareUpdateDevice(FlatBufferBuilder builder,
       byte deviceIdType,
@@ -36,15 +35,11 @@ public final class FirmwareUpdateDevice extends Table {
       int blocker,
       byte methodType,
       int methodOffset,
-      int latestVersionOffset,
-      int minVersionOffset,
-      int policy) {
-    builder.startTable(9);
-    FirmwareUpdateDevice.addMinVersion(builder, minVersionOffset);
+      int latestVersionOffset) {
+    builder.startTable(7);
     FirmwareUpdateDevice.addLatestVersion(builder, latestVersionOffset);
     FirmwareUpdateDevice.addMethod(builder, methodOffset);
     FirmwareUpdateDevice.addDeviceId(builder, deviceIdOffset);
-    FirmwareUpdateDevice.addPolicy(builder, policy);
     FirmwareUpdateDevice.addMethodType(builder, methodType);
     FirmwareUpdateDevice.addBlocker(builder, blocker);
     FirmwareUpdateDevice.addStatus(builder, status);
@@ -52,7 +47,7 @@ public final class FirmwareUpdateDevice extends Table {
     return FirmwareUpdateDevice.endFirmwareUpdateDevice(builder);
   }
 
-  public static void startFirmwareUpdateDevice(FlatBufferBuilder builder) { builder.startTable(9); }
+  public static void startFirmwareUpdateDevice(FlatBufferBuilder builder) { builder.startTable(7); }
   public static void addDeviceIdType(FlatBufferBuilder builder, byte deviceIdType) { builder.addByte(0, deviceIdType, 0); }
   public static void addDeviceId(FlatBufferBuilder builder, int deviceIdOffset) { builder.addOffset(1, deviceIdOffset, 0); }
   public static void addStatus(FlatBufferBuilder builder, int status) { builder.addByte(2, (byte) status, (byte) 0); }
@@ -60,8 +55,6 @@ public final class FirmwareUpdateDevice extends Table {
   public static void addMethodType(FlatBufferBuilder builder, byte methodType) { builder.addByte(4, methodType, 0); }
   public static void addMethod(FlatBufferBuilder builder, int methodOffset) { builder.addOffset(5, methodOffset, 0); }
   public static void addLatestVersion(FlatBufferBuilder builder, int latestVersionOffset) { builder.addOffset(6, latestVersionOffset, 0); }
-  public static void addMinVersion(FlatBufferBuilder builder, int minVersionOffset) { builder.addOffset(7, minVersionOffset, 0); }
-  public static void addPolicy(FlatBufferBuilder builder, int policy) { builder.addByte(8, (byte) policy, (byte) 0); }
   public static int endFirmwareUpdateDevice(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -92,10 +85,6 @@ public final class FirmwareUpdateDevice extends Table {
         _oDeviceIdValue = deviceId(new solarxr_protocol.rpc.SerialDevicePort());
         _oDeviceId.setValue(_oDeviceIdValue != null ? ((solarxr_protocol.rpc.SerialDevicePort) _oDeviceIdValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.FirmwareUpdateDeviceId.FirmwareHardwareId:
-        _oDeviceIdValue = deviceId(new solarxr_protocol.rpc.FirmwareHardwareId());
-        _oDeviceId.setValue(_oDeviceIdValue != null ? ((solarxr_protocol.rpc.FirmwareHardwareId) _oDeviceIdValue).unpack() : null);
-        break;
       default: break;
     }
     _o.setDeviceId(_oDeviceId);
@@ -116,19 +105,11 @@ public final class FirmwareUpdateDevice extends Table {
         _oMethodValue = method(new solarxr_protocol.rpc.SerialFirmwareUpdate());
         _oMethod.setValue(_oMethodValue != null ? ((solarxr_protocol.rpc.SerialFirmwareUpdate) _oMethodValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.FirmwareUpdateMethod.UsbFirmwareUpdate:
-        _oMethodValue = method(new solarxr_protocol.rpc.UsbFirmwareUpdate());
-        _oMethod.setValue(_oMethodValue != null ? ((solarxr_protocol.rpc.UsbFirmwareUpdate) _oMethodValue).unpack() : null);
-        break;
       default: break;
     }
     _o.setMethod(_oMethod);
     String _oLatestVersion = latestVersion();
     _o.setLatestVersion(_oLatestVersion);
-    String _oMinVersion = minVersion();
-    _o.setMinVersion(_oMinVersion);
-    int _oPolicy = policy();
-    _o.setPolicy(_oPolicy);
   }
   public static int pack(FlatBufferBuilder builder, FirmwareUpdateDeviceT _o) {
     if (_o == null) return 0;
@@ -137,7 +118,6 @@ public final class FirmwareUpdateDevice extends Table {
     byte _methodType = _o.getMethod() == null ? solarxr_protocol.rpc.FirmwareUpdateMethod.NONE : _o.getMethod().getType();
     int _method = _o.getMethod() == null ? 0 : solarxr_protocol.rpc.FirmwareUpdateMethodUnion.pack(builder, _o.getMethod());
     int _latestVersion = _o.getLatestVersion() == null ? 0 : builder.createString(_o.getLatestVersion());
-    int _minVersion = _o.getMinVersion() == null ? 0 : builder.createString(_o.getMinVersion());
     return createFirmwareUpdateDevice(
       builder,
       _deviceIdType,
@@ -146,9 +126,7 @@ public final class FirmwareUpdateDevice extends Table {
       _o.getBlocker(),
       _methodType,
       _method,
-      _latestVersion,
-      _minVersion,
-      _o.getPolicy());
+      _latestVersion);
   }
 }
 

@@ -32,8 +32,6 @@ impl<'a> FirmwareUpdateDevice<'a> {
   pub const VT_METHOD_TYPE: flatbuffers::VOffsetT = 12;
   pub const VT_METHOD: flatbuffers::VOffsetT = 14;
   pub const VT_LATEST_VERSION: flatbuffers::VOffsetT = 16;
-  pub const VT_MIN_VERSION: flatbuffers::VOffsetT = 18;
-  pub const VT_POLICY: flatbuffers::VOffsetT = 20;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -45,11 +43,9 @@ impl<'a> FirmwareUpdateDevice<'a> {
     args: &'args FirmwareUpdateDeviceArgs<'args>
   ) -> flatbuffers::WIPOffset<FirmwareUpdateDevice<'bldr>> {
     let mut builder = FirmwareUpdateDeviceBuilder::new(_fbb);
-    if let Some(x) = args.min_version { builder.add_min_version(x); }
     if let Some(x) = args.latest_version { builder.add_latest_version(x); }
     if let Some(x) = args.method { builder.add_method(x); }
     if let Some(x) = args.device_id { builder.add_device_id(x); }
-    builder.add_policy(args.policy);
     builder.add_method_type(args.method_type);
     builder.add_blocker(args.blocker);
     builder.add_status(args.status);
@@ -93,6 +89,7 @@ impl<'a> FirmwareUpdateDevice<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<FirmwareUpdateMethod>(FirmwareUpdateDevice::VT_METHOD_TYPE, Some(FirmwareUpdateMethod::NONE)).unwrap()}
   }
+  /// Ready to send update request, null when the device cannot be updated from where it is connected
   #[inline]
   pub fn method(&self) -> Option<flatbuffers::Table<'a>> {
     // Safety:
@@ -106,20 +103,6 @@ impl<'a> FirmwareUpdateDevice<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(FirmwareUpdateDevice::VT_LATEST_VERSION, None)}
-  }
-  #[inline]
-  pub fn min_version(&self) -> Option<&'a str> {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(FirmwareUpdateDevice::VT_MIN_VERSION, None)}
-  }
-  #[inline]
-  pub fn policy(&self) -> FirmwareUpdatePolicy {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<FirmwareUpdatePolicy>(FirmwareUpdateDevice::VT_POLICY, Some(FirmwareUpdatePolicy::BLOCK)).unwrap()}
   }
   #[inline]
   #[allow(non_snake_case)]
@@ -145,21 +128,6 @@ impl<'a> FirmwareUpdateDevice<'a> {
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
        unsafe { SerialDevicePort::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn device_id_as_firmware_hardware_id(&self) -> Option<FirmwareHardwareId<'a>> {
-    if self.device_id_type() == FirmwareUpdateDeviceId::FirmwareHardwareId {
-      self.device_id().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { FirmwareHardwareId::init_from_table(t) }
      })
     } else {
       None
@@ -196,21 +164,6 @@ impl<'a> FirmwareUpdateDevice<'a> {
     }
   }
 
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn method_as_usb_firmware_update(&self) -> Option<UsbFirmwareUpdate<'a>> {
-    if self.method_type() == FirmwareUpdateMethod::UsbFirmwareUpdate {
-      self.method().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { UsbFirmwareUpdate::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
 }
 
 impl flatbuffers::Verifiable for FirmwareUpdateDevice<'_> {
@@ -224,7 +177,6 @@ impl flatbuffers::Verifiable for FirmwareUpdateDevice<'_> {
         match key {
           FirmwareUpdateDeviceId::FirmwareDeviceIdTable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareDeviceIdTable>>("FirmwareUpdateDeviceId::FirmwareDeviceIdTable", pos),
           FirmwareUpdateDeviceId::SerialDevicePort => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDevicePort>>("FirmwareUpdateDeviceId::SerialDevicePort", pos),
-          FirmwareUpdateDeviceId::FirmwareHardwareId => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareHardwareId>>("FirmwareUpdateDeviceId::FirmwareHardwareId", pos),
           _ => Ok(()),
         }
      })?
@@ -234,13 +186,10 @@ impl flatbuffers::Verifiable for FirmwareUpdateDevice<'_> {
         match key {
           FirmwareUpdateMethod::OTAFirmwareUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OTAFirmwareUpdate>>("FirmwareUpdateMethod::OTAFirmwareUpdate", pos),
           FirmwareUpdateMethod::SerialFirmwareUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialFirmwareUpdate>>("FirmwareUpdateMethod::SerialFirmwareUpdate", pos),
-          FirmwareUpdateMethod::UsbFirmwareUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UsbFirmwareUpdate>>("FirmwareUpdateMethod::UsbFirmwareUpdate", pos),
           _ => Ok(()),
         }
      })?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("latest_version", Self::VT_LATEST_VERSION, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("min_version", Self::VT_MIN_VERSION, false)?
-     .visit_field::<FirmwareUpdatePolicy>("policy", Self::VT_POLICY, false)?
      .finish();
     Ok(())
   }
@@ -253,8 +202,6 @@ pub struct FirmwareUpdateDeviceArgs<'a> {
     pub method_type: FirmwareUpdateMethod,
     pub method: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
     pub latest_version: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub min_version: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub policy: FirmwareUpdatePolicy,
 }
 impl<'a> Default for FirmwareUpdateDeviceArgs<'a> {
   #[inline]
@@ -267,8 +214,6 @@ impl<'a> Default for FirmwareUpdateDeviceArgs<'a> {
       method_type: FirmwareUpdateMethod::NONE,
       method: None,
       latest_version: None,
-      min_version: None,
-      policy: FirmwareUpdatePolicy::BLOCK,
     }
   }
 }
@@ -307,14 +252,6 @@ impl<'a: 'b, 'b> FirmwareUpdateDeviceBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FirmwareUpdateDevice::VT_LATEST_VERSION, latest_version);
   }
   #[inline]
-  pub fn add_min_version(&mut self, min_version: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FirmwareUpdateDevice::VT_MIN_VERSION, min_version);
-  }
-  #[inline]
-  pub fn add_policy(&mut self, policy: FirmwareUpdatePolicy) {
-    self.fbb_.push_slot::<FirmwareUpdatePolicy>(FirmwareUpdateDevice::VT_POLICY, policy, FirmwareUpdatePolicy::BLOCK);
-  }
-  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> FirmwareUpdateDeviceBuilder<'a, 'b> {
     let start = _fbb.start_table();
     FirmwareUpdateDeviceBuilder {
@@ -348,13 +285,6 @@ impl core::fmt::Debug for FirmwareUpdateDevice<'_> {
             ds.field("device_id", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        FirmwareUpdateDeviceId::FirmwareHardwareId => {
-          if let Some(x) = self.device_id_as_firmware_hardware_id() {
-            ds.field("device_id", &x)
-          } else {
-            ds.field("device_id", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
         _ => {
           let x: Option<()> = None;
           ds.field("device_id", &x)
@@ -378,21 +308,12 @@ impl core::fmt::Debug for FirmwareUpdateDevice<'_> {
             ds.field("method", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        FirmwareUpdateMethod::UsbFirmwareUpdate => {
-          if let Some(x) = self.method_as_usb_firmware_update() {
-            ds.field("method", &x)
-          } else {
-            ds.field("method", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
         _ => {
           let x: Option<()> = None;
           ds.field("method", &x)
         },
       };
       ds.field("latest_version", &self.latest_version());
-      ds.field("min_version", &self.min_version());
-      ds.field("policy", &self.policy());
       ds.finish()
   }
 }

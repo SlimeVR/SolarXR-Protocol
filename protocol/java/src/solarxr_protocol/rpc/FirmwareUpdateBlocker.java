@@ -13,12 +13,8 @@ public final class FirmwareUpdateBlocker {
    * The battery is too low to update safely
    */
   public static final int LOW_BATTERY = 1;
-  /**
-   * The device needs to be plugged in with USB first
-   */
-  public static final int NEEDS_USB = 2;
 
-  public static final String[] names = { "NONE", "LOW_BATTERY", "NEEDS_USB", };
+  public static final String[] names = { "NONE", "LOW_BATTERY", };
 
   public static String name(int e) { return names[e]; }
 }

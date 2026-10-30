@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_FIRMWARE_UPDATE_STATUS: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_FIRMWARE_UPDATE_STATUS: u8 = 17;
+pub const ENUM_MAX_FIRMWARE_UPDATE_STATUS: u8 = 15;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_FIRMWARE_UPDATE_STATUS: [FirmwareUpdateStatus; 18] = [
+pub const ENUM_VALUES_FIRMWARE_UPDATE_STATUS: [FirmwareUpdateStatus; 16] = [
   FirmwareUpdateStatus::DOWNLOADING,
   FirmwareUpdateStatus::NEED_MANUAL_REBOOT,
   FirmwareUpdateStatus::AUTHENTICATING,
@@ -32,8 +32,6 @@ pub const ENUM_VALUES_FIRMWARE_UPDATE_STATUS: [FirmwareUpdateStatus; 18] = [
   FirmwareUpdateStatus::ERROR_PROVISIONING_FAILED,
   FirmwareUpdateStatus::ERROR_UNSUPPORTED_METHOD,
   FirmwareUpdateStatus::ERROR_UNKNOWN,
-  FirmwareUpdateStatus::ENTERING_BOOTLOADER,
-  FirmwareUpdateStatus::WAITING_FOR_DRIVE,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -74,13 +72,9 @@ impl FirmwareUpdateStatus {
   /// An unsupported Flashing method was used
   pub const ERROR_UNSUPPORTED_METHOD: Self = Self(14);
   pub const ERROR_UNKNOWN: Self = Self(15);
-  /// The server asked the device to reboot into its USB bootloader
-  pub const ENTERING_BOOTLOADER: Self = Self(16);
-  /// The server is waiting for the bootloader drive of the device to appear
-  pub const WAITING_FOR_DRIVE: Self = Self(17);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 17;
+  pub const ENUM_MAX: u8 = 15;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::DOWNLOADING,
     Self::NEED_MANUAL_REBOOT,
@@ -98,8 +92,6 @@ impl FirmwareUpdateStatus {
     Self::ERROR_PROVISIONING_FAILED,
     Self::ERROR_UNSUPPORTED_METHOD,
     Self::ERROR_UNKNOWN,
-    Self::ENTERING_BOOTLOADER,
-    Self::WAITING_FOR_DRIVE,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -120,8 +112,6 @@ impl FirmwareUpdateStatus {
       Self::ERROR_PROVISIONING_FAILED => Some("ERROR_PROVISIONING_FAILED"),
       Self::ERROR_UNSUPPORTED_METHOD => Some("ERROR_UNSUPPORTED_METHOD"),
       Self::ERROR_UNKNOWN => Some("ERROR_UNKNOWN"),
-      Self::ENTERING_BOOTLOADER => Some("ENTERING_BOOTLOADER"),
-      Self::WAITING_FOR_DRIVE => Some("WAITING_FOR_DRIVE"),
       _ => None,
     }
   }

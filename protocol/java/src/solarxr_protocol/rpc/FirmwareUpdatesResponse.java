@@ -7,9 +7,6 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-/**
- * Sent in full every time the update status of any device changes
- */
 @SuppressWarnings("unused")
 public final class FirmwareUpdatesResponse extends Table {
   public static void ValidateVersion() { Constants.FLATBUFFERS_22_10_26(); }

@@ -8,9 +8,8 @@ public final class FirmwareUpdateMethod {
   public static final byte NONE = 0;
   public static final byte OTAFirmwareUpdate = 1;
   public static final byte SerialFirmwareUpdate = 2;
-  public static final byte UsbFirmwareUpdate = 3;
 
-  public static final String[] names = { "NONE", "OTAFirmwareUpdate", "SerialFirmwareUpdate", "UsbFirmwareUpdate", };
+  public static final String[] names = { "NONE", "OTAFirmwareUpdate", "SerialFirmwareUpdate", };
 
   public static String name(int e) { return names[e]; }
 }

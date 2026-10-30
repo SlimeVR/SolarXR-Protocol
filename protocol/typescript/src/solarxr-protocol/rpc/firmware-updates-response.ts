@@ -5,9 +5,6 @@ import * as flatbuffers from 'flatbuffers';
 import { FirmwareUpdateDevice, FirmwareUpdateDeviceT } from '../../solarxr-protocol/rpc/firmware-update-device.js';
 
 
-/**
- * Sent in full every time the update status of any device changes
- */
 export class FirmwareUpdatesResponse implements flatbuffers.IUnpackableObject<FirmwareUpdatesResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;

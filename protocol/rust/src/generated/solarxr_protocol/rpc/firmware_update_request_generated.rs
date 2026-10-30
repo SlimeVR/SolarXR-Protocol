@@ -88,21 +88,6 @@ impl<'a> FirmwareUpdateRequest<'a> {
     }
   }
 
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn method_as_usb_firmware_update(&self) -> Option<UsbFirmwareUpdate<'a>> {
-    if self.method_type() == FirmwareUpdateMethod::UsbFirmwareUpdate {
-      self.method().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { UsbFirmwareUpdate::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
 }
 
 impl flatbuffers::Verifiable for FirmwareUpdateRequest<'_> {
@@ -116,7 +101,6 @@ impl flatbuffers::Verifiable for FirmwareUpdateRequest<'_> {
         match key {
           FirmwareUpdateMethod::OTAFirmwareUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<OTAFirmwareUpdate>>("FirmwareUpdateMethod::OTAFirmwareUpdate", pos),
           FirmwareUpdateMethod::SerialFirmwareUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialFirmwareUpdate>>("FirmwareUpdateMethod::SerialFirmwareUpdate", pos),
-          FirmwareUpdateMethod::UsbFirmwareUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UsbFirmwareUpdate>>("FirmwareUpdateMethod::UsbFirmwareUpdate", pos),
           _ => Ok(()),
         }
      })?
@@ -180,13 +164,6 @@ impl core::fmt::Debug for FirmwareUpdateRequest<'_> {
         },
         FirmwareUpdateMethod::SerialFirmwareUpdate => {
           if let Some(x) = self.method_as_serial_firmware_update() {
-            ds.field("method", &x)
-          } else {
-            ds.field("method", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        FirmwareUpdateMethod::UsbFirmwareUpdate => {
-          if let Some(x) = self.method_as_usb_firmware_update() {
             ds.field("method", &x)
           } else {
             ds.field("method", &"InvalidFlatbuffer: Union discriminant does not match value.")

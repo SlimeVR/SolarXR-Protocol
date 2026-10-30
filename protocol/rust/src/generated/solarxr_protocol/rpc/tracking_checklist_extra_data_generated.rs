@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_TRACKING_CHECKLIST_EXTRA_DATA: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_TRACKING_CHECKLIST_EXTRA_DATA: u8 = 7;
+pub const ENUM_MAX_TRACKING_CHECKLIST_EXTRA_DATA: u8 = 6;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_TRACKING_CHECKLIST_EXTRA_DATA: [TrackingChecklistExtraData; 8] = [
+pub const ENUM_VALUES_TRACKING_CHECKLIST_EXTRA_DATA: [TrackingChecklistExtraData; 7] = [
   TrackingChecklistExtraData::NONE,
   TrackingChecklistExtraData::TrackingChecklistTrackerReset,
   TrackingChecklistExtraData::TrackingChecklistTrackerError,
@@ -23,7 +23,6 @@ pub const ENUM_VALUES_TRACKING_CHECKLIST_EXTRA_DATA: [TrackingChecklistExtraData
   TrackingChecklistExtraData::TrackingChecklistUnassignedHMD,
   TrackingChecklistExtraData::TrackingChecklistNeedCalibration,
   TrackingChecklistExtraData::TrackingChecklistPublicNetworks,
-  TrackingChecklistExtraData::TrackingChecklistFirmwareUpdate,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -38,10 +37,9 @@ impl TrackingChecklistExtraData {
   pub const TrackingChecklistUnassignedHMD: Self = Self(4);
   pub const TrackingChecklistNeedCalibration: Self = Self(5);
   pub const TrackingChecklistPublicNetworks: Self = Self(6);
-  pub const TrackingChecklistFirmwareUpdate: Self = Self(7);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 7;
+  pub const ENUM_MAX: u8 = 6;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::TrackingChecklistTrackerReset,
@@ -50,7 +48,6 @@ impl TrackingChecklistExtraData {
     Self::TrackingChecklistUnassignedHMD,
     Self::TrackingChecklistNeedCalibration,
     Self::TrackingChecklistPublicNetworks,
-    Self::TrackingChecklistFirmwareUpdate,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -62,7 +59,6 @@ impl TrackingChecklistExtraData {
       Self::TrackingChecklistUnassignedHMD => Some("TrackingChecklistUnassignedHMD"),
       Self::TrackingChecklistNeedCalibration => Some("TrackingChecklistNeedCalibration"),
       Self::TrackingChecklistPublicNetworks => Some("TrackingChecklistPublicNetworks"),
-      Self::TrackingChecklistFirmwareUpdate => Some("TrackingChecklistFirmwareUpdate"),
       _ => None,
     }
   }

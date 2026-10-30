@@ -202,21 +202,6 @@ impl<'a> TrackingChecklistStep<'a> {
     }
   }
 
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn extra_data_as_tracking_checklist_firmware_update(&self) -> Option<TrackingChecklistFirmwareUpdate<'a>> {
-    if self.extra_data_type() == TrackingChecklistExtraData::TrackingChecklistFirmwareUpdate {
-      self.extra_data().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { TrackingChecklistFirmwareUpdate::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
 }
 
 impl flatbuffers::Verifiable for TrackingChecklistStep<'_> {
@@ -240,7 +225,6 @@ impl flatbuffers::Verifiable for TrackingChecklistStep<'_> {
           TrackingChecklistExtraData::TrackingChecklistUnassignedHMD => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistUnassignedHMD>>("TrackingChecklistExtraData::TrackingChecklistUnassignedHMD", pos),
           TrackingChecklistExtraData::TrackingChecklistNeedCalibration => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistNeedCalibration>>("TrackingChecklistExtraData::TrackingChecklistNeedCalibration", pos),
           TrackingChecklistExtraData::TrackingChecklistPublicNetworks => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistPublicNetworks>>("TrackingChecklistExtraData::TrackingChecklistPublicNetworks", pos),
-          TrackingChecklistExtraData::TrackingChecklistFirmwareUpdate => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackingChecklistFirmwareUpdate>>("TrackingChecklistExtraData::TrackingChecklistFirmwareUpdate", pos),
           _ => Ok(()),
         }
      })?
@@ -374,13 +358,6 @@ impl core::fmt::Debug for TrackingChecklistStep<'_> {
         },
         TrackingChecklistExtraData::TrackingChecklistPublicNetworks => {
           if let Some(x) = self.extra_data_as_tracking_checklist_public_networks() {
-            ds.field("extra_data", &x)
-          } else {
-            ds.field("extra_data", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        TrackingChecklistExtraData::TrackingChecklistFirmwareUpdate => {
-          if let Some(x) = self.extra_data_as_tracking_checklist_firmware_update() {
             ds.field("extra_data", &x)
           } else {
             ds.field("extra_data", &"InvalidFlatbuffer: Union discriminant does not match value.")

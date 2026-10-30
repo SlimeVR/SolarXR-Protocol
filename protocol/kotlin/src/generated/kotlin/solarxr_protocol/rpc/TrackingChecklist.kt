@@ -166,62 +166,6 @@ public data class TrackingChecklistSteamVRDisconnected(
   }
 }
 
-public data class TrackingChecklistFirmwareUpdateDevice(
-  public val deviceId: FirmwareUpdateDeviceId? = null,
-) {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_deviceId = deviceId?.let { FirmwareUpdateDeviceId.encode(it, builder) }
-    val __type_deviceId = deviceId?.let { FirmwareUpdateDeviceId.typeIndex(it) } ?: 0.toUByte()
-
-    builder.startTable(2)
-    builder.addByte(0, __type_deviceId.toByte(), 0)
-    __off_deviceId?.let { builder.addOffset(1, it, 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): TrackingChecklistFirmwareUpdateDevice {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __type_deviceId = if (vtableSize > 4 && bb.getShort(vtableOffset + 4).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 4).toInt()).toUByte() else 0.toUByte()
-      val __offset_deviceId = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-
-      return TrackingChecklistFirmwareUpdateDevice(
-              deviceId = if (__offset_deviceId != 0) FirmwareUpdateDeviceId.decode(__type_deviceId, bb, tableOffset + __offset_deviceId + bb.getInt(tableOffset + __offset_deviceId)) else null
-          )
-    }
-  }
-}
-
-/**
- * Devices that require a firmware update
- */
-public data class TrackingChecklistFirmwareUpdate(
-  public val devices: List<TrackingChecklistFirmwareUpdateDevice>? = null,
-) : TrackingChecklistExtraData {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_devices = devices?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
-
-    builder.startTable(1)
-    __off_devices?.let { builder.addOffset(0, it, 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): TrackingChecklistFirmwareUpdate {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_devices = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-
-      return TrackingChecklistFirmwareUpdate(
-              devices = if (__offset_devices != 0) { val vecOff = tableOffset + __offset_devices + bb.getInt(tableOffset + __offset_devices); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) TrackingChecklistFirmwareUpdateDevice.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
-          )
-    }
-  }
-}
-
 public class EnableSteamVRDriverRequest : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
     builder.startTable(0)
@@ -295,7 +239,6 @@ public sealed interface TrackingChecklistExtraData {
       4 -> TrackingChecklistUnassignedHMD.decode(bb, offset)
       5 -> TrackingChecklistNeedCalibration.decode(bb, offset)
       6 -> TrackingChecklistPublicNetworks.decode(bb, offset)
-      7 -> TrackingChecklistFirmwareUpdate.decode(bb, offset)
       else -> null
     }
 
@@ -306,7 +249,6 @@ public sealed interface TrackingChecklistExtraData {
       is TrackingChecklistUnassignedHMD -> 4.toUByte()
       is TrackingChecklistNeedCalibration -> 5.toUByte()
       is TrackingChecklistPublicNetworks -> 6.toUByte()
-      is TrackingChecklistFirmwareUpdate -> 7.toUByte()
     }
 
     public fun encode(`value`: TrackingChecklistExtraData, builder: FlatBufferWriter): Int = when (value) {
@@ -316,7 +258,6 @@ public sealed interface TrackingChecklistExtraData {
       is TrackingChecklistUnassignedHMD -> value.encode(builder)
       is TrackingChecklistNeedCalibration -> value.encode(builder)
       is TrackingChecklistPublicNetworks -> value.encode(builder)
-      is TrackingChecklistFirmwareUpdate -> value.encode(builder)
     }
   }
 }

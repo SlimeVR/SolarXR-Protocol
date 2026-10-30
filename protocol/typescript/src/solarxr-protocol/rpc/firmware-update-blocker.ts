@@ -9,10 +9,5 @@ export enum FirmwareUpdateBlocker {
   /**
    * The battery is too low to update safely
    */
-  LOW_BATTERY = 1,
-
-  /**
-   * The device needs to be plugged in with USB first
-   */
-  NEEDS_USB = 2
+  LOW_BATTERY = 1
 }

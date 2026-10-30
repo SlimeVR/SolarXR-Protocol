@@ -3,7 +3,6 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { FirmwareDeviceIdTable, FirmwareDeviceIdTableT } from '../../solarxr-protocol/rpc/firmware-device-id-table.js';
-import { FirmwareHardwareId, FirmwareHardwareIdT } from '../../solarxr-protocol/rpc/firmware-hardware-id.js';
 import { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from '../../solarxr-protocol/rpc/firmware-update-device-id.js';
 import { FirmwareUpdateStatus } from '../../solarxr-protocol/rpc/firmware-update-status.js';
 import { SerialDevicePort, SerialDevicePortT } from '../../solarxr-protocol/rpc/serial-device-port.js';
@@ -113,7 +112,7 @@ unpackTo(_o: FirmwareUpdateStatusResponseT): void {
 export class FirmwareUpdateStatusResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public deviceIdType: FirmwareUpdateDeviceId = FirmwareUpdateDeviceId.NONE,
-  public deviceId: FirmwareDeviceIdTableT|FirmwareHardwareIdT|SerialDevicePortT|null = null,
+  public deviceId: FirmwareDeviceIdTableT|SerialDevicePortT|null = null,
   public status: FirmwareUpdateStatus = FirmwareUpdateStatus.DOWNLOADING,
   public progress: number = 0
 ){}

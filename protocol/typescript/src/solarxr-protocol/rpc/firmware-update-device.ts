@@ -3,16 +3,13 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { FirmwareDeviceIdTable, FirmwareDeviceIdTableT } from '../../solarxr-protocol/rpc/firmware-device-id-table.js';
-import { FirmwareHardwareId, FirmwareHardwareIdT } from '../../solarxr-protocol/rpc/firmware-hardware-id.js';
 import { FirmwareUpdateBlocker } from '../../solarxr-protocol/rpc/firmware-update-blocker.js';
 import { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from '../../solarxr-protocol/rpc/firmware-update-device-id.js';
 import { FirmwareUpdateMethod, unionToFirmwareUpdateMethod, unionListToFirmwareUpdateMethod } from '../../solarxr-protocol/rpc/firmware-update-method.js';
-import { FirmwareUpdatePolicy } from '../../solarxr-protocol/rpc/firmware-update-policy.js';
 import { FirmwareVersionStatus } from '../../solarxr-protocol/rpc/firmware-version-status.js';
 import { OTAFirmwareUpdate, OTAFirmwareUpdateT } from '../../solarxr-protocol/rpc/otafirmware-update.js';
 import { SerialDevicePort, SerialDevicePortT } from '../../solarxr-protocol/rpc/serial-device-port.js';
 import { SerialFirmwareUpdate, SerialFirmwareUpdateT } from '../../solarxr-protocol/rpc/serial-firmware-update.js';
-import { UsbFirmwareUpdate, UsbFirmwareUpdateT } from '../../solarxr-protocol/rpc/usb-firmware-update.js';
 
 
 export class FirmwareUpdateDevice implements flatbuffers.IUnpackableObject<FirmwareUpdateDeviceT> {
@@ -58,6 +55,9 @@ methodType():FirmwareUpdateMethod {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : FirmwareUpdateMethod.NONE;
 }
 
+/**
+ * Ready to send update request, null when the device cannot be updated from where it is connected
+ */
 method<T extends flatbuffers.Table>(obj:any):any|null {
   const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? this.bb!.__union(obj, this.bb_pos + offset) : null;
@@ -70,20 +70,8 @@ latestVersion(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-minVersion():string|null
-minVersion(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-minVersion(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 18);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
-}
-
-policy():FirmwareUpdatePolicy {
-  const offset = this.bb!.__offset(this.bb_pos, 20);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : FirmwareUpdatePolicy.BLOCK;
-}
-
 static startFirmwareUpdateDevice(builder:flatbuffers.Builder) {
-  builder.startObject(9);
+  builder.startObject(7);
 }
 
 static addDeviceIdType(builder:flatbuffers.Builder, deviceIdType:FirmwareUpdateDeviceId) {
@@ -114,20 +102,12 @@ static addLatestVersion(builder:flatbuffers.Builder, latestVersionOffset:flatbuf
   builder.addFieldOffset(6, latestVersionOffset, 0);
 }
 
-static addMinVersion(builder:flatbuffers.Builder, minVersionOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(7, minVersionOffset, 0);
-}
-
-static addPolicy(builder:flatbuffers.Builder, policy:FirmwareUpdatePolicy) {
-  builder.addFieldInt8(8, policy, FirmwareUpdatePolicy.BLOCK);
-}
-
 static endFirmwareUpdateDevice(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createFirmwareUpdateDevice(builder:flatbuffers.Builder, deviceIdType:FirmwareUpdateDeviceId, deviceIdOffset:flatbuffers.Offset, status:FirmwareVersionStatus, blocker:FirmwareUpdateBlocker, methodType:FirmwareUpdateMethod, methodOffset:flatbuffers.Offset, latestVersionOffset:flatbuffers.Offset, minVersionOffset:flatbuffers.Offset, policy:FirmwareUpdatePolicy):flatbuffers.Offset {
+static createFirmwareUpdateDevice(builder:flatbuffers.Builder, deviceIdType:FirmwareUpdateDeviceId, deviceIdOffset:flatbuffers.Offset, status:FirmwareVersionStatus, blocker:FirmwareUpdateBlocker, methodType:FirmwareUpdateMethod, methodOffset:flatbuffers.Offset, latestVersionOffset:flatbuffers.Offset):flatbuffers.Offset {
   FirmwareUpdateDevice.startFirmwareUpdateDevice(builder);
   FirmwareUpdateDevice.addDeviceIdType(builder, deviceIdType);
   FirmwareUpdateDevice.addDeviceId(builder, deviceIdOffset);
@@ -136,8 +116,6 @@ static createFirmwareUpdateDevice(builder:flatbuffers.Builder, deviceIdType:Firm
   FirmwareUpdateDevice.addMethodType(builder, methodType);
   FirmwareUpdateDevice.addMethod(builder, methodOffset);
   FirmwareUpdateDevice.addLatestVersion(builder, latestVersionOffset);
-  FirmwareUpdateDevice.addMinVersion(builder, minVersionOffset);
-  FirmwareUpdateDevice.addPolicy(builder, policy);
   return FirmwareUpdateDevice.endFirmwareUpdateDevice(builder);
 }
 
@@ -157,9 +135,7 @@ unpack(): FirmwareUpdateDeviceT {
       if(temp === null) { return null; }
       return temp.unpack()
   })(),
-    this.latestVersion(),
-    this.minVersion(),
-    this.policy()
+    this.latestVersion()
   );
 }
 
@@ -180,22 +156,18 @@ unpackTo(_o: FirmwareUpdateDeviceT): void {
       return temp.unpack()
   })();
   _o.latestVersion = this.latestVersion();
-  _o.minVersion = this.minVersion();
-  _o.policy = this.policy();
 }
 }
 
 export class FirmwareUpdateDeviceT implements flatbuffers.IGeneratedObject {
 constructor(
   public deviceIdType: FirmwareUpdateDeviceId = FirmwareUpdateDeviceId.NONE,
-  public deviceId: FirmwareDeviceIdTableT|FirmwareHardwareIdT|SerialDevicePortT|null = null,
+  public deviceId: FirmwareDeviceIdTableT|SerialDevicePortT|null = null,
   public status: FirmwareVersionStatus = FirmwareVersionStatus.UNKNOWN,
   public blocker: FirmwareUpdateBlocker = FirmwareUpdateBlocker.NONE,
   public methodType: FirmwareUpdateMethod = FirmwareUpdateMethod.NONE,
-  public method: OTAFirmwareUpdateT|SerialFirmwareUpdateT|UsbFirmwareUpdateT|null = null,
-  public latestVersion: string|Uint8Array|null = null,
-  public minVersion: string|Uint8Array|null = null,
-  public policy: FirmwareUpdatePolicy = FirmwareUpdatePolicy.BLOCK
+  public method: OTAFirmwareUpdateT|SerialFirmwareUpdateT|null = null,
+  public latestVersion: string|Uint8Array|null = null
 ){}
 
 
@@ -203,7 +175,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const deviceId = builder.createObjectOffset(this.deviceId);
   const method = builder.createObjectOffset(this.method);
   const latestVersion = (this.latestVersion !== null ? builder.createString(this.latestVersion!) : 0);
-  const minVersion = (this.minVersion !== null ? builder.createString(this.minVersion!) : 0);
 
   return FirmwareUpdateDevice.createFirmwareUpdateDevice(builder,
     this.deviceIdType,
@@ -212,9 +183,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.blocker,
     this.methodType,
     method,
-    latestVersion,
-    minVersion,
-    this.policy
+    latestVersion
   );
 }
 }

@@ -5,7 +5,6 @@ import * as flatbuffers from 'flatbuffers';
 import { FirmwareUpdateMethod, unionToFirmwareUpdateMethod, unionListToFirmwareUpdateMethod } from '../../solarxr-protocol/rpc/firmware-update-method.js';
 import { OTAFirmwareUpdate, OTAFirmwareUpdateT } from '../../solarxr-protocol/rpc/otafirmware-update.js';
 import { SerialFirmwareUpdate, SerialFirmwareUpdateT } from '../../solarxr-protocol/rpc/serial-firmware-update.js';
-import { UsbFirmwareUpdate, UsbFirmwareUpdateT } from '../../solarxr-protocol/rpc/usb-firmware-update.js';
 
 
 export class FirmwareUpdateRequest implements flatbuffers.IUnpackableObject<FirmwareUpdateRequestT> {
@@ -85,7 +84,7 @@ unpackTo(_o: FirmwareUpdateRequestT): void {
 export class FirmwareUpdateRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public methodType: FirmwareUpdateMethod = FirmwareUpdateMethod.NONE,
-  public method: OTAFirmwareUpdateT|SerialFirmwareUpdateT|UsbFirmwareUpdateT|null = null
+  public method: OTAFirmwareUpdateT|SerialFirmwareUpdateT|null = null
 ){}
 
 

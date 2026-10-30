@@ -107,21 +107,6 @@ impl<'a> FirmwareUpdateStatusResponse<'a> {
     }
   }
 
-  #[inline]
-  #[allow(non_snake_case)]
-  pub fn device_id_as_firmware_hardware_id(&self) -> Option<FirmwareHardwareId<'a>> {
-    if self.device_id_type() == FirmwareUpdateDeviceId::FirmwareHardwareId {
-      self.device_id().map(|t| {
-       // Safety:
-       // Created from a valid Table for this object
-       // Which contains a valid union in this slot
-       unsafe { FirmwareHardwareId::init_from_table(t) }
-     })
-    } else {
-      None
-    }
-  }
-
 }
 
 impl flatbuffers::Verifiable for FirmwareUpdateStatusResponse<'_> {
@@ -135,7 +120,6 @@ impl flatbuffers::Verifiable for FirmwareUpdateStatusResponse<'_> {
         match key {
           FirmwareUpdateDeviceId::FirmwareDeviceIdTable => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareDeviceIdTable>>("FirmwareUpdateDeviceId::FirmwareDeviceIdTable", pos),
           FirmwareUpdateDeviceId::SerialDevicePort => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SerialDevicePort>>("FirmwareUpdateDeviceId::SerialDevicePort", pos),
-          FirmwareUpdateDeviceId::FirmwareHardwareId => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareHardwareId>>("FirmwareUpdateDeviceId::FirmwareHardwareId", pos),
           _ => Ok(()),
         }
      })?
@@ -213,13 +197,6 @@ impl core::fmt::Debug for FirmwareUpdateStatusResponse<'_> {
         },
         FirmwareUpdateDeviceId::SerialDevicePort => {
           if let Some(x) = self.device_id_as_serial_device_port() {
-            ds.field("device_id", &x)
-          } else {
-            ds.field("device_id", &"InvalidFlatbuffer: Union discriminant does not match value.")
-          }
-        },
-        FirmwareUpdateDeviceId::FirmwareHardwareId => {
-          if let Some(x) = self.device_id_as_firmware_hardware_id() {
             ds.field("device_id", &x)
           } else {
             ds.field("device_id", &"InvalidFlatbuffer: Union discriminant does not match value.")

@@ -12,13 +12,12 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_FIRMWARE_UPDATE_BLOCKER: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_FIRMWARE_UPDATE_BLOCKER: u8 = 2;
+pub const ENUM_MAX_FIRMWARE_UPDATE_BLOCKER: u8 = 1;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_FIRMWARE_UPDATE_BLOCKER: [FirmwareUpdateBlocker; 3] = [
+pub const ENUM_VALUES_FIRMWARE_UPDATE_BLOCKER: [FirmwareUpdateBlocker; 2] = [
   FirmwareUpdateBlocker::NONE,
   FirmwareUpdateBlocker::LOW_BATTERY,
-  FirmwareUpdateBlocker::NEEDS_USB,
 ];
 
 /// Why an available or required update cannot start right now
@@ -30,22 +29,18 @@ impl FirmwareUpdateBlocker {
   pub const NONE: Self = Self(0);
   /// The battery is too low to update safely
   pub const LOW_BATTERY: Self = Self(1);
-  /// The device needs to be plugged in with USB first
-  pub const NEEDS_USB: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 2;
+  pub const ENUM_MAX: u8 = 1;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::LOW_BATTERY,
-    Self::NEEDS_USB,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
       Self::NONE => Some("NONE"),
       Self::LOW_BATTERY => Some("LOW_BATTERY"),
-      Self::NEEDS_USB => Some("NEEDS_USB"),
       _ => None,
     }
   }

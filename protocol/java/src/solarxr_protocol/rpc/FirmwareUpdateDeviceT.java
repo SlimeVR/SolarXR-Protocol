@@ -13,8 +13,6 @@ public class FirmwareUpdateDeviceT {
   private int blocker;
   private solarxr_protocol.rpc.FirmwareUpdateMethodUnion method;
   private String latestVersion;
-  private String minVersion;
-  private int policy;
 
   public solarxr_protocol.rpc.FirmwareUpdateDeviceIdUnion getDeviceId() { return deviceId; }
 
@@ -36,14 +34,6 @@ public class FirmwareUpdateDeviceT {
 
   public void setLatestVersion(String latestVersion) { this.latestVersion = latestVersion; }
 
-  public String getMinVersion() { return minVersion; }
-
-  public void setMinVersion(String minVersion) { this.minVersion = minVersion; }
-
-  public int getPolicy() { return policy; }
-
-  public void setPolicy(int policy) { this.policy = policy; }
-
 
   public FirmwareUpdateDeviceT() {
     this.deviceId = null;
@@ -51,8 +41,6 @@ public class FirmwareUpdateDeviceT {
     this.blocker = 0;
     this.method = null;
     this.latestVersion = null;
-    this.minVersion = null;
-    this.policy = 0;
   }
 }
 

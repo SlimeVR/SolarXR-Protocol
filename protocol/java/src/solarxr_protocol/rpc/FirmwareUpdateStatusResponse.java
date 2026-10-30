@@ -71,10 +71,6 @@ public final class FirmwareUpdateStatusResponse extends Table {
         _oDeviceIdValue = deviceId(new solarxr_protocol.rpc.SerialDevicePort());
         _oDeviceId.setValue(_oDeviceIdValue != null ? ((solarxr_protocol.rpc.SerialDevicePort) _oDeviceIdValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.FirmwareUpdateDeviceId.FirmwareHardwareId:
-        _oDeviceIdValue = deviceId(new solarxr_protocol.rpc.FirmwareHardwareId());
-        _oDeviceId.setValue(_oDeviceIdValue != null ? ((solarxr_protocol.rpc.FirmwareHardwareId) _oDeviceIdValue).unpack() : null);
-        break;
       default: break;
     }
     _o.setDeviceId(_oDeviceId);

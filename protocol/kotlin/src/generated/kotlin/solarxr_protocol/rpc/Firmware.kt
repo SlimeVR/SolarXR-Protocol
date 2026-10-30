@@ -78,14 +78,6 @@ public enum class FirmwareUpdateStatus(
    */
   ERROR_UNSUPPORTED_METHOD(14.toUByte()),
   ERROR_UNKNOWN(15.toUByte()),
-  /**
-   * The server asked the device to reboot into its USB bootloader
-   */
-  ENTERING_BOOTLOADER(16.toUByte()),
-  /**
-   * The server is waiting for the bootloader drive of the device to appear
-   */
-  WAITING_FOR_DRIVE(17.toUByte()),
   ;
 
   public companion object {
@@ -142,34 +134,6 @@ public data class FirmwareDeviceIdTable(
   }
 }
 
-/**
- * Hardware id reported by the device, the same in application and bootloader mode
- */
-public data class FirmwareHardwareId(
-  public val id: String? = null,
-) : FirmwareUpdateDeviceId {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_id = id?.let { builder.createString(it) }
-
-    builder.startTable(1)
-    __off_id?.let { builder.addOffset(0, it, 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): FirmwareHardwareId {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_id = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-
-      return FirmwareHardwareId(
-              id = if (__offset_id != 0) readFlatBufferString(bb, tableOffset + __offset_id) else null
-          )
-    }
-  }
-}
-
 public sealed interface FirmwareUpdateDeviceId {
   public companion object {
     public fun decode(
@@ -179,20 +143,17 @@ public sealed interface FirmwareUpdateDeviceId {
     ): FirmwareUpdateDeviceId? = when (type.toInt()) {
       1 -> FirmwareDeviceIdTable.decode(bb, offset)
       2 -> SerialDevicePort.decode(bb, offset)
-      3 -> FirmwareHardwareId.decode(bb, offset)
       else -> null
     }
 
     public fun typeIndex(`value`: FirmwareUpdateDeviceId): UByte = when (value) {
       is FirmwareDeviceIdTable -> 1.toUByte()
       is SerialDevicePort -> 2.toUByte()
-      is FirmwareHardwareId -> 3.toUByte()
     }
 
     public fun encode(`value`: FirmwareUpdateDeviceId, builder: FlatBufferWriter): Int = when (value) {
       is FirmwareDeviceIdTable -> value.encode(builder)
       is SerialDevicePort -> value.encode(builder)
-      is FirmwareHardwareId -> value.encode(builder)
     }
   }
 }
@@ -240,20 +201,17 @@ public sealed interface FirmwareUpdateMethod {
     ): FirmwareUpdateMethod? = when (type.toInt()) {
       1 -> OTAFirmwareUpdate.decode(bb, offset)
       2 -> SerialFirmwareUpdate.decode(bb, offset)
-      3 -> UsbFirmwareUpdate.decode(bb, offset)
       else -> null
     }
 
     public fun typeIndex(`value`: FirmwareUpdateMethod): UByte = when (value) {
       is OTAFirmwareUpdate -> 1.toUByte()
       is SerialFirmwareUpdate -> 2.toUByte()
-      is UsbFirmwareUpdate -> 3.toUByte()
     }
 
     public fun encode(`value`: FirmwareUpdateMethod, builder: FlatBufferWriter): Int = when (value) {
       is OTAFirmwareUpdate -> value.encode(builder)
       is SerialFirmwareUpdate -> value.encode(builder)
-      is UsbFirmwareUpdate -> value.encode(builder)
     }
   }
 }
@@ -359,36 +317,6 @@ public data class SerialFirmwareUpdate(
   }
 }
 
-public data class UsbFirmwareUpdate(
-  public val deviceId: FirmwareHardwareId? = null,
-  public val firmwarePart: List<FirmwarePart>? = null,
-) : FirmwareUpdateMethod {
-  public fun encode(builder: FlatBufferWriter): Int {
-    val __off_deviceId = deviceId?.encode(builder)
-    val __off_firmwarePart = firmwarePart?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
-
-    builder.startTable(2)
-    __off_deviceId?.let { builder.addOffset(0, it, 0) }
-    __off_firmwarePart?.let { builder.addOffset(1, it, 0) }
-    return builder.endTable()
-  }
-
-  public companion object {
-    public fun decode(bb: FlatBufferReader, tableOffset: Int): UsbFirmwareUpdate {
-      val vtableOffset = tableOffset - bb.getInt(tableOffset)
-      val vtableSize = bb.getShort(vtableOffset).toInt()
-
-      val __offset_deviceId = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
-      val __offset_firmwarePart = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
-
-      return UsbFirmwareUpdate(
-              deviceId = if (__offset_deviceId != 0) FirmwareHardwareId.decode(bb, tableOffset + __offset_deviceId + bb.getInt(tableOffset + __offset_deviceId)) else null,
-              firmwarePart = if (__offset_firmwarePart != 0) { val vecOff = tableOffset + __offset_firmwarePart + bb.getInt(tableOffset + __offset_firmwarePart); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) FirmwarePart.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
-          )
-    }
-  }
-}
-
 public data class FirmwareUpdateStatusResponse(
   public val deviceId: FirmwareUpdateDeviceId? = null,
   public val status: FirmwareUpdateStatus = FirmwareUpdateStatus.DOWNLOADING,
@@ -478,32 +406,10 @@ public enum class FirmwareUpdateBlocker(
    * The battery is too low to update safely
    */
   LOW_BATTERY(1.toUByte()),
-  /**
-   * The device needs to be plugged in with USB first
-   */
-  NEEDS_USB(2.toUByte()),
   ;
 
   public companion object {
     public fun fromValue(`value`: UByte): FirmwareUpdateBlocker? = entries.firstOrNull { it.value == value }
-  }
-}
-
-public enum class FirmwareUpdatePolicy(
-  public val `value`: UByte,
-) {
-  /**
-   * Trackers on a device that requires an update are not used
-   */
-  BLOCK(0.toUByte()),
-  /**
-   * Required updates are only shown
-   */
-  WARN(1.toUByte()),
-  ;
-
-  public companion object {
-    public fun fromValue(`value`: UByte): FirmwareUpdatePolicy? = entries.firstOrNull { it.value == value }
   }
 }
 
@@ -513,8 +419,6 @@ public data class FirmwareUpdateDevice(
   public val blocker: FirmwareUpdateBlocker = FirmwareUpdateBlocker.NONE,
   public val method: FirmwareUpdateMethod? = null,
   public val latestVersion: String? = null,
-  public val minVersion: String? = null,
-  public val policy: FirmwareUpdatePolicy = FirmwareUpdatePolicy.BLOCK,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
     val __off_deviceId = deviceId?.let { FirmwareUpdateDeviceId.encode(it, builder) }
@@ -522,9 +426,8 @@ public data class FirmwareUpdateDevice(
     val __off_method = method?.let { FirmwareUpdateMethod.encode(it, builder) }
     val __type_method = method?.let { FirmwareUpdateMethod.typeIndex(it) } ?: 0.toUByte()
     val __off_latestVersion = latestVersion?.let { builder.createString(it) }
-    val __off_minVersion = minVersion?.let { builder.createString(it) }
 
-    builder.startTable(9)
+    builder.startTable(7)
     builder.addByte(0, __type_deviceId.toByte(), 0)
     __off_deviceId?.let { builder.addOffset(1, it, 0) }
     builder.addByte(2, status.value.toByte(), 0)
@@ -532,8 +435,6 @@ public data class FirmwareUpdateDevice(
     builder.addByte(4, __type_method.toByte(), 0)
     __off_method?.let { builder.addOffset(5, it, 0) }
     __off_latestVersion?.let { builder.addOffset(6, it, 0) }
-    __off_minVersion?.let { builder.addOffset(7, it, 0) }
-    builder.addByte(8, policy.value.toByte(), 0)
     return builder.endTable()
   }
 
@@ -549,17 +450,13 @@ public data class FirmwareUpdateDevice(
       val __type_method = if (vtableSize > 12 && bb.getShort(vtableOffset + 12).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 12).toInt()).toUByte() else 0.toUByte()
       val __offset_method = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
       val __offset_latestVersion = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
-      val __offset_minVersion = if (vtableSize > 18) bb.getShort(vtableOffset + 18).toInt() else 0
-      val __offset_policy = if (vtableSize > 20) bb.getShort(vtableOffset + 20).toInt() else 0
 
       return FirmwareUpdateDevice(
               deviceId = if (__offset_deviceId != 0) FirmwareUpdateDeviceId.decode(__type_deviceId, bb, tableOffset + __offset_deviceId + bb.getInt(tableOffset + __offset_deviceId)) else null,
               status = if (__offset_status != 0) FirmwareVersionStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: FirmwareVersionStatus.UNKNOWN else FirmwareVersionStatus.UNKNOWN,
               blocker = if (__offset_blocker != 0) FirmwareUpdateBlocker.fromValue(bb.get(tableOffset + __offset_blocker).toUByte()) ?: FirmwareUpdateBlocker.NONE else FirmwareUpdateBlocker.NONE,
               method = if (__offset_method != 0) FirmwareUpdateMethod.decode(__type_method, bb, tableOffset + __offset_method + bb.getInt(tableOffset + __offset_method)) else null,
-              latestVersion = if (__offset_latestVersion != 0) readFlatBufferString(bb, tableOffset + __offset_latestVersion) else null,
-              minVersion = if (__offset_minVersion != 0) readFlatBufferString(bb, tableOffset + __offset_minVersion) else null,
-              policy = if (__offset_policy != 0) FirmwareUpdatePolicy.fromValue(bb.get(tableOffset + __offset_policy).toUByte()) ?: FirmwareUpdatePolicy.BLOCK else FirmwareUpdatePolicy.BLOCK
+              latestVersion = if (__offset_latestVersion != 0) readFlatBufferString(bb, tableOffset + __offset_latestVersion) else null
           )
     }
   }
@@ -576,9 +473,6 @@ public class FirmwareUpdatesRequest : RpcMessage {
   }
 }
 
-/**
- * Sent in full every time the update status of any device changes
- */
 public data class FirmwareUpdatesResponse(
   public val devices: List<FirmwareUpdateDevice>? = null,
 ) : RpcMessage {

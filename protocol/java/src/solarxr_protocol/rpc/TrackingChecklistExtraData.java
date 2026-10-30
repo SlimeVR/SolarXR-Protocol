@@ -12,9 +12,8 @@ public final class TrackingChecklistExtraData {
   public static final byte TrackingChecklistUnassignedHMD = 4;
   public static final byte TrackingChecklistNeedCalibration = 5;
   public static final byte TrackingChecklistPublicNetworks = 6;
-  public static final byte TrackingChecklistFirmwareUpdate = 7;
 
-  public static final String[] names = { "NONE", "TrackingChecklistTrackerReset", "TrackingChecklistTrackerError", "TrackingChecklistSteamVRDisconnected", "TrackingChecklistUnassignedHMD", "TrackingChecklistNeedCalibration", "TrackingChecklistPublicNetworks", "TrackingChecklistFirmwareUpdate", };
+  public static final String[] names = { "NONE", "TrackingChecklistTrackerReset", "TrackingChecklistTrackerError", "TrackingChecklistSteamVRDisconnected", "TrackingChecklistUnassignedHMD", "TrackingChecklistNeedCalibration", "TrackingChecklistPublicNetworks", };
 
   public static String name(int e) { return names[e]; }
 }

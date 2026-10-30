@@ -27,7 +27,6 @@ public class TrackingChecklistExtraDataUnion {
   public solarxr_protocol.rpc.TrackingChecklistUnassignedHMDT asTrackingChecklistUnassignedHMD() { return (solarxr_protocol.rpc.TrackingChecklistUnassignedHMDT) value; }
   public solarxr_protocol.rpc.TrackingChecklistNeedCalibrationT asTrackingChecklistNeedCalibration() { return (solarxr_protocol.rpc.TrackingChecklistNeedCalibrationT) value; }
   public solarxr_protocol.rpc.TrackingChecklistPublicNetworksT asTrackingChecklistPublicNetworks() { return (solarxr_protocol.rpc.TrackingChecklistPublicNetworksT) value; }
-  public solarxr_protocol.rpc.TrackingChecklistFirmwareUpdateT asTrackingChecklistFirmwareUpdate() { return (solarxr_protocol.rpc.TrackingChecklistFirmwareUpdateT) value; }
 
   public static int pack(FlatBufferBuilder builder, TrackingChecklistExtraDataUnion _o) {
     switch (_o.type) {
@@ -37,7 +36,6 @@ public class TrackingChecklistExtraDataUnion {
       case TrackingChecklistExtraData.TrackingChecklistUnassignedHMD: return solarxr_protocol.rpc.TrackingChecklistUnassignedHMD.pack(builder, _o.asTrackingChecklistUnassignedHMD());
       case TrackingChecklistExtraData.TrackingChecklistNeedCalibration: return solarxr_protocol.rpc.TrackingChecklistNeedCalibration.pack(builder, _o.asTrackingChecklistNeedCalibration());
       case TrackingChecklistExtraData.TrackingChecklistPublicNetworks: return solarxr_protocol.rpc.TrackingChecklistPublicNetworks.pack(builder, _o.asTrackingChecklistPublicNetworks());
-      case TrackingChecklistExtraData.TrackingChecklistFirmwareUpdate: return solarxr_protocol.rpc.TrackingChecklistFirmwareUpdate.pack(builder, _o.asTrackingChecklistFirmwareUpdate());
       default: return 0;
     }
   }

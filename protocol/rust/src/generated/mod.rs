@@ -153,8 +153,6 @@ pub mod solarxr_protocol {
     pub use self::firmware_version_status_generated::*;
     mod firmware_update_blocker_generated;
     pub use self::firmware_update_blocker_generated::*;
-    mod firmware_update_policy_generated;
-    pub use self::firmware_update_policy_generated::*;
     mod user_height_calibration_status_generated;
     pub use self::user_height_calibration_status_generated::*;
     mod keybind_id_generated;
@@ -303,8 +301,6 @@ pub mod solarxr_protocol {
     pub use self::serial_device_port_generated::*;
     mod firmware_device_id_table_generated;
     pub use self::firmware_device_id_table_generated::*;
-    mod firmware_hardware_id_generated;
-    pub use self::firmware_hardware_id_generated::*;
     mod firmware_part_generated;
     pub use self::firmware_part_generated::*;
     mod firmware_update_request_generated;
@@ -313,8 +309,6 @@ pub mod solarxr_protocol {
     pub use self::otafirmware_update_generated::*;
     mod serial_firmware_update_generated;
     pub use self::serial_firmware_update_generated::*;
-    mod usb_firmware_update_generated;
-    pub use self::usb_firmware_update_generated::*;
     mod firmware_update_status_response_generated;
     pub use self::firmware_update_status_response_generated::*;
     mod firmware_update_stop_queues_request_generated;
@@ -607,10 +601,6 @@ pub mod solarxr_protocol {
     pub use self::tracking_checklist_need_calibration_generated::*;
     mod tracking_checklist_steam_vrdisconnected_generated;
     pub use self::tracking_checklist_steam_vrdisconnected_generated::*;
-    mod tracking_checklist_firmware_update_device_generated;
-    pub use self::tracking_checklist_firmware_update_device_generated::*;
-    mod tracking_checklist_firmware_update_generated;
-    pub use self::tracking_checklist_firmware_update_generated::*;
     mod enable_steam_vrdriver_request_generated;
     pub use self::enable_steam_vrdriver_request_generated::*;
     mod tracking_checklist_unassigned_hmd_generated;

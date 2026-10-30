@@ -12,7 +12,6 @@ use super::*;
 pub enum FirmwareUpdatesResponseOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Sent in full every time the update status of any device changes
 pub struct FirmwareUpdatesResponse<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }

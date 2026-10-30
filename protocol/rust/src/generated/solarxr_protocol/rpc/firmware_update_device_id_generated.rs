@@ -12,14 +12,13 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_FIRMWARE_UPDATE_DEVICE_ID: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_FIRMWARE_UPDATE_DEVICE_ID: u8 = 3;
+pub const ENUM_MAX_FIRMWARE_UPDATE_DEVICE_ID: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_FIRMWARE_UPDATE_DEVICE_ID: [FirmwareUpdateDeviceId; 4] = [
+pub const ENUM_VALUES_FIRMWARE_UPDATE_DEVICE_ID: [FirmwareUpdateDeviceId; 3] = [
   FirmwareUpdateDeviceId::NONE,
   FirmwareUpdateDeviceId::FirmwareDeviceIdTable,
   FirmwareUpdateDeviceId::SerialDevicePort,
-  FirmwareUpdateDeviceId::FirmwareHardwareId,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -30,15 +29,13 @@ impl FirmwareUpdateDeviceId {
   pub const NONE: Self = Self(0);
   pub const FirmwareDeviceIdTable: Self = Self(1);
   pub const SerialDevicePort: Self = Self(2);
-  pub const FirmwareHardwareId: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 3;
+  pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::FirmwareDeviceIdTable,
     Self::SerialDevicePort,
-    Self::FirmwareHardwareId,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -46,7 +43,6 @@ impl FirmwareUpdateDeviceId {
       Self::NONE => Some("NONE"),
       Self::FirmwareDeviceIdTable => Some("FirmwareDeviceIdTable"),
       Self::SerialDevicePort => Some("SerialDevicePort"),
-      Self::FirmwareHardwareId => Some("FirmwareHardwareId"),
       _ => None,
     }
   }

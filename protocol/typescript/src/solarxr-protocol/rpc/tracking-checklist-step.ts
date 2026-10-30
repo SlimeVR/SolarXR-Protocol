@@ -3,7 +3,6 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { TrackingChecklistExtraData, unionToTrackingChecklistExtraData, unionListToTrackingChecklistExtraData } from '../../solarxr-protocol/rpc/tracking-checklist-extra-data.js';
-import { TrackingChecklistFirmwareUpdate, TrackingChecklistFirmwareUpdateT } from '../../solarxr-protocol/rpc/tracking-checklist-firmware-update.js';
 import { TrackingChecklistNeedCalibration, TrackingChecklistNeedCalibrationT } from '../../solarxr-protocol/rpc/tracking-checklist-need-calibration.js';
 import { TrackingChecklistPublicNetworks, TrackingChecklistPublicNetworksT } from '../../solarxr-protocol/rpc/tracking-checklist-public-networks.js';
 import { TrackingChecklistSteamVRDisconnected, TrackingChecklistSteamVRDisconnectedT } from '../../solarxr-protocol/rpc/tracking-checklist-steam-vrdisconnected.js';
@@ -169,7 +168,7 @@ constructor(
   public optional: boolean = false,
   public ignorable: boolean = false,
   public extraDataType: TrackingChecklistExtraData = TrackingChecklistExtraData.NONE,
-  public extraData: TrackingChecklistFirmwareUpdateT|TrackingChecklistNeedCalibrationT|TrackingChecklistPublicNetworksT|TrackingChecklistSteamVRDisconnectedT|TrackingChecklistTrackerErrorT|TrackingChecklistTrackerResetT|TrackingChecklistUnassignedHMDT|null = null
+  public extraData: TrackingChecklistNeedCalibrationT|TrackingChecklistPublicNetworksT|TrackingChecklistSteamVRDisconnectedT|TrackingChecklistTrackerErrorT|TrackingChecklistTrackerResetT|TrackingChecklistUnassignedHMDT|null = null
 ){}
 
 
