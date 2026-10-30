@@ -5,11 +5,13 @@ package solarxr_protocol.rpc;
 @SuppressWarnings("unused")
 public final class StayAlignedRelaxedPose {
   private StayAlignedRelaxedPose() { }
-  public static final int STANDING = 0;
-  public static final int SITTING = 1;
-  public static final int FLAT = 2;
+  public static final int UNKNOWN = 0;
+  public static final int STANDING = 1;
+  public static final int SITTING = 2;
+  public static final int FLAT = 3;
+  public static final int KNEELING = 4;
 
-  public static final String[] names = { "STANDING", "SITTING", "FLAT", };
+  public static final String[] names = { "UNKNOWN", "STANDING", "SITTING", "FLAT", "KNEELING", };
 
   public static String name(int e) { return names[e]; }
 }

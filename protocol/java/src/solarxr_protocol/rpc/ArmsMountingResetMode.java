@@ -6,23 +6,19 @@ package solarxr_protocol.rpc;
 public final class ArmsMountingResetMode {
   private ArmsMountingResetMode() { }
   /**
-   * Upper arm going back and forearm going forward
+   * Upper arm going back and forearm going forward.
    */
   public static final int BACK = 0;
   /**
-   * Arms going forward
+   * Arms going forward.
    */
   public static final int FORWARD = 1;
   /**
-   * Arms going up to the sides into a tpose
+   * Arms going in T-pose.
    */
-  public static final int TPOSE_UP = 2;
-  /**
-   * Arms going down to the sides from a tpose
-   */
-  public static final int TPOSE_DOWN = 3;
+  public static final int SIDE = 2;
 
-  public static final String[] names = { "BACK", "FORWARD", "TPOSE_UP", "TPOSE_DOWN", };
+  public static final String[] names = { "BACK", "FORWARD", "SIDE", };
 
   public static String name(int e) { return names[e]; }
 }

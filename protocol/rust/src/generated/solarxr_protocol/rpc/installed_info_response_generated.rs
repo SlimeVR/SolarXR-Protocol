@@ -25,8 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for InstalledInfoResponse<'a> {
 }
 
 impl<'a> InstalledInfoResponse<'a> {
-  pub const VT_ISUDEVINSTALLED: flatbuffers::VOffsetT = 4;
-  pub const VT_ISWAYLAND: flatbuffers::VOffsetT = 6;
+  pub const VT_IS_UDEV_INSTALLED: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -38,25 +37,17 @@ impl<'a> InstalledInfoResponse<'a> {
     args: &'args InstalledInfoResponseArgs
   ) -> flatbuffers::WIPOffset<InstalledInfoResponse<'bldr>> {
     let mut builder = InstalledInfoResponseBuilder::new(_fbb);
-    builder.add_isWayland(args.isWayland);
-    builder.add_isUdevInstalled(args.isUdevInstalled);
+    builder.add_is_udev_installed(args.is_udev_installed);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn isUdevInstalled(&self) -> bool {
+  pub fn is_udev_installed(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(InstalledInfoResponse::VT_ISUDEVINSTALLED, Some(false)).unwrap()}
-  }
-  #[inline]
-  pub fn isWayland(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(InstalledInfoResponse::VT_ISWAYLAND, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(InstalledInfoResponse::VT_IS_UDEV_INSTALLED, Some(false)).unwrap()}
   }
 }
 
@@ -67,22 +58,19 @@ impl flatbuffers::Verifiable for InstalledInfoResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("isUdevInstalled", Self::VT_ISUDEVINSTALLED, false)?
-     .visit_field::<bool>("isWayland", Self::VT_ISWAYLAND, false)?
+     .visit_field::<bool>("is_udev_installed", Self::VT_IS_UDEV_INSTALLED, false)?
      .finish();
     Ok(())
   }
 }
 pub struct InstalledInfoResponseArgs {
-    pub isUdevInstalled: bool,
-    pub isWayland: bool,
+    pub is_udev_installed: bool,
 }
 impl<'a> Default for InstalledInfoResponseArgs {
   #[inline]
   fn default() -> Self {
     InstalledInfoResponseArgs {
-      isUdevInstalled: false,
-      isWayland: false,
+      is_udev_installed: false,
     }
   }
 }
@@ -93,12 +81,8 @@ pub struct InstalledInfoResponseBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> InstalledInfoResponseBuilder<'a, 'b> {
   #[inline]
-  pub fn add_isUdevInstalled(&mut self, isUdevInstalled: bool) {
-    self.fbb_.push_slot::<bool>(InstalledInfoResponse::VT_ISUDEVINSTALLED, isUdevInstalled, false);
-  }
-  #[inline]
-  pub fn add_isWayland(&mut self, isWayland: bool) {
-    self.fbb_.push_slot::<bool>(InstalledInfoResponse::VT_ISWAYLAND, isWayland, false);
+  pub fn add_is_udev_installed(&mut self, is_udev_installed: bool) {
+    self.fbb_.push_slot::<bool>(InstalledInfoResponse::VT_IS_UDEV_INSTALLED, is_udev_installed, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> InstalledInfoResponseBuilder<'a, 'b> {
@@ -118,8 +102,7 @@ impl<'a: 'b, 'b> InstalledInfoResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for InstalledInfoResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("InstalledInfoResponse");
-      ds.field("isUdevInstalled", &self.isUdevInstalled());
-      ds.field("isWayland", &self.isWayland());
+      ds.field("is_udev_installed", &self.is_udev_installed());
       ds.finish()
   }
 }

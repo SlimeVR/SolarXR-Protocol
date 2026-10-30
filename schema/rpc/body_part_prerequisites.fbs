@@ -1,0 +1,22 @@
+include "../datatypes/datatypes.fbs";
+
+namespace solarxr_protocol.rpc;
+
+/// One set of alternatives. Satisfied as soon as any member of it is assigned.
+table BodyPartRequirement {
+    any_of: [solarxr_protocol.datatypes.BodyPart];
+}
+
+/// What a body part needs assigned around it for a tracker on it to track well.
+/// Derived from the skeleton hierarchy and the processors that impute missing bones.
+table BodyPartPrerequisites {
+    body_part: solarxr_protocol.datatypes.BodyPart;
+    /// Every requirement has to be met. Empty means the part stands on its own.
+    requires: [BodyPartRequirement];
+}
+
+table BodyPartPrerequisitesRequest {}
+
+table BodyPartPrerequisitesResponse {
+    parts: [BodyPartPrerequisites];
+}

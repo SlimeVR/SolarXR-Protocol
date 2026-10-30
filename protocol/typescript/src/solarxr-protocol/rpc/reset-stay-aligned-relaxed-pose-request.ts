@@ -25,7 +25,7 @@ static getSizePrefixedRootAsResetStayAlignedRelaxedPoseRequest(bb:flatbuffers.By
 
 pose():StayAlignedRelaxedPose {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : StayAlignedRelaxedPose.STANDING;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : StayAlignedRelaxedPose.UNKNOWN;
 }
 
 static startResetStayAlignedRelaxedPoseRequest(builder:flatbuffers.Builder) {
@@ -33,7 +33,7 @@ static startResetStayAlignedRelaxedPoseRequest(builder:flatbuffers.Builder) {
 }
 
 static addPose(builder:flatbuffers.Builder, pose:StayAlignedRelaxedPose) {
-  builder.addFieldInt8(0, pose, StayAlignedRelaxedPose.STANDING);
+  builder.addFieldInt8(0, pose, StayAlignedRelaxedPose.UNKNOWN);
 }
 
 static endResetStayAlignedRelaxedPoseRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -61,7 +61,7 @@ unpackTo(_o: ResetStayAlignedRelaxedPoseRequestT): void {
 
 export class ResetStayAlignedRelaxedPoseRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public pose: StayAlignedRelaxedPose = StayAlignedRelaxedPose.STANDING
+  public pose: StayAlignedRelaxedPose = StayAlignedRelaxedPose.UNKNOWN
 ){}
 
 

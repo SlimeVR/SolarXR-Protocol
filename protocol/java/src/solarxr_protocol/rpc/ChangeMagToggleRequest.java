@@ -18,21 +18,20 @@ public final class ChangeMagToggleRequest extends Table {
   public void __init(int _i, ByteBuffer _bb) { __reset(_i, _bb); }
   public ChangeMagToggleRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public solarxr_protocol.datatypes.TrackerId trackerId() { return trackerId(new solarxr_protocol.datatypes.TrackerId()); }
-  public solarxr_protocol.datatypes.TrackerId trackerId(solarxr_protocol.datatypes.TrackerId obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public int trackerId() { int o = __offset(4); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
   public boolean enable() { int o = __offset(6); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
 
   public static int createChangeMagToggleRequest(FlatBufferBuilder builder,
-      int trackerIdOffset,
+      int trackerId,
       boolean enable) {
     builder.startTable(2);
-    ChangeMagToggleRequest.addTrackerId(builder, trackerIdOffset);
+    ChangeMagToggleRequest.addTrackerId(builder, trackerId);
     ChangeMagToggleRequest.addEnable(builder, enable);
     return ChangeMagToggleRequest.endChangeMagToggleRequest(builder);
   }
 
   public static void startChangeMagToggleRequest(FlatBufferBuilder builder) { builder.startTable(2); }
-  public static void addTrackerId(FlatBufferBuilder builder, int trackerIdOffset) { builder.addOffset(0, trackerIdOffset, 0); }
+  public static void addTrackerId(FlatBufferBuilder builder, int trackerId) { builder.addShort(0, (short) trackerId, (short) 0); }
   public static void addEnable(FlatBufferBuilder builder, boolean enable) { builder.addBoolean(1, enable, false); }
   public static int endChangeMagToggleRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
@@ -51,17 +50,16 @@ public final class ChangeMagToggleRequest extends Table {
     return _o;
   }
   public void unpackTo(ChangeMagToggleRequestT _o) {
-    if (trackerId() != null) _o.setTrackerId(trackerId().unpack());
-    else _o.setTrackerId(null);
+    int _oTrackerId = trackerId();
+    _o.setTrackerId(_oTrackerId);
     boolean _oEnable = enable();
     _o.setEnable(_oEnable);
   }
   public static int pack(FlatBufferBuilder builder, ChangeMagToggleRequestT _o) {
     if (_o == null) return 0;
-    int _trackerId = _o.getTrackerId() == null ? 0 : solarxr_protocol.datatypes.TrackerId.pack(builder, _o.getTrackerId());
     return createChangeMagToggleRequest(
       builder,
-      _trackerId,
+      _o.getTrackerId(),
       _o.getEnable());
   }
 }

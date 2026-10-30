@@ -7,5 +7,11 @@ export enum TrackerStatus {
   BUSY = 3,
   ERROR = 4,
   OCCLUDED = 5,
-  TIMED_OUT = 6
+  TIMED_OUT = 6,
+  SLEEPING = 7,
+
+  /**
+   * Connected but not used until its firmware is updated
+   */
+  UPDATE_REQUIRED = 8
 }

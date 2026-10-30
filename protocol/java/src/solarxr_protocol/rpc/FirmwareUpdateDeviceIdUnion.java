@@ -21,12 +21,12 @@ public class FirmwareUpdateDeviceIdUnion {
     this.value = null;
   }
 
-  public solarxr_protocol.datatypes.DeviceIdTableT assolarxr_protocol_datatypes_DeviceIdTable() { return (solarxr_protocol.datatypes.DeviceIdTableT) value; }
+  public solarxr_protocol.rpc.FirmwareDeviceIdTableT asFirmwareDeviceIdTable() { return (solarxr_protocol.rpc.FirmwareDeviceIdTableT) value; }
   public solarxr_protocol.rpc.SerialDevicePortT asSerialDevicePort() { return (solarxr_protocol.rpc.SerialDevicePortT) value; }
 
   public static int pack(FlatBufferBuilder builder, FirmwareUpdateDeviceIdUnion _o) {
     switch (_o.type) {
-      case FirmwareUpdateDeviceId.solarxr_protocol_datatypes_DeviceIdTable: return solarxr_protocol.datatypes.DeviceIdTable.pack(builder, _o.assolarxr_protocol_datatypes_DeviceIdTable());
+      case FirmwareUpdateDeviceId.FirmwareDeviceIdTable: return solarxr_protocol.rpc.FirmwareDeviceIdTable.pack(builder, _o.asFirmwareDeviceIdTable());
       case FirmwareUpdateDeviceId.SerialDevicePort: return solarxr_protocol.rpc.SerialDevicePort.pack(builder, _o.asSerialDevicePort());
       default: return 0;
     }
