@@ -481,6 +481,8 @@ pub mod solarxr_protocol {
     pub use self::user_height_response_generated::*;
     mod change_user_height_request_generated;
     pub use self::change_user_height_request_generated::*;
+    mod recenter_mocap_mode_request_generated;
+    pub use self::recenter_mocap_mode_request_generated::*;
     mod stay_aligned_pose_generated;
     pub use self::stay_aligned_pose_generated::*;
     mod stay_aligned_pose_toggle_generated;

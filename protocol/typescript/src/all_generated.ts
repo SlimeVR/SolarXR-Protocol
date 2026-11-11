@@ -158,6 +158,7 @@ export { ProfileOperationResponse, ProfileOperationResponseT } from './solarxr-p
 export { ProfileOperationStatus } from './solarxr-protocol/rpc/profile-operation-status.js';
 export { ProfilesRequest, ProfilesRequestT } from './solarxr-protocol/rpc/profiles-request.js';
 export { ProfilesResponse, ProfilesResponseT } from './solarxr-protocol/rpc/profiles-response.js';
+export { RecenterMocapModeRequest, RecenterMocapModeRequestT } from './solarxr-protocol/rpc/recenter-mocap-mode-request.js';
 export { RecordBVHRequest, RecordBVHRequestT } from './solarxr-protocol/rpc/record-bvhrequest.js';
 export { RecordBVHStatus, RecordBVHStatusT } from './solarxr-protocol/rpc/record-bvhstatus.js';
 export { RecordBVHStatusRequest, RecordBVHStatusRequestT } from './solarxr-protocol/rpc/record-bvhstatus-request.js';

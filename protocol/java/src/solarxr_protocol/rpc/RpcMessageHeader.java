@@ -713,6 +713,10 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.FirmwareUpdatesResponse());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.FirmwareUpdatesResponse) _oMessageValue).unpack() : null);
         break;
+      case solarxr_protocol.rpc.RpcMessage.RecenterMocapModeRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.RecenterMocapModeRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.RecenterMocapModeRequest) _oMessageValue).unpack() : null);
+        break;
       default: break;
     }
     _o.setMessage(_oMessage);

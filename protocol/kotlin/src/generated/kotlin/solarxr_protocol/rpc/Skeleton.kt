@@ -527,3 +527,17 @@ public data class ChangeUserHeightRequest(
     }
   }
 }
+
+/**
+ * Resets the Localizer's (mocap mode) head position to (0, 0)
+ */
+public class RecenterMocapModeRequest : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): RecenterMocapModeRequest = RecenterMocapModeRequest()
+  }
+}

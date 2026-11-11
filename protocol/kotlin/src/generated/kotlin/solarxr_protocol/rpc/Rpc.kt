@@ -177,6 +177,7 @@ public sealed interface RpcMessage {
       158 -> StayAlignedStatusResponse.decode(bb, offset)
       159 -> FirmwareUpdatesRequest.decode(bb, offset)
       160 -> FirmwareUpdatesResponse.decode(bb, offset)
+      161 -> RecenterMocapModeRequest.decode(bb, offset)
       else -> null
     }
 
@@ -341,6 +342,7 @@ public sealed interface RpcMessage {
       is StayAlignedStatusResponse -> 158.toUByte()
       is FirmwareUpdatesRequest -> 159.toUByte()
       is FirmwareUpdatesResponse -> 160.toUByte()
+      is RecenterMocapModeRequest -> 161.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -504,6 +506,7 @@ public sealed interface RpcMessage {
       is StayAlignedStatusResponse -> value.encode(builder)
       is FirmwareUpdatesRequest -> value.encode(builder)
       is FirmwareUpdatesResponse -> value.encode(builder)
+      is RecenterMocapModeRequest -> value.encode(builder)
     }
   }
 }

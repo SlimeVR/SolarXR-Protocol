@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 160;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 161;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 161] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 162] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -177,6 +177,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 161] = [
   RpcMessage::StayAlignedStatusResponse,
   RpcMessage::FirmwareUpdatesRequest,
   RpcMessage::FirmwareUpdatesResponse,
+  RpcMessage::RecenterMocapModeRequest,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -345,9 +346,10 @@ impl RpcMessage {
   pub const StayAlignedStatusResponse: Self = Self(158);
   pub const FirmwareUpdatesRequest: Self = Self(159);
   pub const FirmwareUpdatesResponse: Self = Self(160);
+  pub const RecenterMocapModeRequest: Self = Self(161);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 160;
+  pub const ENUM_MAX: u8 = 161;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -510,6 +512,7 @@ impl RpcMessage {
     Self::StayAlignedStatusResponse,
     Self::FirmwareUpdatesRequest,
     Self::FirmwareUpdatesResponse,
+    Self::RecenterMocapModeRequest,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -675,6 +678,7 @@ impl RpcMessage {
       Self::StayAlignedStatusResponse => Some("StayAlignedStatusResponse"),
       Self::FirmwareUpdatesRequest => Some("FirmwareUpdatesRequest"),
       Self::FirmwareUpdatesResponse => Some("FirmwareUpdatesResponse"),
+      Self::RecenterMocapModeRequest => Some("RecenterMocapModeRequest"),
       _ => None,
     }
   }

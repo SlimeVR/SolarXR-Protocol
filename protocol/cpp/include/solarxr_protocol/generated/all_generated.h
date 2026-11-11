@@ -485,6 +485,9 @@ struct UserHeightResponseBuilder;
 struct ChangeUserHeightRequest;
 struct ChangeUserHeightRequestBuilder;
 
+struct RecenterMocapModeRequest;
+struct RecenterMocapModeRequestBuilder;
+
 struct StayAlignedPose;
 struct StayAlignedPoseBuilder;
 
@@ -3861,11 +3864,12 @@ enum class RpcMessage : uint8_t {
   StayAlignedStatusResponse = 158,
   FirmwareUpdatesRequest = 159,
   FirmwareUpdatesResponse = 160,
+  RecenterMocapModeRequest = 161,
   MIN = NONE,
-  MAX = FirmwareUpdatesResponse
+  MAX = RecenterMocapModeRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[161] {
+inline const RpcMessage (&EnumValuesRpcMessage())[162] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -4027,13 +4031,14 @@ inline const RpcMessage (&EnumValuesRpcMessage())[161] {
     RpcMessage::StopStayAlignedStatusRequest,
     RpcMessage::StayAlignedStatusResponse,
     RpcMessage::FirmwareUpdatesRequest,
-    RpcMessage::FirmwareUpdatesResponse
+    RpcMessage::FirmwareUpdatesResponse,
+    RpcMessage::RecenterMocapModeRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[162] = {
+  static const char * const names[163] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -4195,13 +4200,14 @@ inline const char * const *EnumNamesRpcMessage() {
     "StayAlignedStatusResponse",
     "FirmwareUpdatesRequest",
     "FirmwareUpdatesResponse",
+    "RecenterMocapModeRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::FirmwareUpdatesResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::RecenterMocapModeRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -4848,6 +4854,10 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::FirmwareUpdatesRequest
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::FirmwareUpdatesResponse> {
   static const RpcMessage enum_value = RpcMessage::FirmwareUpdatesResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::RecenterMocapModeRequest> {
+  static const RpcMessage enum_value = RpcMessage::RecenterMocapModeRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -14515,6 +14525,36 @@ inline flatbuffers::Offset<ChangeUserHeightRequest> CreateChangeUserHeightReques
   return builder_.Finish();
 }
 
+/// Resets the Localizer's (mocap mode) head position to (0, 0)
+struct RecenterMocapModeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef RecenterMocapModeRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct RecenterMocapModeRequestBuilder {
+  typedef RecenterMocapModeRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit RecenterMocapModeRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<RecenterMocapModeRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<RecenterMocapModeRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<RecenterMocapModeRequest> CreateRecenterMocapModeRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  RecenterMocapModeRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 /// A relaxed pose of the user. Angles are the yaw of the upper legs, lower legs and
 /// feet relative to the body, in degrees.
 struct StayAlignedPose FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -19885,6 +19925,9 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::FirmwareUpdatesResponse *message_as_FirmwareUpdatesResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::FirmwareUpdatesResponse ? static_cast<const solarxr_protocol::rpc::FirmwareUpdatesResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::RecenterMocapModeRequest *message_as_RecenterMocapModeRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::RecenterMocapModeRequest ? static_cast<const solarxr_protocol::rpc::RecenterMocapModeRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -20534,6 +20577,10 @@ template<> inline const solarxr_protocol::rpc::FirmwareUpdatesRequest *RpcMessag
 
 template<> inline const solarxr_protocol::rpc::FirmwareUpdatesResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::FirmwareUpdatesResponse>() const {
   return message_as_FirmwareUpdatesResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::RecenterMocapModeRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::RecenterMocapModeRequest>() const {
+  return message_as_RecenterMocapModeRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -22671,6 +22718,10 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::FirmwareUpdatesResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FirmwareUpdatesResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::RecenterMocapModeRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::RecenterMocapModeRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
