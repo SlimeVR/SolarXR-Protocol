@@ -233,6 +233,15 @@ struct FirmwareUpdateStatusResponseBuilder;
 struct FirmwareUpdateStopQueuesRequest;
 struct FirmwareUpdateStopQueuesRequestBuilder;
 
+struct FirmwareUpdateDevice;
+struct FirmwareUpdateDeviceBuilder;
+
+struct FirmwareUpdatesRequest;
+struct FirmwareUpdatesRequestBuilder;
+
+struct FirmwareUpdatesResponse;
+struct FirmwareUpdatesResponseBuilder;
+
 struct StartUserHeightCalibration;
 struct StartUserHeightCalibrationBuilder;
 
@@ -475,6 +484,9 @@ struct UserHeightResponseBuilder;
 
 struct ChangeUserHeightRequest;
 struct ChangeUserHeightRequestBuilder;
+
+struct RecenterMocapModeRequest;
+struct RecenterMocapModeRequestBuilder;
 
 struct StayAlignedPose;
 struct StayAlignedPoseBuilder;
@@ -1060,11 +1072,13 @@ enum class TrackerStatus : uint8_t {
   OCCLUDED = 5,
   TIMED_OUT = 6,
   SLEEPING = 7,
+  /// Connected but not used until its firmware is updated
+  UPDATE_REQUIRED = 8,
   MIN = NONE,
-  MAX = SLEEPING
+  MAX = UPDATE_REQUIRED
 };
 
-inline const TrackerStatus (&EnumValuesTrackerStatus())[8] {
+inline const TrackerStatus (&EnumValuesTrackerStatus())[9] {
   static const TrackerStatus values[] = {
     TrackerStatus::NONE,
     TrackerStatus::DISCONNECTED,
@@ -1073,13 +1087,14 @@ inline const TrackerStatus (&EnumValuesTrackerStatus())[8] {
     TrackerStatus::ERROR,
     TrackerStatus::OCCLUDED,
     TrackerStatus::TIMED_OUT,
-    TrackerStatus::SLEEPING
+    TrackerStatus::SLEEPING,
+    TrackerStatus::UPDATE_REQUIRED
   };
   return values;
 }
 
 inline const char * const *EnumNamesTrackerStatus() {
-  static const char * const names[9] = {
+  static const char * const names[10] = {
     "NONE",
     "DISCONNECTED",
     "OK",
@@ -1088,13 +1103,14 @@ inline const char * const *EnumNamesTrackerStatus() {
     "OCCLUDED",
     "TIMED_OUT",
     "SLEEPING",
+    "UPDATE_REQUIRED",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTrackerStatus(TrackerStatus e) {
-  if (flatbuffers::IsOutRange(e, TrackerStatus::NONE, TrackerStatus::SLEEPING)) return "";
+  if (flatbuffers::IsOutRange(e, TrackerStatus::NONE, TrackerStatus::UPDATE_REQUIRED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTrackerStatus()[index];
 }
@@ -2031,6 +2047,85 @@ template<> struct FirmwareUpdateMethodTraits<solarxr_protocol::rpc::SerialFirmwa
 
 bool VerifyFirmwareUpdateMethod(flatbuffers::Verifier &verifier, const void *obj, FirmwareUpdateMethod type);
 bool VerifyFirmwareUpdateMethodVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<FirmwareUpdateMethod> *types);
+
+/// How the firmware of a device compares to the latest release
+enum class FirmwareVersionStatus : uint8_t {
+  /// No release info yet, or the device version could not be parsed
+  UNKNOWN = 0,
+  UP_TO_DATE = 1,
+  AVAILABLE = 2,
+  /// The device is below the minimum version of the release
+  REQUIRED = 3,
+  /// An update exists but this user is outside its rollout
+  BLOCKED = 4,
+  /// The server does not check updates for this device
+  UNSUPPORTED = 5,
+  MIN = UNKNOWN,
+  MAX = UNSUPPORTED
+};
+
+inline const FirmwareVersionStatus (&EnumValuesFirmwareVersionStatus())[6] {
+  static const FirmwareVersionStatus values[] = {
+    FirmwareVersionStatus::UNKNOWN,
+    FirmwareVersionStatus::UP_TO_DATE,
+    FirmwareVersionStatus::AVAILABLE,
+    FirmwareVersionStatus::REQUIRED,
+    FirmwareVersionStatus::BLOCKED,
+    FirmwareVersionStatus::UNSUPPORTED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesFirmwareVersionStatus() {
+  static const char * const names[7] = {
+    "UNKNOWN",
+    "UP_TO_DATE",
+    "AVAILABLE",
+    "REQUIRED",
+    "BLOCKED",
+    "UNSUPPORTED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameFirmwareVersionStatus(FirmwareVersionStatus e) {
+  if (flatbuffers::IsOutRange(e, FirmwareVersionStatus::UNKNOWN, FirmwareVersionStatus::UNSUPPORTED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesFirmwareVersionStatus()[index];
+}
+
+/// Why an available or required update cannot start right now
+enum class FirmwareUpdateBlocker : uint8_t {
+  NONE = 0,
+  /// The battery is too low to update safely
+  LOW_BATTERY = 1,
+  MIN = NONE,
+  MAX = LOW_BATTERY
+};
+
+inline const FirmwareUpdateBlocker (&EnumValuesFirmwareUpdateBlocker())[2] {
+  static const FirmwareUpdateBlocker values[] = {
+    FirmwareUpdateBlocker::NONE,
+    FirmwareUpdateBlocker::LOW_BATTERY
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesFirmwareUpdateBlocker() {
+  static const char * const names[3] = {
+    "NONE",
+    "LOW_BATTERY",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameFirmwareUpdateBlocker(FirmwareUpdateBlocker e) {
+  if (flatbuffers::IsOutRange(e, FirmwareUpdateBlocker::NONE, FirmwareUpdateBlocker::LOW_BATTERY)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesFirmwareUpdateBlocker()[index];
+}
 
 enum class UserHeightCalibrationStatus : uint8_t {
   NONE = 0,
@@ -3409,11 +3504,12 @@ enum class TrackingChecklistStepId : uint8_t {
   STANDABLE_INSTALLED = 12,
   VRCHAT_OSC_TRACKING_DISABLED = 13,
   MOUNTING_METHOD = 14,
+  FIRMWARE_UPDATE = 15,
   MIN = UNKNOWN,
-  MAX = MOUNTING_METHOD
+  MAX = FIRMWARE_UPDATE
 };
 
-inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[15] {
+inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[16] {
   static const TrackingChecklistStepId values[] = {
     TrackingChecklistStepId::UNKNOWN,
     TrackingChecklistStepId::TRACKERS_REST_CALIBRATION,
@@ -3429,13 +3525,14 @@ inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[15] 
     TrackingChecklistStepId::STEAMVR_HANDS_ENABLED,
     TrackingChecklistStepId::STANDABLE_INSTALLED,
     TrackingChecklistStepId::VRCHAT_OSC_TRACKING_DISABLED,
-    TrackingChecklistStepId::MOUNTING_METHOD
+    TrackingChecklistStepId::MOUNTING_METHOD,
+    TrackingChecklistStepId::FIRMWARE_UPDATE
   };
   return values;
 }
 
 inline const char * const *EnumNamesTrackingChecklistStepId() {
-  static const char * const names[16] = {
+  static const char * const names[17] = {
     "UNKNOWN",
     "TRACKERS_REST_CALIBRATION",
     "FULL_RESET",
@@ -3451,13 +3548,14 @@ inline const char * const *EnumNamesTrackingChecklistStepId() {
     "STANDABLE_INSTALLED",
     "VRCHAT_OSC_TRACKING_DISABLED",
     "MOUNTING_METHOD",
+    "FIRMWARE_UPDATE",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTrackingChecklistStepId(TrackingChecklistStepId e) {
-  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::MOUNTING_METHOD)) return "";
+  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::FIRMWARE_UPDATE)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTrackingChecklistStepId()[index];
 }
@@ -3800,11 +3898,14 @@ enum class RpcMessage : uint8_t {
   StartStayAlignedStatusRequest = 156,
   StopStayAlignedStatusRequest = 157,
   StayAlignedStatusResponse = 158,
+  FirmwareUpdatesRequest = 159,
+  FirmwareUpdatesResponse = 160,
+  RecenterMocapModeRequest = 161,
   MIN = NONE,
-  MAX = StayAlignedStatusResponse
+  MAX = RecenterMocapModeRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[159] {
+inline const RpcMessage (&EnumValuesRpcMessage())[162] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -3964,13 +4065,16 @@ inline const RpcMessage (&EnumValuesRpcMessage())[159] {
     RpcMessage::StayAlignedPoseRecordingStatusResponse,
     RpcMessage::StartStayAlignedStatusRequest,
     RpcMessage::StopStayAlignedStatusRequest,
-    RpcMessage::StayAlignedStatusResponse
+    RpcMessage::StayAlignedStatusResponse,
+    RpcMessage::FirmwareUpdatesRequest,
+    RpcMessage::FirmwareUpdatesResponse,
+    RpcMessage::RecenterMocapModeRequest
   };
   return values;
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[160] = {
+  static const char * const names[163] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -4130,13 +4234,16 @@ inline const char * const *EnumNamesRpcMessage() {
     "StartStayAlignedStatusRequest",
     "StopStayAlignedStatusRequest",
     "StayAlignedStatusResponse",
+    "FirmwareUpdatesRequest",
+    "FirmwareUpdatesResponse",
+    "RecenterMocapModeRequest",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRpcMessage(RpcMessage e) {
-  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::StayAlignedStatusResponse)) return "";
+  if (flatbuffers::IsOutRange(e, RpcMessage::NONE, RpcMessage::RecenterMocapModeRequest)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRpcMessage()[index];
 }
@@ -4775,6 +4882,18 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::StopStayAlignedStatusR
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::StayAlignedStatusResponse> {
   static const RpcMessage enum_value = RpcMessage::StayAlignedStatusResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::FirmwareUpdatesRequest> {
+  static const RpcMessage enum_value = RpcMessage::FirmwareUpdatesRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::FirmwareUpdatesResponse> {
+  static const RpcMessage enum_value = RpcMessage::FirmwareUpdatesResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::RecenterMocapModeRequest> {
+  static const RpcMessage enum_value = RpcMessage::RecenterMocapModeRequest;
 };
 
 bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, RpcMessage type);
@@ -9816,6 +9935,243 @@ inline flatbuffers::Offset<FirmwareUpdateStopQueuesRequest> CreateFirmwareUpdate
   return builder_.Finish();
 }
 
+struct FirmwareUpdateDevice FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FirmwareUpdateDeviceBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICE_ID_TYPE = 4,
+    VT_DEVICE_ID = 6,
+    VT_STATUS = 8,
+    VT_BLOCKER = 10,
+    VT_METHOD_TYPE = 12,
+    VT_METHOD = 14,
+    VT_LATEST_VERSION = 16
+  };
+  solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type() const {
+    return static_cast<solarxr_protocol::rpc::FirmwareUpdateDeviceId>(GetField<uint8_t>(VT_DEVICE_ID_TYPE, 0));
+  }
+  const void *device_id() const {
+    return GetPointer<const void *>(VT_DEVICE_ID);
+  }
+  template<typename T> const T *device_id_as() const;
+  const solarxr_protocol::rpc::FirmwareDeviceIdTable *device_id_as_FirmwareDeviceIdTable() const {
+    return device_id_type() == solarxr_protocol::rpc::FirmwareUpdateDeviceId::FirmwareDeviceIdTable ? static_cast<const solarxr_protocol::rpc::FirmwareDeviceIdTable *>(device_id()) : nullptr;
+  }
+  const solarxr_protocol::rpc::SerialDevicePort *device_id_as_SerialDevicePort() const {
+    return device_id_type() == solarxr_protocol::rpc::FirmwareUpdateDeviceId::SerialDevicePort ? static_cast<const solarxr_protocol::rpc::SerialDevicePort *>(device_id()) : nullptr;
+  }
+  solarxr_protocol::rpc::FirmwareVersionStatus status() const {
+    return static_cast<solarxr_protocol::rpc::FirmwareVersionStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  solarxr_protocol::rpc::FirmwareUpdateBlocker blocker() const {
+    return static_cast<solarxr_protocol::rpc::FirmwareUpdateBlocker>(GetField<uint8_t>(VT_BLOCKER, 0));
+  }
+  solarxr_protocol::rpc::FirmwareUpdateMethod method_type() const {
+    return static_cast<solarxr_protocol::rpc::FirmwareUpdateMethod>(GetField<uint8_t>(VT_METHOD_TYPE, 0));
+  }
+  /// Ready to send update request, null when the device cannot be updated from where it is connected
+  const void *method() const {
+    return GetPointer<const void *>(VT_METHOD);
+  }
+  template<typename T> const T *method_as() const;
+  const solarxr_protocol::rpc::OTAFirmwareUpdate *method_as_OTAFirmwareUpdate() const {
+    return method_type() == solarxr_protocol::rpc::FirmwareUpdateMethod::OTAFirmwareUpdate ? static_cast<const solarxr_protocol::rpc::OTAFirmwareUpdate *>(method()) : nullptr;
+  }
+  const solarxr_protocol::rpc::SerialFirmwareUpdate *method_as_SerialFirmwareUpdate() const {
+    return method_type() == solarxr_protocol::rpc::FirmwareUpdateMethod::SerialFirmwareUpdate ? static_cast<const solarxr_protocol::rpc::SerialFirmwareUpdate *>(method()) : nullptr;
+  }
+  const flatbuffers::String *latest_version() const {
+    return GetPointer<const flatbuffers::String *>(VT_LATEST_VERSION);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_DEVICE_ID_TYPE, 1) &&
+           VerifyOffset(verifier, VT_DEVICE_ID) &&
+           VerifyFirmwareUpdateDeviceId(verifier, device_id(), device_id_type()) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_BLOCKER, 1) &&
+           VerifyField<uint8_t>(verifier, VT_METHOD_TYPE, 1) &&
+           VerifyOffset(verifier, VT_METHOD) &&
+           VerifyFirmwareUpdateMethod(verifier, method(), method_type()) &&
+           VerifyOffset(verifier, VT_LATEST_VERSION) &&
+           verifier.VerifyString(latest_version()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::rpc::FirmwareDeviceIdTable *FirmwareUpdateDevice::device_id_as<solarxr_protocol::rpc::FirmwareDeviceIdTable>() const {
+  return device_id_as_FirmwareDeviceIdTable();
+}
+
+template<> inline const solarxr_protocol::rpc::SerialDevicePort *FirmwareUpdateDevice::device_id_as<solarxr_protocol::rpc::SerialDevicePort>() const {
+  return device_id_as_SerialDevicePort();
+}
+
+template<> inline const solarxr_protocol::rpc::OTAFirmwareUpdate *FirmwareUpdateDevice::method_as<solarxr_protocol::rpc::OTAFirmwareUpdate>() const {
+  return method_as_OTAFirmwareUpdate();
+}
+
+template<> inline const solarxr_protocol::rpc::SerialFirmwareUpdate *FirmwareUpdateDevice::method_as<solarxr_protocol::rpc::SerialFirmwareUpdate>() const {
+  return method_as_SerialFirmwareUpdate();
+}
+
+struct FirmwareUpdateDeviceBuilder {
+  typedef FirmwareUpdateDevice Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_device_id_type(solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type) {
+    fbb_.AddElement<uint8_t>(FirmwareUpdateDevice::VT_DEVICE_ID_TYPE, static_cast<uint8_t>(device_id_type), 0);
+  }
+  void add_device_id(flatbuffers::Offset<void> device_id) {
+    fbb_.AddOffset(FirmwareUpdateDevice::VT_DEVICE_ID, device_id);
+  }
+  void add_status(solarxr_protocol::rpc::FirmwareVersionStatus status) {
+    fbb_.AddElement<uint8_t>(FirmwareUpdateDevice::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  void add_blocker(solarxr_protocol::rpc::FirmwareUpdateBlocker blocker) {
+    fbb_.AddElement<uint8_t>(FirmwareUpdateDevice::VT_BLOCKER, static_cast<uint8_t>(blocker), 0);
+  }
+  void add_method_type(solarxr_protocol::rpc::FirmwareUpdateMethod method_type) {
+    fbb_.AddElement<uint8_t>(FirmwareUpdateDevice::VT_METHOD_TYPE, static_cast<uint8_t>(method_type), 0);
+  }
+  void add_method(flatbuffers::Offset<void> method) {
+    fbb_.AddOffset(FirmwareUpdateDevice::VT_METHOD, method);
+  }
+  void add_latest_version(flatbuffers::Offset<flatbuffers::String> latest_version) {
+    fbb_.AddOffset(FirmwareUpdateDevice::VT_LATEST_VERSION, latest_version);
+  }
+  explicit FirmwareUpdateDeviceBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FirmwareUpdateDevice> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FirmwareUpdateDevice>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FirmwareUpdateDevice> CreateFirmwareUpdateDevice(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type = solarxr_protocol::rpc::FirmwareUpdateDeviceId::NONE,
+    flatbuffers::Offset<void> device_id = 0,
+    solarxr_protocol::rpc::FirmwareVersionStatus status = solarxr_protocol::rpc::FirmwareVersionStatus::UNKNOWN,
+    solarxr_protocol::rpc::FirmwareUpdateBlocker blocker = solarxr_protocol::rpc::FirmwareUpdateBlocker::NONE,
+    solarxr_protocol::rpc::FirmwareUpdateMethod method_type = solarxr_protocol::rpc::FirmwareUpdateMethod::NONE,
+    flatbuffers::Offset<void> method = 0,
+    flatbuffers::Offset<flatbuffers::String> latest_version = 0) {
+  FirmwareUpdateDeviceBuilder builder_(_fbb);
+  builder_.add_latest_version(latest_version);
+  builder_.add_method(method);
+  builder_.add_device_id(device_id);
+  builder_.add_method_type(method_type);
+  builder_.add_blocker(blocker);
+  builder_.add_status(status);
+  builder_.add_device_id_type(device_id_type);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<FirmwareUpdateDevice> CreateFirmwareUpdateDeviceDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type = solarxr_protocol::rpc::FirmwareUpdateDeviceId::NONE,
+    flatbuffers::Offset<void> device_id = 0,
+    solarxr_protocol::rpc::FirmwareVersionStatus status = solarxr_protocol::rpc::FirmwareVersionStatus::UNKNOWN,
+    solarxr_protocol::rpc::FirmwareUpdateBlocker blocker = solarxr_protocol::rpc::FirmwareUpdateBlocker::NONE,
+    solarxr_protocol::rpc::FirmwareUpdateMethod method_type = solarxr_protocol::rpc::FirmwareUpdateMethod::NONE,
+    flatbuffers::Offset<void> method = 0,
+    const char *latest_version = nullptr) {
+  auto latest_version__ = latest_version ? _fbb.CreateString(latest_version) : 0;
+  return solarxr_protocol::rpc::CreateFirmwareUpdateDevice(
+      _fbb,
+      device_id_type,
+      device_id,
+      status,
+      blocker,
+      method_type,
+      method,
+      latest_version__);
+}
+
+struct FirmwareUpdatesRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FirmwareUpdatesRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct FirmwareUpdatesRequestBuilder {
+  typedef FirmwareUpdatesRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit FirmwareUpdatesRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FirmwareUpdatesRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FirmwareUpdatesRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FirmwareUpdatesRequest> CreateFirmwareUpdatesRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  FirmwareUpdatesRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct FirmwareUpdatesResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FirmwareUpdatesResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICES = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>> *devices() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>> *>(VT_DEVICES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DEVICES) &&
+           verifier.VerifyVector(devices()) &&
+           verifier.VerifyVectorOfTables(devices()) &&
+           verifier.EndTable();
+  }
+};
+
+struct FirmwareUpdatesResponseBuilder {
+  typedef FirmwareUpdatesResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_devices(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>>> devices) {
+    fbb_.AddOffset(FirmwareUpdatesResponse::VT_DEVICES, devices);
+  }
+  explicit FirmwareUpdatesResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FirmwareUpdatesResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FirmwareUpdatesResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FirmwareUpdatesResponse> CreateFirmwareUpdatesResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>>> devices = 0) {
+  FirmwareUpdatesResponseBuilder builder_(_fbb);
+  builder_.add_devices(devices);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<FirmwareUpdatesResponse> CreateFirmwareUpdatesResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>> *devices = nullptr) {
+  auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>>(*devices) : 0;
+  return solarxr_protocol::rpc::CreateFirmwareUpdatesResponse(
+      _fbb,
+      devices__);
+}
+
 struct StartUserHeightCalibration FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StartUserHeightCalibrationBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -14202,6 +14558,36 @@ inline flatbuffers::Offset<ChangeUserHeightRequest> CreateChangeUserHeightReques
   ChangeUserHeightRequestBuilder builder_(_fbb);
   if(floor_height) { builder_.add_floor_height(*floor_height); }
   if(head_height) { builder_.add_head_height(*head_height); }
+  return builder_.Finish();
+}
+
+/// Resets the Localizer's (mocap mode) head position to (0, 0)
+struct RecenterMocapModeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef RecenterMocapModeRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct RecenterMocapModeRequestBuilder {
+  typedef RecenterMocapModeRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit RecenterMocapModeRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<RecenterMocapModeRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<RecenterMocapModeRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<RecenterMocapModeRequest> CreateRecenterMocapModeRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  RecenterMocapModeRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
@@ -19629,6 +20015,15 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::StayAlignedStatusResponse *message_as_StayAlignedStatusResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::StayAlignedStatusResponse ? static_cast<const solarxr_protocol::rpc::StayAlignedStatusResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::FirmwareUpdatesRequest *message_as_FirmwareUpdatesRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::FirmwareUpdatesRequest ? static_cast<const solarxr_protocol::rpc::FirmwareUpdatesRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::FirmwareUpdatesResponse *message_as_FirmwareUpdatesResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::FirmwareUpdatesResponse ? static_cast<const solarxr_protocol::rpc::FirmwareUpdatesResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::RecenterMocapModeRequest *message_as_RecenterMocapModeRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::RecenterMocapModeRequest ? static_cast<const solarxr_protocol::rpc::RecenterMocapModeRequest *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_TX_ID, 4) &&
@@ -20270,6 +20665,18 @@ template<> inline const solarxr_protocol::rpc::StopStayAlignedStatusRequest *Rpc
 
 template<> inline const solarxr_protocol::rpc::StayAlignedStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::StayAlignedStatusResponse>() const {
   return message_as_StayAlignedStatusResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::FirmwareUpdatesRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::FirmwareUpdatesRequest>() const {
+  return message_as_FirmwareUpdatesRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::FirmwareUpdatesResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::FirmwareUpdatesResponse>() const {
+  return message_as_FirmwareUpdatesResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::RecenterMocapModeRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::RecenterMocapModeRequest>() const {
+  return message_as_RecenterMocapModeRequest();
 }
 
 struct RpcMessageHeaderBuilder {
@@ -22399,6 +22806,18 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::StayAlignedStatusResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StayAlignedStatusResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::FirmwareUpdatesRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FirmwareUpdatesRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::FirmwareUpdatesResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FirmwareUpdatesResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::RecenterMocapModeRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::RecenterMocapModeRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

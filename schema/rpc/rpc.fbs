@@ -195,6 +195,9 @@ union RpcMessage {
     StartStayAlignedStatusRequest,
     StopStayAlignedStatusRequest,
     StayAlignedStatusResponse,
+    FirmwareUpdatesRequest,
+    FirmwareUpdatesResponse,
+    RecenterMocapModeRequest,
 }
 
 table RpcMessageHeader {

@@ -115,3 +115,6 @@ table ChangeUserHeightRequest {
     head_height: float32 = null;
     floor_height: float32 = null;
 }
+
+/// Resets the Localizer's (mocap mode) head position to (0, 0)
+table RecenterMocapModeRequest {}

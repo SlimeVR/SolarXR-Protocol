@@ -179,6 +179,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.StartStayAlignedStatusRequestT asStartStayAlignedStatusRequest() { return (solarxr_protocol.rpc.StartStayAlignedStatusRequestT) value; }
   public solarxr_protocol.rpc.StopStayAlignedStatusRequestT asStopStayAlignedStatusRequest() { return (solarxr_protocol.rpc.StopStayAlignedStatusRequestT) value; }
   public solarxr_protocol.rpc.StayAlignedStatusResponseT asStayAlignedStatusResponse() { return (solarxr_protocol.rpc.StayAlignedStatusResponseT) value; }
+  public solarxr_protocol.rpc.FirmwareUpdatesRequestT asFirmwareUpdatesRequest() { return (solarxr_protocol.rpc.FirmwareUpdatesRequestT) value; }
+  public solarxr_protocol.rpc.FirmwareUpdatesResponseT asFirmwareUpdatesResponse() { return (solarxr_protocol.rpc.FirmwareUpdatesResponseT) value; }
+  public solarxr_protocol.rpc.RecenterMocapModeRequestT asRecenterMocapModeRequest() { return (solarxr_protocol.rpc.RecenterMocapModeRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -340,6 +343,9 @@ public class RpcMessageUnion {
       case RpcMessage.StartStayAlignedStatusRequest: return solarxr_protocol.rpc.StartStayAlignedStatusRequest.pack(builder, _o.asStartStayAlignedStatusRequest());
       case RpcMessage.StopStayAlignedStatusRequest: return solarxr_protocol.rpc.StopStayAlignedStatusRequest.pack(builder, _o.asStopStayAlignedStatusRequest());
       case RpcMessage.StayAlignedStatusResponse: return solarxr_protocol.rpc.StayAlignedStatusResponse.pack(builder, _o.asStayAlignedStatusResponse());
+      case RpcMessage.FirmwareUpdatesRequest: return solarxr_protocol.rpc.FirmwareUpdatesRequest.pack(builder, _o.asFirmwareUpdatesRequest());
+      case RpcMessage.FirmwareUpdatesResponse: return solarxr_protocol.rpc.FirmwareUpdatesResponse.pack(builder, _o.asFirmwareUpdatesResponse());
+      case RpcMessage.RecenterMocapModeRequest: return solarxr_protocol.rpc.RecenterMocapModeRequest.pack(builder, _o.asRecenterMocapModeRequest());
       default: return 0;
     }
   }

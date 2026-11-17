@@ -363,3 +363,137 @@ public class FirmwareUpdateStopQueuesRequest : RpcMessage {
     public fun decode(bb: FlatBufferReader, tableOffset: Int): FirmwareUpdateStopQueuesRequest = FirmwareUpdateStopQueuesRequest()
   }
 }
+
+/**
+ * How the firmware of a device compares to the latest release
+ */
+public enum class FirmwareVersionStatus(
+  public val `value`: UByte,
+) {
+  /**
+   * No release info yet, or the device version could not be parsed
+   */
+  UNKNOWN(0.toUByte()),
+  UP_TO_DATE(1.toUByte()),
+  AVAILABLE(2.toUByte()),
+  /**
+   * The device is below the minimum version of the release
+   */
+  REQUIRED(3.toUByte()),
+  /**
+   * An update exists but this user is outside its rollout
+   */
+  BLOCKED(4.toUByte()),
+  /**
+   * The server does not check updates for this device
+   */
+  UNSUPPORTED(5.toUByte()),
+  ;
+
+  public companion object {
+    public fun fromValue(`value`: UByte): FirmwareVersionStatus? = entries.firstOrNull { it.value == value }
+  }
+}
+
+/**
+ * Why an available or required update cannot start right now
+ */
+public enum class FirmwareUpdateBlocker(
+  public val `value`: UByte,
+) {
+  NONE(0.toUByte()),
+  /**
+   * The battery is too low to update safely
+   */
+  LOW_BATTERY(1.toUByte()),
+  ;
+
+  public companion object {
+    public fun fromValue(`value`: UByte): FirmwareUpdateBlocker? = entries.firstOrNull { it.value == value }
+  }
+}
+
+public data class FirmwareUpdateDevice(
+  public val deviceId: FirmwareUpdateDeviceId? = null,
+  public val status: FirmwareVersionStatus = FirmwareVersionStatus.UNKNOWN,
+  public val blocker: FirmwareUpdateBlocker = FirmwareUpdateBlocker.NONE,
+  public val method: FirmwareUpdateMethod? = null,
+  public val latestVersion: String? = null,
+) {
+  public fun encode(builder: FlatBufferWriter): Int {
+    val __off_deviceId = deviceId?.let { FirmwareUpdateDeviceId.encode(it, builder) }
+    val __type_deviceId = deviceId?.let { FirmwareUpdateDeviceId.typeIndex(it) } ?: 0.toUByte()
+    val __off_method = method?.let { FirmwareUpdateMethod.encode(it, builder) }
+    val __type_method = method?.let { FirmwareUpdateMethod.typeIndex(it) } ?: 0.toUByte()
+    val __off_latestVersion = latestVersion?.let { builder.createString(it) }
+
+    builder.startTable(7)
+    builder.addByte(0, __type_deviceId.toByte(), 0)
+    __off_deviceId?.let { builder.addOffset(1, it, 0) }
+    builder.addByte(2, status.value.toByte(), 0)
+    builder.addByte(3, blocker.value.toByte(), 0)
+    builder.addByte(4, __type_method.toByte(), 0)
+    __off_method?.let { builder.addOffset(5, it, 0) }
+    __off_latestVersion?.let { builder.addOffset(6, it, 0) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): FirmwareUpdateDevice {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __type_deviceId = if (vtableSize > 4 && bb.getShort(vtableOffset + 4).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 4).toInt()).toUByte() else 0.toUByte()
+      val __offset_deviceId = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
+      val __offset_status = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
+      val __offset_blocker = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __type_method = if (vtableSize > 12 && bb.getShort(vtableOffset + 12).toInt() != 0) bb.get(tableOffset + bb.getShort(vtableOffset + 12).toInt()).toUByte() else 0.toUByte()
+      val __offset_method = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
+      val __offset_latestVersion = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
+
+      return FirmwareUpdateDevice(
+              deviceId = if (__offset_deviceId != 0) FirmwareUpdateDeviceId.decode(__type_deviceId, bb, tableOffset + __offset_deviceId + bb.getInt(tableOffset + __offset_deviceId)) else null,
+              status = if (__offset_status != 0) FirmwareVersionStatus.fromValue(bb.get(tableOffset + __offset_status).toUByte()) ?: FirmwareVersionStatus.UNKNOWN else FirmwareVersionStatus.UNKNOWN,
+              blocker = if (__offset_blocker != 0) FirmwareUpdateBlocker.fromValue(bb.get(tableOffset + __offset_blocker).toUByte()) ?: FirmwareUpdateBlocker.NONE else FirmwareUpdateBlocker.NONE,
+              method = if (__offset_method != 0) FirmwareUpdateMethod.decode(__type_method, bb, tableOffset + __offset_method + bb.getInt(tableOffset + __offset_method)) else null,
+              latestVersion = if (__offset_latestVersion != 0) readFlatBufferString(bb, tableOffset + __offset_latestVersion) else null
+          )
+    }
+  }
+}
+
+public class FirmwareUpdatesRequest : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    builder.startTable(0)
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): FirmwareUpdatesRequest = FirmwareUpdatesRequest()
+  }
+}
+
+public data class FirmwareUpdatesResponse(
+  public val devices: List<FirmwareUpdateDevice>? = null,
+) : RpcMessage {
+  public fun encode(builder: FlatBufferWriter): Int {
+    val __off_devices = devices?.let { builder.createVectorOfTables(it.map { e -> e.encode(builder) }.toIntArray()) }
+
+    builder.startTable(1)
+    __off_devices?.let { builder.addOffset(0, it, 0) }
+    return builder.endTable()
+  }
+
+  public companion object {
+    public fun decode(bb: FlatBufferReader, tableOffset: Int): FirmwareUpdatesResponse {
+      val vtableOffset = tableOffset - bb.getInt(tableOffset)
+      val vtableSize = bb.getShort(vtableOffset).toInt()
+
+      val __offset_devices = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
+
+      return FirmwareUpdatesResponse(
+              devices = if (__offset_devices != 0) { val vecOff = tableOffset + __offset_devices + bb.getInt(tableOffset + __offset_devices); val len = bb.getInt(vecOff); (0 until len).mapNotNull { i -> if (bb.getInt(vecOff + 4 + i * 4) != 0) FirmwareUpdateDevice.decode(bb, vecOff + 4 + i * 4 + bb.getInt(vecOff + 4 + i * 4)) else null } } else null
+          )
+    }
+  }
+}

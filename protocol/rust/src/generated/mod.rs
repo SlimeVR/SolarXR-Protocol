@@ -151,6 +151,10 @@ pub mod solarxr_protocol {
     pub use self::firmware_update_device_id_generated::*;
     mod firmware_update_method_generated;
     pub use self::firmware_update_method_generated::*;
+    mod firmware_version_status_generated;
+    pub use self::firmware_version_status_generated::*;
+    mod firmware_update_blocker_generated;
+    pub use self::firmware_update_blocker_generated::*;
     mod user_height_calibration_status_generated;
     pub use self::user_height_calibration_status_generated::*;
     mod keybind_id_generated;
@@ -311,6 +315,12 @@ pub mod solarxr_protocol {
     pub use self::firmware_update_status_response_generated::*;
     mod firmware_update_stop_queues_request_generated;
     pub use self::firmware_update_stop_queues_request_generated::*;
+    mod firmware_update_device_generated;
+    pub use self::firmware_update_device_generated::*;
+    mod firmware_updates_request_generated;
+    pub use self::firmware_updates_request_generated::*;
+    mod firmware_updates_response_generated;
+    pub use self::firmware_updates_response_generated::*;
     mod start_user_height_calibration_generated;
     pub use self::start_user_height_calibration_generated::*;
     mod cancel_user_height_calibration_generated;
@@ -473,6 +483,8 @@ pub mod solarxr_protocol {
     pub use self::user_height_response_generated::*;
     mod change_user_height_request_generated;
     pub use self::change_user_height_request_generated::*;
+    mod recenter_mocap_mode_request_generated;
+    pub use self::recenter_mocap_mode_request_generated::*;
     mod stay_aligned_pose_generated;
     pub use self::stay_aligned_pose_generated::*;
     mod stay_aligned_pose_toggle_generated;

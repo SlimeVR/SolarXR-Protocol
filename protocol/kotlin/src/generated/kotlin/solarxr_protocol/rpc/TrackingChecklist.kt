@@ -28,6 +28,7 @@ public enum class TrackingChecklistStepId(
   STANDABLE_INSTALLED(12.toUByte()),
   VRCHAT_OSC_TRACKING_DISABLED(13.toUByte()),
   MOUNTING_METHOD(14.toUByte()),
+  FIRMWARE_UPDATE(15.toUByte()),
   ;
 
   public companion object {

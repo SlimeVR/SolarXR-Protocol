@@ -98,3 +98,39 @@ table FirmwareUpdateStatusResponse {
 
 // This will cancel all pending updates
 table FirmwareUpdateStopQueuesRequest {}
+
+/// How the firmware of a device compares to the latest release
+enum FirmwareVersionStatus: uint8 {
+    /// No release info yet, or the device version could not be parsed
+    UNKNOWN = 0,
+    UP_TO_DATE = 1,
+    AVAILABLE = 2,
+    /// The device is below the minimum version of the release
+    REQUIRED = 3,
+    /// An update exists but this user is outside its rollout
+    BLOCKED = 4,
+    /// The server does not check updates for this device
+    UNSUPPORTED = 5,
+}
+
+/// Why an available or required update cannot start right now
+enum FirmwareUpdateBlocker: uint8 {
+    NONE = 0,
+    /// The battery is too low to update safely
+    LOW_BATTERY = 1,
+}
+
+table FirmwareUpdateDevice {
+    device_id: FirmwareUpdateDeviceId;
+    status: FirmwareVersionStatus;
+    blocker: FirmwareUpdateBlocker;
+    /// Ready to send update request, null when the device cannot be updated from where it is connected
+    method: FirmwareUpdateMethod;
+    latest_version: string;
+}
+
+table FirmwareUpdatesRequest {}
+
+table FirmwareUpdatesResponse {
+    devices: [FirmwareUpdateDevice];
+}

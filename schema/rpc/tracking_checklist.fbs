@@ -16,6 +16,7 @@ enum TrackingChecklistStepId : uint8 {
     STANDABLE_INSTALLED = 12,
     VRCHAT_OSC_TRACKING_DISABLED = 13,
     MOUNTING_METHOD = 14,
+    FIRMWARE_UPDATE = 15,
 }
 
 enum TrackingChecklistStepVisibility : uint8 {

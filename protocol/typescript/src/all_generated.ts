@@ -105,12 +105,17 @@ export { ErrorReportingSettingsRequest, ErrorReportingSettingsRequestT } from '.
 export { ErrorReportingSettingsResponse, ErrorReportingSettingsResponseT } from './solarxr-protocol/rpc/error-reporting-settings-response.js';
 export { FirmwareDeviceIdTable, FirmwareDeviceIdTableT } from './solarxr-protocol/rpc/firmware-device-id-table.js';
 export { FirmwarePart, FirmwarePartT } from './solarxr-protocol/rpc/firmware-part.js';
+export { FirmwareUpdateBlocker } from './solarxr-protocol/rpc/firmware-update-blocker.js';
+export { FirmwareUpdateDevice, FirmwareUpdateDeviceT } from './solarxr-protocol/rpc/firmware-update-device.js';
 export { FirmwareUpdateDeviceId, unionToFirmwareUpdateDeviceId, unionListToFirmwareUpdateDeviceId } from './solarxr-protocol/rpc/firmware-update-device-id.js';
 export { FirmwareUpdateMethod, unionToFirmwareUpdateMethod, unionListToFirmwareUpdateMethod } from './solarxr-protocol/rpc/firmware-update-method.js';
 export { FirmwareUpdateRequest, FirmwareUpdateRequestT } from './solarxr-protocol/rpc/firmware-update-request.js';
 export { FirmwareUpdateStatus } from './solarxr-protocol/rpc/firmware-update-status.js';
 export { FirmwareUpdateStatusResponse, FirmwareUpdateStatusResponseT } from './solarxr-protocol/rpc/firmware-update-status-response.js';
 export { FirmwareUpdateStopQueuesRequest, FirmwareUpdateStopQueuesRequestT } from './solarxr-protocol/rpc/firmware-update-stop-queues-request.js';
+export { FirmwareUpdatesRequest, FirmwareUpdatesRequestT } from './solarxr-protocol/rpc/firmware-updates-request.js';
+export { FirmwareUpdatesResponse, FirmwareUpdatesResponseT } from './solarxr-protocol/rpc/firmware-updates-response.js';
+export { FirmwareVersionStatus } from './solarxr-protocol/rpc/firmware-version-status.js';
 export { ForgetDeviceRequest, ForgetDeviceRequestT } from './solarxr-protocol/rpc/forget-device-request.js';
 export { HIDSettingsRequest, HIDSettingsRequestT } from './solarxr-protocol/rpc/hidsettings-request.js';
 export { HIDSettingsResponse, HIDSettingsResponseT } from './solarxr-protocol/rpc/hidsettings-response.js';
@@ -154,6 +159,7 @@ export { ProfileOperationResponse, ProfileOperationResponseT } from './solarxr-p
 export { ProfileOperationStatus } from './solarxr-protocol/rpc/profile-operation-status.js';
 export { ProfilesRequest, ProfilesRequestT } from './solarxr-protocol/rpc/profiles-request.js';
 export { ProfilesResponse, ProfilesResponseT } from './solarxr-protocol/rpc/profiles-response.js';
+export { RecenterMocapModeRequest, RecenterMocapModeRequestT } from './solarxr-protocol/rpc/recenter-mocap-mode-request.js';
 export { RecordBVHRequest, RecordBVHRequestT } from './solarxr-protocol/rpc/record-bvhrequest.js';
 export { RecordBVHStatus, RecordBVHStatusT } from './solarxr-protocol/rpc/record-bvhstatus.js';
 export { RecordBVHStatusRequest, RecordBVHStatusRequestT } from './solarxr-protocol/rpc/record-bvhstatus-request.js';
