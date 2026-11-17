@@ -816,37 +816,34 @@ inline const char *EnumNameFirmwareErrorCode(FirmwareErrorCode e) {
 }
 
 enum class TapDetectionMethod : uint8_t {
-  None = 0,
-  Button = 1,
-  Tap = 2,
-  Both = 3,
-  MIN = None,
-  MAX = Both
+  TAP = 0,
+  BUTTON = 1,
+  BOTH = 2,
+  MIN = TAP,
+  MAX = BOTH
 };
 
-inline const TapDetectionMethod (&EnumValuesTapDetectionMethod())[4] {
+inline const TapDetectionMethod (&EnumValuesTapDetectionMethod())[3] {
   static const TapDetectionMethod values[] = {
-    TapDetectionMethod::None,
-    TapDetectionMethod::Button,
-    TapDetectionMethod::Tap,
-    TapDetectionMethod::Both
+    TapDetectionMethod::TAP,
+    TapDetectionMethod::BUTTON,
+    TapDetectionMethod::BOTH
   };
   return values;
 }
 
 inline const char * const *EnumNamesTapDetectionMethod() {
-  static const char * const names[5] = {
-    "None",
-    "Button",
-    "Tap",
-    "Both",
+  static const char * const names[4] = {
+    "TAP",
+    "BUTTON",
+    "BOTH",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTapDetectionMethod(TapDetectionMethod e) {
-  if (flatbuffers::IsOutRange(e, TapDetectionMethod::None, TapDetectionMethod::Both)) return "";
+  if (flatbuffers::IsOutRange(e, TapDetectionMethod::TAP, TapDetectionMethod::BOTH)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTapDetectionMethod()[index];
 }

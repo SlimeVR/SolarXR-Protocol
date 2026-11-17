@@ -12,14 +12,13 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_TAP_DETECTION_METHOD: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_TAP_DETECTION_METHOD: u8 = 3;
+pub const ENUM_MAX_TAP_DETECTION_METHOD: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_TAP_DETECTION_METHOD: [TapDetectionMethod; 4] = [
-  TapDetectionMethod::None,
-  TapDetectionMethod::Button,
-  TapDetectionMethod::Tap,
-  TapDetectionMethod::Both,
+pub const ENUM_VALUES_TAP_DETECTION_METHOD: [TapDetectionMethod; 3] = [
+  TapDetectionMethod::TAP,
+  TapDetectionMethod::BUTTON,
+  TapDetectionMethod::BOTH,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -27,26 +26,23 @@ pub const ENUM_VALUES_TAP_DETECTION_METHOD: [TapDetectionMethod; 4] = [
 pub struct TapDetectionMethod(pub u8);
 #[allow(non_upper_case_globals)]
 impl TapDetectionMethod {
-  pub const None: Self = Self(0);
-  pub const Button: Self = Self(1);
-  pub const Tap: Self = Self(2);
-  pub const Both: Self = Self(3);
+  pub const TAP: Self = Self(0);
+  pub const BUTTON: Self = Self(1);
+  pub const BOTH: Self = Self(2);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 3;
+  pub const ENUM_MAX: u8 = 2;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::None,
-    Self::Button,
-    Self::Tap,
-    Self::Both,
+    Self::TAP,
+    Self::BUTTON,
+    Self::BOTH,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::None => Some("None"),
-      Self::Button => Some("Button"),
-      Self::Tap => Some("Tap"),
-      Self::Both => Some("Both"),
+      Self::TAP => Some("TAP"),
+      Self::BUTTON => Some("BUTTON"),
+      Self::BOTH => Some("BOTH"),
       _ => None,
     }
   }

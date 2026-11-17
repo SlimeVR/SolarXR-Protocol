@@ -5,12 +5,11 @@ package solarxr_protocol.datatypes;
 @SuppressWarnings("unused")
 public final class TapDetectionMethod {
   private TapDetectionMethod() { }
-  public static final int None = 0;
-  public static final int Button = 1;
-  public static final int Tap = 2;
-  public static final int Both = 3;
+  public static final int TAP = 0;
+  public static final int BUTTON = 1;
+  public static final int BOTH = 2;
 
-  public static final String[] names = { "None", "Button", "Tap", "Both", };
+  public static final String[] names = { "TAP", "BUTTON", "BOTH", };
 
   public static String name(int e) { return names[e]; }
 }

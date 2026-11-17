@@ -18,10 +18,9 @@ enum FirmwareErrorCode: uint8 {
 }
 
 enum TapDetectionMethod: uint8 {
-    None = 0,
-    Button = 1,
-    Tap = 2,
-    Both = 3,
+    TAP = 0,
+    BUTTON = 1,
+    BOTH = 2,
 }
 
 /// Different parts of the body. Maps to each possible bone in the skeleton.

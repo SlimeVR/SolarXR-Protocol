@@ -61,10 +61,9 @@ public enum class FirmwareErrorCode(
 public enum class TapDetectionMethod(
   public val `value`: UByte,
 ) {
-  None(0.toUByte()),
-  Button(1.toUByte()),
-  Tap(2.toUByte()),
-  Both(3.toUByte()),
+  TAP(0.toUByte()),
+  BUTTON(1.toUByte()),
+  BOTH(2.toUByte()),
   ;
 
   public companion object {
