@@ -1459,43 +1459,6 @@ inline const char *EnumNameBoardType(BoardType e) {
   }
 }
 
-/// What kind of data the tracker supports. The received data gets transformed into a Quaternion rotation in any case.
-enum class TrackerDataType : uint8_t {
-  /// Rotation (e.g: IMUs or computed rotations in firmware)
-  ROTATION = 0,
-  /// Flex resistance (e.g: raw data from flex sensors or unscaled angle on a single axis)
-  FLEX_RESISTANCE = 1,
-  /// Flex angle (e.g: computed angle from flex sensors or angle on a single axis)
-  FLEX_ANGLE = 2,
-  MIN = ROTATION,
-  MAX = FLEX_ANGLE
-};
-
-inline const TrackerDataType (&EnumValuesTrackerDataType())[3] {
-  static const TrackerDataType values[] = {
-    TrackerDataType::ROTATION,
-    TrackerDataType::FLEX_RESISTANCE,
-    TrackerDataType::FLEX_ANGLE
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesTrackerDataType() {
-  static const char * const names[4] = {
-    "ROTATION",
-    "FLEX_RESISTANCE",
-    "FLEX_ANGLE",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameTrackerDataType(TrackerDataType e) {
-  if (flatbuffers::IsOutRange(e, TrackerDataType::ROTATION, TrackerDataType::FLEX_ANGLE)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesTrackerDataType()[index];
-}
-
 }  // namespace hardware_info
 }  // namespace datatypes
 
@@ -6400,8 +6363,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_CUSTOM_NAME = 18,
     VT_LAST_MOUNTING_METHOD = 20,
     VT_MAGNETOMETER = 22,
-    VT_DATA_TYPE = 24,
-    VT_BONE_OFFSET = 26
+    VT_BONE_OFFSET = 24
   };
   /// Indicates if the tracker is using an IMU for its tracking data
   bool is_imu() const {
@@ -6442,10 +6404,6 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::MagnetometerStatus magnetometer() const {
     return static_cast<solarxr_protocol::datatypes::MagnetometerStatus>(GetField<uint8_t>(VT_MAGNETOMETER, 0));
   }
-  /// Indicates what type of data the physical tracker sends before it gets transformed into a rotation
-  solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type() const {
-    return static_cast<solarxr_protocol::datatypes::hardware_info::TrackerDataType>(GetField<uint8_t>(VT_DATA_TYPE, 0));
-  }
   /// (for positional trackers) Offset from the head of the bone to the tracker. Ex: for a HMD this is around (0, 0, 0.1)
   const solarxr_protocol::datatypes::math::Vec3f *bone_offset() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_BONE_OFFSET);
@@ -6464,7 +6422,6 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(custom_name()) &&
            VerifyField<uint8_t>(verifier, VT_LAST_MOUNTING_METHOD, 1) &&
            VerifyField<uint8_t>(verifier, VT_MAGNETOMETER, 1) &&
-           VerifyField<uint8_t>(verifier, VT_DATA_TYPE, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_BONE_OFFSET, 4) &&
            verifier.EndTable();
   }
@@ -6504,9 +6461,6 @@ struct TrackerInfoBuilder {
   void add_magnetometer(solarxr_protocol::datatypes::MagnetometerStatus magnetometer) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_MAGNETOMETER, static_cast<uint8_t>(magnetometer), 0);
   }
-  void add_data_type(solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type) {
-    fbb_.AddElement<uint8_t>(TrackerInfo::VT_DATA_TYPE, static_cast<uint8_t>(data_type), 0);
-  }
   void add_bone_offset(const solarxr_protocol::datatypes::math::Vec3f *bone_offset) {
     fbb_.AddStruct(TrackerInfo::VT_BONE_OFFSET, bone_offset);
   }
@@ -6533,7 +6487,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
     const solarxr_protocol::datatypes::math::Vec3f *bone_offset = nullptr) {
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_bone_offset(bone_offset);
@@ -6542,7 +6495,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_imu_type(imu_type);
-  builder_.add_data_type(data_type);
   builder_.add_magnetometer(magnetometer);
   builder_.add_last_mounting_method(last_mounting_method);
   builder_.add_intended_body_part(intended_body_part);
@@ -6563,7 +6515,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     const char *custom_name = nullptr,
     solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
     const solarxr_protocol::datatypes::math::Vec3f *bone_offset = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
@@ -6579,7 +6530,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       custom_name__,
       last_mounting_method,
       magnetometer,
-      data_type,
       bone_offset);
 }
 
