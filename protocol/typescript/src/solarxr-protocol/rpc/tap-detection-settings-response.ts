@@ -3,6 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { BodyPart } from '../../solarxr-protocol/datatypes/body-part.js';
+import { TapDetectionMethod } from '../../solarxr-protocol/datatypes/tap-detection-method.js';
 
 
 export class TapDetectionSettingsResponse implements flatbuffers.IUnpackableObject<TapDetectionSettingsResponseT> {
@@ -88,8 +89,23 @@ mountingResetTracker():BodyPart|null {
   return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
 }
 
+yawResetMethod():TapDetectionMethod|null {
+  const offset = this.bb!.__offset(this.bb_pos, 30);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
+}
+
+fullResetMethod():TapDetectionMethod|null {
+  const offset = this.bb!.__offset(this.bb_pos, 32);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
+}
+
+mountingResetMethod():TapDetectionMethod|null {
+  const offset = this.bb!.__offset(this.bb_pos, 34);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : null;
+}
+
 static startTapDetectionSettingsResponse(builder:flatbuffers.Builder) {
-  builder.startObject(13);
+  builder.startObject(16);
 }
 
 static addFullResetDelay(builder:flatbuffers.Builder, fullResetDelay:number) {
@@ -144,12 +160,24 @@ static addMountingResetTracker(builder:flatbuffers.Builder, mountingResetTracker
   builder.addFieldInt8(12, mountingResetTracker, 0);
 }
 
+static addYawResetMethod(builder:flatbuffers.Builder, yawResetMethod:TapDetectionMethod) {
+  builder.addFieldInt8(13, yawResetMethod, 0);
+}
+
+static addFullResetMethod(builder:flatbuffers.Builder, fullResetMethod:TapDetectionMethod) {
+  builder.addFieldInt8(14, fullResetMethod, 0);
+}
+
+static addMountingResetMethod(builder:flatbuffers.Builder, mountingResetMethod:TapDetectionMethod) {
+  builder.addFieldInt8(15, mountingResetMethod, 0);
+}
+
 static endTapDetectionSettingsResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createTapDetectionSettingsResponse(builder:flatbuffers.Builder, fullResetDelay:number|null, fullResetEnabled:boolean|null, fullResetTaps:number|null, yawResetDelay:number|null, yawResetEnabled:boolean|null, yawResetTaps:number|null, mountingResetDelay:number|null, mountingResetEnabled:boolean|null, mountingResetTaps:number|null, numberTrackersOverThreshold:number|null, yawResetTracker:BodyPart|null, fullResetTracker:BodyPart|null, mountingResetTracker:BodyPart|null):flatbuffers.Offset {
+static createTapDetectionSettingsResponse(builder:flatbuffers.Builder, fullResetDelay:number|null, fullResetEnabled:boolean|null, fullResetTaps:number|null, yawResetDelay:number|null, yawResetEnabled:boolean|null, yawResetTaps:number|null, mountingResetDelay:number|null, mountingResetEnabled:boolean|null, mountingResetTaps:number|null, numberTrackersOverThreshold:number|null, yawResetTracker:BodyPart|null, fullResetTracker:BodyPart|null, mountingResetTracker:BodyPart|null, yawResetMethod:TapDetectionMethod|null, fullResetMethod:TapDetectionMethod|null, mountingResetMethod:TapDetectionMethod|null):flatbuffers.Offset {
   TapDetectionSettingsResponse.startTapDetectionSettingsResponse(builder);
   if (fullResetDelay !== null)
     TapDetectionSettingsResponse.addFullResetDelay(builder, fullResetDelay);
@@ -177,6 +205,12 @@ static createTapDetectionSettingsResponse(builder:flatbuffers.Builder, fullReset
     TapDetectionSettingsResponse.addFullResetTracker(builder, fullResetTracker);
   if (mountingResetTracker !== null)
     TapDetectionSettingsResponse.addMountingResetTracker(builder, mountingResetTracker);
+  if (yawResetMethod !== null)
+    TapDetectionSettingsResponse.addYawResetMethod(builder, yawResetMethod);
+  if (fullResetMethod !== null)
+    TapDetectionSettingsResponse.addFullResetMethod(builder, fullResetMethod);
+  if (mountingResetMethod !== null)
+    TapDetectionSettingsResponse.addMountingResetMethod(builder, mountingResetMethod);
   return TapDetectionSettingsResponse.endTapDetectionSettingsResponse(builder);
 }
 
@@ -194,7 +228,10 @@ unpack(): TapDetectionSettingsResponseT {
     this.numberTrackersOverThreshold(),
     this.yawResetTracker(),
     this.fullResetTracker(),
-    this.mountingResetTracker()
+    this.mountingResetTracker(),
+    this.yawResetMethod(),
+    this.fullResetMethod(),
+    this.mountingResetMethod()
   );
 }
 
@@ -213,6 +250,9 @@ unpackTo(_o: TapDetectionSettingsResponseT): void {
   _o.yawResetTracker = this.yawResetTracker();
   _o.fullResetTracker = this.fullResetTracker();
   _o.mountingResetTracker = this.mountingResetTracker();
+  _o.yawResetMethod = this.yawResetMethod();
+  _o.fullResetMethod = this.fullResetMethod();
+  _o.mountingResetMethod = this.mountingResetMethod();
 }
 }
 
@@ -230,7 +270,10 @@ constructor(
   public numberTrackersOverThreshold: number|null = null,
   public yawResetTracker: BodyPart|null = null,
   public fullResetTracker: BodyPart|null = null,
-  public mountingResetTracker: BodyPart|null = null
+  public mountingResetTracker: BodyPart|null = null,
+  public yawResetMethod: TapDetectionMethod|null = null,
+  public fullResetMethod: TapDetectionMethod|null = null,
+  public mountingResetMethod: TapDetectionMethod|null = null
 ){}
 
 
@@ -248,7 +291,10 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
     this.numberTrackersOverThreshold,
     this.yawResetTracker,
     this.fullResetTracker,
-    this.mountingResetTracker
+    this.mountingResetTracker,
+    this.yawResetMethod,
+    this.fullResetMethod,
+    this.mountingResetMethod
   );
 }
 }

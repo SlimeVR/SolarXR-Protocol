@@ -17,6 +17,13 @@ enum FirmwareErrorCode: uint8 {
     ImuError,
 }
 
+enum TapDetectionMethod: uint8 {
+    None = 0,
+    Button = 1,
+    Tap = 2,
+    Both = 3,
+}
+
 /// Different parts of the body. Maps to each possible bone in the skeleton.
 /// These are *NOT* the trackers.
 enum BodyPart: uint8 {

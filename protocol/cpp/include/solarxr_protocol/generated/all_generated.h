@@ -803,6 +803,42 @@ inline const char *EnumNameFirmwareErrorCode(FirmwareErrorCode e) {
   return EnumNamesFirmwareErrorCode()[index];
 }
 
+enum class TapDetectionMethod : uint8_t {
+  None = 0,
+  Button = 1,
+  Tap = 2,
+  Both = 3,
+  MIN = None,
+  MAX = Both
+};
+
+inline const TapDetectionMethod (&EnumValuesTapDetectionMethod())[4] {
+  static const TapDetectionMethod values[] = {
+    TapDetectionMethod::None,
+    TapDetectionMethod::Button,
+    TapDetectionMethod::Tap,
+    TapDetectionMethod::Both
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesTapDetectionMethod() {
+  static const char * const names[5] = {
+    "None",
+    "Button",
+    "Tap",
+    "Both",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameTapDetectionMethod(TapDetectionMethod e) {
+  if (flatbuffers::IsOutRange(e, TapDetectionMethod::None, TapDetectionMethod::Both)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesTapDetectionMethod()[index];
+}
+
 /// Different parts of the body. Maps to each possible bone in the skeleton.
 /// These are *NOT* the trackers.
 enum class BodyPart : uint8_t {
@@ -15310,7 +15346,10 @@ struct TapDetectionSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
     VT_NUMBER_TRACKERS_OVER_THRESHOLD = 22,
     VT_YAW_RESET_TRACKER = 24,
     VT_FULL_RESET_TRACKER = 26,
-    VT_MOUNTING_RESET_TRACKER = 28
+    VT_MOUNTING_RESET_TRACKER = 28,
+    VT_YAW_RESET_METHOD = 30,
+    VT_FULL_RESET_METHOD = 32,
+    VT_MOUNTING_RESET_METHOD = 34
   };
   flatbuffers::Optional<float> full_reset_delay() const {
     return GetOptional<float, float>(VT_FULL_RESET_DELAY);
@@ -15351,6 +15390,15 @@ struct TapDetectionSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
   flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> mounting_reset_tracker() const {
     return GetOptional<uint8_t, solarxr_protocol::datatypes::BodyPart>(VT_MOUNTING_RESET_TRACKER);
   }
+  flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> yaw_reset_method() const {
+    return GetOptional<uint8_t, solarxr_protocol::datatypes::TapDetectionMethod>(VT_YAW_RESET_METHOD);
+  }
+  flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> full_reset_method() const {
+    return GetOptional<uint8_t, solarxr_protocol::datatypes::TapDetectionMethod>(VT_FULL_RESET_METHOD);
+  }
+  flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> mounting_reset_method() const {
+    return GetOptional<uint8_t, solarxr_protocol::datatypes::TapDetectionMethod>(VT_MOUNTING_RESET_METHOD);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<float>(verifier, VT_FULL_RESET_DELAY, 4) &&
@@ -15366,6 +15414,9 @@ struct TapDetectionSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffer
            VerifyField<uint8_t>(verifier, VT_YAW_RESET_TRACKER, 1) &&
            VerifyField<uint8_t>(verifier, VT_FULL_RESET_TRACKER, 1) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_TRACKER, 1) &&
+           VerifyField<uint8_t>(verifier, VT_YAW_RESET_METHOD, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FULL_RESET_METHOD, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_METHOD, 1) &&
            verifier.EndTable();
   }
 };
@@ -15413,6 +15464,15 @@ struct TapDetectionSettingsResponseBuilder {
   void add_mounting_reset_tracker(solarxr_protocol::datatypes::BodyPart mounting_reset_tracker) {
     fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_MOUNTING_RESET_TRACKER, static_cast<uint8_t>(mounting_reset_tracker));
   }
+  void add_yaw_reset_method(solarxr_protocol::datatypes::TapDetectionMethod yaw_reset_method) {
+    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_YAW_RESET_METHOD, static_cast<uint8_t>(yaw_reset_method));
+  }
+  void add_full_reset_method(solarxr_protocol::datatypes::TapDetectionMethod full_reset_method) {
+    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_FULL_RESET_METHOD, static_cast<uint8_t>(full_reset_method));
+  }
+  void add_mounting_reset_method(solarxr_protocol::datatypes::TapDetectionMethod mounting_reset_method) {
+    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_MOUNTING_RESET_METHOD, static_cast<uint8_t>(mounting_reset_method));
+  }
   explicit TapDetectionSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -15438,11 +15498,17 @@ inline flatbuffers::Offset<TapDetectionSettingsResponse> CreateTapDetectionSetti
     flatbuffers::Optional<uint8_t> number_trackers_over_threshold = flatbuffers::nullopt,
     flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> yaw_reset_tracker = flatbuffers::nullopt,
     flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> full_reset_tracker = flatbuffers::nullopt,
-    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> mounting_reset_tracker = flatbuffers::nullopt) {
+    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> mounting_reset_tracker = flatbuffers::nullopt,
+    flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> yaw_reset_method = flatbuffers::nullopt,
+    flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> full_reset_method = flatbuffers::nullopt,
+    flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> mounting_reset_method = flatbuffers::nullopt) {
   TapDetectionSettingsResponseBuilder builder_(_fbb);
   if(mounting_reset_delay) { builder_.add_mounting_reset_delay(*mounting_reset_delay); }
   if(yaw_reset_delay) { builder_.add_yaw_reset_delay(*yaw_reset_delay); }
   if(full_reset_delay) { builder_.add_full_reset_delay(*full_reset_delay); }
+  if(mounting_reset_method) { builder_.add_mounting_reset_method(*mounting_reset_method); }
+  if(full_reset_method) { builder_.add_full_reset_method(*full_reset_method); }
+  if(yaw_reset_method) { builder_.add_yaw_reset_method(*yaw_reset_method); }
   if(mounting_reset_tracker) { builder_.add_mounting_reset_tracker(*mounting_reset_tracker); }
   if(full_reset_tracker) { builder_.add_full_reset_tracker(*full_reset_tracker); }
   if(yaw_reset_tracker) { builder_.add_yaw_reset_tracker(*yaw_reset_tracker); }
@@ -15471,7 +15537,10 @@ struct ChangeTapDetectionSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatb
     VT_NUMBER_TRACKERS_OVER_THRESHOLD = 22,
     VT_YAW_RESET_TRACKER = 24,
     VT_FULL_RESET_TRACKER = 26,
-    VT_MOUNTING_RESET_TRACKER = 28
+    VT_MOUNTING_RESET_TRACKER = 28,
+    VT_YAW_RESET_METHOD = 30,
+    VT_FULL_RESET_METHOD = 32,
+    VT_MOUNTING_RESET_METHOD = 34
   };
   flatbuffers::Optional<float> full_reset_delay() const {
     return GetOptional<float, float>(VT_FULL_RESET_DELAY);
@@ -15512,6 +15581,15 @@ struct ChangeTapDetectionSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatb
   flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> mounting_reset_tracker() const {
     return GetOptional<uint8_t, solarxr_protocol::datatypes::BodyPart>(VT_MOUNTING_RESET_TRACKER);
   }
+  flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> yaw_reset_method() const {
+    return GetOptional<uint8_t, solarxr_protocol::datatypes::TapDetectionMethod>(VT_YAW_RESET_METHOD);
+  }
+  flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> full_reset_method() const {
+    return GetOptional<uint8_t, solarxr_protocol::datatypes::TapDetectionMethod>(VT_FULL_RESET_METHOD);
+  }
+  flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> mounting_reset_method() const {
+    return GetOptional<uint8_t, solarxr_protocol::datatypes::TapDetectionMethod>(VT_MOUNTING_RESET_METHOD);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<float>(verifier, VT_FULL_RESET_DELAY, 4) &&
@@ -15527,6 +15605,9 @@ struct ChangeTapDetectionSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatb
            VerifyField<uint8_t>(verifier, VT_YAW_RESET_TRACKER, 1) &&
            VerifyField<uint8_t>(verifier, VT_FULL_RESET_TRACKER, 1) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_TRACKER, 1) &&
+           VerifyField<uint8_t>(verifier, VT_YAW_RESET_METHOD, 1) &&
+           VerifyField<uint8_t>(verifier, VT_FULL_RESET_METHOD, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_METHOD, 1) &&
            verifier.EndTable();
   }
 };
@@ -15574,6 +15655,15 @@ struct ChangeTapDetectionSettingsRequestBuilder {
   void add_mounting_reset_tracker(solarxr_protocol::datatypes::BodyPart mounting_reset_tracker) {
     fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_TRACKER, static_cast<uint8_t>(mounting_reset_tracker));
   }
+  void add_yaw_reset_method(solarxr_protocol::datatypes::TapDetectionMethod yaw_reset_method) {
+    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_YAW_RESET_METHOD, static_cast<uint8_t>(yaw_reset_method));
+  }
+  void add_full_reset_method(solarxr_protocol::datatypes::TapDetectionMethod full_reset_method) {
+    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_FULL_RESET_METHOD, static_cast<uint8_t>(full_reset_method));
+  }
+  void add_mounting_reset_method(solarxr_protocol::datatypes::TapDetectionMethod mounting_reset_method) {
+    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_METHOD, static_cast<uint8_t>(mounting_reset_method));
+  }
   explicit ChangeTapDetectionSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -15599,11 +15689,17 @@ inline flatbuffers::Offset<ChangeTapDetectionSettingsRequest> CreateChangeTapDet
     flatbuffers::Optional<uint8_t> number_trackers_over_threshold = flatbuffers::nullopt,
     flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> yaw_reset_tracker = flatbuffers::nullopt,
     flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> full_reset_tracker = flatbuffers::nullopt,
-    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> mounting_reset_tracker = flatbuffers::nullopt) {
+    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> mounting_reset_tracker = flatbuffers::nullopt,
+    flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> yaw_reset_method = flatbuffers::nullopt,
+    flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> full_reset_method = flatbuffers::nullopt,
+    flatbuffers::Optional<solarxr_protocol::datatypes::TapDetectionMethod> mounting_reset_method = flatbuffers::nullopt) {
   ChangeTapDetectionSettingsRequestBuilder builder_(_fbb);
   if(mounting_reset_delay) { builder_.add_mounting_reset_delay(*mounting_reset_delay); }
   if(yaw_reset_delay) { builder_.add_yaw_reset_delay(*yaw_reset_delay); }
   if(full_reset_delay) { builder_.add_full_reset_delay(*full_reset_delay); }
+  if(mounting_reset_method) { builder_.add_mounting_reset_method(*mounting_reset_method); }
+  if(full_reset_method) { builder_.add_full_reset_method(*full_reset_method); }
+  if(yaw_reset_method) { builder_.add_yaw_reset_method(*yaw_reset_method); }
   if(mounting_reset_tracker) { builder_.add_mounting_reset_tracker(*mounting_reset_tracker); }
   if(full_reset_tracker) { builder_.add_full_reset_tracker(*full_reset_tracker); }
   if(yaw_reset_tracker) { builder_.add_yaw_reset_tracker(*yaw_reset_tracker); }

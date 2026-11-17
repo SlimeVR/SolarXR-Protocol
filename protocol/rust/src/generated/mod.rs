@@ -81,6 +81,8 @@ pub mod solarxr_protocol {
     } // math
     mod firmware_error_code_generated;
     pub use self::firmware_error_code_generated::*;
+    mod tap_detection_method_generated;
+    pub use self::tap_detection_method_generated::*;
     mod body_part_generated;
     pub use self::body_part_generated::*;
     mod tracker_status_generated;

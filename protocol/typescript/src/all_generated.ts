@@ -26,6 +26,7 @@ export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-c
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data.js';
 export { MagnetometerStatus } from './solarxr-protocol/datatypes/magnetometer-status.js';
 export { MountingMethod } from './solarxr-protocol/datatypes/mounting-method.js';
+export { TapDetectionMethod } from './solarxr-protocol/datatypes/tap-detection-method.js';
 export { TrackerStatus } from './solarxr-protocol/datatypes/tracker-status.js';
 export { BoardType } from './solarxr-protocol/datatypes/hardware-info/board-type.js';
 export { FirmwareStatusMask, FirmwareStatusMaskT } from './solarxr-protocol/datatypes/hardware-info/firmware-status-mask.js';

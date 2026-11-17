@@ -38,6 +38,9 @@ impl<'a> ChangeTapDetectionSettingsRequest<'a> {
   pub const VT_YAW_RESET_TRACKER: flatbuffers::VOffsetT = 24;
   pub const VT_FULL_RESET_TRACKER: flatbuffers::VOffsetT = 26;
   pub const VT_MOUNTING_RESET_TRACKER: flatbuffers::VOffsetT = 28;
+  pub const VT_YAW_RESET_METHOD: flatbuffers::VOffsetT = 30;
+  pub const VT_FULL_RESET_METHOD: flatbuffers::VOffsetT = 32;
+  pub const VT_MOUNTING_RESET_METHOD: flatbuffers::VOffsetT = 34;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -52,6 +55,9 @@ impl<'a> ChangeTapDetectionSettingsRequest<'a> {
     if let Some(x) = args.mounting_reset_delay { builder.add_mounting_reset_delay(x); }
     if let Some(x) = args.yaw_reset_delay { builder.add_yaw_reset_delay(x); }
     if let Some(x) = args.full_reset_delay { builder.add_full_reset_delay(x); }
+    if let Some(x) = args.mounting_reset_method { builder.add_mounting_reset_method(x); }
+    if let Some(x) = args.full_reset_method { builder.add_full_reset_method(x); }
+    if let Some(x) = args.yaw_reset_method { builder.add_yaw_reset_method(x); }
     if let Some(x) = args.mounting_reset_tracker { builder.add_mounting_reset_tracker(x); }
     if let Some(x) = args.full_reset_tracker { builder.add_full_reset_tracker(x); }
     if let Some(x) = args.yaw_reset_tracker { builder.add_yaw_reset_tracker(x); }
@@ -157,6 +163,27 @@ impl<'a> ChangeTapDetectionSettingsRequest<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::datatypes::BodyPart>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_TRACKER, None)}
   }
+  #[inline]
+  pub fn yaw_reset_method(&self) -> Option<super::datatypes::TapDetectionMethod> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::datatypes::TapDetectionMethod>(ChangeTapDetectionSettingsRequest::VT_YAW_RESET_METHOD, None)}
+  }
+  #[inline]
+  pub fn full_reset_method(&self) -> Option<super::datatypes::TapDetectionMethod> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::datatypes::TapDetectionMethod>(ChangeTapDetectionSettingsRequest::VT_FULL_RESET_METHOD, None)}
+  }
+  #[inline]
+  pub fn mounting_reset_method(&self) -> Option<super::datatypes::TapDetectionMethod> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::datatypes::TapDetectionMethod>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_METHOD, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for ChangeTapDetectionSettingsRequest<'_> {
@@ -179,6 +206,9 @@ impl flatbuffers::Verifiable for ChangeTapDetectionSettingsRequest<'_> {
      .visit_field::<super::datatypes::BodyPart>("yaw_reset_tracker", Self::VT_YAW_RESET_TRACKER, false)?
      .visit_field::<super::datatypes::BodyPart>("full_reset_tracker", Self::VT_FULL_RESET_TRACKER, false)?
      .visit_field::<super::datatypes::BodyPart>("mounting_reset_tracker", Self::VT_MOUNTING_RESET_TRACKER, false)?
+     .visit_field::<super::datatypes::TapDetectionMethod>("yaw_reset_method", Self::VT_YAW_RESET_METHOD, false)?
+     .visit_field::<super::datatypes::TapDetectionMethod>("full_reset_method", Self::VT_FULL_RESET_METHOD, false)?
+     .visit_field::<super::datatypes::TapDetectionMethod>("mounting_reset_method", Self::VT_MOUNTING_RESET_METHOD, false)?
      .finish();
     Ok(())
   }
@@ -197,6 +227,9 @@ pub struct ChangeTapDetectionSettingsRequestArgs {
     pub yaw_reset_tracker: Option<super::datatypes::BodyPart>,
     pub full_reset_tracker: Option<super::datatypes::BodyPart>,
     pub mounting_reset_tracker: Option<super::datatypes::BodyPart>,
+    pub yaw_reset_method: Option<super::datatypes::TapDetectionMethod>,
+    pub full_reset_method: Option<super::datatypes::TapDetectionMethod>,
+    pub mounting_reset_method: Option<super::datatypes::TapDetectionMethod>,
 }
 impl<'a> Default for ChangeTapDetectionSettingsRequestArgs {
   #[inline]
@@ -215,6 +248,9 @@ impl<'a> Default for ChangeTapDetectionSettingsRequestArgs {
       yaw_reset_tracker: None,
       full_reset_tracker: None,
       mounting_reset_tracker: None,
+      yaw_reset_method: None,
+      full_reset_method: None,
+      mounting_reset_method: None,
     }
   }
 }
@@ -277,6 +313,18 @@ impl<'a: 'b, 'b> ChangeTapDetectionSettingsRequestBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<super::datatypes::BodyPart>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_TRACKER, mounting_reset_tracker);
   }
   #[inline]
+  pub fn add_yaw_reset_method(&mut self, yaw_reset_method: super::datatypes::TapDetectionMethod) {
+    self.fbb_.push_slot_always::<super::datatypes::TapDetectionMethod>(ChangeTapDetectionSettingsRequest::VT_YAW_RESET_METHOD, yaw_reset_method);
+  }
+  #[inline]
+  pub fn add_full_reset_method(&mut self, full_reset_method: super::datatypes::TapDetectionMethod) {
+    self.fbb_.push_slot_always::<super::datatypes::TapDetectionMethod>(ChangeTapDetectionSettingsRequest::VT_FULL_RESET_METHOD, full_reset_method);
+  }
+  #[inline]
+  pub fn add_mounting_reset_method(&mut self, mounting_reset_method: super::datatypes::TapDetectionMethod) {
+    self.fbb_.push_slot_always::<super::datatypes::TapDetectionMethod>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_METHOD, mounting_reset_method);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ChangeTapDetectionSettingsRequestBuilder<'a, 'b> {
     let start = _fbb.start_table();
     ChangeTapDetectionSettingsRequestBuilder {
@@ -307,6 +355,9 @@ impl core::fmt::Debug for ChangeTapDetectionSettingsRequest<'_> {
       ds.field("yaw_reset_tracker", &self.yaw_reset_tracker());
       ds.field("full_reset_tracker", &self.full_reset_tracker());
       ds.field("mounting_reset_tracker", &self.mounting_reset_tracker());
+      ds.field("yaw_reset_method", &self.yaw_reset_method());
+      ds.field("full_reset_method", &self.full_reset_method());
+      ds.field("mounting_reset_method", &self.mounting_reset_method());
       ds.finish()
   }
 }

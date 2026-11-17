@@ -21,6 +21,9 @@ public class ChangeTapDetectionSettingsRequestT {
   private Integer yawResetTracker;
   private Integer fullResetTracker;
   private Integer mountingResetTracker;
+  private Integer yawResetMethod;
+  private Integer fullResetMethod;
+  private Integer mountingResetMethod;
 
   public Float getFullResetDelay() { return fullResetDelay; }
 
@@ -74,6 +77,18 @@ public class ChangeTapDetectionSettingsRequestT {
 
   public void setMountingResetTracker(Integer mountingResetTracker) { this.mountingResetTracker = mountingResetTracker; }
 
+  public Integer getYawResetMethod() { return yawResetMethod; }
+
+  public void setYawResetMethod(Integer yawResetMethod) { this.yawResetMethod = yawResetMethod; }
+
+  public Integer getFullResetMethod() { return fullResetMethod; }
+
+  public void setFullResetMethod(Integer fullResetMethod) { this.fullResetMethod = fullResetMethod; }
+
+  public Integer getMountingResetMethod() { return mountingResetMethod; }
+
+  public void setMountingResetMethod(Integer mountingResetMethod) { this.mountingResetMethod = mountingResetMethod; }
+
 
   public ChangeTapDetectionSettingsRequestT() {
     this.fullResetDelay = null;
@@ -89,6 +104,9 @@ public class ChangeTapDetectionSettingsRequestT {
     this.yawResetTracker = null;
     this.fullResetTracker = null;
     this.mountingResetTracker = null;
+    this.yawResetMethod = null;
+    this.fullResetMethod = null;
+    this.mountingResetMethod = null;
   }
 }
 
