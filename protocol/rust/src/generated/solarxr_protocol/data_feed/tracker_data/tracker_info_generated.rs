@@ -36,8 +36,7 @@ impl<'a> TrackerInfo<'a> {
   pub const VT_CUSTOM_NAME: flatbuffers::VOffsetT = 18;
   pub const VT_LAST_MOUNTING_METHOD: flatbuffers::VOffsetT = 20;
   pub const VT_MAGNETOMETER: flatbuffers::VOffsetT = 22;
-  pub const VT_DATA_TYPE: flatbuffers::VOffsetT = 24;
-  pub const VT_BONE_OFFSET: flatbuffers::VOffsetT = 26;
+  pub const VT_BONE_OFFSET: flatbuffers::VOffsetT = 24;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -55,7 +54,6 @@ impl<'a> TrackerInfo<'a> {
     if let Some(x) = args.mounting_reset_orientation { builder.add_mounting_reset_orientation(x); }
     if let Some(x) = args.mounting_orientation { builder.add_mounting_orientation(x); }
     builder.add_imu_type(args.imu_type);
-    builder.add_data_type(args.data_type);
     builder.add_magnetometer(args.magnetometer);
     builder.add_last_mounting_method(args.last_mounting_method);
     builder.add_intended_body_part(args.intended_body_part);
@@ -144,14 +142,6 @@ impl<'a> TrackerInfo<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::super::datatypes::MagnetometerStatus>(TrackerInfo::VT_MAGNETOMETER, Some(super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED)).unwrap()}
   }
-  /// Indicates what type of data the physical tracker sends before it gets transformed into a rotation
-  #[inline]
-  pub fn data_type(&self) -> super::super::datatypes::hardware_info::TrackerDataType {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<super::super::datatypes::hardware_info::TrackerDataType>(TrackerInfo::VT_DATA_TYPE, Some(super::super::datatypes::hardware_info::TrackerDataType::ROTATION)).unwrap()}
-  }
   /// (for positional trackers) Offset from the head of the bone to the tracker. Ex: for a HMD this is around (0, 0, 0.1)
   #[inline]
   pub fn bone_offset(&self) -> Option<&'a super::super::datatypes::math::Vec3f> {
@@ -179,7 +169,6 @@ impl flatbuffers::Verifiable for TrackerInfo<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("custom_name", Self::VT_CUSTOM_NAME, false)?
      .visit_field::<super::super::datatypes::MountingMethod>("last_mounting_method", Self::VT_LAST_MOUNTING_METHOD, false)?
      .visit_field::<super::super::datatypes::MagnetometerStatus>("magnetometer", Self::VT_MAGNETOMETER, false)?
-     .visit_field::<super::super::datatypes::hardware_info::TrackerDataType>("data_type", Self::VT_DATA_TYPE, false)?
      .visit_field::<super::super::datatypes::math::Vec3f>("bone_offset", Self::VT_BONE_OFFSET, false)?
      .finish();
     Ok(())
@@ -196,7 +185,6 @@ pub struct TrackerInfoArgs<'a> {
     pub custom_name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub last_mounting_method: super::super::datatypes::MountingMethod,
     pub magnetometer: super::super::datatypes::MagnetometerStatus,
-    pub data_type: super::super::datatypes::hardware_info::TrackerDataType,
     pub bone_offset: Option<&'a super::super::datatypes::math::Vec3f>,
 }
 impl<'a> Default for TrackerInfoArgs<'a> {
@@ -213,7 +201,6 @@ impl<'a> Default for TrackerInfoArgs<'a> {
       custom_name: None,
       last_mounting_method: super::super::datatypes::MountingMethod::UNKNOWN,
       magnetometer: super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-      data_type: super::super::datatypes::hardware_info::TrackerDataType::ROTATION,
       bone_offset: None,
     }
   }
@@ -265,10 +252,6 @@ impl<'a: 'b, 'b> TrackerInfoBuilder<'a, 'b> {
     self.fbb_.push_slot::<super::super::datatypes::MagnetometerStatus>(TrackerInfo::VT_MAGNETOMETER, magnetometer, super::super::datatypes::MagnetometerStatus::NOT_SUPPORTED);
   }
   #[inline]
-  pub fn add_data_type(&mut self, data_type: super::super::datatypes::hardware_info::TrackerDataType) {
-    self.fbb_.push_slot::<super::super::datatypes::hardware_info::TrackerDataType>(TrackerInfo::VT_DATA_TYPE, data_type, super::super::datatypes::hardware_info::TrackerDataType::ROTATION);
-  }
-  #[inline]
   pub fn add_bone_offset(&mut self, bone_offset: &super::super::datatypes::math::Vec3f) {
     self.fbb_.push_slot_always::<&super::super::datatypes::math::Vec3f>(TrackerInfo::VT_BONE_OFFSET, bone_offset);
   }
@@ -300,7 +283,6 @@ impl core::fmt::Debug for TrackerInfo<'_> {
       ds.field("custom_name", &self.custom_name());
       ds.field("last_mounting_method", &self.last_mounting_method());
       ds.field("magnetometer", &self.magnetometer());
-      ds.field("data_type", &self.data_type());
       ds.field("bone_offset", &self.bone_offset());
       ds.finish()
   }

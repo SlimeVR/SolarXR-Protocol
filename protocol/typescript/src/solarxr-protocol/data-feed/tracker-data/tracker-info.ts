@@ -6,7 +6,6 @@ import { BodyPart } from '../../../solarxr-protocol/datatypes/body-part.js';
 import { MagnetometerStatus } from '../../../solarxr-protocol/datatypes/magnetometer-status.js';
 import { MountingMethod } from '../../../solarxr-protocol/datatypes/mounting-method.js';
 import { ImuType } from '../../../solarxr-protocol/datatypes/hardware-info/imu-type.js';
-import { TrackerDataType } from '../../../solarxr-protocol/datatypes/hardware-info/tracker-data-type.js';
 import { Quat, QuatT } from '../../../solarxr-protocol/datatypes/math/quat.js';
 import { Vec3f, Vec3fT } from '../../../solarxr-protocol/datatypes/math/vec3f.js';
 
@@ -114,23 +113,15 @@ magnetometer():MagnetometerStatus {
 }
 
 /**
- * Indicates what type of data the physical tracker sends before it gets transformed into a rotation
- */
-dataType():TrackerDataType {
-  const offset = this.bb!.__offset(this.bb_pos, 24);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : TrackerDataType.ROTATION;
-}
-
-/**
  * (for positional trackers) Offset from the head of the bone to the tracker. Ex: for a HMD this is around (0, 0, 0.1)
  */
 boneOffset(obj?:Vec3f):Vec3f|null {
-  const offset = this.bb!.__offset(this.bb_pos, 26);
+  const offset = this.bb!.__offset(this.bb_pos, 24);
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 static startTrackerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(12);
+  builder.startObject(11);
 }
 
 static addIsImu(builder:flatbuffers.Builder, isImu:boolean) {
@@ -173,12 +164,8 @@ static addMagnetometer(builder:flatbuffers.Builder, magnetometer:MagnetometerSta
   builder.addFieldInt8(9, magnetometer, MagnetometerStatus.NOT_SUPPORTED);
 }
 
-static addDataType(builder:flatbuffers.Builder, dataType:TrackerDataType) {
-  builder.addFieldInt8(10, dataType, TrackerDataType.ROTATION);
-}
-
 static addBoneOffset(builder:flatbuffers.Builder, boneOffsetOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(11, boneOffsetOffset, 0);
+  builder.addFieldStruct(10, boneOffsetOffset, 0);
 }
 
 static endTrackerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -199,7 +186,6 @@ unpack(): TrackerInfoT {
     this.customName(),
     this.lastMountingMethod(),
     this.magnetometer(),
-    this.dataType(),
     (this.boneOffset() !== null ? this.boneOffset()!.unpack() : null)
   );
 }
@@ -216,7 +202,6 @@ unpackTo(_o: TrackerInfoT): void {
   _o.customName = this.customName();
   _o.lastMountingMethod = this.lastMountingMethod();
   _o.magnetometer = this.magnetometer();
-  _o.dataType = this.dataType();
   _o.boneOffset = (this.boneOffset() !== null ? this.boneOffset()!.unpack() : null);
 }
 }
@@ -233,7 +218,6 @@ constructor(
   public customName: string|Uint8Array|null = null,
   public lastMountingMethod: MountingMethod = MountingMethod.UNKNOWN,
   public magnetometer: MagnetometerStatus = MagnetometerStatus.NOT_SUPPORTED,
-  public dataType: TrackerDataType = TrackerDataType.ROTATION,
   public boneOffset: Vec3fT|null = null
 ){}
 
@@ -253,7 +237,6 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   TrackerInfo.addCustomName(builder, customName);
   TrackerInfo.addLastMountingMethod(builder, this.lastMountingMethod);
   TrackerInfo.addMagnetometer(builder, this.magnetometer);
-  TrackerInfo.addDataType(builder, this.dataType);
   TrackerInfo.addBoneOffset(builder, (this.boneOffset !== null ? this.boneOffset!.pack(builder) : 0));
 
   return TrackerInfo.endTrackerInfo(builder);
