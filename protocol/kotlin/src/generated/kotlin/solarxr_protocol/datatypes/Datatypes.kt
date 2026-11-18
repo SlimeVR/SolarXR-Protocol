@@ -58,6 +58,19 @@ public enum class FirmwareErrorCode(
   }
 }
 
+public enum class TapDetectionMethod(
+  public val `value`: UByte,
+) {
+  TAP(0.toUByte()),
+  BUTTON(1.toUByte()),
+  BOTH(2.toUByte()),
+  ;
+
+  public companion object {
+    public fun fromValue(`value`: UByte): TapDetectionMethod? = entries.firstOrNull { it.value == value }
+  }
+}
+
 /**
  * Different parts of the body. Maps to each possible bone in the skeleton.
  * These are *NOT* the trackers.

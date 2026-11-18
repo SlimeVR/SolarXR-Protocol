@@ -28,6 +28,9 @@ table TapDetectionSettingsResponse {
     yaw_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
     full_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
     mounting_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
+    yaw_reset_method: solarxr_protocol.datatypes.TapDetectionMethod = null;
+    full_reset_method: solarxr_protocol.datatypes.TapDetectionMethod = null;
+    mounting_reset_method: solarxr_protocol.datatypes.TapDetectionMethod = null;
 }
 table ChangeTapDetectionSettingsRequest {
     full_reset_delay: float = null;
@@ -43,6 +46,9 @@ table ChangeTapDetectionSettingsRequest {
     yaw_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
     full_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
     mounting_reset_tracker: solarxr_protocol.datatypes.BodyPart = null;
+    yaw_reset_method: solarxr_protocol.datatypes.TapDetectionMethod = null;
+    full_reset_method: solarxr_protocol.datatypes.TapDetectionMethod = null;
+    mounting_reset_method: solarxr_protocol.datatypes.TapDetectionMethod = null;
 }
 
 /// Sets the TapDetection setup mode.
