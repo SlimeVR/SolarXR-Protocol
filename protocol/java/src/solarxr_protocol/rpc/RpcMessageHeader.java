@@ -145,21 +145,21 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.ChangeUserHeightRequest());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeUserHeightRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.TapDetectionSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TapDetectionSettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.TrackerActionSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackerActionSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackerActionSettingsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.TapDetectionSettingsResponse:
-        _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSettingsResponse());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TapDetectionSettingsResponse) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.TrackerActionSettingsResponse:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackerActionSettingsResponse());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackerActionSettingsResponse) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.ChangeTapDetectionSettingsRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.ChangeTapDetectionSettingsRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeTapDetectionSettingsRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.ChangeTrackerActionSettingsRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.ChangeTrackerActionSettingsRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.ChangeTrackerActionSettingsRequest) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.TapDetectionSetupModeRequest:
-        _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSetupModeRequest());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TapDetectionSetupModeRequest) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.TrackerActionSetupModeRequest:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackerActionSetupModeRequest());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackerActionSetupModeRequest) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.ResetsSettingsRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.ResetsSettingsRequest());
@@ -329,9 +329,9 @@ public final class RpcMessageHeader extends Table {
         _oMessageValue = message(new solarxr_protocol.rpc.LegTweaksTmpClear());
         _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.LegTweaksTmpClear) _oMessageValue).unpack() : null);
         break;
-      case solarxr_protocol.rpc.RpcMessage.TapDetectionSetupNotification:
-        _oMessageValue = message(new solarxr_protocol.rpc.TapDetectionSetupNotification());
-        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TapDetectionSetupNotification) _oMessageValue).unpack() : null);
+      case solarxr_protocol.rpc.RpcMessage.TrackerActionSetupNotification:
+        _oMessageValue = message(new solarxr_protocol.rpc.TrackerActionSetupNotification());
+        _oMessage.setValue(_oMessageValue != null ? ((solarxr_protocol.rpc.TrackerActionSetupNotification) _oMessageValue).unpack() : null);
         break;
       case solarxr_protocol.rpc.RpcMessage.SetPauseTrackingRequest:
         _oMessageValue = message(new solarxr_protocol.rpc.SetPauseTrackingRequest());

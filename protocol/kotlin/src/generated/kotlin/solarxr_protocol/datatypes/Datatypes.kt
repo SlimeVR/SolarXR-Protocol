@@ -47,10 +47,10 @@ public data class LogData(
 public enum class FirmwareErrorCode(
   public val `value`: UByte,
 ) {
-  Other(0.toUByte()),
-  Disconnected(1.toUByte()),
-  Occluded(2.toUByte()),
-  ImuError(3.toUByte()),
+  OTHER(0.toUByte()),
+  DISCONNECTED(1.toUByte()),
+  OCCLUDED(2.toUByte()),
+  IMU_ERROR(3.toUByte()),
   ;
 
   public companion object {
@@ -58,7 +58,7 @@ public enum class FirmwareErrorCode(
   }
 }
 
-public enum class TapDetectionMethod(
+public enum class TrackerActionMethod(
   public val `value`: UByte,
 ) {
   TAP(0.toUByte()),
@@ -67,7 +67,7 @@ public enum class TapDetectionMethod(
   ;
 
   public companion object {
-    public fun fromValue(`value`: UByte): TapDetectionMethod? = entries.firstOrNull { it.value == value }
+    public fun fromValue(`value`: UByte): TrackerActionMethod? = entries.firstOrNull { it.value == value }
   }
 }
 

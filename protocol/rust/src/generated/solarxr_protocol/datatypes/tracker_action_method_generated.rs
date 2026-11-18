@@ -10,22 +10,22 @@ use core::cmp::Ordering;
 use self::flatbuffers::{EndianScalar, Follow};
 use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MIN_TAP_DETECTION_METHOD: u8 = 0;
+pub const ENUM_MIN_TRACKER_ACTION_METHOD: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_TAP_DETECTION_METHOD: u8 = 2;
+pub const ENUM_MAX_TRACKER_ACTION_METHOD: u8 = 2;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_TAP_DETECTION_METHOD: [TapDetectionMethod; 3] = [
-  TapDetectionMethod::TAP,
-  TapDetectionMethod::BUTTON,
-  TapDetectionMethod::BOTH,
+pub const ENUM_VALUES_TRACKER_ACTION_METHOD: [TrackerActionMethod; 3] = [
+  TrackerActionMethod::TAP,
+  TrackerActionMethod::BUTTON,
+  TrackerActionMethod::BOTH,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
-pub struct TapDetectionMethod(pub u8);
+pub struct TrackerActionMethod(pub u8);
 #[allow(non_upper_case_globals)]
-impl TapDetectionMethod {
+impl TrackerActionMethod {
   pub const TAP: Self = Self(0);
   pub const BUTTON: Self = Self(1);
   pub const BOTH: Self = Self(2);
@@ -47,7 +47,7 @@ impl TapDetectionMethod {
     }
   }
 }
-impl core::fmt::Debug for TapDetectionMethod {
+impl core::fmt::Debug for TrackerActionMethod {
   fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
     if let Some(name) = self.variant_name() {
       f.write_str(name)
@@ -56,7 +56,7 @@ impl core::fmt::Debug for TapDetectionMethod {
     }
   }
 }
-impl<'a> flatbuffers::Follow<'a> for TapDetectionMethod {
+impl<'a> flatbuffers::Follow<'a> for TrackerActionMethod {
   type Inner = Self;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
@@ -65,15 +65,15 @@ impl<'a> flatbuffers::Follow<'a> for TapDetectionMethod {
   }
 }
 
-impl flatbuffers::Push for TapDetectionMethod {
-    type Output = TapDetectionMethod;
+impl flatbuffers::Push for TrackerActionMethod {
+    type Output = TrackerActionMethod;
     #[inline]
     unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
         flatbuffers::emplace_scalar::<u8>(dst, self.0);
     }
 }
 
-impl flatbuffers::EndianScalar for TapDetectionMethod {
+impl flatbuffers::EndianScalar for TrackerActionMethod {
   type Scalar = u8;
   #[inline]
   fn to_little_endian(self) -> u8 {
@@ -87,7 +87,7 @@ impl flatbuffers::EndianScalar for TapDetectionMethod {
   }
 }
 
-impl<'a> flatbuffers::Verifiable for TapDetectionMethod {
+impl<'a> flatbuffers::Verifiable for TrackerActionMethod {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -97,4 +97,4 @@ impl<'a> flatbuffers::Verifiable for TapDetectionMethod {
   }
 }
 
-impl flatbuffers::SimpleToVerifyInSlice for TapDetectionMethod {}
+impl flatbuffers::SimpleToVerifyInSlice for TrackerActionMethod {}

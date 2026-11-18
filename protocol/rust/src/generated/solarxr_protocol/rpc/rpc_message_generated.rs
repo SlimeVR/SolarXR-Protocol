@@ -35,10 +35,10 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 162] = [
   RpcMessage::UserHeightRequest,
   RpcMessage::UserHeightResponse,
   RpcMessage::ChangeUserHeightRequest,
-  RpcMessage::TapDetectionSettingsRequest,
-  RpcMessage::TapDetectionSettingsResponse,
-  RpcMessage::ChangeTapDetectionSettingsRequest,
-  RpcMessage::TapDetectionSetupModeRequest,
+  RpcMessage::TrackerActionSettingsRequest,
+  RpcMessage::TrackerActionSettingsResponse,
+  RpcMessage::ChangeTrackerActionSettingsRequest,
+  RpcMessage::TrackerActionSetupModeRequest,
   RpcMessage::ResetsSettingsRequest,
   RpcMessage::ResetsSettingsResponse,
   RpcMessage::ChangeResetsSettingsRequest,
@@ -81,7 +81,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 162] = [
   RpcMessage::ServerInfosResponse,
   RpcMessage::LegTweaksTmpChange,
   RpcMessage::LegTweaksTmpClear,
-  RpcMessage::TapDetectionSetupNotification,
+  RpcMessage::TrackerActionSetupNotification,
   RpcMessage::SetPauseTrackingRequest,
   RpcMessage::ClearMountingResetRequest,
   RpcMessage::AutoBoneApplyRequest,
@@ -204,10 +204,10 @@ impl RpcMessage {
   pub const UserHeightRequest: Self = Self(16);
   pub const UserHeightResponse: Self = Self(17);
   pub const ChangeUserHeightRequest: Self = Self(18);
-  pub const TapDetectionSettingsRequest: Self = Self(19);
-  pub const TapDetectionSettingsResponse: Self = Self(20);
-  pub const ChangeTapDetectionSettingsRequest: Self = Self(21);
-  pub const TapDetectionSetupModeRequest: Self = Self(22);
+  pub const TrackerActionSettingsRequest: Self = Self(19);
+  pub const TrackerActionSettingsResponse: Self = Self(20);
+  pub const ChangeTrackerActionSettingsRequest: Self = Self(21);
+  pub const TrackerActionSetupModeRequest: Self = Self(22);
   pub const ResetsSettingsRequest: Self = Self(23);
   pub const ResetsSettingsResponse: Self = Self(24);
   pub const ChangeResetsSettingsRequest: Self = Self(25);
@@ -250,7 +250,7 @@ impl RpcMessage {
   pub const ServerInfosResponse: Self = Self(62);
   pub const LegTweaksTmpChange: Self = Self(63);
   pub const LegTweaksTmpClear: Self = Self(64);
-  pub const TapDetectionSetupNotification: Self = Self(65);
+  pub const TrackerActionSetupNotification: Self = Self(65);
   pub const SetPauseTrackingRequest: Self = Self(66);
   pub const ClearMountingResetRequest: Self = Self(67);
   pub const AutoBoneApplyRequest: Self = Self(68);
@@ -370,10 +370,10 @@ impl RpcMessage {
     Self::UserHeightRequest,
     Self::UserHeightResponse,
     Self::ChangeUserHeightRequest,
-    Self::TapDetectionSettingsRequest,
-    Self::TapDetectionSettingsResponse,
-    Self::ChangeTapDetectionSettingsRequest,
-    Self::TapDetectionSetupModeRequest,
+    Self::TrackerActionSettingsRequest,
+    Self::TrackerActionSettingsResponse,
+    Self::ChangeTrackerActionSettingsRequest,
+    Self::TrackerActionSetupModeRequest,
     Self::ResetsSettingsRequest,
     Self::ResetsSettingsResponse,
     Self::ChangeResetsSettingsRequest,
@@ -416,7 +416,7 @@ impl RpcMessage {
     Self::ServerInfosResponse,
     Self::LegTweaksTmpChange,
     Self::LegTweaksTmpClear,
-    Self::TapDetectionSetupNotification,
+    Self::TrackerActionSetupNotification,
     Self::SetPauseTrackingRequest,
     Self::ClearMountingResetRequest,
     Self::AutoBoneApplyRequest,
@@ -536,10 +536,10 @@ impl RpcMessage {
       Self::UserHeightRequest => Some("UserHeightRequest"),
       Self::UserHeightResponse => Some("UserHeightResponse"),
       Self::ChangeUserHeightRequest => Some("ChangeUserHeightRequest"),
-      Self::TapDetectionSettingsRequest => Some("TapDetectionSettingsRequest"),
-      Self::TapDetectionSettingsResponse => Some("TapDetectionSettingsResponse"),
-      Self::ChangeTapDetectionSettingsRequest => Some("ChangeTapDetectionSettingsRequest"),
-      Self::TapDetectionSetupModeRequest => Some("TapDetectionSetupModeRequest"),
+      Self::TrackerActionSettingsRequest => Some("TrackerActionSettingsRequest"),
+      Self::TrackerActionSettingsResponse => Some("TrackerActionSettingsResponse"),
+      Self::ChangeTrackerActionSettingsRequest => Some("ChangeTrackerActionSettingsRequest"),
+      Self::TrackerActionSetupModeRequest => Some("TrackerActionSetupModeRequest"),
       Self::ResetsSettingsRequest => Some("ResetsSettingsRequest"),
       Self::ResetsSettingsResponse => Some("ResetsSettingsResponse"),
       Self::ChangeResetsSettingsRequest => Some("ChangeResetsSettingsRequest"),
@@ -582,7 +582,7 @@ impl RpcMessage {
       Self::ServerInfosResponse => Some("ServerInfosResponse"),
       Self::LegTweaksTmpChange => Some("LegTweaksTmpChange"),
       Self::LegTweaksTmpClear => Some("LegTweaksTmpClear"),
-      Self::TapDetectionSetupNotification => Some("TapDetectionSetupNotification"),
+      Self::TrackerActionSetupNotification => Some("TrackerActionSetupNotification"),
       Self::SetPauseTrackingRequest => Some("SetPauseTrackingRequest"),
       Self::ClearMountingResetRequest => Some("ClearMountingResetRequest"),
       Self::AutoBoneApplyRequest => Some("AutoBoneApplyRequest"),

@@ -7,7 +7,7 @@ import java.lang.*;
 import java.util.*;
 import com.google.flatbuffers.*;
 
-public class TapDetectionSetupNotificationT {
+public class TrackerActionSetupNotificationT {
   private int trackerId;
 
   public int getTrackerId() { return trackerId; }
@@ -15,7 +15,7 @@ public class TapDetectionSetupNotificationT {
   public void setTrackerId(int trackerId) { this.trackerId = trackerId; }
 
 
-  public TapDetectionSetupNotificationT() {
+  public TrackerActionSetupNotificationT() {
     this.trackerId = 0;
   }
 }

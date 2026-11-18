@@ -3,8 +3,8 @@
 package solarxr_protocol.datatypes;
 
 @SuppressWarnings("unused")
-public final class TapDetectionMethod {
-  private TapDetectionMethod() { }
+public final class TrackerActionMethod {
+  private TrackerActionMethod() { }
   public static final int TAP = 0;
   public static final int BUTTON = 1;
   public static final int BOTH = 2;
