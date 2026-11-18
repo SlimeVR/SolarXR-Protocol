@@ -3,7 +3,7 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { DataFeedMessageHeader, DataFeedMessageHeaderT } from '../solarxr-protocol/data-feed/data-feed-message-header.js';
-import { PubSubHeader, PubSubHeaderT } from '../solarxr-protocol/pub-sub/pub-sub-header.js';
+import { DriverMessageHeader, DriverMessageHeaderT } from '../solarxr-protocol/driver-protocol/driver-message-header.js';
 import { RpcMessageHeader, RpcMessageHeaderT } from '../solarxr-protocol/rpc/rpc-message-header.js';
 
 
@@ -49,12 +49,12 @@ rpcMsgsLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-pubSubMsgs(index: number, obj?:PubSubHeader):PubSubHeader|null {
+driverMsgs(index: number, obj?:DriverMessageHeader):DriverMessageHeader|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new PubSubHeader()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? (obj || new DriverMessageHeader()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
-pubSubMsgsLength():number {
+driverMsgsLength():number {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
@@ -95,11 +95,11 @@ static startRpcMsgsVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
-static addPubSubMsgs(builder:flatbuffers.Builder, pubSubMsgsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, pubSubMsgsOffset, 0);
+static addDriverMsgs(builder:flatbuffers.Builder, driverMsgsOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, driverMsgsOffset, 0);
 }
 
-static createPubSubMsgsVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+static createDriverMsgsVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
   builder.startVector(4, data.length, 4);
   for (let i = data.length - 1; i >= 0; i--) {
     builder.addOffset(data[i]!);
@@ -107,7 +107,7 @@ static createPubSubMsgsVector(builder:flatbuffers.Builder, data:flatbuffers.Offs
   return builder.endVector();
 }
 
-static startPubSubMsgsVector(builder:flatbuffers.Builder, numElems:number) {
+static startDriverMsgsVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
@@ -116,11 +116,11 @@ static endMessageBundle(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createMessageBundle(builder:flatbuffers.Builder, dataFeedMsgsOffset:flatbuffers.Offset, rpcMsgsOffset:flatbuffers.Offset, pubSubMsgsOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createMessageBundle(builder:flatbuffers.Builder, dataFeedMsgsOffset:flatbuffers.Offset, rpcMsgsOffset:flatbuffers.Offset, driverMsgsOffset:flatbuffers.Offset):flatbuffers.Offset {
   MessageBundle.startMessageBundle(builder);
   MessageBundle.addDataFeedMsgs(builder, dataFeedMsgsOffset);
   MessageBundle.addRpcMsgs(builder, rpcMsgsOffset);
-  MessageBundle.addPubSubMsgs(builder, pubSubMsgsOffset);
+  MessageBundle.addDriverMsgs(builder, driverMsgsOffset);
   return MessageBundle.endMessageBundle(builder);
 }
 
@@ -128,7 +128,7 @@ unpack(): MessageBundleT {
   return new MessageBundleT(
     this.bb!.createObjList<DataFeedMessageHeader, DataFeedMessageHeaderT>(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength()),
     this.bb!.createObjList<RpcMessageHeader, RpcMessageHeaderT>(this.rpcMsgs.bind(this), this.rpcMsgsLength()),
-    this.bb!.createObjList<PubSubHeader, PubSubHeaderT>(this.pubSubMsgs.bind(this), this.pubSubMsgsLength())
+    this.bb!.createObjList<DriverMessageHeader, DriverMessageHeaderT>(this.driverMsgs.bind(this), this.driverMsgsLength())
   );
 }
 
@@ -136,7 +136,7 @@ unpack(): MessageBundleT {
 unpackTo(_o: MessageBundleT): void {
   _o.dataFeedMsgs = this.bb!.createObjList<DataFeedMessageHeader, DataFeedMessageHeaderT>(this.dataFeedMsgs.bind(this), this.dataFeedMsgsLength());
   _o.rpcMsgs = this.bb!.createObjList<RpcMessageHeader, RpcMessageHeaderT>(this.rpcMsgs.bind(this), this.rpcMsgsLength());
-  _o.pubSubMsgs = this.bb!.createObjList<PubSubHeader, PubSubHeaderT>(this.pubSubMsgs.bind(this), this.pubSubMsgsLength());
+  _o.driverMsgs = this.bb!.createObjList<DriverMessageHeader, DriverMessageHeaderT>(this.driverMsgs.bind(this), this.driverMsgsLength());
 }
 }
 
@@ -144,19 +144,19 @@ export class MessageBundleT implements flatbuffers.IGeneratedObject {
 constructor(
   public dataFeedMsgs: (DataFeedMessageHeaderT)[] = [],
   public rpcMsgs: (RpcMessageHeaderT)[] = [],
-  public pubSubMsgs: (PubSubHeaderT)[] = []
+  public driverMsgs: (DriverMessageHeaderT)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const dataFeedMsgs = MessageBundle.createDataFeedMsgsVector(builder, builder.createObjectOffsetList(this.dataFeedMsgs));
   const rpcMsgs = MessageBundle.createRpcMsgsVector(builder, builder.createObjectOffsetList(this.rpcMsgs));
-  const pubSubMsgs = MessageBundle.createPubSubMsgsVector(builder, builder.createObjectOffsetList(this.pubSubMsgs));
+  const driverMsgs = MessageBundle.createDriverMsgsVector(builder, builder.createObjectOffsetList(this.driverMsgs));
 
   return MessageBundle.createMessageBundle(builder,
     dataFeedMsgs,
     rpcMsgs,
-    pubSubMsgs
+    driverMsgs
   );
 }
 }

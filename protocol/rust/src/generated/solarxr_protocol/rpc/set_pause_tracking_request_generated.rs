@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for SetPauseTrackingRequest<'a> {
 }
 
 impl<'a> SetPauseTrackingRequest<'a> {
-  pub const VT_PAUSETRACKING: flatbuffers::VOffsetT = 4;
+  pub const VT_PAUSE_TRACKING: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,18 +37,18 @@ impl<'a> SetPauseTrackingRequest<'a> {
     args: &'args SetPauseTrackingRequestArgs
   ) -> flatbuffers::WIPOffset<SetPauseTrackingRequest<'bldr>> {
     let mut builder = SetPauseTrackingRequestBuilder::new(_fbb);
-    builder.add_pauseTracking(args.pauseTracking);
+    builder.add_pause_tracking(args.pause_tracking);
     builder.finish()
   }
 
 
   /// Pauses skeleton tracking if true, resumes skeleton tracking if false.
   #[inline]
-  pub fn pauseTracking(&self) -> bool {
+  pub fn pause_tracking(&self) -> bool {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(SetPauseTrackingRequest::VT_PAUSETRACKING, Some(false)).unwrap()}
+    unsafe { self._tab.get::<bool>(SetPauseTrackingRequest::VT_PAUSE_TRACKING, Some(false)).unwrap()}
   }
 }
 
@@ -59,19 +59,19 @@ impl flatbuffers::Verifiable for SetPauseTrackingRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<bool>("pauseTracking", Self::VT_PAUSETRACKING, false)?
+     .visit_field::<bool>("pause_tracking", Self::VT_PAUSE_TRACKING, false)?
      .finish();
     Ok(())
   }
 }
 pub struct SetPauseTrackingRequestArgs {
-    pub pauseTracking: bool,
+    pub pause_tracking: bool,
 }
 impl<'a> Default for SetPauseTrackingRequestArgs {
   #[inline]
   fn default() -> Self {
     SetPauseTrackingRequestArgs {
-      pauseTracking: false,
+      pause_tracking: false,
     }
   }
 }
@@ -82,8 +82,8 @@ pub struct SetPauseTrackingRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> SetPauseTrackingRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_pauseTracking(&mut self, pauseTracking: bool) {
-    self.fbb_.push_slot::<bool>(SetPauseTrackingRequest::VT_PAUSETRACKING, pauseTracking, false);
+  pub fn add_pause_tracking(&mut self, pause_tracking: bool) {
+    self.fbb_.push_slot::<bool>(SetPauseTrackingRequest::VT_PAUSE_TRACKING, pause_tracking, false);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SetPauseTrackingRequestBuilder<'a, 'b> {
@@ -103,7 +103,7 @@ impl<'a: 'b, 'b> SetPauseTrackingRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for SetPauseTrackingRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("SetPauseTrackingRequest");
-      ds.field("pauseTracking", &self.pauseTracking());
+      ds.field("pause_tracking", &self.pause_tracking());
       ds.finish()
   }
 }

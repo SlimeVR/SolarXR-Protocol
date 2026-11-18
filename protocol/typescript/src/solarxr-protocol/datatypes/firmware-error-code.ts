@@ -4,8 +4,8 @@
  * A list of error codes for error conditions on the device
  */
 export enum FirmwareErrorCode {
-  Other = 0,
-  Disconnected = 1,
-  Occluded = 2,
-  ImuError = 3
+  OTHER = 0,
+  DISCONNECTED = 1,
+  OCCLUDED = 2,
+  IMU_ERROR = 3
 }

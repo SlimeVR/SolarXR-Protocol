@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for UserHeightRecordingStatusResponse<'a> {
 }
 
 impl<'a> UserHeightRecordingStatusResponse<'a> {
-  pub const VT_HMDHEIGHT: flatbuffers::VOffsetT = 4;
+  pub const VT_HEAD_HEIGHT: flatbuffers::VOffsetT = 4;
   pub const VT_STATUS: flatbuffers::VOffsetT = 6;
 
   #[inline]
@@ -38,18 +38,18 @@ impl<'a> UserHeightRecordingStatusResponse<'a> {
     args: &'args UserHeightRecordingStatusResponseArgs
   ) -> flatbuffers::WIPOffset<UserHeightRecordingStatusResponse<'bldr>> {
     let mut builder = UserHeightRecordingStatusResponseBuilder::new(_fbb);
-    builder.add_hmdHeight(args.hmdHeight);
+    builder.add_head_height(args.head_height);
     builder.add_status(args.status);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn hmdHeight(&self) -> f32 {
+  pub fn head_height(&self) -> f32 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<f32>(UserHeightRecordingStatusResponse::VT_HMDHEIGHT, Some(0.0)).unwrap()}
+    unsafe { self._tab.get::<f32>(UserHeightRecordingStatusResponse::VT_HEAD_HEIGHT, Some(0.0)).unwrap()}
   }
   #[inline]
   pub fn status(&self) -> UserHeightCalibrationStatus {
@@ -67,21 +67,21 @@ impl flatbuffers::Verifiable for UserHeightRecordingStatusResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<f32>("hmdHeight", Self::VT_HMDHEIGHT, false)?
+     .visit_field::<f32>("head_height", Self::VT_HEAD_HEIGHT, false)?
      .visit_field::<UserHeightCalibrationStatus>("status", Self::VT_STATUS, false)?
      .finish();
     Ok(())
   }
 }
 pub struct UserHeightRecordingStatusResponseArgs {
-    pub hmdHeight: f32,
+    pub head_height: f32,
     pub status: UserHeightCalibrationStatus,
 }
 impl<'a> Default for UserHeightRecordingStatusResponseArgs {
   #[inline]
   fn default() -> Self {
     UserHeightRecordingStatusResponseArgs {
-      hmdHeight: 0.0,
+      head_height: 0.0,
       status: UserHeightCalibrationStatus::NONE,
     }
   }
@@ -93,8 +93,8 @@ pub struct UserHeightRecordingStatusResponseBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> UserHeightRecordingStatusResponseBuilder<'a, 'b> {
   #[inline]
-  pub fn add_hmdHeight(&mut self, hmdHeight: f32) {
-    self.fbb_.push_slot::<f32>(UserHeightRecordingStatusResponse::VT_HMDHEIGHT, hmdHeight, 0.0);
+  pub fn add_head_height(&mut self, head_height: f32) {
+    self.fbb_.push_slot::<f32>(UserHeightRecordingStatusResponse::VT_HEAD_HEIGHT, head_height, 0.0);
   }
   #[inline]
   pub fn add_status(&mut self, status: UserHeightCalibrationStatus) {
@@ -118,7 +118,7 @@ impl<'a: 'b, 'b> UserHeightRecordingStatusResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for UserHeightRecordingStatusResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("UserHeightRecordingStatusResponse");
-      ds.field("hmdHeight", &self.hmdHeight());
+      ds.field("head_height", &self.head_height());
       ds.field("status", &self.status());
       ds.finish()
   }

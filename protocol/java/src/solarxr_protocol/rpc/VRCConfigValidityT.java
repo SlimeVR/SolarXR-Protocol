@@ -11,12 +11,9 @@ public class VRCConfigValidityT {
   private boolean legacyModeOk;
   private boolean shoulderTrackingOk;
   private boolean userHeightOk;
-  private boolean calibrationRangeOk;
   private boolean calibrationVisualsOk;
   private boolean trackerModelOk;
-  private boolean spineModeOk;
   private boolean avatarMeasurementTypeOk;
-  private boolean shoulderWidthCompensationOk;
 
   public boolean getLegacyModeOk() { return legacyModeOk; }
 
@@ -30,10 +27,6 @@ public class VRCConfigValidityT {
 
   public void setUserHeightOk(boolean userHeightOk) { this.userHeightOk = userHeightOk; }
 
-  public boolean getCalibrationRangeOk() { return calibrationRangeOk; }
-
-  public void setCalibrationRangeOk(boolean calibrationRangeOk) { this.calibrationRangeOk = calibrationRangeOk; }
-
   public boolean getCalibrationVisualsOk() { return calibrationVisualsOk; }
 
   public void setCalibrationVisualsOk(boolean calibrationVisualsOk) { this.calibrationVisualsOk = calibrationVisualsOk; }
@@ -42,29 +35,18 @@ public class VRCConfigValidityT {
 
   public void setTrackerModelOk(boolean trackerModelOk) { this.trackerModelOk = trackerModelOk; }
 
-  public boolean getSpineModeOk() { return spineModeOk; }
-
-  public void setSpineModeOk(boolean spineModeOk) { this.spineModeOk = spineModeOk; }
-
   public boolean getAvatarMeasurementTypeOk() { return avatarMeasurementTypeOk; }
 
   public void setAvatarMeasurementTypeOk(boolean avatarMeasurementTypeOk) { this.avatarMeasurementTypeOk = avatarMeasurementTypeOk; }
-
-  public boolean getShoulderWidthCompensationOk() { return shoulderWidthCompensationOk; }
-
-  public void setShoulderWidthCompensationOk(boolean shoulderWidthCompensationOk) { this.shoulderWidthCompensationOk = shoulderWidthCompensationOk; }
 
 
   public VRCConfigValidityT() {
     this.legacyModeOk = false;
     this.shoulderTrackingOk = false;
     this.userHeightOk = false;
-    this.calibrationRangeOk = false;
     this.calibrationVisualsOk = false;
     this.trackerModelOk = false;
-    this.spineModeOk = false;
     this.avatarMeasurementTypeOk = false;
-    this.shoulderWidthCompensationOk = false;
   }
 }
 

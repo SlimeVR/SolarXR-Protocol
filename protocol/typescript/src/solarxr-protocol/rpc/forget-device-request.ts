@@ -22,9 +22,9 @@ static getSizePrefixedRootAsForgetDeviceRequest(bb:flatbuffers.ByteBuffer, obj?:
   return (obj || new ForgetDeviceRequest()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-macAddress():string|null
-macAddress(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-macAddress(optionalEncoding?:any):string|Uint8Array|null {
+hardwareId():string|null
+hardwareId(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+hardwareId(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
@@ -33,8 +33,8 @@ static startForgetDeviceRequest(builder:flatbuffers.Builder) {
   builder.startObject(1);
 }
 
-static addMacAddress(builder:flatbuffers.Builder, macAddressOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, macAddressOffset, 0);
+static addHardwareId(builder:flatbuffers.Builder, hardwareIdOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, hardwareIdOffset, 0);
 }
 
 static endForgetDeviceRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -42,35 +42,35 @@ static endForgetDeviceRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createForgetDeviceRequest(builder:flatbuffers.Builder, macAddressOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createForgetDeviceRequest(builder:flatbuffers.Builder, hardwareIdOffset:flatbuffers.Offset):flatbuffers.Offset {
   ForgetDeviceRequest.startForgetDeviceRequest(builder);
-  ForgetDeviceRequest.addMacAddress(builder, macAddressOffset);
+  ForgetDeviceRequest.addHardwareId(builder, hardwareIdOffset);
   return ForgetDeviceRequest.endForgetDeviceRequest(builder);
 }
 
 unpack(): ForgetDeviceRequestT {
   return new ForgetDeviceRequestT(
-    this.macAddress()
+    this.hardwareId()
   );
 }
 
 
 unpackTo(_o: ForgetDeviceRequestT): void {
-  _o.macAddress = this.macAddress();
+  _o.hardwareId = this.hardwareId();
 }
 }
 
 export class ForgetDeviceRequestT implements flatbuffers.IGeneratedObject {
 constructor(
-  public macAddress: string|Uint8Array|null = null
+  public hardwareId: string|Uint8Array|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const macAddress = (this.macAddress !== null ? builder.createString(this.macAddress!) : 0);
+  const hardwareId = (this.hardwareId !== null ? builder.createString(this.hardwareId!) : 0);
 
   return ForgetDeviceRequest.createForgetDeviceRequest(builder,
-    macAddress
+    hardwareId
   );
 }
 }

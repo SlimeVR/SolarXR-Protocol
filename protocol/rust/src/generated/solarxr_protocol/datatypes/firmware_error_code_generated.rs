@@ -16,10 +16,10 @@ pub const ENUM_MAX_FIRMWARE_ERROR_CODE: u8 = 3;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_FIRMWARE_ERROR_CODE: [FirmwareErrorCode; 4] = [
-  FirmwareErrorCode::Other,
-  FirmwareErrorCode::Disconnected,
-  FirmwareErrorCode::Occluded,
-  FirmwareErrorCode::ImuError,
+  FirmwareErrorCode::OTHER,
+  FirmwareErrorCode::DISCONNECTED,
+  FirmwareErrorCode::OCCLUDED,
+  FirmwareErrorCode::IMU_ERROR,
 ];
 
 /// A list of error codes for error conditions on the device
@@ -28,26 +28,26 @@ pub const ENUM_VALUES_FIRMWARE_ERROR_CODE: [FirmwareErrorCode; 4] = [
 pub struct FirmwareErrorCode(pub u8);
 #[allow(non_upper_case_globals)]
 impl FirmwareErrorCode {
-  pub const Other: Self = Self(0);
-  pub const Disconnected: Self = Self(1);
-  pub const Occluded: Self = Self(2);
-  pub const ImuError: Self = Self(3);
+  pub const OTHER: Self = Self(0);
+  pub const DISCONNECTED: Self = Self(1);
+  pub const OCCLUDED: Self = Self(2);
+  pub const IMU_ERROR: Self = Self(3);
 
   pub const ENUM_MIN: u8 = 0;
   pub const ENUM_MAX: u8 = 3;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::Other,
-    Self::Disconnected,
-    Self::Occluded,
-    Self::ImuError,
+    Self::OTHER,
+    Self::DISCONNECTED,
+    Self::OCCLUDED,
+    Self::IMU_ERROR,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::Other => Some("Other"),
-      Self::Disconnected => Some("Disconnected"),
-      Self::Occluded => Some("Occluded"),
-      Self::ImuError => Some("ImuError"),
+      Self::OTHER => Some("OTHER"),
+      Self::DISCONNECTED => Some("DISCONNECTED"),
+      Self::OCCLUDED => Some("OCCLUDED"),
+      Self::IMU_ERROR => Some("IMU_ERROR"),
       _ => None,
     }
   }

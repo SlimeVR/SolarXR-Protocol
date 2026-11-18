@@ -3,7 +3,7 @@
 /// with a unified API.
 ///
 /// The core datatype is `DataFeedUpdate`, which contains a table of optional fields,
-/// representing all of the data about both physical and synthetic(software) devices.
+/// representing all of the data about physical trackers and the skeleton.
 /// There is a corresponding mask on those fields called `, which defaults to all
 /// fields false, meaning no data.
 ///
@@ -24,14 +24,13 @@
 
 include "datatypes/hardware_info.fbs";
 include "datatypes/datatypes.fbs";
-include "tracker.fbs";
+include "datatypes/bone.fbs";
+include "tracker_data.fbs";
 include "device_data.fbs";
-include "bone.fbs";
-include "stay_aligned.fbs";
+include "dongle_data.fbs";
 include "server.fbs";
 
 namespace solarxr_protocol.data_feed;
-
 
 union DataFeedMessage {
     PollDataFeed,
@@ -46,13 +45,11 @@ table DataFeedMessageHeader {
     message: DataFeedMessage;
 }
 
-
 /// Requests for a single `Update` to be sent. This is helpful when getting
 /// initial info about the device.
 table PollDataFeed {
     config: DataFeedConfig;
 }
-
 
 /// Requests for the other party to send `data_feeds`.
 /// For example, GUI requests for position data to be sent from server.
@@ -63,10 +60,8 @@ table PollDataFeed {
 ///
 /// Multiple data feeds are useful to get data at different frequencies.
 table StartDataFeed {
-    // TODO: Should we add a feed id so we can detect if the feed was actually started?
     data_feeds: [DataFeedConfig];
 }
-
 
 /// All of the data components related to a single data feed. A data feed is comprised
 /// of device data, and tracker data.
@@ -78,17 +73,14 @@ table StartDataFeed {
 table DataFeedUpdate {
     // In the future, we may add an `id` field to disambiguate different `DataFeeds`
     devices: [solarxr_protocol.data_feed.device_data.DeviceData];
-    synthetic_trackers: [solarxr_protocol.data_feed.tracker.TrackerData];
     /// This must represent a set, where there is no more than one bone for a `BodyPart`.
-    bones: [solarxr_protocol.data_feed.Bone];
-    stay_aligned_pose: solarxr_protocol.data_feed.stay_aligned.StayAlignedPose;
-
-    // gives the index of the datafeed config that initiated the update
+    bones: [solarxr_protocol.datatypes.Bone];
+    /// gives the index of the datafeed config that initiated the update
     index: uint8;
-
     server_guards: solarxr_protocol.data_feed.server.ServerGuards;
+    /// List of HID dongles connected to the server
+    dongles: [solarxr_protocol.data_feed.dongle_data.DongleData];
 }
-
 
 /// All information related to the configuration of a data feed. This may be sent
 /// as part of a `StartFeed`.
@@ -97,8 +89,7 @@ table DataFeedConfig {
     /// ignored when used for a `PollDataFeed`.
     minimum_time_since_last: uint16 = 0;
     data_mask: solarxr_protocol.data_feed.device_data.DeviceDataMask;
-    synthetic_trackers_mask: solarxr_protocol.data_feed.tracker.TrackerDataMask;
-    bone_mask: bool;  // TODO: decide if we want to make this a vec of `BodyPart`
-    stay_aligned_pose_mask: bool;
+    bone_mask: solarxr_protocol.datatypes.BoneMask;
     server_guards_mask: bool;
+    dongle_mask: solarxr_protocol.data_feed.dongle_data.DongleDataMask;
 }

@@ -1,0 +1,6 @@
+namespace solarxr_protocol.rpc;
+
+table ChangeDongleSettingsRequest {
+    dongle_id: uint16;
+    display_name: string;
+}

@@ -10,6 +10,8 @@ import com.google.flatbuffers.*;
 public class SkeletonPartT {
   private int bone;
   private float value;
+  private float minValue;
+  private float maxValue;
 
   public int getBone() { return bone; }
 
@@ -19,10 +21,20 @@ public class SkeletonPartT {
 
   public void setValue(float value) { this.value = value; }
 
+  public float getMinValue() { return minValue; }
+
+  public void setMinValue(float minValue) { this.minValue = minValue; }
+
+  public float getMaxValue() { return maxValue; }
+
+  public void setMaxValue(float maxValue) { this.maxValue = maxValue; }
+
 
   public SkeletonPartT() {
     this.bone = 0;
     this.value = 0.0f;
+    this.minValue = 0.0f;
+    this.maxValue = 0.0f;
   }
 }
 

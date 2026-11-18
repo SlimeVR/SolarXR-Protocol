@@ -11,6 +11,9 @@ public class SerialDeviceT {
   private String port;
   private String name;
   private int type;
+  private int vendorId;
+  private int productId;
+  private String serialNumber;
 
   public String getPort() { return port; }
 
@@ -24,11 +27,26 @@ public class SerialDeviceT {
 
   public void setType(int type) { this.type = type; }
 
+  public int getVendorId() { return vendorId; }
+
+  public void setVendorId(int vendorId) { this.vendorId = vendorId; }
+
+  public int getProductId() { return productId; }
+
+  public void setProductId(int productId) { this.productId = productId; }
+
+  public String getSerialNumber() { return serialNumber; }
+
+  public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
+
 
   public SerialDeviceT() {
     this.port = null;
     this.name = null;
     this.type = 0;
+    this.vendorId = 0;
+    this.productId = 0;
+    this.serialNumber = null;
   }
 }
 

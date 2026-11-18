@@ -55,6 +55,7 @@ impl FirmwareUpdateStatus {
   pub const REBOOTING: Self = Self(5);
   /// The server is provisioning the tracker
   pub const PROVISIONING: Self = Self(6);
+  /// The update process completed with success
   pub const DONE: Self = Self(7);
   /// Could not find the device
   pub const ERROR_DEVICE_NOT_FOUND: Self = Self(8);

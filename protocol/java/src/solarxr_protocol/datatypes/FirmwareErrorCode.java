@@ -8,12 +8,12 @@ package solarxr_protocol.datatypes;
 @SuppressWarnings("unused")
 public final class FirmwareErrorCode {
   private FirmwareErrorCode() { }
-  public static final int Other = 0;
-  public static final int Disconnected = 1;
-  public static final int Occluded = 2;
-  public static final int ImuError = 3;
+  public static final int OTHER = 0;
+  public static final int DISCONNECTED = 1;
+  public static final int OCCLUDED = 2;
+  public static final int IMU_ERROR = 3;
 
-  public static final String[] names = { "Other", "Disconnected", "Occluded", "ImuError", };
+  public static final String[] names = { "OTHER", "DISCONNECTED", "OCCLUDED", "IMU_ERROR", };
 
   public static String name(int e) { return names[e]; }
 }

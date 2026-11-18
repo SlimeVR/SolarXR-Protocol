@@ -51,7 +51,7 @@ impl<'a> ResetRequest<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<ResetType>(ResetRequest::VT_RESET_TYPE, Some(ResetType::Yaw)).unwrap()}
+    unsafe { self._tab.get::<ResetType>(ResetRequest::VT_RESET_TYPE, Some(ResetType::YAW)).unwrap()}
   }
   /// Which body parts to reset. Server handles it if empty (usually all)
   #[inline]
@@ -93,7 +93,7 @@ impl<'a> Default for ResetRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
     ResetRequestArgs {
-      reset_type: ResetType::Yaw,
+      reset_type: ResetType::YAW,
       body_parts: None,
       delay: None,
     }
@@ -107,7 +107,7 @@ pub struct ResetRequestBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> ResetRequestBuilder<'a, 'b> {
   #[inline]
   pub fn add_reset_type(&mut self, reset_type: ResetType) {
-    self.fbb_.push_slot::<ResetType>(ResetRequest::VT_RESET_TYPE, reset_type, ResetType::Yaw);
+    self.fbb_.push_slot::<ResetType>(ResetRequest::VT_RESET_TYPE, reset_type, ResetType::YAW);
   }
   #[inline]
   pub fn add_body_parts(&mut self, body_parts: flatbuffers::WIPOffset<flatbuffers::Vector<'b , super::datatypes::BodyPart>>) {

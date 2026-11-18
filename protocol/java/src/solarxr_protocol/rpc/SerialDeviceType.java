@@ -5,11 +5,15 @@ package solarxr_protocol.rpc;
 @SuppressWarnings("unused")
 public final class SerialDeviceType {
   private SerialDeviceType() { }
-  public static final int ESP_TRACKER = 0;
-  public static final int HID_RECEIVER = 1;
-  public static final int HID_TRACKER = 2;
+  /**
+   * A USB serial port whose vendor and product id are not recognized
+   */
+  public static final int UNKNOWN = 0;
+  public static final int ESP_TRACKER = 1;
+  public static final int HID_RECEIVER = 2;
+  public static final int HID_TRACKER = 3;
 
-  public static final String[] names = { "ESP_TRACKER", "HID_RECEIVER", "HID_TRACKER", };
+  public static final String[] names = { "UNKNOWN", "ESP_TRACKER", "HID_RECEIVER", "HID_TRACKER", };
 
   public static String name(int e) { return names[e]; }
 }

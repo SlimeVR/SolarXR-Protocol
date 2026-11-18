@@ -22,22 +22,36 @@ public final class SerialDevice extends Table {
   public ByteBuffer nameAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
   public ByteBuffer nameInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
   public int type() { int o = __offset(8); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
+  public int vendorId() { int o = __offset(10); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public int productId() { int o = __offset(12); return o != 0 ? bb.getShort(o + bb_pos) & 0xFFFF : 0; }
+  public String serialNumber() { int o = __offset(14); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer serialNumberAsByteBuffer() { return __vector_as_bytebuffer(14, 1); }
+  public ByteBuffer serialNumberInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 14, 1); }
 
   public static int createSerialDevice(FlatBufferBuilder builder,
       int portOffset,
       int nameOffset,
-      int type) {
-    builder.startTable(3);
+      int type,
+      int vendorId,
+      int productId,
+      int serialNumberOffset) {
+    builder.startTable(6);
+    SerialDevice.addSerialNumber(builder, serialNumberOffset);
     SerialDevice.addName(builder, nameOffset);
     SerialDevice.addPort(builder, portOffset);
+    SerialDevice.addProductId(builder, productId);
+    SerialDevice.addVendorId(builder, vendorId);
     SerialDevice.addType(builder, type);
     return SerialDevice.endSerialDevice(builder);
   }
 
-  public static void startSerialDevice(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startSerialDevice(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addPort(FlatBufferBuilder builder, int portOffset) { builder.addOffset(0, portOffset, 0); }
   public static void addName(FlatBufferBuilder builder, int nameOffset) { builder.addOffset(1, nameOffset, 0); }
   public static void addType(FlatBufferBuilder builder, int type) { builder.addByte(2, (byte) type, (byte) 0); }
+  public static void addVendorId(FlatBufferBuilder builder, int vendorId) { builder.addShort(3, (short) vendorId, (short) 0); }
+  public static void addProductId(FlatBufferBuilder builder, int productId) { builder.addShort(4, (short) productId, (short) 0); }
+  public static void addSerialNumber(FlatBufferBuilder builder, int serialNumberOffset) { builder.addOffset(5, serialNumberOffset, 0); }
   public static int endSerialDevice(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -61,16 +75,26 @@ public final class SerialDevice extends Table {
     _o.setName(_oName);
     int _oType = type();
     _o.setType(_oType);
+    int _oVendorId = vendorId();
+    _o.setVendorId(_oVendorId);
+    int _oProductId = productId();
+    _o.setProductId(_oProductId);
+    String _oSerialNumber = serialNumber();
+    _o.setSerialNumber(_oSerialNumber);
   }
   public static int pack(FlatBufferBuilder builder, SerialDeviceT _o) {
     if (_o == null) return 0;
     int _port = _o.getPort() == null ? 0 : builder.createString(_o.getPort());
     int _name = _o.getName() == null ? 0 : builder.createString(_o.getName());
+    int _serialNumber = _o.getSerialNumber() == null ? 0 : builder.createString(_o.getSerialNumber());
     return createSerialDevice(
       builder,
       _port,
       _name,
-      _o.getType());
+      _o.getType(),
+      _o.getVendorId(),
+      _o.getProductId(),
+      _serialNumber);
   }
 }
 

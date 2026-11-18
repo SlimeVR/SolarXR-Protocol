@@ -1,0 +1,73 @@
+include "../datatypes/datatypes.fbs";
+
+namespace solarxr_protocol.rpc;
+
+table UpdateTrackerRequest {
+    tracker_id: uint16;
+    body_position: solarxr_protocol.datatypes.BodyPart;
+    mounting_orientation: solarxr_protocol.datatypes.math.Quat;
+    display_name: string;
+    bone_offset: solarxr_protocol.datatypes.math.Vec3f;
+}
+
+table ResetTrackerAssignments {}
+
+table TrackerActionSettings {
+    enabled: bool;
+    delay: float;
+    body_part: solarxr_protocol.datatypes.BodyPart;
+    method: solarxr_protocol.datatypes.TrackerActionMethod;
+    taps: uint8;
+}
+// Tracker Action settings request and response
+table TrackerActionSettingsRequest {}
+table TrackerActionSettingsResponse {
+    full_reset_action: TrackerActionSettings;
+    yaw_reset_action: TrackerActionSettings;
+    mounting_reset_action: TrackerActionSettings;
+    taps_trackers_over_threshold: uint8;
+}
+table ChangeTrackerActionSettingsRequest {
+    full_reset_action: TrackerActionSettings;
+    yaw_reset_action: TrackerActionSettings;
+    mounting_reset_action: TrackerActionSettings;
+    taps_trackers_over_threshold: uint8;
+}
+
+/// Sets the TrackerAction setup mode.
+table TrackerActionSetupModeRequest {
+    /// When true, TrackerAction triggering a tracker will assign it instead of doing a reset.
+    setup_mode: bool;
+}
+
+/// Indicates which tracker got triggered by TrackerAction while setup mode is enabled
+table TrackerActionSetupNotification {
+    tracker_id: uint16;
+}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+table MagToggleRequest {
+    tracker_id: uint16;
+}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+table MagToggleResponse {
+    tracker_id: uint16;
+    enable: bool;
+}
+
+/// If no tracker ID is given, it's the setting for every tracker/device
+table ChangeMagToggleRequest {
+    tracker_id: uint16;
+    enable: bool;
+}
+
+table TimeoutSettingsRequest {}
+
+table TimeoutSettingsResponse {
+    delay: float;
+}
+
+table ChangeTimeoutSettingsRequest {
+    delay: float;
+}

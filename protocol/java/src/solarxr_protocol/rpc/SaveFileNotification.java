@@ -28,7 +28,7 @@ public final class SaveFileNotification extends Table {
   public ByteBuffer dataAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
   public ByteBuffer dataInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
   /**
-   * MIME type of file if one exists, use `file_extension` otherwise
+   * MIME type of file if one exists, use `extension` otherwise
    */
   public String mimeType() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer mimeTypeAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
@@ -36,9 +36,9 @@ public final class SaveFileNotification extends Table {
   /**
    * Use MIME type preferably if one exists
    */
-  public String fileExtension() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer fileExtensionAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
-  public ByteBuffer fileExtensionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
+  public String extension() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer extensionAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
+  public ByteBuffer extensionInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
   /**
    * Directory recommended to save the file on
    */
@@ -54,12 +54,12 @@ public final class SaveFileNotification extends Table {
   public static int createSaveFileNotification(FlatBufferBuilder builder,
       int dataOffset,
       int mimeTypeOffset,
-      int fileExtensionOffset,
+      int extensionOffset,
       int expectedDir,
       int expectedFilenameOffset) {
     builder.startTable(5);
     SaveFileNotification.addExpectedFilename(builder, expectedFilenameOffset);
-    SaveFileNotification.addFileExtension(builder, fileExtensionOffset);
+    SaveFileNotification.addExtension(builder, extensionOffset);
     SaveFileNotification.addMimeType(builder, mimeTypeOffset);
     SaveFileNotification.addData(builder, dataOffset);
     SaveFileNotification.addExpectedDir(builder, expectedDir);
@@ -72,7 +72,7 @@ public final class SaveFileNotification extends Table {
   public static int createDataVector(FlatBufferBuilder builder, ByteBuffer data) { return builder.createByteVector(data); }
   public static void startDataVector(FlatBufferBuilder builder, int numElems) { builder.startVector(1, numElems, 1); }
   public static void addMimeType(FlatBufferBuilder builder, int mimeTypeOffset) { builder.addOffset(1, mimeTypeOffset, 0); }
-  public static void addFileExtension(FlatBufferBuilder builder, int fileExtensionOffset) { builder.addOffset(2, fileExtensionOffset, 0); }
+  public static void addExtension(FlatBufferBuilder builder, int extensionOffset) { builder.addOffset(2, extensionOffset, 0); }
   public static void addExpectedDir(FlatBufferBuilder builder, int expectedDir) { builder.addByte(3, (byte) expectedDir, (byte) 0); }
   public static void addExpectedFilename(FlatBufferBuilder builder, int expectedFilenameOffset) { builder.addOffset(4, expectedFilenameOffset, 0); }
   public static int endSaveFileNotification(FlatBufferBuilder builder) {
@@ -97,8 +97,8 @@ public final class SaveFileNotification extends Table {
     _o.setData(_oData);
     String _oMimeType = mimeType();
     _o.setMimeType(_oMimeType);
-    String _oFileExtension = fileExtension();
-    _o.setFileExtension(_oFileExtension);
+    String _oExtension = extension();
+    _o.setExtension(_oExtension);
     Integer _oExpectedDir = hasExpectedDir() ? expectedDir() : null;
     _o.setExpectedDir(_oExpectedDir);
     String _oExpectedFilename = expectedFilename();
@@ -114,13 +114,13 @@ public final class SaveFileNotification extends Table {
       _data = createDataVector(builder, __data);
     }
     int _mimeType = _o.getMimeType() == null ? 0 : builder.createString(_o.getMimeType());
-    int _fileExtension = _o.getFileExtension() == null ? 0 : builder.createString(_o.getFileExtension());
+    int _extension = _o.getExtension() == null ? 0 : builder.createString(_o.getExtension());
     int _expectedFilename = _o.getExpectedFilename() == null ? 0 : builder.createString(_o.getExpectedFilename());
     return createSaveFileNotification(
       builder,
       _data,
       _mimeType,
-      _fileExtension,
+      _extension,
       _o.getExpectedDir(),
       _expectedFilename);
   }

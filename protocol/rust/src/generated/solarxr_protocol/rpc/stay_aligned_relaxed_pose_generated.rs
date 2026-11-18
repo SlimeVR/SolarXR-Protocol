@@ -12,13 +12,15 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_STAY_ALIGNED_RELAXED_POSE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_STAY_ALIGNED_RELAXED_POSE: u8 = 2;
+pub const ENUM_MAX_STAY_ALIGNED_RELAXED_POSE: u8 = 4;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_STAY_ALIGNED_RELAXED_POSE: [StayAlignedRelaxedPose; 3] = [
+pub const ENUM_VALUES_STAY_ALIGNED_RELAXED_POSE: [StayAlignedRelaxedPose; 5] = [
+  StayAlignedRelaxedPose::UNKNOWN,
   StayAlignedRelaxedPose::STANDING,
   StayAlignedRelaxedPose::SITTING,
   StayAlignedRelaxedPose::FLAT,
+  StayAlignedRelaxedPose::KNEELING,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -26,23 +28,29 @@ pub const ENUM_VALUES_STAY_ALIGNED_RELAXED_POSE: [StayAlignedRelaxedPose; 3] = [
 pub struct StayAlignedRelaxedPose(pub u8);
 #[allow(non_upper_case_globals)]
 impl StayAlignedRelaxedPose {
-  pub const STANDING: Self = Self(0);
-  pub const SITTING: Self = Self(1);
-  pub const FLAT: Self = Self(2);
+  pub const UNKNOWN: Self = Self(0);
+  pub const STANDING: Self = Self(1);
+  pub const SITTING: Self = Self(2);
+  pub const FLAT: Self = Self(3);
+  pub const KNEELING: Self = Self(4);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 2;
+  pub const ENUM_MAX: u8 = 4;
   pub const ENUM_VALUES: &'static [Self] = &[
+    Self::UNKNOWN,
     Self::STANDING,
     Self::SITTING,
     Self::FLAT,
+    Self::KNEELING,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
+      Self::UNKNOWN => Some("UNKNOWN"),
       Self::STANDING => Some("STANDING"),
       Self::SITTING => Some("SITTING"),
       Self::FLAT => Some("FLAT"),
+      Self::KNEELING => Some("KNEELING"),
       _ => None,
     }
   }

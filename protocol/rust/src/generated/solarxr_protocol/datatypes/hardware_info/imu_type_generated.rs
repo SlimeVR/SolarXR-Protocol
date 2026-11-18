@@ -16,7 +16,7 @@ pub const ENUM_MAX_IMU_TYPE: u16 = 250;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
 pub const ENUM_VALUES_IMU_TYPE: [ImuType; 21] = [
-  ImuType::Other,
+  ImuType::UNKNOWN,
   ImuType::MPU9250,
   ImuType::MPU6500,
   ImuType::BNO080,
@@ -44,7 +44,7 @@ pub const ENUM_VALUES_IMU_TYPE: [ImuType; 21] = [
 pub struct ImuType(pub u16);
 #[allow(non_upper_case_globals)]
 impl ImuType {
-  pub const Other: Self = Self(0);
+  pub const UNKNOWN: Self = Self(0);
   pub const MPU9250: Self = Self(1);
   pub const MPU6500: Self = Self(2);
   pub const BNO080: Self = Self(3);
@@ -69,7 +69,7 @@ impl ImuType {
   pub const ENUM_MIN: u16 = 0;
   pub const ENUM_MAX: u16 = 250;
   pub const ENUM_VALUES: &'static [Self] = &[
-    Self::Other,
+    Self::UNKNOWN,
     Self::MPU9250,
     Self::MPU6500,
     Self::BNO080,
@@ -94,7 +94,7 @@ impl ImuType {
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
     match self {
-      Self::Other => Some("Other"),
+      Self::UNKNOWN => Some("UNKNOWN"),
       Self::MPU9250 => Some("MPU9250"),
       Self::MPU6500 => Some("MPU6500"),
       Self::BNO080 => Some("BNO080"),

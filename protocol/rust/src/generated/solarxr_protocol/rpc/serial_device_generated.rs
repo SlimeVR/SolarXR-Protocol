@@ -28,6 +28,9 @@ impl<'a> SerialDevice<'a> {
   pub const VT_PORT: flatbuffers::VOffsetT = 4;
   pub const VT_NAME: flatbuffers::VOffsetT = 6;
   pub const VT_TYPE_: flatbuffers::VOffsetT = 8;
+  pub const VT_VENDOR_ID: flatbuffers::VOffsetT = 10;
+  pub const VT_PRODUCT_ID: flatbuffers::VOffsetT = 12;
+  pub const VT_SERIAL_NUMBER: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -39,8 +42,11 @@ impl<'a> SerialDevice<'a> {
     args: &'args SerialDeviceArgs<'args>
   ) -> flatbuffers::WIPOffset<SerialDevice<'bldr>> {
     let mut builder = SerialDeviceBuilder::new(_fbb);
+    if let Some(x) = args.serial_number { builder.add_serial_number(x); }
     if let Some(x) = args.name { builder.add_name(x); }
     if let Some(x) = args.port { builder.add_port(x); }
+    builder.add_product_id(args.product_id);
+    builder.add_vendor_id(args.vendor_id);
     builder.add_type_(args.type_);
     builder.finish()
   }
@@ -65,7 +71,28 @@ impl<'a> SerialDevice<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<SerialDeviceType>(SerialDevice::VT_TYPE_, Some(SerialDeviceType::ESP_TRACKER)).unwrap()}
+    unsafe { self._tab.get::<SerialDeviceType>(SerialDevice::VT_TYPE_, Some(SerialDeviceType::UNKNOWN)).unwrap()}
+  }
+  #[inline]
+  pub fn vendor_id(&self) -> u16 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u16>(SerialDevice::VT_VENDOR_ID, Some(0)).unwrap()}
+  }
+  #[inline]
+  pub fn product_id(&self) -> u16 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u16>(SerialDevice::VT_PRODUCT_ID, Some(0)).unwrap()}
+  }
+  #[inline]
+  pub fn serial_number(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SerialDevice::VT_SERIAL_NUMBER, None)}
   }
 }
 
@@ -79,6 +106,9 @@ impl flatbuffers::Verifiable for SerialDevice<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("port", Self::VT_PORT, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("name", Self::VT_NAME, false)?
      .visit_field::<SerialDeviceType>("type_", Self::VT_TYPE_, false)?
+     .visit_field::<u16>("vendor_id", Self::VT_VENDOR_ID, false)?
+     .visit_field::<u16>("product_id", Self::VT_PRODUCT_ID, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("serial_number", Self::VT_SERIAL_NUMBER, false)?
      .finish();
     Ok(())
   }
@@ -87,6 +117,9 @@ pub struct SerialDeviceArgs<'a> {
     pub port: Option<flatbuffers::WIPOffset<&'a str>>,
     pub name: Option<flatbuffers::WIPOffset<&'a str>>,
     pub type_: SerialDeviceType,
+    pub vendor_id: u16,
+    pub product_id: u16,
+    pub serial_number: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for SerialDeviceArgs<'a> {
   #[inline]
@@ -94,7 +127,10 @@ impl<'a> Default for SerialDeviceArgs<'a> {
     SerialDeviceArgs {
       port: None,
       name: None,
-      type_: SerialDeviceType::ESP_TRACKER,
+      type_: SerialDeviceType::UNKNOWN,
+      vendor_id: 0,
+      product_id: 0,
+      serial_number: None,
     }
   }
 }
@@ -114,7 +150,19 @@ impl<'a: 'b, 'b> SerialDeviceBuilder<'a, 'b> {
   }
   #[inline]
   pub fn add_type_(&mut self, type_: SerialDeviceType) {
-    self.fbb_.push_slot::<SerialDeviceType>(SerialDevice::VT_TYPE_, type_, SerialDeviceType::ESP_TRACKER);
+    self.fbb_.push_slot::<SerialDeviceType>(SerialDevice::VT_TYPE_, type_, SerialDeviceType::UNKNOWN);
+  }
+  #[inline]
+  pub fn add_vendor_id(&mut self, vendor_id: u16) {
+    self.fbb_.push_slot::<u16>(SerialDevice::VT_VENDOR_ID, vendor_id, 0);
+  }
+  #[inline]
+  pub fn add_product_id(&mut self, product_id: u16) {
+    self.fbb_.push_slot::<u16>(SerialDevice::VT_PRODUCT_ID, product_id, 0);
+  }
+  #[inline]
+  pub fn add_serial_number(&mut self, serial_number: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerialDevice::VT_SERIAL_NUMBER, serial_number);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> SerialDeviceBuilder<'a, 'b> {
@@ -137,6 +185,9 @@ impl core::fmt::Debug for SerialDevice<'_> {
       ds.field("port", &self.port());
       ds.field("name", &self.name());
       ds.field("type_", &self.type_());
+      ds.field("vendor_id", &self.vendor_id());
+      ds.field("product_id", &self.product_id());
+      ds.field("serial_number", &self.serial_number());
       ds.finish()
   }
 }

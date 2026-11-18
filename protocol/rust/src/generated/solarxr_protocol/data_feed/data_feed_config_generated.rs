@@ -29,10 +29,9 @@ impl<'a> flatbuffers::Follow<'a> for DataFeedConfig<'a> {
 impl<'a> DataFeedConfig<'a> {
   pub const VT_MINIMUM_TIME_SINCE_LAST: flatbuffers::VOffsetT = 4;
   pub const VT_DATA_MASK: flatbuffers::VOffsetT = 6;
-  pub const VT_SYNTHETIC_TRACKERS_MASK: flatbuffers::VOffsetT = 8;
-  pub const VT_BONE_MASK: flatbuffers::VOffsetT = 10;
-  pub const VT_STAY_ALIGNED_POSE_MASK: flatbuffers::VOffsetT = 12;
-  pub const VT_SERVER_GUARDS_MASK: flatbuffers::VOffsetT = 14;
+  pub const VT_BONE_MASK: flatbuffers::VOffsetT = 8;
+  pub const VT_SERVER_GUARDS_MASK: flatbuffers::VOffsetT = 10;
+  pub const VT_DONGLE_MASK: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -44,12 +43,11 @@ impl<'a> DataFeedConfig<'a> {
     args: &'args DataFeedConfigArgs<'args>
   ) -> flatbuffers::WIPOffset<DataFeedConfig<'bldr>> {
     let mut builder = DataFeedConfigBuilder::new(_fbb);
-    if let Some(x) = args.synthetic_trackers_mask { builder.add_synthetic_trackers_mask(x); }
+    if let Some(x) = args.dongle_mask { builder.add_dongle_mask(x); }
+    if let Some(x) = args.bone_mask { builder.add_bone_mask(x); }
     if let Some(x) = args.data_mask { builder.add_data_mask(x); }
     builder.add_minimum_time_since_last(args.minimum_time_since_last);
     builder.add_server_guards_mask(args.server_guards_mask);
-    builder.add_stay_aligned_pose_mask(args.stay_aligned_pose_mask);
-    builder.add_bone_mask(args.bone_mask);
     builder.finish()
   }
 
@@ -71,25 +69,11 @@ impl<'a> DataFeedConfig<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<device_data::DeviceDataMask>>(DataFeedConfig::VT_DATA_MASK, None)}
   }
   #[inline]
-  pub fn synthetic_trackers_mask(&self) -> Option<tracker::TrackerDataMask<'a>> {
+  pub fn bone_mask(&self) -> Option<super::datatypes::BoneMask<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<tracker::TrackerDataMask>>(DataFeedConfig::VT_SYNTHETIC_TRACKERS_MASK, None)}
-  }
-  #[inline]
-  pub fn bone_mask(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(DataFeedConfig::VT_BONE_MASK, Some(false)).unwrap()}
-  }
-  #[inline]
-  pub fn stay_aligned_pose_mask(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(DataFeedConfig::VT_STAY_ALIGNED_POSE_MASK, Some(false)).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::BoneMask>>(DataFeedConfig::VT_BONE_MASK, None)}
   }
   #[inline]
   pub fn server_guards_mask(&self) -> bool {
@@ -97,6 +81,13 @@ impl<'a> DataFeedConfig<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(DataFeedConfig::VT_SERVER_GUARDS_MASK, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn dongle_mask(&self) -> Option<dongle_data::DongleDataMask<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<dongle_data::DongleDataMask>>(DataFeedConfig::VT_DONGLE_MASK, None)}
   }
 }
 
@@ -109,10 +100,9 @@ impl flatbuffers::Verifiable for DataFeedConfig<'_> {
     v.visit_table(pos)?
      .visit_field::<u16>("minimum_time_since_last", Self::VT_MINIMUM_TIME_SINCE_LAST, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<device_data::DeviceDataMask>>("data_mask", Self::VT_DATA_MASK, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<tracker::TrackerDataMask>>("synthetic_trackers_mask", Self::VT_SYNTHETIC_TRACKERS_MASK, false)?
-     .visit_field::<bool>("bone_mask", Self::VT_BONE_MASK, false)?
-     .visit_field::<bool>("stay_aligned_pose_mask", Self::VT_STAY_ALIGNED_POSE_MASK, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::BoneMask>>("bone_mask", Self::VT_BONE_MASK, false)?
      .visit_field::<bool>("server_guards_mask", Self::VT_SERVER_GUARDS_MASK, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<dongle_data::DongleDataMask>>("dongle_mask", Self::VT_DONGLE_MASK, false)?
      .finish();
     Ok(())
   }
@@ -120,10 +110,9 @@ impl flatbuffers::Verifiable for DataFeedConfig<'_> {
 pub struct DataFeedConfigArgs<'a> {
     pub minimum_time_since_last: u16,
     pub data_mask: Option<flatbuffers::WIPOffset<device_data::DeviceDataMask<'a>>>,
-    pub synthetic_trackers_mask: Option<flatbuffers::WIPOffset<tracker::TrackerDataMask<'a>>>,
-    pub bone_mask: bool,
-    pub stay_aligned_pose_mask: bool,
+    pub bone_mask: Option<flatbuffers::WIPOffset<super::datatypes::BoneMask<'a>>>,
     pub server_guards_mask: bool,
+    pub dongle_mask: Option<flatbuffers::WIPOffset<dongle_data::DongleDataMask<'a>>>,
 }
 impl<'a> Default for DataFeedConfigArgs<'a> {
   #[inline]
@@ -131,10 +120,9 @@ impl<'a> Default for DataFeedConfigArgs<'a> {
     DataFeedConfigArgs {
       minimum_time_since_last: 0,
       data_mask: None,
-      synthetic_trackers_mask: None,
-      bone_mask: false,
-      stay_aligned_pose_mask: false,
+      bone_mask: None,
       server_guards_mask: false,
+      dongle_mask: None,
     }
   }
 }
@@ -153,20 +141,16 @@ impl<'a: 'b, 'b> DataFeedConfigBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<device_data::DeviceDataMask>>(DataFeedConfig::VT_DATA_MASK, data_mask);
   }
   #[inline]
-  pub fn add_synthetic_trackers_mask(&mut self, synthetic_trackers_mask: flatbuffers::WIPOffset<tracker::TrackerDataMask<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<tracker::TrackerDataMask>>(DataFeedConfig::VT_SYNTHETIC_TRACKERS_MASK, synthetic_trackers_mask);
-  }
-  #[inline]
-  pub fn add_bone_mask(&mut self, bone_mask: bool) {
-    self.fbb_.push_slot::<bool>(DataFeedConfig::VT_BONE_MASK, bone_mask, false);
-  }
-  #[inline]
-  pub fn add_stay_aligned_pose_mask(&mut self, stay_aligned_pose_mask: bool) {
-    self.fbb_.push_slot::<bool>(DataFeedConfig::VT_STAY_ALIGNED_POSE_MASK, stay_aligned_pose_mask, false);
+  pub fn add_bone_mask(&mut self, bone_mask: flatbuffers::WIPOffset<super::datatypes::BoneMask<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::BoneMask>>(DataFeedConfig::VT_BONE_MASK, bone_mask);
   }
   #[inline]
   pub fn add_server_guards_mask(&mut self, server_guards_mask: bool) {
     self.fbb_.push_slot::<bool>(DataFeedConfig::VT_SERVER_GUARDS_MASK, server_guards_mask, false);
+  }
+  #[inline]
+  pub fn add_dongle_mask(&mut self, dongle_mask: flatbuffers::WIPOffset<dongle_data::DongleDataMask<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<dongle_data::DongleDataMask>>(DataFeedConfig::VT_DONGLE_MASK, dongle_mask);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> DataFeedConfigBuilder<'a, 'b> {
@@ -188,10 +172,9 @@ impl core::fmt::Debug for DataFeedConfig<'_> {
     let mut ds = f.debug_struct("DataFeedConfig");
       ds.field("minimum_time_since_last", &self.minimum_time_since_last());
       ds.field("data_mask", &self.data_mask());
-      ds.field("synthetic_trackers_mask", &self.synthetic_trackers_mask());
       ds.field("bone_mask", &self.bone_mask());
-      ds.field("stay_aligned_pose_mask", &self.stay_aligned_pose_mask());
       ds.field("server_guards_mask", &self.server_guards_mask());
+      ds.field("dongle_mask", &self.dongle_mask());
       ds.finish()
   }
 }

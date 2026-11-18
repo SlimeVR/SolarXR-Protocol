@@ -8,27 +8,27 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class SerialUpdateResponseT {
-  private String log;
-  private boolean closed;
+  private int status;
   private solarxr_protocol.rpc.SerialDeviceT device;
+  private String log;
 
-  public String getLog() { return log; }
+  public int getStatus() { return status; }
 
-  public void setLog(String log) { this.log = log; }
-
-  public boolean getClosed() { return closed; }
-
-  public void setClosed(boolean closed) { this.closed = closed; }
+  public void setStatus(int status) { this.status = status; }
 
   public solarxr_protocol.rpc.SerialDeviceT getDevice() { return device; }
 
   public void setDevice(solarxr_protocol.rpc.SerialDeviceT device) { this.device = device; }
 
+  public String getLog() { return log; }
+
+  public void setLog(String log) { this.log = log; }
+
 
   public SerialUpdateResponseT() {
-    this.log = null;
-    this.closed = false;
+    this.status = 0;
     this.device = null;
+    this.log = null;
   }
 }
 

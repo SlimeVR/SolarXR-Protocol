@@ -1,0 +1,33 @@
+namespace solarxr_protocol.rpc;
+
+enum UnknownDeviceStatus: uint8 {
+    /// Handshaking but not on the allowed list.
+    WAITING = 1,
+    /// Allowed, waiting for its next handshake to connect.
+    ADDING = 2,
+}
+
+table UnknownDevice {
+    hardware_id: string;
+    ip_address: uint32;
+    board_type: solarxr_protocol.datatypes.hardware_info.BoardType;
+    mcu_type: solarxr_protocol.datatypes.hardware_info.McuType;
+    firmware_version: string;
+    status: UnknownDeviceStatus = WAITING;
+}
+
+table UnknownDevicesResponse {
+    devices: [UnknownDevice];
+}
+
+table IgnoreUnknownDeviceRequest {
+    hardware_id: string;
+}
+
+table AddUnknownDeviceRequest {
+    hardware_id: string;
+}
+
+table ForgetDeviceRequest {
+    hardware_id: string;
+}

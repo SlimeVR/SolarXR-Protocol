@@ -3,8 +3,12 @@
 import * as flatbuffers from 'flatbuffers';
 
 import { Keybind, KeybindT } from '../../solarxr-protocol/rpc/keybind.js';
+import { KeybindSupport } from '../../solarxr-protocol/rpc/keybind-support.js';
 
 
+/**
+ * Returns keybinds for displaying in gui
+ */
 export class KeybindResponse implements flatbuffers.IUnpackableObject<KeybindResponseT> {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
@@ -43,8 +47,13 @@ defaultKeybindsLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
+support():KeybindSupport {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : KeybindSupport.UNSUPPORTED;
+}
+
 static startKeybindResponse(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
 }
 
 static addKeybind(builder:flatbuffers.Builder, keybindOffset:flatbuffers.Offset) {
@@ -79,22 +88,28 @@ static startDefaultKeybindsVector(builder:flatbuffers.Builder, numElems:number) 
   builder.startVector(4, numElems, 4);
 }
 
+static addSupport(builder:flatbuffers.Builder, support:KeybindSupport) {
+  builder.addFieldInt8(2, support, KeybindSupport.UNSUPPORTED);
+}
+
 static endKeybindResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createKeybindResponse(builder:flatbuffers.Builder, keybindOffset:flatbuffers.Offset, defaultKeybindsOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createKeybindResponse(builder:flatbuffers.Builder, keybindOffset:flatbuffers.Offset, defaultKeybindsOffset:flatbuffers.Offset, support:KeybindSupport):flatbuffers.Offset {
   KeybindResponse.startKeybindResponse(builder);
   KeybindResponse.addKeybind(builder, keybindOffset);
   KeybindResponse.addDefaultKeybinds(builder, defaultKeybindsOffset);
+  KeybindResponse.addSupport(builder, support);
   return KeybindResponse.endKeybindResponse(builder);
 }
 
 unpack(): KeybindResponseT {
   return new KeybindResponseT(
     this.bb!.createObjList<Keybind, KeybindT>(this.keybind.bind(this), this.keybindLength()),
-    this.bb!.createObjList<Keybind, KeybindT>(this.defaultKeybinds.bind(this), this.defaultKeybindsLength())
+    this.bb!.createObjList<Keybind, KeybindT>(this.defaultKeybinds.bind(this), this.defaultKeybindsLength()),
+    this.support()
   );
 }
 
@@ -102,13 +117,15 @@ unpack(): KeybindResponseT {
 unpackTo(_o: KeybindResponseT): void {
   _o.keybind = this.bb!.createObjList<Keybind, KeybindT>(this.keybind.bind(this), this.keybindLength());
   _o.defaultKeybinds = this.bb!.createObjList<Keybind, KeybindT>(this.defaultKeybinds.bind(this), this.defaultKeybindsLength());
+  _o.support = this.support();
 }
 }
 
 export class KeybindResponseT implements flatbuffers.IGeneratedObject {
 constructor(
   public keybind: (KeybindT)[] = [],
-  public defaultKeybinds: (KeybindT)[] = []
+  public defaultKeybinds: (KeybindT)[] = [],
+  public support: KeybindSupport = KeybindSupport.UNSUPPORTED
 ){}
 
 
@@ -118,7 +135,8 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
 
   return KeybindResponse.createKeybindResponse(builder,
     keybind,
-    defaultKeybinds
+    defaultKeybinds,
+    this.support
   );
 }
 }

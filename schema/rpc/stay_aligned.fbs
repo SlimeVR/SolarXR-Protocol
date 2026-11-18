@@ -1,0 +1,145 @@
+namespace solarxr_protocol.rpc;
+
+enum StayAlignedRelaxedPose: uint8 {
+    UNKNOWN = 0,
+    STANDING = 1,
+    SITTING = 2,
+    FLAT = 3,
+    KNEELING = 4
+}
+
+/// A relaxed pose of the user. Angles are the yaw of the upper legs, lower legs and
+/// feet relative to the body, in degrees.
+table StayAlignedPose {
+    pose: StayAlignedRelaxedPose;
+    recorded: bool;
+    /// The pose is usable before it is recorded, with angles the server picks. Only a pose
+    /// that has defaults can be enabled without a recording.
+    has_default: bool;
+    enabled: bool;
+    upper_leg_angle: float32;
+    lower_leg_angle: float32;
+    foot_angle: float32;
+}
+
+table StayAlignedPoseToggle {
+    pose: StayAlignedRelaxedPose;
+    enabled: bool;
+}
+
+table ResetStayAlignedRelaxedPoseRequest {
+    pose: StayAlignedRelaxedPose;
+}
+
+table StayAlignedSettingsRequest {}
+table StayAlignedSettingsResponse {
+    enabled: bool;
+    poses: [StayAlignedPose];
+}
+table ChangeStayAlignedSettingsRequest {
+    enabled: bool;
+    pose_toggles: [StayAlignedPoseToggle];
+}
+
+table StartStayAlignedPoseRecordingRequest {
+    pose: StayAlignedRelaxedPose;
+}
+
+table CancelStayAlignedPoseRecordingRequest {}
+
+/// The parts of the body Stay Aligned reads. The upper body is any of the upper body
+/// trackers, the rest are single trackers.
+enum StayAlignedPart: uint8 {
+    UPPER_BODY,
+    LEFT_UPPER_LEG,
+    RIGHT_UPPER_LEG,
+    LEFT_LOWER_LEG,
+    RIGHT_LOWER_LEG,
+    LEFT_FOOT,
+    RIGHT_FOOT,
+}
+
+enum StayAlignedRecordingTrackerState: uint8 {
+    STILL,
+    MOVING,
+}
+
+enum StayAlignedPoseRecordingFailure: uint8 {
+    NONE,
+    NOT_STILL,
+    WRONG_POSE,
+    POSITION_UNKNOWN,
+    MISSING_TRACKERS,
+    NOT_CALIBRATED,
+}
+
+table StayAlignedRecordingTracker {
+    part: StayAlignedPart;
+    state: StayAlignedRecordingTrackerState;
+}
+
+enum StayAlignedPoseRecordingLifecycle: uint8 {
+    RUNNING,
+    DONE,
+    CANCELED,
+    FAILED,
+}
+
+table StayAlignedPoseCountdown {
+    /// Seconds passed since the start of the countdown
+    progress: int;
+    /// Seconds of the countdown
+    duration: int;
+}
+
+table StayAlignedPoseWaiting {
+    /// Seconds passed since the start of the wait
+    progress: int;
+    /// Seconds before the recording gives up
+    duration: int;
+    /// The pose the user is in, UNKNOWN when the position matches no pose
+    detected_pose: StayAlignedRelaxedPose;
+    /// The parts that have a tracker, a part without one is left out
+    trackers: [StayAlignedRecordingTracker];
+}
+
+union StayAlignedPoseRecordingDetail {
+    StayAlignedPoseCountdown,
+    StayAlignedPoseWaiting,
+}
+
+table StayAlignedPoseRecordingStatusResponse {
+    pose: StayAlignedRelaxedPose;
+    lifecycle: StayAlignedPoseRecordingLifecycle;
+    detail: StayAlignedPoseRecordingDetail;
+    failure: StayAlignedPoseRecordingFailure;
+}
+
+table StartStayAlignedStatusRequest {}
+table StopStayAlignedStatusRequest {}
+
+enum StayAlignedPoseState: uint8 {
+    NOT_RECORDED,
+    DISABLED,
+    ENABLED,
+}
+
+table StayAlignedDetectedPoseState {
+    pose: StayAlignedRelaxedPose;
+    state: StayAlignedPoseState;
+}
+
+table StayAlignedTrackerCorrection {
+    body_part: solarxr_protocol.datatypes.BodyPart;
+    degrees: float32;
+}
+
+table StayAlignedStatusResponse {
+    enabled: bool;
+    /// The pose the user is in, null when the position matches no pose
+    detected_pose: StayAlignedDetectedPoseState;
+    /// The required parts that have no tracker. Recording a pose needs all of them.
+    missing_parts: [StayAlignedPart];
+    /// Over every assigned tracker, null while Stay Aligned is off or when nothing was corrected
+    largest_correction: StayAlignedTrackerCorrection;
+}

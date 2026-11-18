@@ -21,25 +21,19 @@ public final class StartWifiProvisioningRequest extends Table {
   public String password() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
   public ByteBuffer passwordAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
   public ByteBuffer passwordInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
-  public String port() { int o = __offset(8); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer portAsByteBuffer() { return __vector_as_bytebuffer(8, 1); }
-  public ByteBuffer portInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 8, 1); }
 
   public static int createStartWifiProvisioningRequest(FlatBufferBuilder builder,
       int ssidOffset,
-      int passwordOffset,
-      int portOffset) {
-    builder.startTable(3);
-    StartWifiProvisioningRequest.addPort(builder, portOffset);
+      int passwordOffset) {
+    builder.startTable(2);
     StartWifiProvisioningRequest.addPassword(builder, passwordOffset);
     StartWifiProvisioningRequest.addSsid(builder, ssidOffset);
     return StartWifiProvisioningRequest.endStartWifiProvisioningRequest(builder);
   }
 
-  public static void startStartWifiProvisioningRequest(FlatBufferBuilder builder) { builder.startTable(3); }
+  public static void startStartWifiProvisioningRequest(FlatBufferBuilder builder) { builder.startTable(2); }
   public static void addSsid(FlatBufferBuilder builder, int ssidOffset) { builder.addOffset(0, ssidOffset, 0); }
   public static void addPassword(FlatBufferBuilder builder, int passwordOffset) { builder.addOffset(1, passwordOffset, 0); }
-  public static void addPort(FlatBufferBuilder builder, int portOffset) { builder.addOffset(2, portOffset, 0); }
   public static int endStartWifiProvisioningRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -61,19 +55,15 @@ public final class StartWifiProvisioningRequest extends Table {
     _o.setSsid(_oSsid);
     String _oPassword = password();
     _o.setPassword(_oPassword);
-    String _oPort = port();
-    _o.setPort(_oPort);
   }
   public static int pack(FlatBufferBuilder builder, StartWifiProvisioningRequestT _o) {
     if (_o == null) return 0;
     int _ssid = _o.getSsid() == null ? 0 : builder.createString(_o.getSsid());
     int _password = _o.getPassword() == null ? 0 : builder.createString(_o.getPassword());
-    int _port = _o.getPort() == null ? 0 : builder.createString(_o.getPort());
     return createStartWifiProvisioningRequest(
       builder,
       _ssid,
-      _password,
-      _port);
+      _password);
   }
 }
 
