@@ -108,31 +108,6 @@ public enum class BoardType(
 }
 
 /**
- * What kind of data the tracker supports. The received data gets transformed into a Quaternion rotation in any case.
- */
-public enum class TrackerDataType(
-  public val `value`: UByte,
-) {
-  /**
-   * Rotation (e.g: IMUs or computed rotations in firmware)
-   */
-  ROTATION(0.toUByte()),
-  /**
-   * Flex resistance (e.g: raw data from flex sensors or unscaled angle on a single axis)
-   */
-  FLEX_RESISTANCE(1.toUByte()),
-  /**
-   * Flex angle (e.g: computed angle from flex sensors or angle on a single axis)
-   */
-  FLEX_ANGLE(2.toUByte()),
-  ;
-
-  public companion object {
-    public fun fromValue(`value`: UByte): TrackerDataType? = entries.firstOrNull { it.value == value }
-  }
-}
-
-/**
  * A MAC address or a bluetooth address, or some other uniquely identifying address
  * associated with the endpoint that we are communicating with. If it doesn't take
  * up the full set of bytes, it is aligned towards the least significant bits.

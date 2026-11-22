@@ -33,7 +33,6 @@ impl<'a> BoneMask<'a> {
   pub const VT_TAIL_POSITION: flatbuffers::VOffsetT = 14;
   pub const VT_LINEAR_VELOCITY: flatbuffers::VOffsetT = 16;
   pub const VT_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 18;
-  pub const VT_TRACKER_OFFSET: flatbuffers::VOffsetT = 20;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -45,7 +44,6 @@ impl<'a> BoneMask<'a> {
     args: &'args BoneMaskArgs
   ) -> flatbuffers::WIPOffset<BoneMask<'bldr>> {
     let mut builder = BoneMaskBuilder::new(_fbb);
-    builder.add_tracker_offset(args.tracker_offset);
     builder.add_angular_velocity(args.angular_velocity);
     builder.add_linear_velocity(args.linear_velocity);
     builder.add_tail_position(args.tail_position);
@@ -114,13 +112,6 @@ impl<'a> BoneMask<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<bool>(BoneMask::VT_ANGULAR_VELOCITY, Some(false)).unwrap()}
   }
-  #[inline]
-  pub fn tracker_offset(&self) -> bool {
-    // Safety:
-    // Created from valid Table for this object
-    // which contains a valid value in this slot
-    unsafe { self._tab.get::<bool>(BoneMask::VT_TRACKER_OFFSET, Some(false)).unwrap()}
-  }
 }
 
 impl flatbuffers::Verifiable for BoneMask<'_> {
@@ -138,7 +129,6 @@ impl flatbuffers::Verifiable for BoneMask<'_> {
      .visit_field::<bool>("tail_position", Self::VT_TAIL_POSITION, false)?
      .visit_field::<bool>("linear_velocity", Self::VT_LINEAR_VELOCITY, false)?
      .visit_field::<bool>("angular_velocity", Self::VT_ANGULAR_VELOCITY, false)?
-     .visit_field::<bool>("tracker_offset", Self::VT_TRACKER_OFFSET, false)?
      .finish();
     Ok(())
   }
@@ -152,7 +142,6 @@ pub struct BoneMaskArgs {
     pub tail_position: bool,
     pub linear_velocity: bool,
     pub angular_velocity: bool,
-    pub tracker_offset: bool,
 }
 impl<'a> Default for BoneMaskArgs {
   #[inline]
@@ -166,7 +155,6 @@ impl<'a> Default for BoneMaskArgs {
       tail_position: false,
       linear_velocity: false,
       angular_velocity: false,
-      tracker_offset: false,
     }
   }
 }
@@ -209,10 +197,6 @@ impl<'a: 'b, 'b> BoneMaskBuilder<'a, 'b> {
     self.fbb_.push_slot::<bool>(BoneMask::VT_ANGULAR_VELOCITY, angular_velocity, false);
   }
   #[inline]
-  pub fn add_tracker_offset(&mut self, tracker_offset: bool) {
-    self.fbb_.push_slot::<bool>(BoneMask::VT_TRACKER_OFFSET, tracker_offset, false);
-  }
-  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> BoneMaskBuilder<'a, 'b> {
     let start = _fbb.start_table();
     BoneMaskBuilder {
@@ -238,7 +222,6 @@ impl core::fmt::Debug for BoneMask<'_> {
       ds.field("tail_position", &self.tail_position());
       ds.field("linear_velocity", &self.linear_velocity());
       ds.field("angular_velocity", &self.angular_velocity());
-      ds.field("tracker_offset", &self.tracker_offset());
       ds.finish()
   }
 }

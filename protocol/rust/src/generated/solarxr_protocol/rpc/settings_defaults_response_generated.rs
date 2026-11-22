@@ -28,7 +28,7 @@ impl<'a> SettingsDefaultsResponse<'a> {
   pub const VT_SKELETON: flatbuffers::VOffsetT = 4;
   pub const VT_RESETS: flatbuffers::VOffsetT = 6;
   pub const VT_STAY_ALIGNED: flatbuffers::VOffsetT = 8;
-  pub const VT_TAP_DETECTION: flatbuffers::VOffsetT = 10;
+  pub const VT_TRACKER_ACTION: flatbuffers::VOffsetT = 10;
   pub const VT_TIMEOUT: flatbuffers::VOffsetT = 12;
   pub const VT_HID: flatbuffers::VOffsetT = 14;
   pub const VT_DRIVER: flatbuffers::VOffsetT = 16;
@@ -58,7 +58,7 @@ impl<'a> SettingsDefaultsResponse<'a> {
     if let Some(x) = args.driver { builder.add_driver(x); }
     if let Some(x) = args.hid { builder.add_hid(x); }
     if let Some(x) = args.timeout { builder.add_timeout(x); }
-    if let Some(x) = args.tap_detection { builder.add_tap_detection(x); }
+    if let Some(x) = args.tracker_action { builder.add_tracker_action(x); }
     if let Some(x) = args.stay_aligned { builder.add_stay_aligned(x); }
     if let Some(x) = args.resets { builder.add_resets(x); }
     if let Some(x) = args.skeleton { builder.add_skeleton(x); }
@@ -88,11 +88,11 @@ impl<'a> SettingsDefaultsResponse<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<StayAlignedSettingsResponse>>(SettingsDefaultsResponse::VT_STAY_ALIGNED, None)}
   }
   #[inline]
-  pub fn tap_detection(&self) -> Option<TapDetectionSettingsResponse<'a>> {
+  pub fn tracker_action(&self) -> Option<TrackerActionSettingsResponse<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<TapDetectionSettingsResponse>>(SettingsDefaultsResponse::VT_TAP_DETECTION, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<TrackerActionSettingsResponse>>(SettingsDefaultsResponse::VT_TRACKER_ACTION, None)}
   }
   #[inline]
   pub fn timeout(&self) -> Option<TimeoutSettingsResponse<'a>> {
@@ -169,7 +169,7 @@ impl flatbuffers::Verifiable for SettingsDefaultsResponse<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<SkeletonSettingsResponse>>("skeleton", Self::VT_SKELETON, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<ResetsSettingsResponse>>("resets", Self::VT_RESETS, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<StayAlignedSettingsResponse>>("stay_aligned", Self::VT_STAY_ALIGNED, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<TapDetectionSettingsResponse>>("tap_detection", Self::VT_TAP_DETECTION, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<TrackerActionSettingsResponse>>("tracker_action", Self::VT_TRACKER_ACTION, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<TimeoutSettingsResponse>>("timeout", Self::VT_TIMEOUT, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<HIDSettingsResponse>>("hid", Self::VT_HID, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<DriverSettingsResponse>>("driver", Self::VT_DRIVER, false)?
@@ -187,7 +187,7 @@ pub struct SettingsDefaultsResponseArgs<'a> {
     pub skeleton: Option<flatbuffers::WIPOffset<SkeletonSettingsResponse<'a>>>,
     pub resets: Option<flatbuffers::WIPOffset<ResetsSettingsResponse<'a>>>,
     pub stay_aligned: Option<flatbuffers::WIPOffset<StayAlignedSettingsResponse<'a>>>,
-    pub tap_detection: Option<flatbuffers::WIPOffset<TapDetectionSettingsResponse<'a>>>,
+    pub tracker_action: Option<flatbuffers::WIPOffset<TrackerActionSettingsResponse<'a>>>,
     pub timeout: Option<flatbuffers::WIPOffset<TimeoutSettingsResponse<'a>>>,
     pub hid: Option<flatbuffers::WIPOffset<HIDSettingsResponse<'a>>>,
     pub driver: Option<flatbuffers::WIPOffset<DriverSettingsResponse<'a>>>,
@@ -205,7 +205,7 @@ impl<'a> Default for SettingsDefaultsResponseArgs<'a> {
       skeleton: None,
       resets: None,
       stay_aligned: None,
-      tap_detection: None,
+      tracker_action: None,
       timeout: None,
       hid: None,
       driver: None,
@@ -237,8 +237,8 @@ impl<'a: 'b, 'b> SettingsDefaultsResponseBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<StayAlignedSettingsResponse>>(SettingsDefaultsResponse::VT_STAY_ALIGNED, stay_aligned);
   }
   #[inline]
-  pub fn add_tap_detection(&mut self, tap_detection: flatbuffers::WIPOffset<TapDetectionSettingsResponse<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<TapDetectionSettingsResponse>>(SettingsDefaultsResponse::VT_TAP_DETECTION, tap_detection);
+  pub fn add_tracker_action(&mut self, tracker_action: flatbuffers::WIPOffset<TrackerActionSettingsResponse<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<TrackerActionSettingsResponse>>(SettingsDefaultsResponse::VT_TRACKER_ACTION, tracker_action);
   }
   #[inline]
   pub fn add_timeout(&mut self, timeout: flatbuffers::WIPOffset<TimeoutSettingsResponse<'b >>) {
@@ -297,7 +297,7 @@ impl core::fmt::Debug for SettingsDefaultsResponse<'_> {
       ds.field("skeleton", &self.skeleton());
       ds.field("resets", &self.resets());
       ds.field("stay_aligned", &self.stay_aligned());
-      ds.field("tap_detection", &self.tap_detection());
+      ds.field("tracker_action", &self.tracker_action());
       ds.field("timeout", &self.timeout());
       ds.field("hid", &self.hid());
       ds.field("driver", &self.driver());

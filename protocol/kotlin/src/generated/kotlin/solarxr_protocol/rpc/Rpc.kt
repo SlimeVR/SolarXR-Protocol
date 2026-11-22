@@ -35,18 +35,18 @@ public sealed interface RpcMessage {
       16 -> UserHeightRequest.decode(bb, offset)
       17 -> UserHeightResponse.decode(bb, offset)
       18 -> ChangeUserHeightRequest.decode(bb, offset)
-      19 -> TapDetectionSettingsRequest.decode(bb, offset)
-      20 -> TapDetectionSettingsResponse.decode(bb, offset)
-      21 -> ChangeTapDetectionSettingsRequest.decode(bb, offset)
-      22 -> TapDetectionSetupModeRequest.decode(bb, offset)
+      19 -> TrackerActionSettingsRequest.decode(bb, offset)
+      20 -> TrackerActionSettingsResponse.decode(bb, offset)
+      21 -> ChangeTrackerActionSettingsRequest.decode(bb, offset)
+      22 -> TrackerActionSetupModeRequest.decode(bb, offset)
       23 -> ResetsSettingsRequest.decode(bb, offset)
       24 -> ResetsSettingsResponse.decode(bb, offset)
       25 -> ChangeResetsSettingsRequest.decode(bb, offset)
       26 -> StayAlignedSettingsRequest.decode(bb, offset)
       27 -> StayAlignedSettingsResponse.decode(bb, offset)
       28 -> ChangeStayAlignedSettingsRequest.decode(bb, offset)
-      29 -> ChangeStayAlignedEnabledRequest.decode(bb, offset)
-      30 -> DetectStayAlignedRelaxedPoseRequest.decode(bb, offset)
+      29 -> StartStayAlignedPoseRecordingRequest.decode(bb, offset)
+      30 -> CancelStayAlignedPoseRecordingRequest.decode(bb, offset)
       31 -> ResetStayAlignedRelaxedPoseRequest.decode(bb, offset)
       32 -> HIDSettingsRequest.decode(bb, offset)
       33 -> HIDSettingsResponse.decode(bb, offset)
@@ -81,7 +81,7 @@ public sealed interface RpcMessage {
       62 -> ServerInfosResponse.decode(bb, offset)
       63 -> LegTweaksTmpChange.decode(bb, offset)
       64 -> LegTweaksTmpClear.decode(bb, offset)
-      65 -> TapDetectionSetupNotification.decode(bb, offset)
+      65 -> TrackerActionSetupNotification.decode(bb, offset)
       66 -> SetPauseTrackingRequest.decode(bb, offset)
       67 -> ClearMountingResetRequest.decode(bb, offset)
       68 -> AutoBoneApplyRequest.decode(bb, offset)
@@ -171,9 +171,16 @@ public sealed interface RpcMessage {
       152 -> LogStreamResponse.decode(bb, offset)
       153 -> LogFileChunkRequest.decode(bb, offset)
       154 -> LogFileChunkResponse.decode(bb, offset)
-      155 -> CustomOSCSettingsRequest.decode(bb, offset)
-      156 -> CustomOSCSettingsResponse.decode(bb, offset)
-      157 -> ChangeCustomOSCSettingsRequest.decode(bb, offset)
+      155 -> StayAlignedPoseRecordingStatusResponse.decode(bb, offset)
+      156 -> StartStayAlignedStatusRequest.decode(bb, offset)
+      157 -> StopStayAlignedStatusRequest.decode(bb, offset)
+      158 -> StayAlignedStatusResponse.decode(bb, offset)
+      159 -> FirmwareUpdatesRequest.decode(bb, offset)
+      160 -> FirmwareUpdatesResponse.decode(bb, offset)
+      161 -> RecenterMocapModeRequest.decode(bb, offset)
+      162 -> CustomOSCSettingsRequest.decode(bb, offset)
+      163 -> CustomOSCSettingsResponse.decode(bb, offset)
+      164 -> ChangeCustomOSCSettingsRequest.decode(bb, offset)
       else -> null
     }
 
@@ -196,18 +203,18 @@ public sealed interface RpcMessage {
       is UserHeightRequest -> 16.toUByte()
       is UserHeightResponse -> 17.toUByte()
       is ChangeUserHeightRequest -> 18.toUByte()
-      is TapDetectionSettingsRequest -> 19.toUByte()
-      is TapDetectionSettingsResponse -> 20.toUByte()
-      is ChangeTapDetectionSettingsRequest -> 21.toUByte()
-      is TapDetectionSetupModeRequest -> 22.toUByte()
+      is TrackerActionSettingsRequest -> 19.toUByte()
+      is TrackerActionSettingsResponse -> 20.toUByte()
+      is ChangeTrackerActionSettingsRequest -> 21.toUByte()
+      is TrackerActionSetupModeRequest -> 22.toUByte()
       is ResetsSettingsRequest -> 23.toUByte()
       is ResetsSettingsResponse -> 24.toUByte()
       is ChangeResetsSettingsRequest -> 25.toUByte()
       is StayAlignedSettingsRequest -> 26.toUByte()
       is StayAlignedSettingsResponse -> 27.toUByte()
       is ChangeStayAlignedSettingsRequest -> 28.toUByte()
-      is ChangeStayAlignedEnabledRequest -> 29.toUByte()
-      is DetectStayAlignedRelaxedPoseRequest -> 30.toUByte()
+      is StartStayAlignedPoseRecordingRequest -> 29.toUByte()
+      is CancelStayAlignedPoseRecordingRequest -> 30.toUByte()
       is ResetStayAlignedRelaxedPoseRequest -> 31.toUByte()
       is HIDSettingsRequest -> 32.toUByte()
       is HIDSettingsResponse -> 33.toUByte()
@@ -242,7 +249,7 @@ public sealed interface RpcMessage {
       is ServerInfosResponse -> 62.toUByte()
       is LegTweaksTmpChange -> 63.toUByte()
       is LegTweaksTmpClear -> 64.toUByte()
-      is TapDetectionSetupNotification -> 65.toUByte()
+      is TrackerActionSetupNotification -> 65.toUByte()
       is SetPauseTrackingRequest -> 66.toUByte()
       is ClearMountingResetRequest -> 67.toUByte()
       is AutoBoneApplyRequest -> 68.toUByte()
@@ -332,9 +339,16 @@ public sealed interface RpcMessage {
       is LogStreamResponse -> 152.toUByte()
       is LogFileChunkRequest -> 153.toUByte()
       is LogFileChunkResponse -> 154.toUByte()
-      is CustomOSCSettingsRequest -> 155.toUByte()
-      is CustomOSCSettingsResponse -> 156.toUByte()
-      is ChangeCustomOSCSettingsRequest -> 157.toUByte()
+      is StayAlignedPoseRecordingStatusResponse -> 155.toUByte()
+      is StartStayAlignedStatusRequest -> 156.toUByte()
+      is StopStayAlignedStatusRequest -> 157.toUByte()
+      is StayAlignedStatusResponse -> 158.toUByte()
+      is FirmwareUpdatesRequest -> 159.toUByte()
+      is FirmwareUpdatesResponse -> 160.toUByte()
+      is RecenterMocapModeRequest -> 161.toUByte()
+      is CustomOSCSettingsRequest -> 162.toUByte()
+      is CustomOSCSettingsResponse -> 163.toUByte()
+      is ChangeCustomOSCSettingsRequest -> 164.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -356,18 +370,18 @@ public sealed interface RpcMessage {
       is UserHeightRequest -> value.encode(builder)
       is UserHeightResponse -> value.encode(builder)
       is ChangeUserHeightRequest -> value.encode(builder)
-      is TapDetectionSettingsRequest -> value.encode(builder)
-      is TapDetectionSettingsResponse -> value.encode(builder)
-      is ChangeTapDetectionSettingsRequest -> value.encode(builder)
-      is TapDetectionSetupModeRequest -> value.encode(builder)
+      is TrackerActionSettingsRequest -> value.encode(builder)
+      is TrackerActionSettingsResponse -> value.encode(builder)
+      is ChangeTrackerActionSettingsRequest -> value.encode(builder)
+      is TrackerActionSetupModeRequest -> value.encode(builder)
       is ResetsSettingsRequest -> value.encode(builder)
       is ResetsSettingsResponse -> value.encode(builder)
       is ChangeResetsSettingsRequest -> value.encode(builder)
       is StayAlignedSettingsRequest -> value.encode(builder)
       is StayAlignedSettingsResponse -> value.encode(builder)
       is ChangeStayAlignedSettingsRequest -> value.encode(builder)
-      is ChangeStayAlignedEnabledRequest -> value.encode(builder)
-      is DetectStayAlignedRelaxedPoseRequest -> value.encode(builder)
+      is StartStayAlignedPoseRecordingRequest -> value.encode(builder)
+      is CancelStayAlignedPoseRecordingRequest -> value.encode(builder)
       is ResetStayAlignedRelaxedPoseRequest -> value.encode(builder)
       is HIDSettingsRequest -> value.encode(builder)
       is HIDSettingsResponse -> value.encode(builder)
@@ -402,7 +416,7 @@ public sealed interface RpcMessage {
       is ServerInfosResponse -> value.encode(builder)
       is LegTweaksTmpChange -> value.encode(builder)
       is LegTweaksTmpClear -> value.encode(builder)
-      is TapDetectionSetupNotification -> value.encode(builder)
+      is TrackerActionSetupNotification -> value.encode(builder)
       is SetPauseTrackingRequest -> value.encode(builder)
       is ClearMountingResetRequest -> value.encode(builder)
       is AutoBoneApplyRequest -> value.encode(builder)
@@ -492,6 +506,13 @@ public sealed interface RpcMessage {
       is LogStreamResponse -> value.encode(builder)
       is LogFileChunkRequest -> value.encode(builder)
       is LogFileChunkResponse -> value.encode(builder)
+      is StayAlignedPoseRecordingStatusResponse -> value.encode(builder)
+      is StartStayAlignedStatusRequest -> value.encode(builder)
+      is StopStayAlignedStatusRequest -> value.encode(builder)
+      is StayAlignedStatusResponse -> value.encode(builder)
+      is FirmwareUpdatesRequest -> value.encode(builder)
+      is FirmwareUpdatesResponse -> value.encode(builder)
+      is RecenterMocapModeRequest -> value.encode(builder)
       is CustomOSCSettingsRequest -> value.encode(builder)
       is CustomOSCSettingsResponse -> value.encode(builder)
       is ChangeCustomOSCSettingsRequest -> value.encode(builder)
@@ -500,8 +521,8 @@ public sealed interface RpcMessage {
 }
 
 public data class RpcMessageHeader(
-  public val txId: UInt = 0u,
-  public val replyTo: UInt = 0u,
+  public val txId: UInt? = null,
+  public val replyTo: UInt? = null,
   public val message: RpcMessage? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -509,8 +530,8 @@ public data class RpcMessageHeader(
     val __type_message = message?.let { RpcMessage.typeIndex(it) } ?: 0.toUByte()
 
     builder.startTable(4)
-    builder.addInt(0, txId.toInt(), 0)
-    builder.addInt(1, replyTo.toInt(), 0)
+    if (txId != null) { builder.forceDefaults(true); builder.addInt(0, txId.toInt(), 0); builder.forceDefaults(false) }
+    if (replyTo != null) { builder.forceDefaults(true); builder.addInt(1, replyTo.toInt(), 0); builder.forceDefaults(false) }
     builder.addByte(2, __type_message.toByte(), 0)
     __off_message?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
@@ -527,8 +548,8 @@ public data class RpcMessageHeader(
       val __offset_message = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return RpcMessageHeader(
-              txId = if (__offset_txId != 0) bb.getInt(tableOffset + __offset_txId).toUInt() else 0u,
-              replyTo = if (__offset_replyTo != 0) bb.getInt(tableOffset + __offset_replyTo).toUInt() else 0u,
+              txId = if (__offset_txId != 0) bb.getInt(tableOffset + __offset_txId).toUInt() else null,
+              replyTo = if (__offset_replyTo != 0) bb.getInt(tableOffset + __offset_replyTo).toUInt() else null,
               message = if (__offset_message != 0) RpcMessage.decode(__type_message, bb, tableOffset + __offset_message + bb.getInt(tableOffset + __offset_message)) else null
           )
     }

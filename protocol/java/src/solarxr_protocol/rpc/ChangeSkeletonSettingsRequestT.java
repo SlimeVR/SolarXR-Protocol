@@ -10,7 +10,6 @@ import com.google.flatbuffers.*;
 public class ChangeSkeletonSettingsRequestT {
   private solarxr_protocol.rpc.SkeletonTogglesT toggles;
   private solarxr_protocol.rpc.SkeletonRatiosT ratios;
-  private solarxr_protocol.rpc.SkeletonFilteringT filtering;
 
   public solarxr_protocol.rpc.SkeletonTogglesT getToggles() { return toggles; }
 
@@ -20,15 +19,10 @@ public class ChangeSkeletonSettingsRequestT {
 
   public void setRatios(solarxr_protocol.rpc.SkeletonRatiosT ratios) { this.ratios = ratios; }
 
-  public solarxr_protocol.rpc.SkeletonFilteringT getFiltering() { return filtering; }
-
-  public void setFiltering(solarxr_protocol.rpc.SkeletonFilteringT filtering) { this.filtering = filtering; }
-
 
   public ChangeSkeletonSettingsRequestT() {
     this.toggles = null;
     this.ratios = null;
-    this.filtering = null;
   }
 }
 

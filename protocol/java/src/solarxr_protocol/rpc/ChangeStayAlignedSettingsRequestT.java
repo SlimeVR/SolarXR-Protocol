@@ -9,32 +9,20 @@ import com.google.flatbuffers.*;
 
 public class ChangeStayAlignedSettingsRequestT {
   private boolean enabled;
-  private boolean standingEnabled;
-  private boolean sittingEnabled;
-  private boolean flatEnabled;
+  private solarxr_protocol.rpc.StayAlignedPoseToggleT[] poseToggles;
 
   public boolean getEnabled() { return enabled; }
 
   public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
-  public boolean getStandingEnabled() { return standingEnabled; }
+  public solarxr_protocol.rpc.StayAlignedPoseToggleT[] getPoseToggles() { return poseToggles; }
 
-  public void setStandingEnabled(boolean standingEnabled) { this.standingEnabled = standingEnabled; }
-
-  public boolean getSittingEnabled() { return sittingEnabled; }
-
-  public void setSittingEnabled(boolean sittingEnabled) { this.sittingEnabled = sittingEnabled; }
-
-  public boolean getFlatEnabled() { return flatEnabled; }
-
-  public void setFlatEnabled(boolean flatEnabled) { this.flatEnabled = flatEnabled; }
+  public void setPoseToggles(solarxr_protocol.rpc.StayAlignedPoseToggleT[] poseToggles) { this.poseToggles = poseToggles; }
 
 
   public ChangeStayAlignedSettingsRequestT() {
     this.enabled = false;
-    this.standingEnabled = false;
-    this.sittingEnabled = false;
-    this.flatEnabled = false;
+    this.poseToggles = null;
   }
 }
 

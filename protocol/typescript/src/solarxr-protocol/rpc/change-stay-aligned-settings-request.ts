@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { StayAlignedPoseToggle, StayAlignedPoseToggleT } from '../../solarxr-protocol/rpc/stay-aligned-pose-toggle.js';
 
 
 export class ChangeStayAlignedSettingsRequest implements flatbuffers.IUnpackableObject<ChangeStayAlignedSettingsRequestT> {
@@ -27,39 +28,38 @@ enabled():boolean {
   return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
-standingEnabled():boolean {
+poseToggles(index: number, obj?:StayAlignedPoseToggle):StayAlignedPoseToggle|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+  return offset ? (obj || new StayAlignedPoseToggle()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
-sittingEnabled():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
-flatEnabled():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
+poseTogglesLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
 static startChangeStayAlignedSettingsRequest(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(2);
 }
 
 static addEnabled(builder:flatbuffers.Builder, enabled:boolean) {
   builder.addFieldInt8(0, +enabled, +false);
 }
 
-static addStandingEnabled(builder:flatbuffers.Builder, standingEnabled:boolean) {
-  builder.addFieldInt8(1, +standingEnabled, +false);
+static addPoseToggles(builder:flatbuffers.Builder, poseTogglesOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(1, poseTogglesOffset, 0);
 }
 
-static addSittingEnabled(builder:flatbuffers.Builder, sittingEnabled:boolean) {
-  builder.addFieldInt8(2, +sittingEnabled, +false);
+static createPoseTogglesVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
 }
 
-static addFlatEnabled(builder:flatbuffers.Builder, flatEnabled:boolean) {
-  builder.addFieldInt8(3, +flatEnabled, +false);
+static startPoseTogglesVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
 }
 
 static endChangeStayAlignedSettingsRequest(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -67,48 +67,40 @@ static endChangeStayAlignedSettingsRequest(builder:flatbuffers.Builder):flatbuff
   return offset;
 }
 
-static createChangeStayAlignedSettingsRequest(builder:flatbuffers.Builder, enabled:boolean, standingEnabled:boolean, sittingEnabled:boolean, flatEnabled:boolean):flatbuffers.Offset {
+static createChangeStayAlignedSettingsRequest(builder:flatbuffers.Builder, enabled:boolean, poseTogglesOffset:flatbuffers.Offset):flatbuffers.Offset {
   ChangeStayAlignedSettingsRequest.startChangeStayAlignedSettingsRequest(builder);
   ChangeStayAlignedSettingsRequest.addEnabled(builder, enabled);
-  ChangeStayAlignedSettingsRequest.addStandingEnabled(builder, standingEnabled);
-  ChangeStayAlignedSettingsRequest.addSittingEnabled(builder, sittingEnabled);
-  ChangeStayAlignedSettingsRequest.addFlatEnabled(builder, flatEnabled);
+  ChangeStayAlignedSettingsRequest.addPoseToggles(builder, poseTogglesOffset);
   return ChangeStayAlignedSettingsRequest.endChangeStayAlignedSettingsRequest(builder);
 }
 
 unpack(): ChangeStayAlignedSettingsRequestT {
   return new ChangeStayAlignedSettingsRequestT(
     this.enabled(),
-    this.standingEnabled(),
-    this.sittingEnabled(),
-    this.flatEnabled()
+    this.bb!.createObjList<StayAlignedPoseToggle, StayAlignedPoseToggleT>(this.poseToggles.bind(this), this.poseTogglesLength())
   );
 }
 
 
 unpackTo(_o: ChangeStayAlignedSettingsRequestT): void {
   _o.enabled = this.enabled();
-  _o.standingEnabled = this.standingEnabled();
-  _o.sittingEnabled = this.sittingEnabled();
-  _o.flatEnabled = this.flatEnabled();
+  _o.poseToggles = this.bb!.createObjList<StayAlignedPoseToggle, StayAlignedPoseToggleT>(this.poseToggles.bind(this), this.poseTogglesLength());
 }
 }
 
 export class ChangeStayAlignedSettingsRequestT implements flatbuffers.IGeneratedObject {
 constructor(
   public enabled: boolean = false,
-  public standingEnabled: boolean = false,
-  public sittingEnabled: boolean = false,
-  public flatEnabled: boolean = false
+  public poseToggles: (StayAlignedPoseToggleT)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const poseToggles = ChangeStayAlignedSettingsRequest.createPoseTogglesVector(builder, builder.createObjectOffsetList(this.poseToggles));
+
   return ChangeStayAlignedSettingsRequest.createChangeStayAlignedSettingsRequest(builder,
     this.enabled,
-    this.standingEnabled,
-    this.sittingEnabled,
-    this.flatEnabled
+    poseToggles
   );
 }
 }

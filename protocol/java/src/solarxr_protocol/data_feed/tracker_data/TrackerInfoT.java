@@ -18,7 +18,6 @@ public class TrackerInfoT {
   private String customName;
   private int lastMountingMethod;
   private int magnetometer;
-  private int dataType;
   private solarxr_protocol.datatypes.math.Vec3fT boneOffset;
 
   public boolean getIsImu() { return isImu; }
@@ -61,10 +60,6 @@ public class TrackerInfoT {
 
   public void setMagnetometer(int magnetometer) { this.magnetometer = magnetometer; }
 
-  public int getDataType() { return dataType; }
-
-  public void setDataType(int dataType) { this.dataType = dataType; }
-
   public solarxr_protocol.datatypes.math.Vec3fT getBoneOffset() { return boneOffset; }
 
   public void setBoneOffset(solarxr_protocol.datatypes.math.Vec3fT boneOffset) { this.boneOffset = boneOffset; }
@@ -81,7 +76,6 @@ public class TrackerInfoT {
     this.customName = null;
     this.lastMountingMethod = 0;
     this.magnetometer = 0;
-    this.dataType = 0;
     this.boneOffset = new solarxr_protocol.datatypes.math.Vec3fT();
   }
 }

@@ -41,8 +41,8 @@ impl<'a> RpcMessageHeader<'a> {
   ) -> flatbuffers::WIPOffset<RpcMessageHeader<'bldr>> {
     let mut builder = RpcMessageHeaderBuilder::new(_fbb);
     if let Some(x) = args.message { builder.add_message(x); }
-    builder.add_reply_to(args.reply_to);
-    builder.add_tx_id(args.tx_id);
+    if let Some(x) = args.reply_to { builder.add_reply_to(x); }
+    if let Some(x) = args.tx_id { builder.add_tx_id(x); }
     builder.add_message_type(args.message_type);
     builder.finish()
   }
@@ -51,19 +51,19 @@ impl<'a> RpcMessageHeader<'a> {
   /// Set by whoever originates this message, so a future reply can reference it.
   /// Absent for one-way notifications that expect no reply.
   #[inline]
-  pub fn tx_id(&self) -> u32 {
+  pub fn tx_id(&self) -> Option<u32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<u32>(RpcMessageHeader::VT_TX_ID, Some(0)).unwrap()}
+    unsafe { self._tab.get::<u32>(RpcMessageHeader::VT_TX_ID, None)}
   }
   /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
   #[inline]
-  pub fn reply_to(&self) -> u32 {
+  pub fn reply_to(&self) -> Option<u32> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<u32>(RpcMessageHeader::VT_REPLY_TO, Some(0)).unwrap()}
+    unsafe { self._tab.get::<u32>(RpcMessageHeader::VT_REPLY_TO, None)}
   }
   #[inline]
   pub fn message_type(&self) -> RpcMessage {
@@ -351,13 +351,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_tap_detection_settings_request(&self) -> Option<TapDetectionSettingsRequest<'a>> {
-    if self.message_type() == RpcMessage::TapDetectionSettingsRequest {
+  pub fn message_as_tracker_action_settings_request(&self) -> Option<TrackerActionSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::TrackerActionSettingsRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { TapDetectionSettingsRequest::init_from_table(t) }
+       unsafe { TrackerActionSettingsRequest::init_from_table(t) }
      })
     } else {
       None
@@ -366,13 +366,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_tap_detection_settings_response(&self) -> Option<TapDetectionSettingsResponse<'a>> {
-    if self.message_type() == RpcMessage::TapDetectionSettingsResponse {
+  pub fn message_as_tracker_action_settings_response(&self) -> Option<TrackerActionSettingsResponse<'a>> {
+    if self.message_type() == RpcMessage::TrackerActionSettingsResponse {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { TapDetectionSettingsResponse::init_from_table(t) }
+       unsafe { TrackerActionSettingsResponse::init_from_table(t) }
      })
     } else {
       None
@@ -381,13 +381,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_change_tap_detection_settings_request(&self) -> Option<ChangeTapDetectionSettingsRequest<'a>> {
-    if self.message_type() == RpcMessage::ChangeTapDetectionSettingsRequest {
+  pub fn message_as_change_tracker_action_settings_request(&self) -> Option<ChangeTrackerActionSettingsRequest<'a>> {
+    if self.message_type() == RpcMessage::ChangeTrackerActionSettingsRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { ChangeTapDetectionSettingsRequest::init_from_table(t) }
+       unsafe { ChangeTrackerActionSettingsRequest::init_from_table(t) }
      })
     } else {
       None
@@ -396,13 +396,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_tap_detection_setup_mode_request(&self) -> Option<TapDetectionSetupModeRequest<'a>> {
-    if self.message_type() == RpcMessage::TapDetectionSetupModeRequest {
+  pub fn message_as_tracker_action_setup_mode_request(&self) -> Option<TrackerActionSetupModeRequest<'a>> {
+    if self.message_type() == RpcMessage::TrackerActionSetupModeRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { TapDetectionSetupModeRequest::init_from_table(t) }
+       unsafe { TrackerActionSetupModeRequest::init_from_table(t) }
      })
     } else {
       None
@@ -501,13 +501,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_change_stay_aligned_enabled_request(&self) -> Option<ChangeStayAlignedEnabledRequest<'a>> {
-    if self.message_type() == RpcMessage::ChangeStayAlignedEnabledRequest {
+  pub fn message_as_start_stay_aligned_pose_recording_request(&self) -> Option<StartStayAlignedPoseRecordingRequest<'a>> {
+    if self.message_type() == RpcMessage::StartStayAlignedPoseRecordingRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { ChangeStayAlignedEnabledRequest::init_from_table(t) }
+       unsafe { StartStayAlignedPoseRecordingRequest::init_from_table(t) }
      })
     } else {
       None
@@ -516,13 +516,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_detect_stay_aligned_relaxed_pose_request(&self) -> Option<DetectStayAlignedRelaxedPoseRequest<'a>> {
-    if self.message_type() == RpcMessage::DetectStayAlignedRelaxedPoseRequest {
+  pub fn message_as_cancel_stay_aligned_pose_recording_request(&self) -> Option<CancelStayAlignedPoseRecordingRequest<'a>> {
+    if self.message_type() == RpcMessage::CancelStayAlignedPoseRecordingRequest {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { DetectStayAlignedRelaxedPoseRequest::init_from_table(t) }
+       unsafe { CancelStayAlignedPoseRecordingRequest::init_from_table(t) }
      })
     } else {
       None
@@ -1041,13 +1041,13 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
-  pub fn message_as_tap_detection_setup_notification(&self) -> Option<TapDetectionSetupNotification<'a>> {
-    if self.message_type() == RpcMessage::TapDetectionSetupNotification {
+  pub fn message_as_tracker_action_setup_notification(&self) -> Option<TrackerActionSetupNotification<'a>> {
+    if self.message_type() == RpcMessage::TrackerActionSetupNotification {
       self.message().map(|t| {
        // Safety:
        // Created from a valid Table for this object
        // Which contains a valid union in this slot
-       unsafe { TapDetectionSetupNotification::init_from_table(t) }
+       unsafe { TrackerActionSetupNotification::init_from_table(t) }
      })
     } else {
       None
@@ -2391,6 +2391,111 @@ impl<'a> RpcMessageHeader<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn message_as_stay_aligned_pose_recording_status_response(&self) -> Option<StayAlignedPoseRecordingStatusResponse<'a>> {
+    if self.message_type() == RpcMessage::StayAlignedPoseRecordingStatusResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StayAlignedPoseRecordingStatusResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_start_stay_aligned_status_request(&self) -> Option<StartStayAlignedStatusRequest<'a>> {
+    if self.message_type() == RpcMessage::StartStayAlignedStatusRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StartStayAlignedStatusRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_stop_stay_aligned_status_request(&self) -> Option<StopStayAlignedStatusRequest<'a>> {
+    if self.message_type() == RpcMessage::StopStayAlignedStatusRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StopStayAlignedStatusRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_stay_aligned_status_response(&self) -> Option<StayAlignedStatusResponse<'a>> {
+    if self.message_type() == RpcMessage::StayAlignedStatusResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { StayAlignedStatusResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_firmware_updates_request(&self) -> Option<FirmwareUpdatesRequest<'a>> {
+    if self.message_type() == RpcMessage::FirmwareUpdatesRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { FirmwareUpdatesRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_firmware_updates_response(&self) -> Option<FirmwareUpdatesResponse<'a>> {
+    if self.message_type() == RpcMessage::FirmwareUpdatesResponse {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { FirmwareUpdatesResponse::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn message_as_recenter_mocap_mode_request(&self) -> Option<RecenterMocapModeRequest<'a>> {
+    if self.message_type() == RpcMessage::RecenterMocapModeRequest {
+      self.message().map(|t| {
+       // Safety:
+       // Created from a valid Table for this object
+       // Which contains a valid union in this slot
+       unsafe { RecenterMocapModeRequest::init_from_table(t) }
+     })
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn message_as_custom_oscsettings_request(&self) -> Option<CustomOSCSettingsRequest<'a>> {
     if self.message_type() == RpcMessage::CustomOSCSettingsRequest {
       self.message().map(|t| {
@@ -2465,18 +2570,18 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::UserHeightRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UserHeightRequest>>("RpcMessage::UserHeightRequest", pos),
           RpcMessage::UserHeightResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<UserHeightResponse>>("RpcMessage::UserHeightResponse", pos),
           RpcMessage::ChangeUserHeightRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeUserHeightRequest>>("RpcMessage::ChangeUserHeightRequest", pos),
-          RpcMessage::TapDetectionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSettingsRequest>>("RpcMessage::TapDetectionSettingsRequest", pos),
-          RpcMessage::TapDetectionSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSettingsResponse>>("RpcMessage::TapDetectionSettingsResponse", pos),
-          RpcMessage::ChangeTapDetectionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeTapDetectionSettingsRequest>>("RpcMessage::ChangeTapDetectionSettingsRequest", pos),
-          RpcMessage::TapDetectionSetupModeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSetupModeRequest>>("RpcMessage::TapDetectionSetupModeRequest", pos),
+          RpcMessage::TrackerActionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackerActionSettingsRequest>>("RpcMessage::TrackerActionSettingsRequest", pos),
+          RpcMessage::TrackerActionSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackerActionSettingsResponse>>("RpcMessage::TrackerActionSettingsResponse", pos),
+          RpcMessage::ChangeTrackerActionSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeTrackerActionSettingsRequest>>("RpcMessage::ChangeTrackerActionSettingsRequest", pos),
+          RpcMessage::TrackerActionSetupModeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackerActionSetupModeRequest>>("RpcMessage::TrackerActionSetupModeRequest", pos),
           RpcMessage::ResetsSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetsSettingsRequest>>("RpcMessage::ResetsSettingsRequest", pos),
           RpcMessage::ResetsSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetsSettingsResponse>>("RpcMessage::ResetsSettingsResponse", pos),
           RpcMessage::ChangeResetsSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeResetsSettingsRequest>>("RpcMessage::ChangeResetsSettingsRequest", pos),
           RpcMessage::StayAlignedSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedSettingsRequest>>("RpcMessage::StayAlignedSettingsRequest", pos),
           RpcMessage::StayAlignedSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedSettingsResponse>>("RpcMessage::StayAlignedSettingsResponse", pos),
           RpcMessage::ChangeStayAlignedSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeStayAlignedSettingsRequest>>("RpcMessage::ChangeStayAlignedSettingsRequest", pos),
-          RpcMessage::ChangeStayAlignedEnabledRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeStayAlignedEnabledRequest>>("RpcMessage::ChangeStayAlignedEnabledRequest", pos),
-          RpcMessage::DetectStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<DetectStayAlignedRelaxedPoseRequest>>("RpcMessage::DetectStayAlignedRelaxedPoseRequest", pos),
+          RpcMessage::StartStayAlignedPoseRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartStayAlignedPoseRecordingRequest>>("RpcMessage::StartStayAlignedPoseRecordingRequest", pos),
+          RpcMessage::CancelStayAlignedPoseRecordingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CancelStayAlignedPoseRecordingRequest>>("RpcMessage::CancelStayAlignedPoseRecordingRequest", pos),
           RpcMessage::ResetStayAlignedRelaxedPoseRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ResetStayAlignedRelaxedPoseRequest>>("RpcMessage::ResetStayAlignedRelaxedPoseRequest", pos),
           RpcMessage::HIDSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDSettingsRequest>>("RpcMessage::HIDSettingsRequest", pos),
           RpcMessage::HIDSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<HIDSettingsResponse>>("RpcMessage::HIDSettingsResponse", pos),
@@ -2511,7 +2616,7 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::ServerInfosResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ServerInfosResponse>>("RpcMessage::ServerInfosResponse", pos),
           RpcMessage::LegTweaksTmpChange => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LegTweaksTmpChange>>("RpcMessage::LegTweaksTmpChange", pos),
           RpcMessage::LegTweaksTmpClear => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LegTweaksTmpClear>>("RpcMessage::LegTweaksTmpClear", pos),
-          RpcMessage::TapDetectionSetupNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TapDetectionSetupNotification>>("RpcMessage::TapDetectionSetupNotification", pos),
+          RpcMessage::TrackerActionSetupNotification => v.verify_union_variant::<flatbuffers::ForwardsUOffset<TrackerActionSetupNotification>>("RpcMessage::TrackerActionSetupNotification", pos),
           RpcMessage::SetPauseTrackingRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<SetPauseTrackingRequest>>("RpcMessage::SetPauseTrackingRequest", pos),
           RpcMessage::ClearMountingResetRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ClearMountingResetRequest>>("RpcMessage::ClearMountingResetRequest", pos),
           RpcMessage::AutoBoneApplyRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<AutoBoneApplyRequest>>("RpcMessage::AutoBoneApplyRequest", pos),
@@ -2601,6 +2706,13 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
           RpcMessage::LogStreamResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogStreamResponse>>("RpcMessage::LogStreamResponse", pos),
           RpcMessage::LogFileChunkRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogFileChunkRequest>>("RpcMessage::LogFileChunkRequest", pos),
           RpcMessage::LogFileChunkResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<LogFileChunkResponse>>("RpcMessage::LogFileChunkResponse", pos),
+          RpcMessage::StayAlignedPoseRecordingStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedPoseRecordingStatusResponse>>("RpcMessage::StayAlignedPoseRecordingStatusResponse", pos),
+          RpcMessage::StartStayAlignedStatusRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StartStayAlignedStatusRequest>>("RpcMessage::StartStayAlignedStatusRequest", pos),
+          RpcMessage::StopStayAlignedStatusRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StopStayAlignedStatusRequest>>("RpcMessage::StopStayAlignedStatusRequest", pos),
+          RpcMessage::StayAlignedStatusResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<StayAlignedStatusResponse>>("RpcMessage::StayAlignedStatusResponse", pos),
+          RpcMessage::FirmwareUpdatesRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdatesRequest>>("RpcMessage::FirmwareUpdatesRequest", pos),
+          RpcMessage::FirmwareUpdatesResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<FirmwareUpdatesResponse>>("RpcMessage::FirmwareUpdatesResponse", pos),
+          RpcMessage::RecenterMocapModeRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<RecenterMocapModeRequest>>("RpcMessage::RecenterMocapModeRequest", pos),
           RpcMessage::CustomOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CustomOSCSettingsRequest>>("RpcMessage::CustomOSCSettingsRequest", pos),
           RpcMessage::CustomOSCSettingsResponse => v.verify_union_variant::<flatbuffers::ForwardsUOffset<CustomOSCSettingsResponse>>("RpcMessage::CustomOSCSettingsResponse", pos),
           RpcMessage::ChangeCustomOSCSettingsRequest => v.verify_union_variant::<flatbuffers::ForwardsUOffset<ChangeCustomOSCSettingsRequest>>("RpcMessage::ChangeCustomOSCSettingsRequest", pos),
@@ -2612,8 +2724,8 @@ impl flatbuffers::Verifiable for RpcMessageHeader<'_> {
   }
 }
 pub struct RpcMessageHeaderArgs {
-    pub tx_id: u32,
-    pub reply_to: u32,
+    pub tx_id: Option<u32>,
+    pub reply_to: Option<u32>,
     pub message_type: RpcMessage,
     pub message: Option<flatbuffers::WIPOffset<flatbuffers::UnionWIPOffset>>,
 }
@@ -2621,8 +2733,8 @@ impl<'a> Default for RpcMessageHeaderArgs {
   #[inline]
   fn default() -> Self {
     RpcMessageHeaderArgs {
-      tx_id: 0,
-      reply_to: 0,
+      tx_id: None,
+      reply_to: None,
       message_type: RpcMessage::NONE,
       message: None,
     }
@@ -2636,11 +2748,11 @@ pub struct RpcMessageHeaderBuilder<'a: 'b, 'b> {
 impl<'a: 'b, 'b> RpcMessageHeaderBuilder<'a, 'b> {
   #[inline]
   pub fn add_tx_id(&mut self, tx_id: u32) {
-    self.fbb_.push_slot::<u32>(RpcMessageHeader::VT_TX_ID, tx_id, 0);
+    self.fbb_.push_slot_always::<u32>(RpcMessageHeader::VT_TX_ID, tx_id);
   }
   #[inline]
   pub fn add_reply_to(&mut self, reply_to: u32) {
-    self.fbb_.push_slot::<u32>(RpcMessageHeader::VT_REPLY_TO, reply_to, 0);
+    self.fbb_.push_slot_always::<u32>(RpcMessageHeader::VT_REPLY_TO, reply_to);
   }
   #[inline]
   pub fn add_message_type(&mut self, message_type: RpcMessage) {
@@ -2798,29 +2910,29 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::TapDetectionSettingsRequest => {
-          if let Some(x) = self.message_as_tap_detection_settings_request() {
+        RpcMessage::TrackerActionSettingsRequest => {
+          if let Some(x) = self.message_as_tracker_action_settings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::TapDetectionSettingsResponse => {
-          if let Some(x) = self.message_as_tap_detection_settings_response() {
+        RpcMessage::TrackerActionSettingsResponse => {
+          if let Some(x) = self.message_as_tracker_action_settings_response() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::ChangeTapDetectionSettingsRequest => {
-          if let Some(x) = self.message_as_change_tap_detection_settings_request() {
+        RpcMessage::ChangeTrackerActionSettingsRequest => {
+          if let Some(x) = self.message_as_change_tracker_action_settings_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::TapDetectionSetupModeRequest => {
-          if let Some(x) = self.message_as_tap_detection_setup_mode_request() {
+        RpcMessage::TrackerActionSetupModeRequest => {
+          if let Some(x) = self.message_as_tracker_action_setup_mode_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
@@ -2868,15 +2980,15 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::ChangeStayAlignedEnabledRequest => {
-          if let Some(x) = self.message_as_change_stay_aligned_enabled_request() {
+        RpcMessage::StartStayAlignedPoseRecordingRequest => {
+          if let Some(x) = self.message_as_start_stay_aligned_pose_recording_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::DetectStayAlignedRelaxedPoseRequest => {
-          if let Some(x) = self.message_as_detect_stay_aligned_relaxed_pose_request() {
+        RpcMessage::CancelStayAlignedPoseRecordingRequest => {
+          if let Some(x) = self.message_as_cancel_stay_aligned_pose_recording_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
@@ -3120,8 +3232,8 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
           }
         },
-        RpcMessage::TapDetectionSetupNotification => {
-          if let Some(x) = self.message_as_tap_detection_setup_notification() {
+        RpcMessage::TrackerActionSetupNotification => {
+          if let Some(x) = self.message_as_tracker_action_setup_notification() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
@@ -3745,6 +3857,55 @@ impl core::fmt::Debug for RpcMessageHeader<'_> {
         },
         RpcMessage::LogFileChunkResponse => {
           if let Some(x) = self.message_as_log_file_chunk_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StayAlignedPoseRecordingStatusResponse => {
+          if let Some(x) = self.message_as_stay_aligned_pose_recording_status_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StartStayAlignedStatusRequest => {
+          if let Some(x) = self.message_as_start_stay_aligned_status_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StopStayAlignedStatusRequest => {
+          if let Some(x) = self.message_as_stop_stay_aligned_status_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::StayAlignedStatusResponse => {
+          if let Some(x) = self.message_as_stay_aligned_status_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::FirmwareUpdatesRequest => {
+          if let Some(x) = self.message_as_firmware_updates_request() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::FirmwareUpdatesResponse => {
+          if let Some(x) = self.message_as_firmware_updates_response() {
+            ds.field("message", &x)
+          } else {
+            ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")
+          }
+        },
+        RpcMessage::RecenterMocapModeRequest => {
+          if let Some(x) = self.message_as_recenter_mocap_mode_request() {
             ds.field("message", &x)
           } else {
             ds.field("message", &"InvalidFlatbuffer: Union discriminant does not match value.")

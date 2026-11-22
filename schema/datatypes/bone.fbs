@@ -23,8 +23,6 @@ table Bone {
     linear_velocity: solarxr_protocol.datatypes.math.Vec3f;
     /// Angular velocity in rad/s.
     angular_velocity: solarxr_protocol.datatypes.math.Vec3f;
-    /// Similar to TrackerInfo.position_offset, position offset from the head of the bone to the tracker.
-    tracker_offset: solarxr_protocol.datatypes.math.Vec3f;
 }
 
 table BoneMask {
@@ -36,5 +34,4 @@ table BoneMask {
     tail_position: bool;
     linear_velocity: bool;
     angular_velocity: bool;
-    tracker_offset: bool;
 }

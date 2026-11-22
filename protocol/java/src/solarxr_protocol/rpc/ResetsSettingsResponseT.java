@@ -12,7 +12,7 @@ public class ResetsSettingsResponseT {
   private int armsMountingResetMode;
   private float yawResetSmoothTime;
   private boolean saveMountingReset;
-  private boolean resetReliableReferenceAttitude;
+  private boolean resetHmdAttitude;
   private int mountingMethod;
 
   public boolean getResetMountingFeet() { return resetMountingFeet; }
@@ -31,9 +31,9 @@ public class ResetsSettingsResponseT {
 
   public void setSaveMountingReset(boolean saveMountingReset) { this.saveMountingReset = saveMountingReset; }
 
-  public boolean getResetReliableReferenceAttitude() { return resetReliableReferenceAttitude; }
+  public boolean getResetHmdAttitude() { return resetHmdAttitude; }
 
-  public void setResetReliableReferenceAttitude(boolean resetReliableReferenceAttitude) { this.resetReliableReferenceAttitude = resetReliableReferenceAttitude; }
+  public void setResetHmdAttitude(boolean resetHmdAttitude) { this.resetHmdAttitude = resetHmdAttitude; }
 
   public int getMountingMethod() { return mountingMethod; }
 
@@ -45,7 +45,7 @@ public class ResetsSettingsResponseT {
     this.armsMountingResetMode = 0;
     this.yawResetSmoothTime = 0.0f;
     this.saveMountingReset = false;
-    this.resetReliableReferenceAttitude = false;
+    this.resetHmdAttitude = false;
     this.mountingMethod = 0;
   }
 }

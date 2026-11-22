@@ -85,7 +85,7 @@ table ResetsSettingsResponse {
     /// Save mounting reset between restarts
     save_mounting_reset: bool;
     /// Reset VR headset's pitch and roll
-    reset_reliable_reference_attitude: bool;
+    reset_hmd_attitude: bool;
     /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
     mounting_method: solarxr_protocol.datatypes.MountingMethod;
 }
@@ -98,7 +98,7 @@ table ChangeResetsSettingsRequest {
     /// Save mounting reset between restarts
     save_mounting_reset: bool;
     /// Reset VR headset's pitch and roll
-    reset_reliable_reference_attitude: bool;
+    reset_hmd_attitude: bool;
     /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
     mounting_method: solarxr_protocol.datatypes.MountingMethod;
 }

@@ -16,7 +16,6 @@ public class BoneMaskT {
   private boolean tailPosition;
   private boolean linearVelocity;
   private boolean angularVelocity;
-  private boolean trackerOffset;
 
   public boolean getBodyPart() { return bodyPart; }
 
@@ -50,10 +49,6 @@ public class BoneMaskT {
 
   public void setAngularVelocity(boolean angularVelocity) { this.angularVelocity = angularVelocity; }
 
-  public boolean getTrackerOffset() { return trackerOffset; }
-
-  public void setTrackerOffset(boolean trackerOffset) { this.trackerOffset = trackerOffset; }
-
 
   public BoneMaskT() {
     this.bodyPart = false;
@@ -64,7 +59,6 @@ public class BoneMaskT {
     this.tailPosition = false;
     this.linearVelocity = false;
     this.angularVelocity = false;
-    this.trackerOffset = false;
   }
 }
 

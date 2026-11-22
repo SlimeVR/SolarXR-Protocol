@@ -286,7 +286,7 @@ public data class ResetsSettingsResponse(
   public val armsMountingResetMode: ArmsMountingResetMode = ArmsMountingResetMode.BACK,
   public val yawResetSmoothTime: Float = 0.0f,
   public val saveMountingReset: Boolean = false,
-  public val resetReliableReferenceAttitude: Boolean = false,
+  public val resetHmdAttitude: Boolean = false,
   public val mountingMethod: MountingMethod = MountingMethod.UNKNOWN,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -296,7 +296,7 @@ public data class ResetsSettingsResponse(
     builder.addByte(1, armsMountingResetMode.value.toByte(), 0)
     builder.addFloat(2, yawResetSmoothTime, 0.0)
     builder.addBoolean(3, saveMountingReset, false)
-    builder.addBoolean(4, resetReliableReferenceAttitude, false)
+    builder.addBoolean(4, resetHmdAttitude, false)
     builder.addByte(5, mountingMethod.value.toByte(), 0)
     return builder.endTable()
   }
@@ -310,7 +310,7 @@ public data class ResetsSettingsResponse(
       val __offset_armsMountingResetMode = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_yawResetSmoothTime = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_saveMountingReset = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_resetReliableReferenceAttitude = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_resetHmdAttitude = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_mountingMethod = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return ResetsSettingsResponse(
@@ -318,7 +318,7 @@ public data class ResetsSettingsResponse(
               armsMountingResetMode = if (__offset_armsMountingResetMode != 0) ArmsMountingResetMode.fromValue(bb.get(tableOffset + __offset_armsMountingResetMode).toUByte()) ?: ArmsMountingResetMode.BACK else ArmsMountingResetMode.BACK,
               yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else 0.0f,
               saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else false,
-              resetReliableReferenceAttitude = if (__offset_resetReliableReferenceAttitude != 0) bb.get(tableOffset + __offset_resetReliableReferenceAttitude) != 0.toByte() else false,
+              resetHmdAttitude = if (__offset_resetHmdAttitude != 0) bb.get(tableOffset + __offset_resetHmdAttitude) != 0.toByte() else false,
               mountingMethod = if (__offset_mountingMethod != 0) MountingMethod.fromValue(bb.get(tableOffset + __offset_mountingMethod).toUByte()) ?: MountingMethod.UNKNOWN else MountingMethod.UNKNOWN
           )
     }
@@ -330,7 +330,7 @@ public data class ChangeResetsSettingsRequest(
   public val armsMountingResetMode: ArmsMountingResetMode = ArmsMountingResetMode.BACK,
   public val yawResetSmoothTime: Float = 0.0f,
   public val saveMountingReset: Boolean = false,
-  public val resetReliableReferenceAttitude: Boolean = false,
+  public val resetHmdAttitude: Boolean = false,
   public val mountingMethod: MountingMethod = MountingMethod.UNKNOWN,
 ) : RpcMessage {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -340,7 +340,7 @@ public data class ChangeResetsSettingsRequest(
     builder.addByte(1, armsMountingResetMode.value.toByte(), 0)
     builder.addFloat(2, yawResetSmoothTime, 0.0)
     builder.addBoolean(3, saveMountingReset, false)
-    builder.addBoolean(4, resetReliableReferenceAttitude, false)
+    builder.addBoolean(4, resetHmdAttitude, false)
     builder.addByte(5, mountingMethod.value.toByte(), 0)
     return builder.endTable()
   }
@@ -354,7 +354,7 @@ public data class ChangeResetsSettingsRequest(
       val __offset_armsMountingResetMode = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_yawResetSmoothTime = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_saveMountingReset = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
-      val __offset_resetReliableReferenceAttitude = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_resetHmdAttitude = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_mountingMethod = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return ChangeResetsSettingsRequest(
@@ -362,7 +362,7 @@ public data class ChangeResetsSettingsRequest(
               armsMountingResetMode = if (__offset_armsMountingResetMode != 0) ArmsMountingResetMode.fromValue(bb.get(tableOffset + __offset_armsMountingResetMode).toUByte()) ?: ArmsMountingResetMode.BACK else ArmsMountingResetMode.BACK,
               yawResetSmoothTime = if (__offset_yawResetSmoothTime != 0) bb.getFloat(tableOffset + __offset_yawResetSmoothTime) else 0.0f,
               saveMountingReset = if (__offset_saveMountingReset != 0) bb.get(tableOffset + __offset_saveMountingReset) != 0.toByte() else false,
-              resetReliableReferenceAttitude = if (__offset_resetReliableReferenceAttitude != 0) bb.get(tableOffset + __offset_resetReliableReferenceAttitude) != 0.toByte() else false,
+              resetHmdAttitude = if (__offset_resetHmdAttitude != 0) bb.get(tableOffset + __offset_resetHmdAttitude) != 0.toByte() else false,
               mountingMethod = if (__offset_mountingMethod != 0) MountingMethod.fromValue(bb.get(tableOffset + __offset_mountingMethod).toUByte()) ?: MountingMethod.UNKNOWN else MountingMethod.UNKNOWN
           )
     }

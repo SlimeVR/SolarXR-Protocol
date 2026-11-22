@@ -233,6 +233,15 @@ struct FirmwareUpdateStatusResponseBuilder;
 struct FirmwareUpdateStopQueuesRequest;
 struct FirmwareUpdateStopQueuesRequestBuilder;
 
+struct FirmwareUpdateDevice;
+struct FirmwareUpdateDeviceBuilder;
+
+struct FirmwareUpdatesRequest;
+struct FirmwareUpdatesRequestBuilder;
+
+struct FirmwareUpdatesResponse;
+struct FirmwareUpdatesResponseBuilder;
+
 struct StartUserHeightCalibration;
 struct StartUserHeightCalibrationBuilder;
 
@@ -458,9 +467,6 @@ struct SkeletonTogglesBuilder;
 struct SkeletonRatios;
 struct SkeletonRatiosBuilder;
 
-struct SkeletonFiltering;
-struct SkeletonFilteringBuilder;
-
 struct SkeletonSettingsRequest;
 struct SkeletonSettingsRequestBuilder;
 
@@ -479,8 +485,14 @@ struct UserHeightResponseBuilder;
 struct ChangeUserHeightRequest;
 struct ChangeUserHeightRequestBuilder;
 
-struct DetectStayAlignedRelaxedPoseRequest;
-struct DetectStayAlignedRelaxedPoseRequestBuilder;
+struct RecenterMocapModeRequest;
+struct RecenterMocapModeRequestBuilder;
+
+struct StayAlignedPose;
+struct StayAlignedPoseBuilder;
+
+struct StayAlignedPoseToggle;
+struct StayAlignedPoseToggleBuilder;
 
 struct ResetStayAlignedRelaxedPoseRequest;
 struct ResetStayAlignedRelaxedPoseRequestBuilder;
@@ -494,8 +506,38 @@ struct StayAlignedSettingsResponseBuilder;
 struct ChangeStayAlignedSettingsRequest;
 struct ChangeStayAlignedSettingsRequestBuilder;
 
-struct ChangeStayAlignedEnabledRequest;
-struct ChangeStayAlignedEnabledRequestBuilder;
+struct StartStayAlignedPoseRecordingRequest;
+struct StartStayAlignedPoseRecordingRequestBuilder;
+
+struct CancelStayAlignedPoseRecordingRequest;
+struct CancelStayAlignedPoseRecordingRequestBuilder;
+
+struct StayAlignedRecordingTracker;
+struct StayAlignedRecordingTrackerBuilder;
+
+struct StayAlignedPoseCountdown;
+struct StayAlignedPoseCountdownBuilder;
+
+struct StayAlignedPoseWaiting;
+struct StayAlignedPoseWaitingBuilder;
+
+struct StayAlignedPoseRecordingStatusResponse;
+struct StayAlignedPoseRecordingStatusResponseBuilder;
+
+struct StartStayAlignedStatusRequest;
+struct StartStayAlignedStatusRequestBuilder;
+
+struct StopStayAlignedStatusRequest;
+struct StopStayAlignedStatusRequestBuilder;
+
+struct StayAlignedDetectedPoseState;
+struct StayAlignedDetectedPoseStateBuilder;
+
+struct StayAlignedTrackerCorrection;
+struct StayAlignedTrackerCorrectionBuilder;
+
+struct StayAlignedStatusResponse;
+struct StayAlignedStatusResponseBuilder;
 
 struct UpdateTrackerRequest;
 struct UpdateTrackerRequestBuilder;
@@ -503,20 +545,23 @@ struct UpdateTrackerRequestBuilder;
 struct ResetTrackerAssignments;
 struct ResetTrackerAssignmentsBuilder;
 
-struct TapDetectionSettingsRequest;
-struct TapDetectionSettingsRequestBuilder;
+struct TrackerActionSettings;
+struct TrackerActionSettingsBuilder;
 
-struct TapDetectionSettingsResponse;
-struct TapDetectionSettingsResponseBuilder;
+struct TrackerActionSettingsRequest;
+struct TrackerActionSettingsRequestBuilder;
 
-struct ChangeTapDetectionSettingsRequest;
-struct ChangeTapDetectionSettingsRequestBuilder;
+struct TrackerActionSettingsResponse;
+struct TrackerActionSettingsResponseBuilder;
 
-struct TapDetectionSetupModeRequest;
-struct TapDetectionSetupModeRequestBuilder;
+struct ChangeTrackerActionSettingsRequest;
+struct ChangeTrackerActionSettingsRequestBuilder;
 
-struct TapDetectionSetupNotification;
-struct TapDetectionSetupNotificationBuilder;
+struct TrackerActionSetupModeRequest;
+struct TrackerActionSetupModeRequestBuilder;
+
+struct TrackerActionSetupNotification;
+struct TrackerActionSetupNotificationBuilder;
 
 struct MagToggleRequest;
 struct MagToggleRequestBuilder;
@@ -629,8 +674,8 @@ struct TrackingChecklistSteamVRDisconnectedBuilder;
 struct EnableSteamVRDriverRequest;
 struct EnableSteamVRDriverRequestBuilder;
 
-struct TrackingChecklistUnassignedReliableReference;
-struct TrackingChecklistUnassignedReliableReferenceBuilder;
+struct TrackingChecklistUnassignedHMD;
+struct TrackingChecklistUnassignedHMDBuilder;
 
 struct TrackingChecklistPublicNetworks;
 struct TrackingChecklistPublicNetworksBuilder;
@@ -756,39 +801,72 @@ namespace datatypes {
 
 /// A list of error codes for error conditions on the device
 enum class FirmwareErrorCode : uint8_t {
-  Other = 0,
-  Disconnected = 1,
-  Occluded = 2,
-  ImuError = 3,
-  MIN = Other,
-  MAX = ImuError
+  OTHER = 0,
+  DISCONNECTED = 1,
+  OCCLUDED = 2,
+  IMU_ERROR = 3,
+  MIN = OTHER,
+  MAX = IMU_ERROR
 };
 
 inline const FirmwareErrorCode (&EnumValuesFirmwareErrorCode())[4] {
   static const FirmwareErrorCode values[] = {
-    FirmwareErrorCode::Other,
-    FirmwareErrorCode::Disconnected,
-    FirmwareErrorCode::Occluded,
-    FirmwareErrorCode::ImuError
+    FirmwareErrorCode::OTHER,
+    FirmwareErrorCode::DISCONNECTED,
+    FirmwareErrorCode::OCCLUDED,
+    FirmwareErrorCode::IMU_ERROR
   };
   return values;
 }
 
 inline const char * const *EnumNamesFirmwareErrorCode() {
   static const char * const names[5] = {
-    "Other",
-    "Disconnected",
-    "Occluded",
-    "ImuError",
+    "OTHER",
+    "DISCONNECTED",
+    "OCCLUDED",
+    "IMU_ERROR",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameFirmwareErrorCode(FirmwareErrorCode e) {
-  if (flatbuffers::IsOutRange(e, FirmwareErrorCode::Other, FirmwareErrorCode::ImuError)) return "";
+  if (flatbuffers::IsOutRange(e, FirmwareErrorCode::OTHER, FirmwareErrorCode::IMU_ERROR)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesFirmwareErrorCode()[index];
+}
+
+enum class TrackerActionMethod : uint8_t {
+  TAP = 0,
+  BUTTON = 1,
+  BOTH = 2,
+  MIN = TAP,
+  MAX = BOTH
+};
+
+inline const TrackerActionMethod (&EnumValuesTrackerActionMethod())[3] {
+  static const TrackerActionMethod values[] = {
+    TrackerActionMethod::TAP,
+    TrackerActionMethod::BUTTON,
+    TrackerActionMethod::BOTH
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesTrackerActionMethod() {
+  static const char * const names[4] = {
+    "TAP",
+    "BUTTON",
+    "BOTH",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameTrackerActionMethod(TrackerActionMethod e) {
+  if (flatbuffers::IsOutRange(e, TrackerActionMethod::TAP, TrackerActionMethod::BOTH)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesTrackerActionMethod()[index];
 }
 
 /// Different parts of the body. Maps to each possible bone in the skeleton.
@@ -1045,11 +1123,13 @@ enum class TrackerStatus : uint8_t {
   OCCLUDED = 5,
   TIMED_OUT = 6,
   SLEEPING = 7,
+  /// Connected but not used until its firmware is updated
+  UPDATE_REQUIRED = 8,
   MIN = NONE,
-  MAX = SLEEPING
+  MAX = UPDATE_REQUIRED
 };
 
-inline const TrackerStatus (&EnumValuesTrackerStatus())[8] {
+inline const TrackerStatus (&EnumValuesTrackerStatus())[9] {
   static const TrackerStatus values[] = {
     TrackerStatus::NONE,
     TrackerStatus::DISCONNECTED,
@@ -1058,13 +1138,14 @@ inline const TrackerStatus (&EnumValuesTrackerStatus())[8] {
     TrackerStatus::ERROR,
     TrackerStatus::OCCLUDED,
     TrackerStatus::TIMED_OUT,
-    TrackerStatus::SLEEPING
+    TrackerStatus::SLEEPING,
+    TrackerStatus::UPDATE_REQUIRED
   };
   return values;
 }
 
 inline const char * const *EnumNamesTrackerStatus() {
-  static const char * const names[9] = {
+  static const char * const names[10] = {
     "NONE",
     "DISCONNECTED",
     "OK",
@@ -1073,13 +1154,14 @@ inline const char * const *EnumNamesTrackerStatus() {
     "OCCLUDED",
     "TIMED_OUT",
     "SLEEPING",
+    "UPDATE_REQUIRED",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTrackerStatus(TrackerStatus e) {
-  if (flatbuffers::IsOutRange(e, TrackerStatus::NONE, TrackerStatus::SLEEPING)) return "";
+  if (flatbuffers::IsOutRange(e, TrackerStatus::NONE, TrackerStatus::UPDATE_REQUIRED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTrackerStatus()[index];
 }
@@ -1429,43 +1511,6 @@ inline const char *EnumNameBoardType(BoardType e) {
     case BoardType::DEV_RESERVED: return "DEV_RESERVED";
     default: return "";
   }
-}
-
-/// What kind of data the tracker supports. The received data gets transformed into a Quaternion rotation in any case.
-enum class TrackerDataType : uint8_t {
-  /// Rotation (e.g: IMUs or computed rotations in firmware)
-  ROTATION = 0,
-  /// Flex resistance (e.g: raw data from flex sensors or unscaled angle on a single axis)
-  FLEX_RESISTANCE = 1,
-  /// Flex angle (e.g: computed angle from flex sensors or angle on a single axis)
-  FLEX_ANGLE = 2,
-  MIN = ROTATION,
-  MAX = FLEX_ANGLE
-};
-
-inline const TrackerDataType (&EnumValuesTrackerDataType())[3] {
-  static const TrackerDataType values[] = {
-    TrackerDataType::ROTATION,
-    TrackerDataType::FLEX_RESISTANCE,
-    TrackerDataType::FLEX_ANGLE
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesTrackerDataType() {
-  static const char * const names[4] = {
-    "ROTATION",
-    "FLEX_RESISTANCE",
-    "FLEX_ANGLE",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameTrackerDataType(TrackerDataType e) {
-  if (flatbuffers::IsOutRange(e, TrackerDataType::ROTATION, TrackerDataType::FLEX_ANGLE)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesTrackerDataType()[index];
 }
 
 }  // namespace hardware_info
@@ -2016,6 +2061,85 @@ template<> struct FirmwareUpdateMethodTraits<solarxr_protocol::rpc::SerialFirmwa
 
 bool VerifyFirmwareUpdateMethod(flatbuffers::Verifier &verifier, const void *obj, FirmwareUpdateMethod type);
 bool VerifyFirmwareUpdateMethodVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<FirmwareUpdateMethod> *types);
+
+/// How the firmware of a device compares to the latest release
+enum class FirmwareVersionStatus : uint8_t {
+  /// No release info yet, or the device version could not be parsed
+  UNKNOWN = 0,
+  UP_TO_DATE = 1,
+  AVAILABLE = 2,
+  /// The device is below the minimum version of the release
+  REQUIRED = 3,
+  /// An update exists but this user is outside its rollout
+  BLOCKED = 4,
+  /// The server does not check updates for this device
+  UNSUPPORTED = 5,
+  MIN = UNKNOWN,
+  MAX = UNSUPPORTED
+};
+
+inline const FirmwareVersionStatus (&EnumValuesFirmwareVersionStatus())[6] {
+  static const FirmwareVersionStatus values[] = {
+    FirmwareVersionStatus::UNKNOWN,
+    FirmwareVersionStatus::UP_TO_DATE,
+    FirmwareVersionStatus::AVAILABLE,
+    FirmwareVersionStatus::REQUIRED,
+    FirmwareVersionStatus::BLOCKED,
+    FirmwareVersionStatus::UNSUPPORTED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesFirmwareVersionStatus() {
+  static const char * const names[7] = {
+    "UNKNOWN",
+    "UP_TO_DATE",
+    "AVAILABLE",
+    "REQUIRED",
+    "BLOCKED",
+    "UNSUPPORTED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameFirmwareVersionStatus(FirmwareVersionStatus e) {
+  if (flatbuffers::IsOutRange(e, FirmwareVersionStatus::UNKNOWN, FirmwareVersionStatus::UNSUPPORTED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesFirmwareVersionStatus()[index];
+}
+
+/// Why an available or required update cannot start right now
+enum class FirmwareUpdateBlocker : uint8_t {
+  NONE = 0,
+  /// The battery is too low to update safely
+  LOW_BATTERY = 1,
+  MIN = NONE,
+  MAX = LOW_BATTERY
+};
+
+inline const FirmwareUpdateBlocker (&EnumValuesFirmwareUpdateBlocker())[2] {
+  static const FirmwareUpdateBlocker values[] = {
+    FirmwareUpdateBlocker::NONE,
+    FirmwareUpdateBlocker::LOW_BATTERY
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesFirmwareUpdateBlocker() {
+  static const char * const names[3] = {
+    "NONE",
+    "LOW_BATTERY",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameFirmwareUpdateBlocker(FirmwareUpdateBlocker e) {
+  if (flatbuffers::IsOutRange(e, FirmwareUpdateBlocker::NONE, FirmwareUpdateBlocker::LOW_BATTERY)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesFirmwareUpdateBlocker()[index];
+}
 
 enum class UserHeightCalibrationStatus : uint8_t {
   NONE = 0,
@@ -2833,70 +2957,279 @@ inline const char *EnumNameSkeletonBone(SkeletonBone e) {
   return EnumNamesSkeletonBone()[index];
 }
 
-enum class FilteringType : uint8_t {
-  NONE = 0,
-  SMOOTHING = 1,
-  PREDICTION = 2,
-  MIN = NONE,
-  MAX = PREDICTION
-};
-
-inline const FilteringType (&EnumValuesFilteringType())[3] {
-  static const FilteringType values[] = {
-    FilteringType::NONE,
-    FilteringType::SMOOTHING,
-    FilteringType::PREDICTION
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesFilteringType() {
-  static const char * const names[4] = {
-    "NONE",
-    "SMOOTHING",
-    "PREDICTION",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameFilteringType(FilteringType e) {
-  if (flatbuffers::IsOutRange(e, FilteringType::NONE, FilteringType::PREDICTION)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesFilteringType()[index];
-}
-
 enum class StayAlignedRelaxedPose : uint8_t {
-  STANDING = 0,
-  SITTING = 1,
-  FLAT = 2,
-  MIN = STANDING,
-  MAX = FLAT
+  UNKNOWN = 0,
+  STANDING = 1,
+  SITTING = 2,
+  FLAT = 3,
+  KNEELING = 4,
+  MIN = UNKNOWN,
+  MAX = KNEELING
 };
 
-inline const StayAlignedRelaxedPose (&EnumValuesStayAlignedRelaxedPose())[3] {
+inline const StayAlignedRelaxedPose (&EnumValuesStayAlignedRelaxedPose())[5] {
   static const StayAlignedRelaxedPose values[] = {
+    StayAlignedRelaxedPose::UNKNOWN,
     StayAlignedRelaxedPose::STANDING,
     StayAlignedRelaxedPose::SITTING,
-    StayAlignedRelaxedPose::FLAT
+    StayAlignedRelaxedPose::FLAT,
+    StayAlignedRelaxedPose::KNEELING
   };
   return values;
 }
 
 inline const char * const *EnumNamesStayAlignedRelaxedPose() {
-  static const char * const names[4] = {
+  static const char * const names[6] = {
+    "UNKNOWN",
     "STANDING",
     "SITTING",
     "FLAT",
+    "KNEELING",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameStayAlignedRelaxedPose(StayAlignedRelaxedPose e) {
-  if (flatbuffers::IsOutRange(e, StayAlignedRelaxedPose::STANDING, StayAlignedRelaxedPose::FLAT)) return "";
+  if (flatbuffers::IsOutRange(e, StayAlignedRelaxedPose::UNKNOWN, StayAlignedRelaxedPose::KNEELING)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesStayAlignedRelaxedPose()[index];
+}
+
+/// The parts of the body Stay Aligned reads. The upper body is any of the upper body
+/// trackers, the rest are single trackers.
+enum class StayAlignedPart : uint8_t {
+  UPPER_BODY = 0,
+  LEFT_UPPER_LEG = 1,
+  RIGHT_UPPER_LEG = 2,
+  LEFT_LOWER_LEG = 3,
+  RIGHT_LOWER_LEG = 4,
+  LEFT_FOOT = 5,
+  RIGHT_FOOT = 6,
+  MIN = UPPER_BODY,
+  MAX = RIGHT_FOOT
+};
+
+inline const StayAlignedPart (&EnumValuesStayAlignedPart())[7] {
+  static const StayAlignedPart values[] = {
+    StayAlignedPart::UPPER_BODY,
+    StayAlignedPart::LEFT_UPPER_LEG,
+    StayAlignedPart::RIGHT_UPPER_LEG,
+    StayAlignedPart::LEFT_LOWER_LEG,
+    StayAlignedPart::RIGHT_LOWER_LEG,
+    StayAlignedPart::LEFT_FOOT,
+    StayAlignedPart::RIGHT_FOOT
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesStayAlignedPart() {
+  static const char * const names[8] = {
+    "UPPER_BODY",
+    "LEFT_UPPER_LEG",
+    "RIGHT_UPPER_LEG",
+    "LEFT_LOWER_LEG",
+    "RIGHT_LOWER_LEG",
+    "LEFT_FOOT",
+    "RIGHT_FOOT",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameStayAlignedPart(StayAlignedPart e) {
+  if (flatbuffers::IsOutRange(e, StayAlignedPart::UPPER_BODY, StayAlignedPart::RIGHT_FOOT)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesStayAlignedPart()[index];
+}
+
+enum class StayAlignedRecordingTrackerState : uint8_t {
+  STILL = 0,
+  MOVING = 1,
+  MIN = STILL,
+  MAX = MOVING
+};
+
+inline const StayAlignedRecordingTrackerState (&EnumValuesStayAlignedRecordingTrackerState())[2] {
+  static const StayAlignedRecordingTrackerState values[] = {
+    StayAlignedRecordingTrackerState::STILL,
+    StayAlignedRecordingTrackerState::MOVING
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesStayAlignedRecordingTrackerState() {
+  static const char * const names[3] = {
+    "STILL",
+    "MOVING",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameStayAlignedRecordingTrackerState(StayAlignedRecordingTrackerState e) {
+  if (flatbuffers::IsOutRange(e, StayAlignedRecordingTrackerState::STILL, StayAlignedRecordingTrackerState::MOVING)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesStayAlignedRecordingTrackerState()[index];
+}
+
+enum class StayAlignedPoseRecordingFailure : uint8_t {
+  NONE = 0,
+  NOT_STILL = 1,
+  WRONG_POSE = 2,
+  POSITION_UNKNOWN = 3,
+  MISSING_TRACKERS = 4,
+  NOT_CALIBRATED = 5,
+  MIN = NONE,
+  MAX = NOT_CALIBRATED
+};
+
+inline const StayAlignedPoseRecordingFailure (&EnumValuesStayAlignedPoseRecordingFailure())[6] {
+  static const StayAlignedPoseRecordingFailure values[] = {
+    StayAlignedPoseRecordingFailure::NONE,
+    StayAlignedPoseRecordingFailure::NOT_STILL,
+    StayAlignedPoseRecordingFailure::WRONG_POSE,
+    StayAlignedPoseRecordingFailure::POSITION_UNKNOWN,
+    StayAlignedPoseRecordingFailure::MISSING_TRACKERS,
+    StayAlignedPoseRecordingFailure::NOT_CALIBRATED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesStayAlignedPoseRecordingFailure() {
+  static const char * const names[7] = {
+    "NONE",
+    "NOT_STILL",
+    "WRONG_POSE",
+    "POSITION_UNKNOWN",
+    "MISSING_TRACKERS",
+    "NOT_CALIBRATED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameStayAlignedPoseRecordingFailure(StayAlignedPoseRecordingFailure e) {
+  if (flatbuffers::IsOutRange(e, StayAlignedPoseRecordingFailure::NONE, StayAlignedPoseRecordingFailure::NOT_CALIBRATED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesStayAlignedPoseRecordingFailure()[index];
+}
+
+enum class StayAlignedPoseRecordingLifecycle : uint8_t {
+  RUNNING = 0,
+  DONE = 1,
+  CANCELED = 2,
+  FAILED = 3,
+  MIN = RUNNING,
+  MAX = FAILED
+};
+
+inline const StayAlignedPoseRecordingLifecycle (&EnumValuesStayAlignedPoseRecordingLifecycle())[4] {
+  static const StayAlignedPoseRecordingLifecycle values[] = {
+    StayAlignedPoseRecordingLifecycle::RUNNING,
+    StayAlignedPoseRecordingLifecycle::DONE,
+    StayAlignedPoseRecordingLifecycle::CANCELED,
+    StayAlignedPoseRecordingLifecycle::FAILED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesStayAlignedPoseRecordingLifecycle() {
+  static const char * const names[5] = {
+    "RUNNING",
+    "DONE",
+    "CANCELED",
+    "FAILED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameStayAlignedPoseRecordingLifecycle(StayAlignedPoseRecordingLifecycle e) {
+  if (flatbuffers::IsOutRange(e, StayAlignedPoseRecordingLifecycle::RUNNING, StayAlignedPoseRecordingLifecycle::FAILED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesStayAlignedPoseRecordingLifecycle()[index];
+}
+
+enum class StayAlignedPoseRecordingDetail : uint8_t {
+  NONE = 0,
+  StayAlignedPoseCountdown = 1,
+  StayAlignedPoseWaiting = 2,
+  MIN = NONE,
+  MAX = StayAlignedPoseWaiting
+};
+
+inline const StayAlignedPoseRecordingDetail (&EnumValuesStayAlignedPoseRecordingDetail())[3] {
+  static const StayAlignedPoseRecordingDetail values[] = {
+    StayAlignedPoseRecordingDetail::NONE,
+    StayAlignedPoseRecordingDetail::StayAlignedPoseCountdown,
+    StayAlignedPoseRecordingDetail::StayAlignedPoseWaiting
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesStayAlignedPoseRecordingDetail() {
+  static const char * const names[4] = {
+    "NONE",
+    "StayAlignedPoseCountdown",
+    "StayAlignedPoseWaiting",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameStayAlignedPoseRecordingDetail(StayAlignedPoseRecordingDetail e) {
+  if (flatbuffers::IsOutRange(e, StayAlignedPoseRecordingDetail::NONE, StayAlignedPoseRecordingDetail::StayAlignedPoseWaiting)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesStayAlignedPoseRecordingDetail()[index];
+}
+
+template<typename T> struct StayAlignedPoseRecordingDetailTraits {
+  static const StayAlignedPoseRecordingDetail enum_value = StayAlignedPoseRecordingDetail::NONE;
+};
+
+template<> struct StayAlignedPoseRecordingDetailTraits<solarxr_protocol::rpc::StayAlignedPoseCountdown> {
+  static const StayAlignedPoseRecordingDetail enum_value = StayAlignedPoseRecordingDetail::StayAlignedPoseCountdown;
+};
+
+template<> struct StayAlignedPoseRecordingDetailTraits<solarxr_protocol::rpc::StayAlignedPoseWaiting> {
+  static const StayAlignedPoseRecordingDetail enum_value = StayAlignedPoseRecordingDetail::StayAlignedPoseWaiting;
+};
+
+bool VerifyStayAlignedPoseRecordingDetail(flatbuffers::Verifier &verifier, const void *obj, StayAlignedPoseRecordingDetail type);
+bool VerifyStayAlignedPoseRecordingDetailVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<StayAlignedPoseRecordingDetail> *types);
+
+enum class StayAlignedPoseState : uint8_t {
+  NOT_RECORDED = 0,
+  DISABLED = 1,
+  ENABLED = 2,
+  MIN = NOT_RECORDED,
+  MAX = ENABLED
+};
+
+inline const StayAlignedPoseState (&EnumValuesStayAlignedPoseState())[3] {
+  static const StayAlignedPoseState values[] = {
+    StayAlignedPoseState::NOT_RECORDED,
+    StayAlignedPoseState::DISABLED,
+    StayAlignedPoseState::ENABLED
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesStayAlignedPoseState() {
+  static const char * const names[4] = {
+    "NOT_RECORDED",
+    "DISABLED",
+    "ENABLED",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameStayAlignedPoseState(StayAlignedPoseState e) {
+  if (flatbuffers::IsOutRange(e, StayAlignedPoseState::NOT_RECORDED, StayAlignedPoseState::ENABLED)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesStayAlignedPoseState()[index];
 }
 
 enum class VMCOSCInputState : uint8_t {
@@ -3175,7 +3508,7 @@ enum class TrackingChecklistStepId : uint8_t {
   FULL_RESET = 2,
   VRCHAT_SETTINGS = 3,
   STEAMVR_DISCONNECTED = 4,
-  UNASSIGNED_RELIABLE_REFERENCE = 5,
+  UNASSIGNED_HMD = 5,
   TRACKER_ERROR = 6,
   NETWORK_PROFILE_PUBLIC = 7,
   MOUNTING_CALIBRATION = 8,
@@ -3185,18 +3518,19 @@ enum class TrackingChecklistStepId : uint8_t {
   STANDABLE_INSTALLED = 12,
   VRCHAT_OSC_TRACKING_DISABLED = 13,
   MOUNTING_METHOD = 14,
+  FIRMWARE_UPDATE = 15,
   MIN = UNKNOWN,
-  MAX = MOUNTING_METHOD
+  MAX = FIRMWARE_UPDATE
 };
 
-inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[15] {
+inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[16] {
   static const TrackingChecklistStepId values[] = {
     TrackingChecklistStepId::UNKNOWN,
     TrackingChecklistStepId::TRACKERS_REST_CALIBRATION,
     TrackingChecklistStepId::FULL_RESET,
     TrackingChecklistStepId::VRCHAT_SETTINGS,
     TrackingChecklistStepId::STEAMVR_DISCONNECTED,
-    TrackingChecklistStepId::UNASSIGNED_RELIABLE_REFERENCE,
+    TrackingChecklistStepId::UNASSIGNED_HMD,
     TrackingChecklistStepId::TRACKER_ERROR,
     TrackingChecklistStepId::NETWORK_PROFILE_PUBLIC,
     TrackingChecklistStepId::MOUNTING_CALIBRATION,
@@ -3205,19 +3539,20 @@ inline const TrackingChecklistStepId (&EnumValuesTrackingChecklistStepId())[15] 
     TrackingChecklistStepId::STEAMVR_HANDS_ENABLED,
     TrackingChecklistStepId::STANDABLE_INSTALLED,
     TrackingChecklistStepId::VRCHAT_OSC_TRACKING_DISABLED,
-    TrackingChecklistStepId::MOUNTING_METHOD
+    TrackingChecklistStepId::MOUNTING_METHOD,
+    TrackingChecklistStepId::FIRMWARE_UPDATE
   };
   return values;
 }
 
 inline const char * const *EnumNamesTrackingChecklistStepId() {
-  static const char * const names[16] = {
+  static const char * const names[17] = {
     "UNKNOWN",
     "TRACKERS_REST_CALIBRATION",
     "FULL_RESET",
     "VRCHAT_SETTINGS",
     "STEAMVR_DISCONNECTED",
-    "UNASSIGNED_RELIABLE_REFERENCE",
+    "UNASSIGNED_HMD",
     "TRACKER_ERROR",
     "NETWORK_PROFILE_PUBLIC",
     "MOUNTING_CALIBRATION",
@@ -3227,13 +3562,14 @@ inline const char * const *EnumNamesTrackingChecklistStepId() {
     "STANDABLE_INSTALLED",
     "VRCHAT_OSC_TRACKING_DISABLED",
     "MOUNTING_METHOD",
+    "FIRMWARE_UPDATE",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameTrackingChecklistStepId(TrackingChecklistStepId e) {
-  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::MOUNTING_METHOD)) return "";
+  if (flatbuffers::IsOutRange(e, TrackingChecklistStepId::UNKNOWN, TrackingChecklistStepId::FIRMWARE_UPDATE)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTrackingChecklistStepId()[index];
 }
@@ -3273,7 +3609,7 @@ enum class TrackingChecklistExtraData : uint8_t {
   TrackingChecklistTrackerReset = 1,
   TrackingChecklistTrackerError = 2,
   TrackingChecklistSteamVRDisconnected = 3,
-  TrackingChecklistUnassignedReliableReference = 4,
+  TrackingChecklistUnassignedHMD = 4,
   TrackingChecklistNeedCalibration = 5,
   TrackingChecklistPublicNetworks = 6,
   MIN = NONE,
@@ -3286,7 +3622,7 @@ inline const TrackingChecklistExtraData (&EnumValuesTrackingChecklistExtraData()
     TrackingChecklistExtraData::TrackingChecklistTrackerReset,
     TrackingChecklistExtraData::TrackingChecklistTrackerError,
     TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected,
-    TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference,
+    TrackingChecklistExtraData::TrackingChecklistUnassignedHMD,
     TrackingChecklistExtraData::TrackingChecklistNeedCalibration,
     TrackingChecklistExtraData::TrackingChecklistPublicNetworks
   };
@@ -3299,7 +3635,7 @@ inline const char * const *EnumNamesTrackingChecklistExtraData() {
     "TrackingChecklistTrackerReset",
     "TrackingChecklistTrackerError",
     "TrackingChecklistSteamVRDisconnected",
-    "TrackingChecklistUnassignedReliableReference",
+    "TrackingChecklistUnassignedHMD",
     "TrackingChecklistNeedCalibration",
     "TrackingChecklistPublicNetworks",
     nullptr
@@ -3329,8 +3665,8 @@ template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::Tracki
   static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected;
 };
 
-template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference> {
-  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference;
+template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistUnassignedHMD> {
+  static const TrackingChecklistExtraData enum_value = TrackingChecklistExtraData::TrackingChecklistUnassignedHMD;
 };
 
 template<> struct TrackingChecklistExtraDataTraits<solarxr_protocol::rpc::TrackingChecklistNeedCalibration> {
@@ -3490,18 +3826,18 @@ enum class RpcMessage : uint8_t {
   UserHeightRequest = 16,
   UserHeightResponse = 17,
   ChangeUserHeightRequest = 18,
-  TapDetectionSettingsRequest = 19,
-  TapDetectionSettingsResponse = 20,
-  ChangeTapDetectionSettingsRequest = 21,
-  TapDetectionSetupModeRequest = 22,
+  TrackerActionSettingsRequest = 19,
+  TrackerActionSettingsResponse = 20,
+  ChangeTrackerActionSettingsRequest = 21,
+  TrackerActionSetupModeRequest = 22,
   ResetsSettingsRequest = 23,
   ResetsSettingsResponse = 24,
   ChangeResetsSettingsRequest = 25,
   StayAlignedSettingsRequest = 26,
   StayAlignedSettingsResponse = 27,
   ChangeStayAlignedSettingsRequest = 28,
-  ChangeStayAlignedEnabledRequest = 29,
-  DetectStayAlignedRelaxedPoseRequest = 30,
+  StartStayAlignedPoseRecordingRequest = 29,
+  CancelStayAlignedPoseRecordingRequest = 30,
   ResetStayAlignedRelaxedPoseRequest = 31,
   HIDSettingsRequest = 32,
   HIDSettingsResponse = 33,
@@ -3536,7 +3872,7 @@ enum class RpcMessage : uint8_t {
   ServerInfosResponse = 62,
   LegTweaksTmpChange = 63,
   LegTweaksTmpClear = 64,
-  TapDetectionSetupNotification = 65,
+  TrackerActionSetupNotification = 65,
   SetPauseTrackingRequest = 66,
   ClearMountingResetRequest = 67,
   AutoBoneApplyRequest = 68,
@@ -3626,14 +3962,21 @@ enum class RpcMessage : uint8_t {
   LogStreamResponse = 152,
   LogFileChunkRequest = 153,
   LogFileChunkResponse = 154,
-  CustomOSCSettingsRequest = 155,
-  CustomOSCSettingsResponse = 156,
-  ChangeCustomOSCSettingsRequest = 157,
+  StayAlignedPoseRecordingStatusResponse = 155,
+  StartStayAlignedStatusRequest = 156,
+  StopStayAlignedStatusRequest = 157,
+  StayAlignedStatusResponse = 158,
+  FirmwareUpdatesRequest = 159,
+  FirmwareUpdatesResponse = 160,
+  RecenterMocapModeRequest = 161,
+  CustomOSCSettingsRequest = 162,
+  CustomOSCSettingsResponse = 163,
+  ChangeCustomOSCSettingsRequest = 164,
   MIN = NONE,
   MAX = ChangeCustomOSCSettingsRequest
 };
 
-inline const RpcMessage (&EnumValuesRpcMessage())[158] {
+inline const RpcMessage (&EnumValuesRpcMessage())[165] {
   static const RpcMessage values[] = {
     RpcMessage::NONE,
     RpcMessage::HeartbeatRequest,
@@ -3654,18 +3997,18 @@ inline const RpcMessage (&EnumValuesRpcMessage())[158] {
     RpcMessage::UserHeightRequest,
     RpcMessage::UserHeightResponse,
     RpcMessage::ChangeUserHeightRequest,
-    RpcMessage::TapDetectionSettingsRequest,
-    RpcMessage::TapDetectionSettingsResponse,
-    RpcMessage::ChangeTapDetectionSettingsRequest,
-    RpcMessage::TapDetectionSetupModeRequest,
+    RpcMessage::TrackerActionSettingsRequest,
+    RpcMessage::TrackerActionSettingsResponse,
+    RpcMessage::ChangeTrackerActionSettingsRequest,
+    RpcMessage::TrackerActionSetupModeRequest,
     RpcMessage::ResetsSettingsRequest,
     RpcMessage::ResetsSettingsResponse,
     RpcMessage::ChangeResetsSettingsRequest,
     RpcMessage::StayAlignedSettingsRequest,
     RpcMessage::StayAlignedSettingsResponse,
     RpcMessage::ChangeStayAlignedSettingsRequest,
-    RpcMessage::ChangeStayAlignedEnabledRequest,
-    RpcMessage::DetectStayAlignedRelaxedPoseRequest,
+    RpcMessage::StartStayAlignedPoseRecordingRequest,
+    RpcMessage::CancelStayAlignedPoseRecordingRequest,
     RpcMessage::ResetStayAlignedRelaxedPoseRequest,
     RpcMessage::HIDSettingsRequest,
     RpcMessage::HIDSettingsResponse,
@@ -3700,7 +4043,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[158] {
     RpcMessage::ServerInfosResponse,
     RpcMessage::LegTweaksTmpChange,
     RpcMessage::LegTweaksTmpClear,
-    RpcMessage::TapDetectionSetupNotification,
+    RpcMessage::TrackerActionSetupNotification,
     RpcMessage::SetPauseTrackingRequest,
     RpcMessage::ClearMountingResetRequest,
     RpcMessage::AutoBoneApplyRequest,
@@ -3790,6 +4133,13 @@ inline const RpcMessage (&EnumValuesRpcMessage())[158] {
     RpcMessage::LogStreamResponse,
     RpcMessage::LogFileChunkRequest,
     RpcMessage::LogFileChunkResponse,
+    RpcMessage::StayAlignedPoseRecordingStatusResponse,
+    RpcMessage::StartStayAlignedStatusRequest,
+    RpcMessage::StopStayAlignedStatusRequest,
+    RpcMessage::StayAlignedStatusResponse,
+    RpcMessage::FirmwareUpdatesRequest,
+    RpcMessage::FirmwareUpdatesResponse,
+    RpcMessage::RecenterMocapModeRequest,
     RpcMessage::CustomOSCSettingsRequest,
     RpcMessage::CustomOSCSettingsResponse,
     RpcMessage::ChangeCustomOSCSettingsRequest
@@ -3798,7 +4148,7 @@ inline const RpcMessage (&EnumValuesRpcMessage())[158] {
 }
 
 inline const char * const *EnumNamesRpcMessage() {
-  static const char * const names[159] = {
+  static const char * const names[166] = {
     "NONE",
     "HeartbeatRequest",
     "HeartbeatResponse",
@@ -3818,18 +4168,18 @@ inline const char * const *EnumNamesRpcMessage() {
     "UserHeightRequest",
     "UserHeightResponse",
     "ChangeUserHeightRequest",
-    "TapDetectionSettingsRequest",
-    "TapDetectionSettingsResponse",
-    "ChangeTapDetectionSettingsRequest",
-    "TapDetectionSetupModeRequest",
+    "TrackerActionSettingsRequest",
+    "TrackerActionSettingsResponse",
+    "ChangeTrackerActionSettingsRequest",
+    "TrackerActionSetupModeRequest",
     "ResetsSettingsRequest",
     "ResetsSettingsResponse",
     "ChangeResetsSettingsRequest",
     "StayAlignedSettingsRequest",
     "StayAlignedSettingsResponse",
     "ChangeStayAlignedSettingsRequest",
-    "ChangeStayAlignedEnabledRequest",
-    "DetectStayAlignedRelaxedPoseRequest",
+    "StartStayAlignedPoseRecordingRequest",
+    "CancelStayAlignedPoseRecordingRequest",
     "ResetStayAlignedRelaxedPoseRequest",
     "HIDSettingsRequest",
     "HIDSettingsResponse",
@@ -3864,7 +4214,7 @@ inline const char * const *EnumNamesRpcMessage() {
     "ServerInfosResponse",
     "LegTweaksTmpChange",
     "LegTweaksTmpClear",
-    "TapDetectionSetupNotification",
+    "TrackerActionSetupNotification",
     "SetPauseTrackingRequest",
     "ClearMountingResetRequest",
     "AutoBoneApplyRequest",
@@ -3954,6 +4304,13 @@ inline const char * const *EnumNamesRpcMessage() {
     "LogStreamResponse",
     "LogFileChunkRequest",
     "LogFileChunkResponse",
+    "StayAlignedPoseRecordingStatusResponse",
+    "StartStayAlignedStatusRequest",
+    "StopStayAlignedStatusRequest",
+    "StayAlignedStatusResponse",
+    "FirmwareUpdatesRequest",
+    "FirmwareUpdatesResponse",
+    "RecenterMocapModeRequest",
     "CustomOSCSettingsRequest",
     "CustomOSCSettingsResponse",
     "ChangeCustomOSCSettingsRequest",
@@ -4044,20 +4401,20 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeUserHeightReques
   static const RpcMessage enum_value = RpcMessage::ChangeUserHeightRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::TapDetectionSettingsRequest> {
-  static const RpcMessage enum_value = RpcMessage::TapDetectionSettingsRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackerActionSettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::TrackerActionSettingsRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::TapDetectionSettingsResponse> {
-  static const RpcMessage enum_value = RpcMessage::TapDetectionSettingsResponse;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackerActionSettingsResponse> {
+  static const RpcMessage enum_value = RpcMessage::TrackerActionSettingsResponse;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeTapDetectionSettingsRequest> {
-  static const RpcMessage enum_value = RpcMessage::ChangeTapDetectionSettingsRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeTrackerActionSettingsRequest> {
+  static const RpcMessage enum_value = RpcMessage::ChangeTrackerActionSettingsRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::TapDetectionSetupModeRequest> {
-  static const RpcMessage enum_value = RpcMessage::TapDetectionSetupModeRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackerActionSetupModeRequest> {
+  static const RpcMessage enum_value = RpcMessage::TrackerActionSetupModeRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetsSettingsRequest> {
@@ -4084,12 +4441,12 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeStayAlignedSetti
   static const RpcMessage enum_value = RpcMessage::ChangeStayAlignedSettingsRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::ChangeStayAlignedEnabledRequest> {
-  static const RpcMessage enum_value = RpcMessage::ChangeStayAlignedEnabledRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StartStayAlignedPoseRecordingRequest> {
+  static const RpcMessage enum_value = RpcMessage::StartStayAlignedPoseRecordingRequest;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest> {
-  static const RpcMessage enum_value = RpcMessage::DetectStayAlignedRelaxedPoseRequest;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::CancelStayAlignedPoseRecordingRequest> {
+  static const RpcMessage enum_value = RpcMessage::CancelStayAlignedPoseRecordingRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest> {
@@ -4228,8 +4585,8 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::LegTweaksTmpClear> {
   static const RpcMessage enum_value = RpcMessage::LegTweaksTmpClear;
 };
 
-template<> struct RpcMessageTraits<solarxr_protocol::rpc::TapDetectionSetupNotification> {
-  static const RpcMessage enum_value = RpcMessage::TapDetectionSetupNotification;
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::TrackerActionSetupNotification> {
+  static const RpcMessage enum_value = RpcMessage::TrackerActionSetupNotification;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::SetPauseTrackingRequest> {
@@ -4586,6 +4943,34 @@ template<> struct RpcMessageTraits<solarxr_protocol::rpc::LogFileChunkRequest> {
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::LogFileChunkResponse> {
   static const RpcMessage enum_value = RpcMessage::LogFileChunkResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StayAlignedPoseRecordingStatusResponse> {
+  static const RpcMessage enum_value = RpcMessage::StayAlignedPoseRecordingStatusResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StartStayAlignedStatusRequest> {
+  static const RpcMessage enum_value = RpcMessage::StartStayAlignedStatusRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StopStayAlignedStatusRequest> {
+  static const RpcMessage enum_value = RpcMessage::StopStayAlignedStatusRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::StayAlignedStatusResponse> {
+  static const RpcMessage enum_value = RpcMessage::StayAlignedStatusResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::FirmwareUpdatesRequest> {
+  static const RpcMessage enum_value = RpcMessage::FirmwareUpdatesRequest;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::FirmwareUpdatesResponse> {
+  static const RpcMessage enum_value = RpcMessage::FirmwareUpdatesResponse;
+};
+
+template<> struct RpcMessageTraits<solarxr_protocol::rpc::RecenterMocapModeRequest> {
+  static const RpcMessage enum_value = RpcMessage::RecenterMocapModeRequest;
 };
 
 template<> struct RpcMessageTraits<solarxr_protocol::rpc::CustomOSCSettingsRequest> {
@@ -5495,8 +5880,7 @@ struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HEAD_POSITION = 12,
     VT_TAIL_POSITION = 14,
     VT_LINEAR_VELOCITY = 16,
-    VT_ANGULAR_VELOCITY = 18,
-    VT_TRACKER_OFFSET = 20
+    VT_ANGULAR_VELOCITY = 18
   };
   solarxr_protocol::datatypes::BodyPart body_part() const {
     return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
@@ -5533,10 +5917,6 @@ struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::datatypes::math::Vec3f *angular_velocity() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_ANGULAR_VELOCITY);
   }
-  /// Similar to TrackerInfo.position_offset, position offset from the head of the bone to the tracker.
-  const solarxr_protocol::datatypes::math::Vec3f *tracker_offset() const {
-    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_TRACKER_OFFSET);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
@@ -5547,7 +5927,6 @@ struct Bone FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_TAIL_POSITION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_VELOCITY, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_ANGULAR_VELOCITY, 4) &&
-           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_TRACKER_OFFSET, 4) &&
            verifier.EndTable();
   }
 };
@@ -5580,9 +5959,6 @@ struct BoneBuilder {
   void add_angular_velocity(const solarxr_protocol::datatypes::math::Vec3f *angular_velocity) {
     fbb_.AddStruct(Bone::VT_ANGULAR_VELOCITY, angular_velocity);
   }
-  void add_tracker_offset(const solarxr_protocol::datatypes::math::Vec3f *tracker_offset) {
-    fbb_.AddStruct(Bone::VT_TRACKER_OFFSET, tracker_offset);
-  }
   explicit BoneBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5603,10 +5979,8 @@ inline flatbuffers::Offset<Bone> CreateBone(
     const solarxr_protocol::datatypes::math::Vec3f *head_position = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *tail_position = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *linear_velocity = nullptr,
-    const solarxr_protocol::datatypes::math::Vec3f *angular_velocity = nullptr,
-    const solarxr_protocol::datatypes::math::Vec3f *tracker_offset = nullptr) {
+    const solarxr_protocol::datatypes::math::Vec3f *angular_velocity = nullptr) {
   BoneBuilder builder_(_fbb);
-  builder_.add_tracker_offset(tracker_offset);
   builder_.add_angular_velocity(angular_velocity);
   builder_.add_linear_velocity(linear_velocity);
   builder_.add_tail_position(tail_position);
@@ -5628,8 +6002,7 @@ struct BoneMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_HEAD_POSITION = 12,
     VT_TAIL_POSITION = 14,
     VT_LINEAR_VELOCITY = 16,
-    VT_ANGULAR_VELOCITY = 18,
-    VT_TRACKER_OFFSET = 20
+    VT_ANGULAR_VELOCITY = 18
   };
   bool body_part() const {
     return GetField<uint8_t>(VT_BODY_PART, 0) != 0;
@@ -5655,9 +6028,6 @@ struct BoneMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool angular_velocity() const {
     return GetField<uint8_t>(VT_ANGULAR_VELOCITY, 0) != 0;
   }
-  bool tracker_offset() const {
-    return GetField<uint8_t>(VT_TRACKER_OFFSET, 0) != 0;
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
@@ -5668,7 +6038,6 @@ struct BoneMask FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_TAIL_POSITION, 1) &&
            VerifyField<uint8_t>(verifier, VT_LINEAR_VELOCITY, 1) &&
            VerifyField<uint8_t>(verifier, VT_ANGULAR_VELOCITY, 1) &&
-           VerifyField<uint8_t>(verifier, VT_TRACKER_OFFSET, 1) &&
            verifier.EndTable();
   }
 };
@@ -5701,9 +6070,6 @@ struct BoneMaskBuilder {
   void add_angular_velocity(bool angular_velocity) {
     fbb_.AddElement<uint8_t>(BoneMask::VT_ANGULAR_VELOCITY, static_cast<uint8_t>(angular_velocity), 0);
   }
-  void add_tracker_offset(bool tracker_offset) {
-    fbb_.AddElement<uint8_t>(BoneMask::VT_TRACKER_OFFSET, static_cast<uint8_t>(tracker_offset), 0);
-  }
   explicit BoneMaskBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5724,10 +6090,8 @@ inline flatbuffers::Offset<BoneMask> CreateBoneMask(
     bool head_position = false,
     bool tail_position = false,
     bool linear_velocity = false,
-    bool angular_velocity = false,
-    bool tracker_offset = false) {
+    bool angular_velocity = false) {
   BoneMaskBuilder builder_(_fbb);
-  builder_.add_tracker_offset(tracker_offset);
   builder_.add_angular_velocity(angular_velocity);
   builder_.add_linear_velocity(linear_velocity);
   builder_.add_tail_position(tail_position);
@@ -6128,8 +6492,7 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_CUSTOM_NAME = 18,
     VT_LAST_MOUNTING_METHOD = 20,
     VT_MAGNETOMETER = 22,
-    VT_DATA_TYPE = 24,
-    VT_BONE_OFFSET = 26
+    VT_BONE_OFFSET = 24
   };
   /// Indicates if the tracker is using an IMU for its tracking data
   bool is_imu() const {
@@ -6170,10 +6533,6 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   solarxr_protocol::datatypes::MagnetometerStatus magnetometer() const {
     return static_cast<solarxr_protocol::datatypes::MagnetometerStatus>(GetField<uint8_t>(VT_MAGNETOMETER, 0));
   }
-  /// Indicates what type of data the physical tracker sends before it gets transformed into a rotation
-  solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type() const {
-    return static_cast<solarxr_protocol::datatypes::hardware_info::TrackerDataType>(GetField<uint8_t>(VT_DATA_TYPE, 0));
-  }
   /// (for positional trackers) Offset from the head of the bone to the tracker. Ex: for a HMD this is around (0, 0, 0.1)
   const solarxr_protocol::datatypes::math::Vec3f *bone_offset() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_BONE_OFFSET);
@@ -6192,7 +6551,6 @@ struct TrackerInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(custom_name()) &&
            VerifyField<uint8_t>(verifier, VT_LAST_MOUNTING_METHOD, 1) &&
            VerifyField<uint8_t>(verifier, VT_MAGNETOMETER, 1) &&
-           VerifyField<uint8_t>(verifier, VT_DATA_TYPE, 1) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_BONE_OFFSET, 4) &&
            verifier.EndTable();
   }
@@ -6232,9 +6590,6 @@ struct TrackerInfoBuilder {
   void add_magnetometer(solarxr_protocol::datatypes::MagnetometerStatus magnetometer) {
     fbb_.AddElement<uint8_t>(TrackerInfo::VT_MAGNETOMETER, static_cast<uint8_t>(magnetometer), 0);
   }
-  void add_data_type(solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type) {
-    fbb_.AddElement<uint8_t>(TrackerInfo::VT_DATA_TYPE, static_cast<uint8_t>(data_type), 0);
-  }
   void add_bone_offset(const solarxr_protocol::datatypes::math::Vec3f *bone_offset) {
     fbb_.AddStruct(TrackerInfo::VT_BONE_OFFSET, bone_offset);
   }
@@ -6261,7 +6616,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
     flatbuffers::Offset<flatbuffers::String> custom_name = 0,
     solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
     const solarxr_protocol::datatypes::math::Vec3f *bone_offset = nullptr) {
   TrackerInfoBuilder builder_(_fbb);
   builder_.add_bone_offset(bone_offset);
@@ -6270,7 +6624,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfo(
   builder_.add_mounting_reset_orientation(mounting_reset_orientation);
   builder_.add_mounting_orientation(mounting_orientation);
   builder_.add_imu_type(imu_type);
-  builder_.add_data_type(data_type);
   builder_.add_magnetometer(magnetometer);
   builder_.add_last_mounting_method(last_mounting_method);
   builder_.add_intended_body_part(intended_body_part);
@@ -6291,7 +6644,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
     const char *custom_name = nullptr,
     solarxr_protocol::datatypes::MountingMethod last_mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN,
     solarxr_protocol::datatypes::MagnetometerStatus magnetometer = solarxr_protocol::datatypes::MagnetometerStatus::NOT_SUPPORTED,
-    solarxr_protocol::datatypes::hardware_info::TrackerDataType data_type = solarxr_protocol::datatypes::hardware_info::TrackerDataType::ROTATION,
     const solarxr_protocol::datatypes::math::Vec3f *bone_offset = nullptr) {
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
   auto custom_name__ = custom_name ? _fbb.CreateString(custom_name) : 0;
@@ -6307,7 +6659,6 @@ inline flatbuffers::Offset<TrackerInfo> CreateTrackerInfoDirect(
       custom_name__,
       last_mounting_method,
       magnetometer,
-      data_type,
       bone_offset);
 }
 
@@ -9660,6 +10011,243 @@ inline flatbuffers::Offset<FirmwareUpdateStopQueuesRequest> CreateFirmwareUpdate
   return builder_.Finish();
 }
 
+struct FirmwareUpdateDevice FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FirmwareUpdateDeviceBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICE_ID_TYPE = 4,
+    VT_DEVICE_ID = 6,
+    VT_STATUS = 8,
+    VT_BLOCKER = 10,
+    VT_METHOD_TYPE = 12,
+    VT_METHOD = 14,
+    VT_LATEST_VERSION = 16
+  };
+  solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type() const {
+    return static_cast<solarxr_protocol::rpc::FirmwareUpdateDeviceId>(GetField<uint8_t>(VT_DEVICE_ID_TYPE, 0));
+  }
+  const void *device_id() const {
+    return GetPointer<const void *>(VT_DEVICE_ID);
+  }
+  template<typename T> const T *device_id_as() const;
+  const solarxr_protocol::rpc::FirmwareDeviceIdTable *device_id_as_FirmwareDeviceIdTable() const {
+    return device_id_type() == solarxr_protocol::rpc::FirmwareUpdateDeviceId::FirmwareDeviceIdTable ? static_cast<const solarxr_protocol::rpc::FirmwareDeviceIdTable *>(device_id()) : nullptr;
+  }
+  const solarxr_protocol::rpc::SerialDevicePort *device_id_as_SerialDevicePort() const {
+    return device_id_type() == solarxr_protocol::rpc::FirmwareUpdateDeviceId::SerialDevicePort ? static_cast<const solarxr_protocol::rpc::SerialDevicePort *>(device_id()) : nullptr;
+  }
+  solarxr_protocol::rpc::FirmwareVersionStatus status() const {
+    return static_cast<solarxr_protocol::rpc::FirmwareVersionStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  solarxr_protocol::rpc::FirmwareUpdateBlocker blocker() const {
+    return static_cast<solarxr_protocol::rpc::FirmwareUpdateBlocker>(GetField<uint8_t>(VT_BLOCKER, 0));
+  }
+  solarxr_protocol::rpc::FirmwareUpdateMethod method_type() const {
+    return static_cast<solarxr_protocol::rpc::FirmwareUpdateMethod>(GetField<uint8_t>(VT_METHOD_TYPE, 0));
+  }
+  /// Ready to send update request, null when the device cannot be updated from where it is connected
+  const void *method() const {
+    return GetPointer<const void *>(VT_METHOD);
+  }
+  template<typename T> const T *method_as() const;
+  const solarxr_protocol::rpc::OTAFirmwareUpdate *method_as_OTAFirmwareUpdate() const {
+    return method_type() == solarxr_protocol::rpc::FirmwareUpdateMethod::OTAFirmwareUpdate ? static_cast<const solarxr_protocol::rpc::OTAFirmwareUpdate *>(method()) : nullptr;
+  }
+  const solarxr_protocol::rpc::SerialFirmwareUpdate *method_as_SerialFirmwareUpdate() const {
+    return method_type() == solarxr_protocol::rpc::FirmwareUpdateMethod::SerialFirmwareUpdate ? static_cast<const solarxr_protocol::rpc::SerialFirmwareUpdate *>(method()) : nullptr;
+  }
+  const flatbuffers::String *latest_version() const {
+    return GetPointer<const flatbuffers::String *>(VT_LATEST_VERSION);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_DEVICE_ID_TYPE, 1) &&
+           VerifyOffset(verifier, VT_DEVICE_ID) &&
+           VerifyFirmwareUpdateDeviceId(verifier, device_id(), device_id_type()) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_BLOCKER, 1) &&
+           VerifyField<uint8_t>(verifier, VT_METHOD_TYPE, 1) &&
+           VerifyOffset(verifier, VT_METHOD) &&
+           VerifyFirmwareUpdateMethod(verifier, method(), method_type()) &&
+           VerifyOffset(verifier, VT_LATEST_VERSION) &&
+           verifier.VerifyString(latest_version()) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::rpc::FirmwareDeviceIdTable *FirmwareUpdateDevice::device_id_as<solarxr_protocol::rpc::FirmwareDeviceIdTable>() const {
+  return device_id_as_FirmwareDeviceIdTable();
+}
+
+template<> inline const solarxr_protocol::rpc::SerialDevicePort *FirmwareUpdateDevice::device_id_as<solarxr_protocol::rpc::SerialDevicePort>() const {
+  return device_id_as_SerialDevicePort();
+}
+
+template<> inline const solarxr_protocol::rpc::OTAFirmwareUpdate *FirmwareUpdateDevice::method_as<solarxr_protocol::rpc::OTAFirmwareUpdate>() const {
+  return method_as_OTAFirmwareUpdate();
+}
+
+template<> inline const solarxr_protocol::rpc::SerialFirmwareUpdate *FirmwareUpdateDevice::method_as<solarxr_protocol::rpc::SerialFirmwareUpdate>() const {
+  return method_as_SerialFirmwareUpdate();
+}
+
+struct FirmwareUpdateDeviceBuilder {
+  typedef FirmwareUpdateDevice Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_device_id_type(solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type) {
+    fbb_.AddElement<uint8_t>(FirmwareUpdateDevice::VT_DEVICE_ID_TYPE, static_cast<uint8_t>(device_id_type), 0);
+  }
+  void add_device_id(flatbuffers::Offset<void> device_id) {
+    fbb_.AddOffset(FirmwareUpdateDevice::VT_DEVICE_ID, device_id);
+  }
+  void add_status(solarxr_protocol::rpc::FirmwareVersionStatus status) {
+    fbb_.AddElement<uint8_t>(FirmwareUpdateDevice::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  void add_blocker(solarxr_protocol::rpc::FirmwareUpdateBlocker blocker) {
+    fbb_.AddElement<uint8_t>(FirmwareUpdateDevice::VT_BLOCKER, static_cast<uint8_t>(blocker), 0);
+  }
+  void add_method_type(solarxr_protocol::rpc::FirmwareUpdateMethod method_type) {
+    fbb_.AddElement<uint8_t>(FirmwareUpdateDevice::VT_METHOD_TYPE, static_cast<uint8_t>(method_type), 0);
+  }
+  void add_method(flatbuffers::Offset<void> method) {
+    fbb_.AddOffset(FirmwareUpdateDevice::VT_METHOD, method);
+  }
+  void add_latest_version(flatbuffers::Offset<flatbuffers::String> latest_version) {
+    fbb_.AddOffset(FirmwareUpdateDevice::VT_LATEST_VERSION, latest_version);
+  }
+  explicit FirmwareUpdateDeviceBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FirmwareUpdateDevice> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FirmwareUpdateDevice>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FirmwareUpdateDevice> CreateFirmwareUpdateDevice(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type = solarxr_protocol::rpc::FirmwareUpdateDeviceId::NONE,
+    flatbuffers::Offset<void> device_id = 0,
+    solarxr_protocol::rpc::FirmwareVersionStatus status = solarxr_protocol::rpc::FirmwareVersionStatus::UNKNOWN,
+    solarxr_protocol::rpc::FirmwareUpdateBlocker blocker = solarxr_protocol::rpc::FirmwareUpdateBlocker::NONE,
+    solarxr_protocol::rpc::FirmwareUpdateMethod method_type = solarxr_protocol::rpc::FirmwareUpdateMethod::NONE,
+    flatbuffers::Offset<void> method = 0,
+    flatbuffers::Offset<flatbuffers::String> latest_version = 0) {
+  FirmwareUpdateDeviceBuilder builder_(_fbb);
+  builder_.add_latest_version(latest_version);
+  builder_.add_method(method);
+  builder_.add_device_id(device_id);
+  builder_.add_method_type(method_type);
+  builder_.add_blocker(blocker);
+  builder_.add_status(status);
+  builder_.add_device_id_type(device_id_type);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<FirmwareUpdateDevice> CreateFirmwareUpdateDeviceDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::FirmwareUpdateDeviceId device_id_type = solarxr_protocol::rpc::FirmwareUpdateDeviceId::NONE,
+    flatbuffers::Offset<void> device_id = 0,
+    solarxr_protocol::rpc::FirmwareVersionStatus status = solarxr_protocol::rpc::FirmwareVersionStatus::UNKNOWN,
+    solarxr_protocol::rpc::FirmwareUpdateBlocker blocker = solarxr_protocol::rpc::FirmwareUpdateBlocker::NONE,
+    solarxr_protocol::rpc::FirmwareUpdateMethod method_type = solarxr_protocol::rpc::FirmwareUpdateMethod::NONE,
+    flatbuffers::Offset<void> method = 0,
+    const char *latest_version = nullptr) {
+  auto latest_version__ = latest_version ? _fbb.CreateString(latest_version) : 0;
+  return solarxr_protocol::rpc::CreateFirmwareUpdateDevice(
+      _fbb,
+      device_id_type,
+      device_id,
+      status,
+      blocker,
+      method_type,
+      method,
+      latest_version__);
+}
+
+struct FirmwareUpdatesRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FirmwareUpdatesRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct FirmwareUpdatesRequestBuilder {
+  typedef FirmwareUpdatesRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit FirmwareUpdatesRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FirmwareUpdatesRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FirmwareUpdatesRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FirmwareUpdatesRequest> CreateFirmwareUpdatesRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  FirmwareUpdatesRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct FirmwareUpdatesResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FirmwareUpdatesResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DEVICES = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>> *devices() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>> *>(VT_DEVICES);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DEVICES) &&
+           verifier.VerifyVector(devices()) &&
+           verifier.VerifyVectorOfTables(devices()) &&
+           verifier.EndTable();
+  }
+};
+
+struct FirmwareUpdatesResponseBuilder {
+  typedef FirmwareUpdatesResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_devices(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>>> devices) {
+    fbb_.AddOffset(FirmwareUpdatesResponse::VT_DEVICES, devices);
+  }
+  explicit FirmwareUpdatesResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FirmwareUpdatesResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FirmwareUpdatesResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FirmwareUpdatesResponse> CreateFirmwareUpdatesResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>>> devices = 0) {
+  FirmwareUpdatesResponseBuilder builder_(_fbb);
+  builder_.add_devices(devices);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<FirmwareUpdatesResponse> CreateFirmwareUpdatesResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>> *devices = nullptr) {
+  auto devices__ = devices ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::FirmwareUpdateDevice>>(*devices) : 0;
+  return solarxr_protocol::rpc::CreateFirmwareUpdatesResponse(
+      _fbb,
+      devices__);
+}
+
 struct StartUserHeightCalibration FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StartUserHeightCalibrationBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -12227,7 +12815,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_ARMS_MOUNTING_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_RELIABLE_REFERENCE_ATTITUDE = 12,
+    VT_RESET_HMD_ATTITUDE = 12,
     VT_MOUNTING_METHOD = 14
   };
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
@@ -12246,8 +12834,8 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
   /// Reset VR headset's pitch and roll
-  bool reset_reliable_reference_attitude() const {
-    return GetField<uint8_t>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 0) != 0;
+  bool reset_hmd_attitude() const {
+    return GetField<uint8_t>(VT_RESET_HMD_ATTITUDE, 0) != 0;
   }
   /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
   solarxr_protocol::datatypes::MountingMethod mounting_method() const {
@@ -12259,7 +12847,7 @@ struct ResetsSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_HMD_ATTITUDE, 1) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_METHOD, 1) &&
            verifier.EndTable();
   }
@@ -12281,8 +12869,8 @@ struct ResetsSettingsResponseBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
-  void add_reset_reliable_reference_attitude(bool reset_reliable_reference_attitude) {
-    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, static_cast<uint8_t>(reset_reliable_reference_attitude), 0);
+  void add_reset_hmd_attitude(bool reset_hmd_attitude) {
+    fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_RESET_HMD_ATTITUDE, static_cast<uint8_t>(reset_hmd_attitude), 0);
   }
   void add_mounting_method(solarxr_protocol::datatypes::MountingMethod mounting_method) {
     fbb_.AddElement<uint8_t>(ResetsSettingsResponse::VT_MOUNTING_METHOD, static_cast<uint8_t>(mounting_method), 0);
@@ -12304,12 +12892,12 @@ inline flatbuffers::Offset<ResetsSettingsResponse> CreateResetsSettingsResponse(
     solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_reliable_reference_attitude = false,
+    bool reset_hmd_attitude = false,
     solarxr_protocol::datatypes::MountingMethod mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN) {
   ResetsSettingsResponseBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
   builder_.add_mounting_method(mounting_method);
-  builder_.add_reset_reliable_reference_attitude(reset_reliable_reference_attitude);
+  builder_.add_reset_hmd_attitude(reset_hmd_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
@@ -12323,7 +12911,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
     VT_ARMS_MOUNTING_RESET_MODE = 6,
     VT_YAW_RESET_SMOOTH_TIME = 8,
     VT_SAVE_MOUNTING_RESET = 10,
-    VT_RESET_RELIABLE_REFERENCE_ATTITUDE = 12,
+    VT_RESET_HMD_ATTITUDE = 12,
     VT_MOUNTING_METHOD = 14
   };
   /// Makes it so feet will be always be mounting reset even when passing no BodyPart
@@ -12342,8 +12930,8 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
     return GetField<uint8_t>(VT_SAVE_MOUNTING_RESET, 0) != 0;
   }
   /// Reset VR headset's pitch and roll
-  bool reset_reliable_reference_attitude() const {
-    return GetField<uint8_t>(VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 0) != 0;
+  bool reset_hmd_attitude() const {
+    return GetField<uint8_t>(VT_RESET_HMD_ATTITUDE, 0) != 0;
   }
   /// How a MOUNTING reset calibrates the trackers. UNKNOWN until the user has picked one
   solarxr_protocol::datatypes::MountingMethod mounting_method() const {
@@ -12355,7 +12943,7 @@ struct ChangeResetsSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers
            VerifyField<uint8_t>(verifier, VT_ARMS_MOUNTING_RESET_MODE, 1) &&
            VerifyField<float>(verifier, VT_YAW_RESET_SMOOTH_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_SAVE_MOUNTING_RESET, 1) &&
-           VerifyField<uint8_t>(verifier, VT_RESET_RELIABLE_REFERENCE_ATTITUDE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RESET_HMD_ATTITUDE, 1) &&
            VerifyField<uint8_t>(verifier, VT_MOUNTING_METHOD, 1) &&
            verifier.EndTable();
   }
@@ -12377,8 +12965,8 @@ struct ChangeResetsSettingsRequestBuilder {
   void add_save_mounting_reset(bool save_mounting_reset) {
     fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_SAVE_MOUNTING_RESET, static_cast<uint8_t>(save_mounting_reset), 0);
   }
-  void add_reset_reliable_reference_attitude(bool reset_reliable_reference_attitude) {
-    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_RELIABLE_REFERENCE_ATTITUDE, static_cast<uint8_t>(reset_reliable_reference_attitude), 0);
+  void add_reset_hmd_attitude(bool reset_hmd_attitude) {
+    fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_RESET_HMD_ATTITUDE, static_cast<uint8_t>(reset_hmd_attitude), 0);
   }
   void add_mounting_method(solarxr_protocol::datatypes::MountingMethod mounting_method) {
     fbb_.AddElement<uint8_t>(ChangeResetsSettingsRequest::VT_MOUNTING_METHOD, static_cast<uint8_t>(mounting_method), 0);
@@ -12400,12 +12988,12 @@ inline flatbuffers::Offset<ChangeResetsSettingsRequest> CreateChangeResetsSettin
     solarxr_protocol::rpc::ArmsMountingResetMode arms_mounting_reset_mode = solarxr_protocol::rpc::ArmsMountingResetMode::BACK,
     float yaw_reset_smooth_time = 0.0f,
     bool save_mounting_reset = false,
-    bool reset_reliable_reference_attitude = false,
+    bool reset_hmd_attitude = false,
     solarxr_protocol::datatypes::MountingMethod mounting_method = solarxr_protocol::datatypes::MountingMethod::UNKNOWN) {
   ChangeResetsSettingsRequestBuilder builder_(_fbb);
   builder_.add_yaw_reset_smooth_time(yaw_reset_smooth_time);
   builder_.add_mounting_method(mounting_method);
-  builder_.add_reset_reliable_reference_attitude(reset_reliable_reference_attitude);
+  builder_.add_reset_hmd_attitude(reset_hmd_attitude);
   builder_.add_save_mounting_reset(save_mounting_reset);
   builder_.add_arms_mounting_reset_mode(arms_mounting_reset_mode);
   builder_.add_reset_mounting_feet(reset_mounting_feet);
@@ -13691,11 +14279,19 @@ inline flatbuffers::Offset<SkeletonToggles> CreateSkeletonToggles(
 struct SkeletonRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SkeletonRatiosBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SPINE_CURVATURE = 4,
-    VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER = 6,
-    VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS = 8,
-    VT_SKATING_CORRECTION_STRENGTH = 10
+    VT_SMOOTHING_STRENGTH = 4,
+    VT_PREDICTION_STRENGTH = 6,
+    VT_SPINE_CURVATURE = 8,
+    VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER = 10,
+    VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS = 12,
+    VT_SKATING_CORRECTION_STRENGTH = 14
   };
+  flatbuffers::Optional<float> smoothing_strength() const {
+    return GetOptional<float, float>(VT_SMOOTHING_STRENGTH);
+  }
+  flatbuffers::Optional<float> prediction_strength() const {
+    return GetOptional<float, float>(VT_PREDICTION_STRENGTH);
+  }
   /// Used to compute the curvature of the spine. Higher = more curvature.
   flatbuffers::Optional<float> spine_curvature() const {
     return GetOptional<float, float>(VT_SPINE_CURVATURE);
@@ -13714,6 +14310,8 @@ struct SkeletonRatios FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_SMOOTHING_STRENGTH, 4) &&
+           VerifyField<float>(verifier, VT_PREDICTION_STRENGTH, 4) &&
            VerifyField<float>(verifier, VT_SPINE_CURVATURE, 4) &&
            VerifyField<float>(verifier, VT_IMPUTE_SPINE_FROM_UPPER_TO_LOWER, 4) &&
            VerifyField<float>(verifier, VT_INTERPOLATE_UPPER_LEGS_TWIST_WITH_LOWER_LEGS, 4) &&
@@ -13726,6 +14324,12 @@ struct SkeletonRatiosBuilder {
   typedef SkeletonRatios Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_smoothing_strength(float smoothing_strength) {
+    fbb_.AddElement<float>(SkeletonRatios::VT_SMOOTHING_STRENGTH, smoothing_strength);
+  }
+  void add_prediction_strength(float prediction_strength) {
+    fbb_.AddElement<float>(SkeletonRatios::VT_PREDICTION_STRENGTH, prediction_strength);
+  }
   void add_spine_curvature(float spine_curvature) {
     fbb_.AddElement<float>(SkeletonRatios::VT_SPINE_CURVATURE, spine_curvature);
   }
@@ -13751,6 +14355,8 @@ struct SkeletonRatiosBuilder {
 
 inline flatbuffers::Offset<SkeletonRatios> CreateSkeletonRatios(
     flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Optional<float> smoothing_strength = flatbuffers::nullopt,
+    flatbuffers::Optional<float> prediction_strength = flatbuffers::nullopt,
     flatbuffers::Optional<float> spine_curvature = flatbuffers::nullopt,
     flatbuffers::Optional<float> impute_spine_from_upper_to_lower = flatbuffers::nullopt,
     flatbuffers::Optional<float> interpolate_upper_legs_twist_with_lower_legs = flatbuffers::nullopt,
@@ -13760,59 +14366,8 @@ inline flatbuffers::Offset<SkeletonRatios> CreateSkeletonRatios(
   if(interpolate_upper_legs_twist_with_lower_legs) { builder_.add_interpolate_upper_legs_twist_with_lower_legs(*interpolate_upper_legs_twist_with_lower_legs); }
   if(impute_spine_from_upper_to_lower) { builder_.add_impute_spine_from_upper_to_lower(*impute_spine_from_upper_to_lower); }
   if(spine_curvature) { builder_.add_spine_curvature(*spine_curvature); }
-  return builder_.Finish();
-}
-
-/// Filtering (e.g smoothing) applied to the skeleton's movements
-struct SkeletonFiltering FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SkeletonFilteringBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TYPE = 4,
-    VT_AMOUNT = 6
-  };
-  solarxr_protocol::rpc::FilteringType type() const {
-    return static_cast<solarxr_protocol::rpc::FilteringType>(GetField<uint8_t>(VT_TYPE, 0));
-  }
-  /// A higher value results in more filtering (0 to 1).
-  float amount() const {
-    return GetField<float>(VT_AMOUNT, 0.0f);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_TYPE, 1) &&
-           VerifyField<float>(verifier, VT_AMOUNT, 4) &&
-           verifier.EndTable();
-  }
-};
-
-struct SkeletonFilteringBuilder {
-  typedef SkeletonFiltering Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_type(solarxr_protocol::rpc::FilteringType type) {
-    fbb_.AddElement<uint8_t>(SkeletonFiltering::VT_TYPE, static_cast<uint8_t>(type), 0);
-  }
-  void add_amount(float amount) {
-    fbb_.AddElement<float>(SkeletonFiltering::VT_AMOUNT, amount, 0.0f);
-  }
-  explicit SkeletonFilteringBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<SkeletonFiltering> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SkeletonFiltering>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<SkeletonFiltering> CreateSkeletonFiltering(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::FilteringType type = solarxr_protocol::rpc::FilteringType::NONE,
-    float amount = 0.0f) {
-  SkeletonFilteringBuilder builder_(_fbb);
-  builder_.add_amount(amount);
-  builder_.add_type(type);
+  if(prediction_strength) { builder_.add_prediction_strength(*prediction_strength); }
+  if(smoothing_strength) { builder_.add_smoothing_strength(*smoothing_strength); }
   return builder_.Finish();
 }
 
@@ -13849,8 +14404,7 @@ struct SkeletonSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
   typedef SkeletonSettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TOGGLES = 4,
-    VT_RATIOS = 6,
-    VT_FILTERING = 8
+    VT_RATIOS = 6
   };
   const solarxr_protocol::rpc::SkeletonToggles *toggles() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonToggles *>(VT_TOGGLES);
@@ -13858,17 +14412,12 @@ struct SkeletonSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
   const solarxr_protocol::rpc::SkeletonRatios *ratios() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonRatios *>(VT_RATIOS);
   }
-  const solarxr_protocol::rpc::SkeletonFiltering *filtering() const {
-    return GetPointer<const solarxr_protocol::rpc::SkeletonFiltering *>(VT_FILTERING);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TOGGLES) &&
            verifier.VerifyTable(toggles()) &&
            VerifyOffset(verifier, VT_RATIOS) &&
            verifier.VerifyTable(ratios()) &&
-           VerifyOffset(verifier, VT_FILTERING) &&
-           verifier.VerifyTable(filtering()) &&
            verifier.EndTable();
   }
 };
@@ -13882,9 +14431,6 @@ struct SkeletonSettingsResponseBuilder {
   }
   void add_ratios(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios) {
     fbb_.AddOffset(SkeletonSettingsResponse::VT_RATIOS, ratios);
-  }
-  void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering) {
-    fbb_.AddOffset(SkeletonSettingsResponse::VT_FILTERING, filtering);
   }
   explicit SkeletonSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -13900,10 +14446,8 @@ struct SkeletonSettingsResponseBuilder {
 inline flatbuffers::Offset<SkeletonSettingsResponse> CreateSkeletonSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SkeletonToggles> toggles = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios = 0) {
   SkeletonSettingsResponseBuilder builder_(_fbb);
-  builder_.add_filtering(filtering);
   builder_.add_ratios(ratios);
   builder_.add_toggles(toggles);
   return builder_.Finish();
@@ -13913,8 +14457,7 @@ struct ChangeSkeletonSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffe
   typedef ChangeSkeletonSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TOGGLES = 4,
-    VT_RATIOS = 6,
-    VT_FILTERING = 8
+    VT_RATIOS = 6
   };
   const solarxr_protocol::rpc::SkeletonToggles *toggles() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonToggles *>(VT_TOGGLES);
@@ -13922,17 +14465,12 @@ struct ChangeSkeletonSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffe
   const solarxr_protocol::rpc::SkeletonRatios *ratios() const {
     return GetPointer<const solarxr_protocol::rpc::SkeletonRatios *>(VT_RATIOS);
   }
-  const solarxr_protocol::rpc::SkeletonFiltering *filtering() const {
-    return GetPointer<const solarxr_protocol::rpc::SkeletonFiltering *>(VT_FILTERING);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TOGGLES) &&
            verifier.VerifyTable(toggles()) &&
            VerifyOffset(verifier, VT_RATIOS) &&
            verifier.VerifyTable(ratios()) &&
-           VerifyOffset(verifier, VT_FILTERING) &&
-           verifier.VerifyTable(filtering()) &&
            verifier.EndTable();
   }
 };
@@ -13946,9 +14484,6 @@ struct ChangeSkeletonSettingsRequestBuilder {
   }
   void add_ratios(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios) {
     fbb_.AddOffset(ChangeSkeletonSettingsRequest::VT_RATIOS, ratios);
-  }
-  void add_filtering(flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering) {
-    fbb_.AddOffset(ChangeSkeletonSettingsRequest::VT_FILTERING, filtering);
   }
   explicit ChangeSkeletonSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -13964,10 +14499,8 @@ struct ChangeSkeletonSettingsRequestBuilder {
 inline flatbuffers::Offset<ChangeSkeletonSettingsRequest> CreateChangeSkeletonSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<solarxr_protocol::rpc::SkeletonToggles> toggles = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonFiltering> filtering = 0) {
+    flatbuffers::Offset<solarxr_protocol::rpc::SkeletonRatios> ratios = 0) {
   ChangeSkeletonSettingsRequestBuilder builder_(_fbb);
-  builder_.add_filtering(filtering);
   builder_.add_ratios(ratios);
   builder_.add_toggles(toggles);
   return builder_.Finish();
@@ -14104,43 +14637,188 @@ inline flatbuffers::Offset<ChangeUserHeightRequest> CreateChangeUserHeightReques
   return builder_.Finish();
 }
 
-struct DetectStayAlignedRelaxedPoseRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef DetectStayAlignedRelaxedPoseRequestBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_POSE = 4
-  };
-  solarxr_protocol::rpc::StayAlignedRelaxedPose pose() const {
-    return static_cast<solarxr_protocol::rpc::StayAlignedRelaxedPose>(GetField<uint8_t>(VT_POSE, 0));
-  }
+/// Resets the Localizer's (mocap mode) head position to (0, 0)
+struct RecenterMocapModeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef RecenterMocapModeRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_POSE, 1) &&
            verifier.EndTable();
   }
 };
 
-struct DetectStayAlignedRelaxedPoseRequestBuilder {
-  typedef DetectStayAlignedRelaxedPoseRequest Table;
+struct RecenterMocapModeRequestBuilder {
+  typedef RecenterMocapModeRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_pose(solarxr_protocol::rpc::StayAlignedRelaxedPose pose) {
-    fbb_.AddElement<uint8_t>(DetectStayAlignedRelaxedPoseRequest::VT_POSE, static_cast<uint8_t>(pose), 0);
-  }
-  explicit DetectStayAlignedRelaxedPoseRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit RecenterMocapModeRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<DetectStayAlignedRelaxedPoseRequest> Finish() {
+  flatbuffers::Offset<RecenterMocapModeRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<DetectStayAlignedRelaxedPoseRequest>(end);
+    auto o = flatbuffers::Offset<RecenterMocapModeRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<DetectStayAlignedRelaxedPoseRequest> CreateDetectStayAlignedRelaxedPoseRequest(
+inline flatbuffers::Offset<RecenterMocapModeRequest> CreateRecenterMocapModeRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  RecenterMocapModeRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+/// A relaxed pose of the user. Angles are the yaw of the upper legs, lower legs and
+/// feet relative to the body, in degrees.
+struct StayAlignedPose FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedPoseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_POSE = 4,
+    VT_RECORDED = 6,
+    VT_HAS_DEFAULT = 8,
+    VT_ENABLED = 10,
+    VT_UPPER_LEG_ANGLE = 12,
+    VT_LOWER_LEG_ANGLE = 14,
+    VT_FOOT_ANGLE = 16
+  };
+  solarxr_protocol::rpc::StayAlignedRelaxedPose pose() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedRelaxedPose>(GetField<uint8_t>(VT_POSE, 0));
+  }
+  bool recorded() const {
+    return GetField<uint8_t>(VT_RECORDED, 0) != 0;
+  }
+  /// The pose is usable before it is recorded, with angles the server picks. Only a pose
+  /// that has defaults can be enabled without a recording.
+  bool has_default() const {
+    return GetField<uint8_t>(VT_HAS_DEFAULT, 0) != 0;
+  }
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
+  float upper_leg_angle() const {
+    return GetField<float>(VT_UPPER_LEG_ANGLE, 0.0f);
+  }
+  float lower_leg_angle() const {
+    return GetField<float>(VT_LOWER_LEG_ANGLE, 0.0f);
+  }
+  float foot_angle() const {
+    return GetField<float>(VT_FOOT_ANGLE, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_POSE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RECORDED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_HAS_DEFAULT, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyField<float>(verifier, VT_UPPER_LEG_ANGLE, 4) &&
+           VerifyField<float>(verifier, VT_LOWER_LEG_ANGLE, 4) &&
+           VerifyField<float>(verifier, VT_FOOT_ANGLE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedPoseBuilder {
+  typedef StayAlignedPose Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_pose(solarxr_protocol::rpc::StayAlignedRelaxedPose pose) {
+    fbb_.AddElement<uint8_t>(StayAlignedPose::VT_POSE, static_cast<uint8_t>(pose), 0);
+  }
+  void add_recorded(bool recorded) {
+    fbb_.AddElement<uint8_t>(StayAlignedPose::VT_RECORDED, static_cast<uint8_t>(recorded), 0);
+  }
+  void add_has_default(bool has_default) {
+    fbb_.AddElement<uint8_t>(StayAlignedPose::VT_HAS_DEFAULT, static_cast<uint8_t>(has_default), 0);
+  }
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(StayAlignedPose::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  void add_upper_leg_angle(float upper_leg_angle) {
+    fbb_.AddElement<float>(StayAlignedPose::VT_UPPER_LEG_ANGLE, upper_leg_angle, 0.0f);
+  }
+  void add_lower_leg_angle(float lower_leg_angle) {
+    fbb_.AddElement<float>(StayAlignedPose::VT_LOWER_LEG_ANGLE, lower_leg_angle, 0.0f);
+  }
+  void add_foot_angle(float foot_angle) {
+    fbb_.AddElement<float>(StayAlignedPose::VT_FOOT_ANGLE, foot_angle, 0.0f);
+  }
+  explicit StayAlignedPoseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedPose> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedPose>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedPose> CreateStayAlignedPose(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::StayAlignedRelaxedPose pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::STANDING) {
-  DetectStayAlignedRelaxedPoseRequestBuilder builder_(_fbb);
+    solarxr_protocol::rpc::StayAlignedRelaxedPose pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::UNKNOWN,
+    bool recorded = false,
+    bool has_default = false,
+    bool enabled = false,
+    float upper_leg_angle = 0.0f,
+    float lower_leg_angle = 0.0f,
+    float foot_angle = 0.0f) {
+  StayAlignedPoseBuilder builder_(_fbb);
+  builder_.add_foot_angle(foot_angle);
+  builder_.add_lower_leg_angle(lower_leg_angle);
+  builder_.add_upper_leg_angle(upper_leg_angle);
+  builder_.add_enabled(enabled);
+  builder_.add_has_default(has_default);
+  builder_.add_recorded(recorded);
+  builder_.add_pose(pose);
+  return builder_.Finish();
+}
+
+struct StayAlignedPoseToggle FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedPoseToggleBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_POSE = 4,
+    VT_ENABLED = 6
+  };
+  solarxr_protocol::rpc::StayAlignedRelaxedPose pose() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedRelaxedPose>(GetField<uint8_t>(VT_POSE, 0));
+  }
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_POSE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedPoseToggleBuilder {
+  typedef StayAlignedPoseToggle Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_pose(solarxr_protocol::rpc::StayAlignedRelaxedPose pose) {
+    fbb_.AddElement<uint8_t>(StayAlignedPoseToggle::VT_POSE, static_cast<uint8_t>(pose), 0);
+  }
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(StayAlignedPoseToggle::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  explicit StayAlignedPoseToggleBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedPoseToggle> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedPoseToggle>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedPoseToggle> CreateStayAlignedPoseToggle(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::StayAlignedRelaxedPose pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::UNKNOWN,
+    bool enabled = false) {
+  StayAlignedPoseToggleBuilder builder_(_fbb);
+  builder_.add_enabled(enabled);
   builder_.add_pose(pose);
   return builder_.Finish();
 }
@@ -14180,7 +14858,7 @@ struct ResetStayAlignedRelaxedPoseRequestBuilder {
 
 inline flatbuffers::Offset<ResetStayAlignedRelaxedPoseRequest> CreateResetStayAlignedRelaxedPoseRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    solarxr_protocol::rpc::StayAlignedRelaxedPose pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::STANDING) {
+    solarxr_protocol::rpc::StayAlignedRelaxedPose pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::UNKNOWN) {
   ResetStayAlignedRelaxedPoseRequestBuilder builder_(_fbb);
   builder_.add_pose(pose);
   return builder_.Finish();
@@ -14218,79 +14896,21 @@ inline flatbuffers::Offset<StayAlignedSettingsRequest> CreateStayAlignedSettings
 struct StayAlignedSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StayAlignedSettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SETUP_COMPLETE = 4,
-    VT_ENABLED = 6,
-    VT_STANDING_ENABLED = 8,
-    VT_STANDING_UPPER_LEG_ANGLE = 10,
-    VT_STANDING_LOWER_LEG_ANGLE = 12,
-    VT_STANDING_FOOT_ANGLE = 14,
-    VT_SITTING_ENABLED = 16,
-    VT_SITTING_UPPER_LEG_ANGLE = 18,
-    VT_SITTING_LOWER_LEG_ANGLE = 20,
-    VT_SITTING_FOOT_ANGLE = 22,
-    VT_FLAT_ENABLED = 24,
-    VT_FLAT_UPPER_LEG_ANGLE = 26,
-    VT_FLAT_LOWER_LEG_ANGLE = 28,
-    VT_FLAT_FOOT_ANGLE = 30
+    VT_ENABLED = 4,
+    VT_POSES = 6
   };
-  bool setup_complete() const {
-    return GetField<uint8_t>(VT_SETUP_COMPLETE, 0) != 0;
-  }
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
   }
-  bool standing_enabled() const {
-    return GetField<uint8_t>(VT_STANDING_ENABLED, 0) != 0;
-  }
-  float standing_upper_leg_angle() const {
-    return GetField<float>(VT_STANDING_UPPER_LEG_ANGLE, 0.0f);
-  }
-  float standing_lower_leg_angle() const {
-    return GetField<float>(VT_STANDING_LOWER_LEG_ANGLE, 0.0f);
-  }
-  float standing_foot_angle() const {
-    return GetField<float>(VT_STANDING_FOOT_ANGLE, 0.0f);
-  }
-  bool sitting_enabled() const {
-    return GetField<uint8_t>(VT_SITTING_ENABLED, 0) != 0;
-  }
-  float sitting_upper_leg_angle() const {
-    return GetField<float>(VT_SITTING_UPPER_LEG_ANGLE, 0.0f);
-  }
-  float sitting_lower_leg_angle() const {
-    return GetField<float>(VT_SITTING_LOWER_LEG_ANGLE, 0.0f);
-  }
-  float sitting_foot_angle() const {
-    return GetField<float>(VT_SITTING_FOOT_ANGLE, 0.0f);
-  }
-  bool flat_enabled() const {
-    return GetField<uint8_t>(VT_FLAT_ENABLED, 0) != 0;
-  }
-  float flat_upper_leg_angle() const {
-    return GetField<float>(VT_FLAT_UPPER_LEG_ANGLE, 0.0f);
-  }
-  float flat_lower_leg_angle() const {
-    return GetField<float>(VT_FLAT_LOWER_LEG_ANGLE, 0.0f);
-  }
-  float flat_foot_angle() const {
-    return GetField<float>(VT_FLAT_FOOT_ANGLE, 0.0f);
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPose>> *poses() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPose>> *>(VT_POSES);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_SETUP_COMPLETE, 1) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_STANDING_ENABLED, 1) &&
-           VerifyField<float>(verifier, VT_STANDING_UPPER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_STANDING_LOWER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_STANDING_FOOT_ANGLE, 4) &&
-           VerifyField<uint8_t>(verifier, VT_SITTING_ENABLED, 1) &&
-           VerifyField<float>(verifier, VT_SITTING_UPPER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_SITTING_LOWER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_SITTING_FOOT_ANGLE, 4) &&
-           VerifyField<uint8_t>(verifier, VT_FLAT_ENABLED, 1) &&
-           VerifyField<float>(verifier, VT_FLAT_UPPER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_FLAT_LOWER_LEG_ANGLE, 4) &&
-           VerifyField<float>(verifier, VT_FLAT_FOOT_ANGLE, 4) &&
+           VerifyOffset(verifier, VT_POSES) &&
+           verifier.VerifyVector(poses()) &&
+           verifier.VerifyVectorOfTables(poses()) &&
            verifier.EndTable();
   }
 };
@@ -14299,47 +14919,11 @@ struct StayAlignedSettingsResponseBuilder {
   typedef StayAlignedSettingsResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_setup_complete(bool setup_complete) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_SETUP_COMPLETE, static_cast<uint8_t>(setup_complete), 0);
-  }
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
   }
-  void add_standing_enabled(bool standing_enabled) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_STANDING_ENABLED, static_cast<uint8_t>(standing_enabled), 0);
-  }
-  void add_standing_upper_leg_angle(float standing_upper_leg_angle) {
-    fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_STANDING_UPPER_LEG_ANGLE, standing_upper_leg_angle, 0.0f);
-  }
-  void add_standing_lower_leg_angle(float standing_lower_leg_angle) {
-    fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_STANDING_LOWER_LEG_ANGLE, standing_lower_leg_angle, 0.0f);
-  }
-  void add_standing_foot_angle(float standing_foot_angle) {
-    fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_STANDING_FOOT_ANGLE, standing_foot_angle, 0.0f);
-  }
-  void add_sitting_enabled(bool sitting_enabled) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_SITTING_ENABLED, static_cast<uint8_t>(sitting_enabled), 0);
-  }
-  void add_sitting_upper_leg_angle(float sitting_upper_leg_angle) {
-    fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_SITTING_UPPER_LEG_ANGLE, sitting_upper_leg_angle, 0.0f);
-  }
-  void add_sitting_lower_leg_angle(float sitting_lower_leg_angle) {
-    fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_SITTING_LOWER_LEG_ANGLE, sitting_lower_leg_angle, 0.0f);
-  }
-  void add_sitting_foot_angle(float sitting_foot_angle) {
-    fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_SITTING_FOOT_ANGLE, sitting_foot_angle, 0.0f);
-  }
-  void add_flat_enabled(bool flat_enabled) {
-    fbb_.AddElement<uint8_t>(StayAlignedSettingsResponse::VT_FLAT_ENABLED, static_cast<uint8_t>(flat_enabled), 0);
-  }
-  void add_flat_upper_leg_angle(float flat_upper_leg_angle) {
-    fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_FLAT_UPPER_LEG_ANGLE, flat_upper_leg_angle, 0.0f);
-  }
-  void add_flat_lower_leg_angle(float flat_lower_leg_angle) {
-    fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_FLAT_LOWER_LEG_ANGLE, flat_lower_leg_angle, 0.0f);
-  }
-  void add_flat_foot_angle(float flat_foot_angle) {
-    fbb_.AddElement<float>(StayAlignedSettingsResponse::VT_FLAT_FOOT_ANGLE, flat_foot_angle, 0.0f);
+  void add_poses(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPose>>> poses) {
+    fbb_.AddOffset(StayAlignedSettingsResponse::VT_POSES, poses);
   }
   explicit StayAlignedSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -14354,64 +14938,43 @@ struct StayAlignedSettingsResponseBuilder {
 
 inline flatbuffers::Offset<StayAlignedSettingsResponse> CreateStayAlignedSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool setup_complete = false,
     bool enabled = false,
-    bool standing_enabled = false,
-    float standing_upper_leg_angle = 0.0f,
-    float standing_lower_leg_angle = 0.0f,
-    float standing_foot_angle = 0.0f,
-    bool sitting_enabled = false,
-    float sitting_upper_leg_angle = 0.0f,
-    float sitting_lower_leg_angle = 0.0f,
-    float sitting_foot_angle = 0.0f,
-    bool flat_enabled = false,
-    float flat_upper_leg_angle = 0.0f,
-    float flat_lower_leg_angle = 0.0f,
-    float flat_foot_angle = 0.0f) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPose>>> poses = 0) {
   StayAlignedSettingsResponseBuilder builder_(_fbb);
-  builder_.add_flat_foot_angle(flat_foot_angle);
-  builder_.add_flat_lower_leg_angle(flat_lower_leg_angle);
-  builder_.add_flat_upper_leg_angle(flat_upper_leg_angle);
-  builder_.add_sitting_foot_angle(sitting_foot_angle);
-  builder_.add_sitting_lower_leg_angle(sitting_lower_leg_angle);
-  builder_.add_sitting_upper_leg_angle(sitting_upper_leg_angle);
-  builder_.add_standing_foot_angle(standing_foot_angle);
-  builder_.add_standing_lower_leg_angle(standing_lower_leg_angle);
-  builder_.add_standing_upper_leg_angle(standing_upper_leg_angle);
-  builder_.add_flat_enabled(flat_enabled);
-  builder_.add_sitting_enabled(sitting_enabled);
-  builder_.add_standing_enabled(standing_enabled);
+  builder_.add_poses(poses);
   builder_.add_enabled(enabled);
-  builder_.add_setup_complete(setup_complete);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StayAlignedSettingsResponse> CreateStayAlignedSettingsResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPose>> *poses = nullptr) {
+  auto poses__ = poses ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPose>>(*poses) : 0;
+  return solarxr_protocol::rpc::CreateStayAlignedSettingsResponse(
+      _fbb,
+      enabled,
+      poses__);
 }
 
 struct ChangeStayAlignedSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ChangeStayAlignedSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ENABLED = 4,
-    VT_STANDING_ENABLED = 6,
-    VT_SITTING_ENABLED = 8,
-    VT_FLAT_ENABLED = 10
+    VT_POSE_TOGGLES = 6
   };
   bool enabled() const {
     return GetField<uint8_t>(VT_ENABLED, 0) != 0;
   }
-  bool standing_enabled() const {
-    return GetField<uint8_t>(VT_STANDING_ENABLED, 0) != 0;
-  }
-  bool sitting_enabled() const {
-    return GetField<uint8_t>(VT_SITTING_ENABLED, 0) != 0;
-  }
-  bool flat_enabled() const {
-    return GetField<uint8_t>(VT_FLAT_ENABLED, 0) != 0;
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPoseToggle>> *pose_toggles() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPoseToggle>> *>(VT_POSE_TOGGLES);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_STANDING_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_SITTING_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_FLAT_ENABLED, 1) &&
+           VerifyOffset(verifier, VT_POSE_TOGGLES) &&
+           verifier.VerifyVector(pose_toggles()) &&
+           verifier.VerifyVectorOfTables(pose_toggles()) &&
            verifier.EndTable();
   }
 };
@@ -14423,14 +14986,8 @@ struct ChangeStayAlignedSettingsRequestBuilder {
   void add_enabled(bool enabled) {
     fbb_.AddElement<uint8_t>(ChangeStayAlignedSettingsRequest::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
   }
-  void add_standing_enabled(bool standing_enabled) {
-    fbb_.AddElement<uint8_t>(ChangeStayAlignedSettingsRequest::VT_STANDING_ENABLED, static_cast<uint8_t>(standing_enabled), 0);
-  }
-  void add_sitting_enabled(bool sitting_enabled) {
-    fbb_.AddElement<uint8_t>(ChangeStayAlignedSettingsRequest::VT_SITTING_ENABLED, static_cast<uint8_t>(sitting_enabled), 0);
-  }
-  void add_flat_enabled(bool flat_enabled) {
-    fbb_.AddElement<uint8_t>(ChangeStayAlignedSettingsRequest::VT_FLAT_ENABLED, static_cast<uint8_t>(flat_enabled), 0);
+  void add_pose_toggles(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPoseToggle>>> pose_toggles) {
+    fbb_.AddOffset(ChangeStayAlignedSettingsRequest::VT_POSE_TOGGLES, pose_toggles);
   }
   explicit ChangeStayAlignedSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -14446,56 +15003,637 @@ struct ChangeStayAlignedSettingsRequestBuilder {
 inline flatbuffers::Offset<ChangeStayAlignedSettingsRequest> CreateChangeStayAlignedSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
     bool enabled = false,
-    bool standing_enabled = false,
-    bool sitting_enabled = false,
-    bool flat_enabled = false) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPoseToggle>>> pose_toggles = 0) {
   ChangeStayAlignedSettingsRequestBuilder builder_(_fbb);
-  builder_.add_flat_enabled(flat_enabled);
-  builder_.add_sitting_enabled(sitting_enabled);
-  builder_.add_standing_enabled(standing_enabled);
+  builder_.add_pose_toggles(pose_toggles);
   builder_.add_enabled(enabled);
   return builder_.Finish();
 }
 
-struct ChangeStayAlignedEnabledRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ChangeStayAlignedEnabledRequestBuilder Builder;
+inline flatbuffers::Offset<ChangeStayAlignedSettingsRequest> CreateChangeStayAlignedSettingsRequestDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPoseToggle>> *pose_toggles = nullptr) {
+  auto pose_toggles__ = pose_toggles ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedPoseToggle>>(*pose_toggles) : 0;
+  return solarxr_protocol::rpc::CreateChangeStayAlignedSettingsRequest(
+      _fbb,
+      enabled,
+      pose_toggles__);
+}
+
+struct StartStayAlignedPoseRecordingRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StartStayAlignedPoseRecordingRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ENABLED = 4
+    VT_POSE = 4
   };
-  bool enabled() const {
-    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  solarxr_protocol::rpc::StayAlignedRelaxedPose pose() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedRelaxedPose>(GetField<uint8_t>(VT_POSE, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_POSE, 1) &&
            verifier.EndTable();
   }
 };
 
-struct ChangeStayAlignedEnabledRequestBuilder {
-  typedef ChangeStayAlignedEnabledRequest Table;
+struct StartStayAlignedPoseRecordingRequestBuilder {
+  typedef StartStayAlignedPoseRecordingRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_enabled(bool enabled) {
-    fbb_.AddElement<uint8_t>(ChangeStayAlignedEnabledRequest::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  void add_pose(solarxr_protocol::rpc::StayAlignedRelaxedPose pose) {
+    fbb_.AddElement<uint8_t>(StartStayAlignedPoseRecordingRequest::VT_POSE, static_cast<uint8_t>(pose), 0);
   }
-  explicit ChangeStayAlignedEnabledRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit StartStayAlignedPoseRecordingRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ChangeStayAlignedEnabledRequest> Finish() {
+  flatbuffers::Offset<StartStayAlignedPoseRecordingRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ChangeStayAlignedEnabledRequest>(end);
+    auto o = flatbuffers::Offset<StartStayAlignedPoseRecordingRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ChangeStayAlignedEnabledRequest> CreateChangeStayAlignedEnabledRequest(
+inline flatbuffers::Offset<StartStayAlignedPoseRecordingRequest> CreateStartStayAlignedPoseRecordingRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    bool enabled = false) {
-  ChangeStayAlignedEnabledRequestBuilder builder_(_fbb);
+    solarxr_protocol::rpc::StayAlignedRelaxedPose pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::UNKNOWN) {
+  StartStayAlignedPoseRecordingRequestBuilder builder_(_fbb);
+  builder_.add_pose(pose);
+  return builder_.Finish();
+}
+
+struct CancelStayAlignedPoseRecordingRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CancelStayAlignedPoseRecordingRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CancelStayAlignedPoseRecordingRequestBuilder {
+  typedef CancelStayAlignedPoseRecordingRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit CancelStayAlignedPoseRecordingRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<CancelStayAlignedPoseRecordingRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<CancelStayAlignedPoseRecordingRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<CancelStayAlignedPoseRecordingRequest> CreateCancelStayAlignedPoseRecordingRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  CancelStayAlignedPoseRecordingRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct StayAlignedRecordingTracker FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedRecordingTrackerBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PART = 4,
+    VT_STATE = 6
+  };
+  solarxr_protocol::rpc::StayAlignedPart part() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedPart>(GetField<uint8_t>(VT_PART, 0));
+  }
+  solarxr_protocol::rpc::StayAlignedRecordingTrackerState state() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedRecordingTrackerState>(GetField<uint8_t>(VT_STATE, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_PART, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STATE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedRecordingTrackerBuilder {
+  typedef StayAlignedRecordingTracker Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_part(solarxr_protocol::rpc::StayAlignedPart part) {
+    fbb_.AddElement<uint8_t>(StayAlignedRecordingTracker::VT_PART, static_cast<uint8_t>(part), 0);
+  }
+  void add_state(solarxr_protocol::rpc::StayAlignedRecordingTrackerState state) {
+    fbb_.AddElement<uint8_t>(StayAlignedRecordingTracker::VT_STATE, static_cast<uint8_t>(state), 0);
+  }
+  explicit StayAlignedRecordingTrackerBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedRecordingTracker> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedRecordingTracker>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedRecordingTracker> CreateStayAlignedRecordingTracker(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::StayAlignedPart part = solarxr_protocol::rpc::StayAlignedPart::UPPER_BODY,
+    solarxr_protocol::rpc::StayAlignedRecordingTrackerState state = solarxr_protocol::rpc::StayAlignedRecordingTrackerState::STILL) {
+  StayAlignedRecordingTrackerBuilder builder_(_fbb);
+  builder_.add_state(state);
+  builder_.add_part(part);
+  return builder_.Finish();
+}
+
+struct StayAlignedPoseCountdown FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedPoseCountdownBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PROGRESS = 4,
+    VT_DURATION = 6
+  };
+  /// Seconds passed since the start of the countdown
+  int32_t progress() const {
+    return GetField<int32_t>(VT_PROGRESS, 0);
+  }
+  /// Seconds of the countdown
+  int32_t duration() const {
+    return GetField<int32_t>(VT_DURATION, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_PROGRESS, 4) &&
+           VerifyField<int32_t>(verifier, VT_DURATION, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedPoseCountdownBuilder {
+  typedef StayAlignedPoseCountdown Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_progress(int32_t progress) {
+    fbb_.AddElement<int32_t>(StayAlignedPoseCountdown::VT_PROGRESS, progress, 0);
+  }
+  void add_duration(int32_t duration) {
+    fbb_.AddElement<int32_t>(StayAlignedPoseCountdown::VT_DURATION, duration, 0);
+  }
+  explicit StayAlignedPoseCountdownBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedPoseCountdown> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedPoseCountdown>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedPoseCountdown> CreateStayAlignedPoseCountdown(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t progress = 0,
+    int32_t duration = 0) {
+  StayAlignedPoseCountdownBuilder builder_(_fbb);
+  builder_.add_duration(duration);
+  builder_.add_progress(progress);
+  return builder_.Finish();
+}
+
+struct StayAlignedPoseWaiting FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedPoseWaitingBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PROGRESS = 4,
+    VT_DURATION = 6,
+    VT_DETECTED_POSE = 8,
+    VT_TRACKERS = 10
+  };
+  /// Seconds passed since the start of the wait
+  int32_t progress() const {
+    return GetField<int32_t>(VT_PROGRESS, 0);
+  }
+  /// Seconds before the recording gives up
+  int32_t duration() const {
+    return GetField<int32_t>(VT_DURATION, 0);
+  }
+  /// The pose the user is in, UNKNOWN when the position matches no pose
+  solarxr_protocol::rpc::StayAlignedRelaxedPose detected_pose() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedRelaxedPose>(GetField<uint8_t>(VT_DETECTED_POSE, 0));
+  }
+  /// The parts that have a tracker, a part without one is left out
+  const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedRecordingTracker>> *trackers() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedRecordingTracker>> *>(VT_TRACKERS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_PROGRESS, 4) &&
+           VerifyField<int32_t>(verifier, VT_DURATION, 4) &&
+           VerifyField<uint8_t>(verifier, VT_DETECTED_POSE, 1) &&
+           VerifyOffset(verifier, VT_TRACKERS) &&
+           verifier.VerifyVector(trackers()) &&
+           verifier.VerifyVectorOfTables(trackers()) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedPoseWaitingBuilder {
+  typedef StayAlignedPoseWaiting Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_progress(int32_t progress) {
+    fbb_.AddElement<int32_t>(StayAlignedPoseWaiting::VT_PROGRESS, progress, 0);
+  }
+  void add_duration(int32_t duration) {
+    fbb_.AddElement<int32_t>(StayAlignedPoseWaiting::VT_DURATION, duration, 0);
+  }
+  void add_detected_pose(solarxr_protocol::rpc::StayAlignedRelaxedPose detected_pose) {
+    fbb_.AddElement<uint8_t>(StayAlignedPoseWaiting::VT_DETECTED_POSE, static_cast<uint8_t>(detected_pose), 0);
+  }
+  void add_trackers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedRecordingTracker>>> trackers) {
+    fbb_.AddOffset(StayAlignedPoseWaiting::VT_TRACKERS, trackers);
+  }
+  explicit StayAlignedPoseWaitingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedPoseWaiting> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedPoseWaiting>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedPoseWaiting> CreateStayAlignedPoseWaiting(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t progress = 0,
+    int32_t duration = 0,
+    solarxr_protocol::rpc::StayAlignedRelaxedPose detected_pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::UNKNOWN,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedRecordingTracker>>> trackers = 0) {
+  StayAlignedPoseWaitingBuilder builder_(_fbb);
+  builder_.add_trackers(trackers);
+  builder_.add_duration(duration);
+  builder_.add_progress(progress);
+  builder_.add_detected_pose(detected_pose);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StayAlignedPoseWaiting> CreateStayAlignedPoseWaitingDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t progress = 0,
+    int32_t duration = 0,
+    solarxr_protocol::rpc::StayAlignedRelaxedPose detected_pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::UNKNOWN,
+    const std::vector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedRecordingTracker>> *trackers = nullptr) {
+  auto trackers__ = trackers ? _fbb.CreateVector<flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedRecordingTracker>>(*trackers) : 0;
+  return solarxr_protocol::rpc::CreateStayAlignedPoseWaiting(
+      _fbb,
+      progress,
+      duration,
+      detected_pose,
+      trackers__);
+}
+
+struct StayAlignedPoseRecordingStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedPoseRecordingStatusResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_POSE = 4,
+    VT_LIFECYCLE = 6,
+    VT_DETAIL_TYPE = 8,
+    VT_DETAIL = 10,
+    VT_FAILURE = 12
+  };
+  solarxr_protocol::rpc::StayAlignedRelaxedPose pose() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedRelaxedPose>(GetField<uint8_t>(VT_POSE, 0));
+  }
+  solarxr_protocol::rpc::StayAlignedPoseRecordingLifecycle lifecycle() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedPoseRecordingLifecycle>(GetField<uint8_t>(VT_LIFECYCLE, 0));
+  }
+  solarxr_protocol::rpc::StayAlignedPoseRecordingDetail detail_type() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedPoseRecordingDetail>(GetField<uint8_t>(VT_DETAIL_TYPE, 0));
+  }
+  const void *detail() const {
+    return GetPointer<const void *>(VT_DETAIL);
+  }
+  template<typename T> const T *detail_as() const;
+  const solarxr_protocol::rpc::StayAlignedPoseCountdown *detail_as_StayAlignedPoseCountdown() const {
+    return detail_type() == solarxr_protocol::rpc::StayAlignedPoseRecordingDetail::StayAlignedPoseCountdown ? static_cast<const solarxr_protocol::rpc::StayAlignedPoseCountdown *>(detail()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StayAlignedPoseWaiting *detail_as_StayAlignedPoseWaiting() const {
+    return detail_type() == solarxr_protocol::rpc::StayAlignedPoseRecordingDetail::StayAlignedPoseWaiting ? static_cast<const solarxr_protocol::rpc::StayAlignedPoseWaiting *>(detail()) : nullptr;
+  }
+  solarxr_protocol::rpc::StayAlignedPoseRecordingFailure failure() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedPoseRecordingFailure>(GetField<uint8_t>(VT_FAILURE, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_POSE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LIFECYCLE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_DETAIL_TYPE, 1) &&
+           VerifyOffset(verifier, VT_DETAIL) &&
+           VerifyStayAlignedPoseRecordingDetail(verifier, detail(), detail_type()) &&
+           VerifyField<uint8_t>(verifier, VT_FAILURE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+template<> inline const solarxr_protocol::rpc::StayAlignedPoseCountdown *StayAlignedPoseRecordingStatusResponse::detail_as<solarxr_protocol::rpc::StayAlignedPoseCountdown>() const {
+  return detail_as_StayAlignedPoseCountdown();
+}
+
+template<> inline const solarxr_protocol::rpc::StayAlignedPoseWaiting *StayAlignedPoseRecordingStatusResponse::detail_as<solarxr_protocol::rpc::StayAlignedPoseWaiting>() const {
+  return detail_as_StayAlignedPoseWaiting();
+}
+
+struct StayAlignedPoseRecordingStatusResponseBuilder {
+  typedef StayAlignedPoseRecordingStatusResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_pose(solarxr_protocol::rpc::StayAlignedRelaxedPose pose) {
+    fbb_.AddElement<uint8_t>(StayAlignedPoseRecordingStatusResponse::VT_POSE, static_cast<uint8_t>(pose), 0);
+  }
+  void add_lifecycle(solarxr_protocol::rpc::StayAlignedPoseRecordingLifecycle lifecycle) {
+    fbb_.AddElement<uint8_t>(StayAlignedPoseRecordingStatusResponse::VT_LIFECYCLE, static_cast<uint8_t>(lifecycle), 0);
+  }
+  void add_detail_type(solarxr_protocol::rpc::StayAlignedPoseRecordingDetail detail_type) {
+    fbb_.AddElement<uint8_t>(StayAlignedPoseRecordingStatusResponse::VT_DETAIL_TYPE, static_cast<uint8_t>(detail_type), 0);
+  }
+  void add_detail(flatbuffers::Offset<void> detail) {
+    fbb_.AddOffset(StayAlignedPoseRecordingStatusResponse::VT_DETAIL, detail);
+  }
+  void add_failure(solarxr_protocol::rpc::StayAlignedPoseRecordingFailure failure) {
+    fbb_.AddElement<uint8_t>(StayAlignedPoseRecordingStatusResponse::VT_FAILURE, static_cast<uint8_t>(failure), 0);
+  }
+  explicit StayAlignedPoseRecordingStatusResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedPoseRecordingStatusResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedPoseRecordingStatusResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedPoseRecordingStatusResponse> CreateStayAlignedPoseRecordingStatusResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::StayAlignedRelaxedPose pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::UNKNOWN,
+    solarxr_protocol::rpc::StayAlignedPoseRecordingLifecycle lifecycle = solarxr_protocol::rpc::StayAlignedPoseRecordingLifecycle::RUNNING,
+    solarxr_protocol::rpc::StayAlignedPoseRecordingDetail detail_type = solarxr_protocol::rpc::StayAlignedPoseRecordingDetail::NONE,
+    flatbuffers::Offset<void> detail = 0,
+    solarxr_protocol::rpc::StayAlignedPoseRecordingFailure failure = solarxr_protocol::rpc::StayAlignedPoseRecordingFailure::NONE) {
+  StayAlignedPoseRecordingStatusResponseBuilder builder_(_fbb);
+  builder_.add_detail(detail);
+  builder_.add_failure(failure);
+  builder_.add_detail_type(detail_type);
+  builder_.add_lifecycle(lifecycle);
+  builder_.add_pose(pose);
+  return builder_.Finish();
+}
+
+struct StartStayAlignedStatusRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StartStayAlignedStatusRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct StartStayAlignedStatusRequestBuilder {
+  typedef StartStayAlignedStatusRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit StartStayAlignedStatusRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StartStayAlignedStatusRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StartStayAlignedStatusRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StartStayAlignedStatusRequest> CreateStartStayAlignedStatusRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  StartStayAlignedStatusRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct StopStayAlignedStatusRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StopStayAlignedStatusRequestBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct StopStayAlignedStatusRequestBuilder {
+  typedef StopStayAlignedStatusRequest Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit StopStayAlignedStatusRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StopStayAlignedStatusRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StopStayAlignedStatusRequest>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StopStayAlignedStatusRequest> CreateStopStayAlignedStatusRequest(
+    flatbuffers::FlatBufferBuilder &_fbb) {
+  StopStayAlignedStatusRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct StayAlignedDetectedPoseState FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedDetectedPoseStateBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_POSE = 4,
+    VT_STATE = 6
+  };
+  solarxr_protocol::rpc::StayAlignedRelaxedPose pose() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedRelaxedPose>(GetField<uint8_t>(VT_POSE, 0));
+  }
+  solarxr_protocol::rpc::StayAlignedPoseState state() const {
+    return static_cast<solarxr_protocol::rpc::StayAlignedPoseState>(GetField<uint8_t>(VT_STATE, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_POSE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STATE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedDetectedPoseStateBuilder {
+  typedef StayAlignedDetectedPoseState Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_pose(solarxr_protocol::rpc::StayAlignedRelaxedPose pose) {
+    fbb_.AddElement<uint8_t>(StayAlignedDetectedPoseState::VT_POSE, static_cast<uint8_t>(pose), 0);
+  }
+  void add_state(solarxr_protocol::rpc::StayAlignedPoseState state) {
+    fbb_.AddElement<uint8_t>(StayAlignedDetectedPoseState::VT_STATE, static_cast<uint8_t>(state), 0);
+  }
+  explicit StayAlignedDetectedPoseStateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedDetectedPoseState> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedDetectedPoseState>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedDetectedPoseState> CreateStayAlignedDetectedPoseState(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::rpc::StayAlignedRelaxedPose pose = solarxr_protocol::rpc::StayAlignedRelaxedPose::UNKNOWN,
+    solarxr_protocol::rpc::StayAlignedPoseState state = solarxr_protocol::rpc::StayAlignedPoseState::NOT_RECORDED) {
+  StayAlignedDetectedPoseStateBuilder builder_(_fbb);
+  builder_.add_state(state);
+  builder_.add_pose(pose);
+  return builder_.Finish();
+}
+
+struct StayAlignedTrackerCorrection FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedTrackerCorrectionBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_BODY_PART = 4,
+    VT_DEGREES = 6
+  };
+  solarxr_protocol::datatypes::BodyPart body_part() const {
+    return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
+  }
+  float degrees() const {
+    return GetField<float>(VT_DEGREES, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
+           VerifyField<float>(verifier, VT_DEGREES, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedTrackerCorrectionBuilder {
+  typedef StayAlignedTrackerCorrection Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_body_part(solarxr_protocol::datatypes::BodyPart body_part) {
+    fbb_.AddElement<uint8_t>(StayAlignedTrackerCorrection::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
+  }
+  void add_degrees(float degrees) {
+    fbb_.AddElement<float>(StayAlignedTrackerCorrection::VT_DEGREES, degrees, 0.0f);
+  }
+  explicit StayAlignedTrackerCorrectionBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedTrackerCorrection> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedTrackerCorrection>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedTrackerCorrection> CreateStayAlignedTrackerCorrection(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
+    float degrees = 0.0f) {
+  StayAlignedTrackerCorrectionBuilder builder_(_fbb);
+  builder_.add_degrees(degrees);
+  builder_.add_body_part(body_part);
+  return builder_.Finish();
+}
+
+struct StayAlignedStatusResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StayAlignedStatusResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ENABLED = 4,
+    VT_DETECTED_POSE = 6,
+    VT_MISSING_PARTS = 8,
+    VT_LARGEST_CORRECTION = 10
+  };
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
+  /// The pose the user is in, null when the position matches no pose
+  const solarxr_protocol::rpc::StayAlignedDetectedPoseState *detected_pose() const {
+    return GetPointer<const solarxr_protocol::rpc::StayAlignedDetectedPoseState *>(VT_DETECTED_POSE);
+  }
+  /// The required parts that have no tracker. Recording a pose needs all of them.
+  const flatbuffers::Vector<solarxr_protocol::rpc::StayAlignedPart> *missing_parts() const {
+    return GetPointer<const flatbuffers::Vector<solarxr_protocol::rpc::StayAlignedPart> *>(VT_MISSING_PARTS);
+  }
+  /// Over every assigned tracker, null while Stay Aligned is off or when nothing was corrected
+  const solarxr_protocol::rpc::StayAlignedTrackerCorrection *largest_correction() const {
+    return GetPointer<const solarxr_protocol::rpc::StayAlignedTrackerCorrection *>(VT_LARGEST_CORRECTION);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyOffset(verifier, VT_DETECTED_POSE) &&
+           verifier.VerifyTable(detected_pose()) &&
+           VerifyOffset(verifier, VT_MISSING_PARTS) &&
+           verifier.VerifyVector(missing_parts()) &&
+           VerifyOffset(verifier, VT_LARGEST_CORRECTION) &&
+           verifier.VerifyTable(largest_correction()) &&
+           verifier.EndTable();
+  }
+};
+
+struct StayAlignedStatusResponseBuilder {
+  typedef StayAlignedStatusResponse Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(StayAlignedStatusResponse::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  void add_detected_pose(flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedDetectedPoseState> detected_pose) {
+    fbb_.AddOffset(StayAlignedStatusResponse::VT_DETECTED_POSE, detected_pose);
+  }
+  void add_missing_parts(flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::StayAlignedPart>> missing_parts) {
+    fbb_.AddOffset(StayAlignedStatusResponse::VT_MISSING_PARTS, missing_parts);
+  }
+  void add_largest_correction(flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedTrackerCorrection> largest_correction) {
+    fbb_.AddOffset(StayAlignedStatusResponse::VT_LARGEST_CORRECTION, largest_correction);
+  }
+  explicit StayAlignedStatusResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<StayAlignedStatusResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StayAlignedStatusResponse>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StayAlignedStatusResponse> CreateStayAlignedStatusResponse(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
+    flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedDetectedPoseState> detected_pose = 0,
+    flatbuffers::Offset<flatbuffers::Vector<solarxr_protocol::rpc::StayAlignedPart>> missing_parts = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedTrackerCorrection> largest_correction = 0) {
+  StayAlignedStatusResponseBuilder builder_(_fbb);
+  builder_.add_largest_correction(largest_correction);
+  builder_.add_missing_parts(missing_parts);
+  builder_.add_detected_pose(detected_pose);
   builder_.add_enabled(enabled);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StayAlignedStatusResponse> CreateStayAlignedStatusResponseDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
+    flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedDetectedPoseState> detected_pose = 0,
+    const std::vector<solarxr_protocol::rpc::StayAlignedPart> *missing_parts = nullptr,
+    flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedTrackerCorrection> largest_correction = 0) {
+  auto missing_parts__ = missing_parts ? _fbb.CreateVector<solarxr_protocol::rpc::StayAlignedPart>(*missing_parts) : 0;
+  return solarxr_protocol::rpc::CreateStayAlignedStatusResponse(
+      _fbb,
+      enabled,
+      detected_pose,
+      missing_parts__,
+      largest_correction);
 }
 
 struct UpdateTrackerRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -14626,366 +15764,273 @@ inline flatbuffers::Offset<ResetTrackerAssignments> CreateResetTrackerAssignment
   return builder_.Finish();
 }
 
-struct TapDetectionSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TapDetectionSettingsRequestBuilder Builder;
+struct TrackerActionSettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerActionSettingsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ENABLED = 4,
+    VT_DELAY = 6,
+    VT_BODY_PART = 8,
+    VT_METHOD = 10,
+    VT_TAPS = 12
+  };
+  bool enabled() const {
+    return GetField<uint8_t>(VT_ENABLED, 0) != 0;
+  }
+  float delay() const {
+    return GetField<float>(VT_DELAY, 0.0f);
+  }
+  solarxr_protocol::datatypes::BodyPart body_part() const {
+    return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_BODY_PART, 0));
+  }
+  solarxr_protocol::datatypes::TrackerActionMethod method() const {
+    return static_cast<solarxr_protocol::datatypes::TrackerActionMethod>(GetField<uint8_t>(VT_METHOD, 0));
+  }
+  uint8_t taps() const {
+    return GetField<uint8_t>(VT_TAPS, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ENABLED, 1) &&
+           VerifyField<float>(verifier, VT_DELAY, 4) &&
+           VerifyField<uint8_t>(verifier, VT_BODY_PART, 1) &&
+           VerifyField<uint8_t>(verifier, VT_METHOD, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TAPS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct TrackerActionSettingsBuilder {
+  typedef TrackerActionSettings Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_enabled(bool enabled) {
+    fbb_.AddElement<uint8_t>(TrackerActionSettings::VT_ENABLED, static_cast<uint8_t>(enabled), 0);
+  }
+  void add_delay(float delay) {
+    fbb_.AddElement<float>(TrackerActionSettings::VT_DELAY, delay, 0.0f);
+  }
+  void add_body_part(solarxr_protocol::datatypes::BodyPart body_part) {
+    fbb_.AddElement<uint8_t>(TrackerActionSettings::VT_BODY_PART, static_cast<uint8_t>(body_part), 0);
+  }
+  void add_method(solarxr_protocol::datatypes::TrackerActionMethod method) {
+    fbb_.AddElement<uint8_t>(TrackerActionSettings::VT_METHOD, static_cast<uint8_t>(method), 0);
+  }
+  void add_taps(uint8_t taps) {
+    fbb_.AddElement<uint8_t>(TrackerActionSettings::VT_TAPS, taps, 0);
+  }
+  explicit TrackerActionSettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TrackerActionSettings> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TrackerActionSettings>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TrackerActionSettings> CreateTrackerActionSettings(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool enabled = false,
+    float delay = 0.0f,
+    solarxr_protocol::datatypes::BodyPart body_part = solarxr_protocol::datatypes::BodyPart::NONE,
+    solarxr_protocol::datatypes::TrackerActionMethod method = solarxr_protocol::datatypes::TrackerActionMethod::TAP,
+    uint8_t taps = 0) {
+  TrackerActionSettingsBuilder builder_(_fbb);
+  builder_.add_delay(delay);
+  builder_.add_taps(taps);
+  builder_.add_method(method);
+  builder_.add_body_part(body_part);
+  builder_.add_enabled(enabled);
+  return builder_.Finish();
+}
+
+struct TrackerActionSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerActionSettingsRequestBuilder Builder;
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
 };
 
-struct TapDetectionSettingsRequestBuilder {
-  typedef TapDetectionSettingsRequest Table;
+struct TrackerActionSettingsRequestBuilder {
+  typedef TrackerActionSettingsRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  explicit TapDetectionSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TrackerActionSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TapDetectionSettingsRequest> Finish() {
+  flatbuffers::Offset<TrackerActionSettingsRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TapDetectionSettingsRequest>(end);
+    auto o = flatbuffers::Offset<TrackerActionSettingsRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TapDetectionSettingsRequest> CreateTapDetectionSettingsRequest(
+inline flatbuffers::Offset<TrackerActionSettingsRequest> CreateTrackerActionSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb) {
-  TapDetectionSettingsRequestBuilder builder_(_fbb);
+  TrackerActionSettingsRequestBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
-struct TapDetectionSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TapDetectionSettingsResponseBuilder Builder;
+struct TrackerActionSettingsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerActionSettingsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_FULL_RESET_DELAY = 4,
-    VT_FULL_RESET_ENABLED = 6,
-    VT_FULL_RESET_TAPS = 8,
-    VT_YAW_RESET_DELAY = 10,
-    VT_YAW_RESET_ENABLED = 12,
-    VT_YAW_RESET_TAPS = 14,
-    VT_MOUNTING_RESET_DELAY = 16,
-    VT_MOUNTING_RESET_ENABLED = 18,
-    VT_MOUNTING_RESET_TAPS = 20,
-    VT_NUMBER_TRACKERS_OVER_THRESHOLD = 22,
-    VT_YAW_RESET_TRACKER = 24,
-    VT_FULL_RESET_TRACKER = 26,
-    VT_MOUNTING_RESET_TRACKER = 28
+    VT_FULL_RESET_ACTION = 4,
+    VT_YAW_RESET_ACTION = 6,
+    VT_MOUNTING_RESET_ACTION = 8,
+    VT_TAPS_TRACKERS_OVER_THRESHOLD = 10
   };
-  flatbuffers::Optional<float> full_reset_delay() const {
-    return GetOptional<float, float>(VT_FULL_RESET_DELAY);
+  const solarxr_protocol::rpc::TrackerActionSettings *full_reset_action() const {
+    return GetPointer<const solarxr_protocol::rpc::TrackerActionSettings *>(VT_FULL_RESET_ACTION);
   }
-  flatbuffers::Optional<bool> full_reset_enabled() const {
-    return GetOptional<uint8_t, bool>(VT_FULL_RESET_ENABLED);
+  const solarxr_protocol::rpc::TrackerActionSettings *yaw_reset_action() const {
+    return GetPointer<const solarxr_protocol::rpc::TrackerActionSettings *>(VT_YAW_RESET_ACTION);
   }
-  flatbuffers::Optional<uint8_t> full_reset_taps() const {
-    return GetOptional<uint8_t, uint8_t>(VT_FULL_RESET_TAPS);
+  const solarxr_protocol::rpc::TrackerActionSettings *mounting_reset_action() const {
+    return GetPointer<const solarxr_protocol::rpc::TrackerActionSettings *>(VT_MOUNTING_RESET_ACTION);
   }
-  flatbuffers::Optional<float> yaw_reset_delay() const {
-    return GetOptional<float, float>(VT_YAW_RESET_DELAY);
-  }
-  flatbuffers::Optional<bool> yaw_reset_enabled() const {
-    return GetOptional<uint8_t, bool>(VT_YAW_RESET_ENABLED);
-  }
-  flatbuffers::Optional<uint8_t> yaw_reset_taps() const {
-    return GetOptional<uint8_t, uint8_t>(VT_YAW_RESET_TAPS);
-  }
-  flatbuffers::Optional<float> mounting_reset_delay() const {
-    return GetOptional<float, float>(VT_MOUNTING_RESET_DELAY);
-  }
-  flatbuffers::Optional<bool> mounting_reset_enabled() const {
-    return GetOptional<uint8_t, bool>(VT_MOUNTING_RESET_ENABLED);
-  }
-  flatbuffers::Optional<uint8_t> mounting_reset_taps() const {
-    return GetOptional<uint8_t, uint8_t>(VT_MOUNTING_RESET_TAPS);
-  }
-  flatbuffers::Optional<uint8_t> number_trackers_over_threshold() const {
-    return GetOptional<uint8_t, uint8_t>(VT_NUMBER_TRACKERS_OVER_THRESHOLD);
-  }
-  flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> yaw_reset_tracker() const {
-    return GetOptional<uint8_t, solarxr_protocol::datatypes::BodyPart>(VT_YAW_RESET_TRACKER);
-  }
-  flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> full_reset_tracker() const {
-    return GetOptional<uint8_t, solarxr_protocol::datatypes::BodyPart>(VT_FULL_RESET_TRACKER);
-  }
-  flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> mounting_reset_tracker() const {
-    return GetOptional<uint8_t, solarxr_protocol::datatypes::BodyPart>(VT_MOUNTING_RESET_TRACKER);
+  uint8_t taps_trackers_over_threshold() const {
+    return GetField<uint8_t>(VT_TAPS_TRACKERS_OVER_THRESHOLD, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_FULL_RESET_DELAY, 4) &&
-           VerifyField<uint8_t>(verifier, VT_FULL_RESET_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_FULL_RESET_TAPS, 1) &&
-           VerifyField<float>(verifier, VT_YAW_RESET_DELAY, 4) &&
-           VerifyField<uint8_t>(verifier, VT_YAW_RESET_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_YAW_RESET_TAPS, 1) &&
-           VerifyField<float>(verifier, VT_MOUNTING_RESET_DELAY, 4) &&
-           VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_TAPS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_NUMBER_TRACKERS_OVER_THRESHOLD, 1) &&
-           VerifyField<uint8_t>(verifier, VT_YAW_RESET_TRACKER, 1) &&
-           VerifyField<uint8_t>(verifier, VT_FULL_RESET_TRACKER, 1) &&
-           VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_TRACKER, 1) &&
+           VerifyOffset(verifier, VT_FULL_RESET_ACTION) &&
+           verifier.VerifyTable(full_reset_action()) &&
+           VerifyOffset(verifier, VT_YAW_RESET_ACTION) &&
+           verifier.VerifyTable(yaw_reset_action()) &&
+           VerifyOffset(verifier, VT_MOUNTING_RESET_ACTION) &&
+           verifier.VerifyTable(mounting_reset_action()) &&
+           VerifyField<uint8_t>(verifier, VT_TAPS_TRACKERS_OVER_THRESHOLD, 1) &&
            verifier.EndTable();
   }
 };
 
-struct TapDetectionSettingsResponseBuilder {
-  typedef TapDetectionSettingsResponse Table;
+struct TrackerActionSettingsResponseBuilder {
+  typedef TrackerActionSettingsResponse Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_full_reset_delay(float full_reset_delay) {
-    fbb_.AddElement<float>(TapDetectionSettingsResponse::VT_FULL_RESET_DELAY, full_reset_delay);
+  void add_full_reset_action(flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> full_reset_action) {
+    fbb_.AddOffset(TrackerActionSettingsResponse::VT_FULL_RESET_ACTION, full_reset_action);
   }
-  void add_full_reset_enabled(bool full_reset_enabled) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_FULL_RESET_ENABLED, static_cast<uint8_t>(full_reset_enabled));
+  void add_yaw_reset_action(flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> yaw_reset_action) {
+    fbb_.AddOffset(TrackerActionSettingsResponse::VT_YAW_RESET_ACTION, yaw_reset_action);
   }
-  void add_full_reset_taps(uint8_t full_reset_taps) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_FULL_RESET_TAPS, full_reset_taps);
+  void add_mounting_reset_action(flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> mounting_reset_action) {
+    fbb_.AddOffset(TrackerActionSettingsResponse::VT_MOUNTING_RESET_ACTION, mounting_reset_action);
   }
-  void add_yaw_reset_delay(float yaw_reset_delay) {
-    fbb_.AddElement<float>(TapDetectionSettingsResponse::VT_YAW_RESET_DELAY, yaw_reset_delay);
+  void add_taps_trackers_over_threshold(uint8_t taps_trackers_over_threshold) {
+    fbb_.AddElement<uint8_t>(TrackerActionSettingsResponse::VT_TAPS_TRACKERS_OVER_THRESHOLD, taps_trackers_over_threshold, 0);
   }
-  void add_yaw_reset_enabled(bool yaw_reset_enabled) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_YAW_RESET_ENABLED, static_cast<uint8_t>(yaw_reset_enabled));
-  }
-  void add_yaw_reset_taps(uint8_t yaw_reset_taps) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_YAW_RESET_TAPS, yaw_reset_taps);
-  }
-  void add_mounting_reset_delay(float mounting_reset_delay) {
-    fbb_.AddElement<float>(TapDetectionSettingsResponse::VT_MOUNTING_RESET_DELAY, mounting_reset_delay);
-  }
-  void add_mounting_reset_enabled(bool mounting_reset_enabled) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_MOUNTING_RESET_ENABLED, static_cast<uint8_t>(mounting_reset_enabled));
-  }
-  void add_mounting_reset_taps(uint8_t mounting_reset_taps) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_MOUNTING_RESET_TAPS, mounting_reset_taps);
-  }
-  void add_number_trackers_over_threshold(uint8_t number_trackers_over_threshold) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_NUMBER_TRACKERS_OVER_THRESHOLD, number_trackers_over_threshold);
-  }
-  void add_yaw_reset_tracker(solarxr_protocol::datatypes::BodyPart yaw_reset_tracker) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_YAW_RESET_TRACKER, static_cast<uint8_t>(yaw_reset_tracker));
-  }
-  void add_full_reset_tracker(solarxr_protocol::datatypes::BodyPart full_reset_tracker) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_FULL_RESET_TRACKER, static_cast<uint8_t>(full_reset_tracker));
-  }
-  void add_mounting_reset_tracker(solarxr_protocol::datatypes::BodyPart mounting_reset_tracker) {
-    fbb_.AddElement<uint8_t>(TapDetectionSettingsResponse::VT_MOUNTING_RESET_TRACKER, static_cast<uint8_t>(mounting_reset_tracker));
-  }
-  explicit TapDetectionSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TrackerActionSettingsResponseBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TapDetectionSettingsResponse> Finish() {
+  flatbuffers::Offset<TrackerActionSettingsResponse> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TapDetectionSettingsResponse>(end);
+    auto o = flatbuffers::Offset<TrackerActionSettingsResponse>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TapDetectionSettingsResponse> CreateTapDetectionSettingsResponse(
+inline flatbuffers::Offset<TrackerActionSettingsResponse> CreateTrackerActionSettingsResponse(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<float> full_reset_delay = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> full_reset_enabled = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> full_reset_taps = flatbuffers::nullopt,
-    flatbuffers::Optional<float> yaw_reset_delay = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> yaw_reset_enabled = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> yaw_reset_taps = flatbuffers::nullopt,
-    flatbuffers::Optional<float> mounting_reset_delay = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> mounting_reset_enabled = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> mounting_reset_taps = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> number_trackers_over_threshold = flatbuffers::nullopt,
-    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> yaw_reset_tracker = flatbuffers::nullopt,
-    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> full_reset_tracker = flatbuffers::nullopt,
-    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> mounting_reset_tracker = flatbuffers::nullopt) {
-  TapDetectionSettingsResponseBuilder builder_(_fbb);
-  if(mounting_reset_delay) { builder_.add_mounting_reset_delay(*mounting_reset_delay); }
-  if(yaw_reset_delay) { builder_.add_yaw_reset_delay(*yaw_reset_delay); }
-  if(full_reset_delay) { builder_.add_full_reset_delay(*full_reset_delay); }
-  if(mounting_reset_tracker) { builder_.add_mounting_reset_tracker(*mounting_reset_tracker); }
-  if(full_reset_tracker) { builder_.add_full_reset_tracker(*full_reset_tracker); }
-  if(yaw_reset_tracker) { builder_.add_yaw_reset_tracker(*yaw_reset_tracker); }
-  if(number_trackers_over_threshold) { builder_.add_number_trackers_over_threshold(*number_trackers_over_threshold); }
-  if(mounting_reset_taps) { builder_.add_mounting_reset_taps(*mounting_reset_taps); }
-  if(mounting_reset_enabled) { builder_.add_mounting_reset_enabled(*mounting_reset_enabled); }
-  if(yaw_reset_taps) { builder_.add_yaw_reset_taps(*yaw_reset_taps); }
-  if(yaw_reset_enabled) { builder_.add_yaw_reset_enabled(*yaw_reset_enabled); }
-  if(full_reset_taps) { builder_.add_full_reset_taps(*full_reset_taps); }
-  if(full_reset_enabled) { builder_.add_full_reset_enabled(*full_reset_enabled); }
+    flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> full_reset_action = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> yaw_reset_action = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> mounting_reset_action = 0,
+    uint8_t taps_trackers_over_threshold = 0) {
+  TrackerActionSettingsResponseBuilder builder_(_fbb);
+  builder_.add_mounting_reset_action(mounting_reset_action);
+  builder_.add_yaw_reset_action(yaw_reset_action);
+  builder_.add_full_reset_action(full_reset_action);
+  builder_.add_taps_trackers_over_threshold(taps_trackers_over_threshold);
   return builder_.Finish();
 }
 
-struct ChangeTapDetectionSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ChangeTapDetectionSettingsRequestBuilder Builder;
+struct ChangeTrackerActionSettingsRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ChangeTrackerActionSettingsRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_FULL_RESET_DELAY = 4,
-    VT_FULL_RESET_ENABLED = 6,
-    VT_FULL_RESET_TAPS = 8,
-    VT_YAW_RESET_DELAY = 10,
-    VT_YAW_RESET_ENABLED = 12,
-    VT_YAW_RESET_TAPS = 14,
-    VT_MOUNTING_RESET_DELAY = 16,
-    VT_MOUNTING_RESET_ENABLED = 18,
-    VT_MOUNTING_RESET_TAPS = 20,
-    VT_NUMBER_TRACKERS_OVER_THRESHOLD = 22,
-    VT_YAW_RESET_TRACKER = 24,
-    VT_FULL_RESET_TRACKER = 26,
-    VT_MOUNTING_RESET_TRACKER = 28
+    VT_FULL_RESET_ACTION = 4,
+    VT_YAW_RESET_ACTION = 6,
+    VT_MOUNTING_RESET_ACTION = 8,
+    VT_TAPS_TRACKERS_OVER_THRESHOLD = 10
   };
-  flatbuffers::Optional<float> full_reset_delay() const {
-    return GetOptional<float, float>(VT_FULL_RESET_DELAY);
+  const solarxr_protocol::rpc::TrackerActionSettings *full_reset_action() const {
+    return GetPointer<const solarxr_protocol::rpc::TrackerActionSettings *>(VT_FULL_RESET_ACTION);
   }
-  flatbuffers::Optional<bool> full_reset_enabled() const {
-    return GetOptional<uint8_t, bool>(VT_FULL_RESET_ENABLED);
+  const solarxr_protocol::rpc::TrackerActionSettings *yaw_reset_action() const {
+    return GetPointer<const solarxr_protocol::rpc::TrackerActionSettings *>(VT_YAW_RESET_ACTION);
   }
-  flatbuffers::Optional<uint8_t> full_reset_taps() const {
-    return GetOptional<uint8_t, uint8_t>(VT_FULL_RESET_TAPS);
+  const solarxr_protocol::rpc::TrackerActionSettings *mounting_reset_action() const {
+    return GetPointer<const solarxr_protocol::rpc::TrackerActionSettings *>(VT_MOUNTING_RESET_ACTION);
   }
-  flatbuffers::Optional<float> yaw_reset_delay() const {
-    return GetOptional<float, float>(VT_YAW_RESET_DELAY);
-  }
-  flatbuffers::Optional<bool> yaw_reset_enabled() const {
-    return GetOptional<uint8_t, bool>(VT_YAW_RESET_ENABLED);
-  }
-  flatbuffers::Optional<uint8_t> yaw_reset_taps() const {
-    return GetOptional<uint8_t, uint8_t>(VT_YAW_RESET_TAPS);
-  }
-  flatbuffers::Optional<float> mounting_reset_delay() const {
-    return GetOptional<float, float>(VT_MOUNTING_RESET_DELAY);
-  }
-  flatbuffers::Optional<bool> mounting_reset_enabled() const {
-    return GetOptional<uint8_t, bool>(VT_MOUNTING_RESET_ENABLED);
-  }
-  flatbuffers::Optional<uint8_t> mounting_reset_taps() const {
-    return GetOptional<uint8_t, uint8_t>(VT_MOUNTING_RESET_TAPS);
-  }
-  flatbuffers::Optional<uint8_t> number_trackers_over_threshold() const {
-    return GetOptional<uint8_t, uint8_t>(VT_NUMBER_TRACKERS_OVER_THRESHOLD);
-  }
-  flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> yaw_reset_tracker() const {
-    return GetOptional<uint8_t, solarxr_protocol::datatypes::BodyPart>(VT_YAW_RESET_TRACKER);
-  }
-  flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> full_reset_tracker() const {
-    return GetOptional<uint8_t, solarxr_protocol::datatypes::BodyPart>(VT_FULL_RESET_TRACKER);
-  }
-  flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> mounting_reset_tracker() const {
-    return GetOptional<uint8_t, solarxr_protocol::datatypes::BodyPart>(VT_MOUNTING_RESET_TRACKER);
+  uint8_t taps_trackers_over_threshold() const {
+    return GetField<uint8_t>(VT_TAPS_TRACKERS_OVER_THRESHOLD, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_FULL_RESET_DELAY, 4) &&
-           VerifyField<uint8_t>(verifier, VT_FULL_RESET_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_FULL_RESET_TAPS, 1) &&
-           VerifyField<float>(verifier, VT_YAW_RESET_DELAY, 4) &&
-           VerifyField<uint8_t>(verifier, VT_YAW_RESET_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_YAW_RESET_TAPS, 1) &&
-           VerifyField<float>(verifier, VT_MOUNTING_RESET_DELAY, 4) &&
-           VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_ENABLED, 1) &&
-           VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_TAPS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_NUMBER_TRACKERS_OVER_THRESHOLD, 1) &&
-           VerifyField<uint8_t>(verifier, VT_YAW_RESET_TRACKER, 1) &&
-           VerifyField<uint8_t>(verifier, VT_FULL_RESET_TRACKER, 1) &&
-           VerifyField<uint8_t>(verifier, VT_MOUNTING_RESET_TRACKER, 1) &&
+           VerifyOffset(verifier, VT_FULL_RESET_ACTION) &&
+           verifier.VerifyTable(full_reset_action()) &&
+           VerifyOffset(verifier, VT_YAW_RESET_ACTION) &&
+           verifier.VerifyTable(yaw_reset_action()) &&
+           VerifyOffset(verifier, VT_MOUNTING_RESET_ACTION) &&
+           verifier.VerifyTable(mounting_reset_action()) &&
+           VerifyField<uint8_t>(verifier, VT_TAPS_TRACKERS_OVER_THRESHOLD, 1) &&
            verifier.EndTable();
   }
 };
 
-struct ChangeTapDetectionSettingsRequestBuilder {
-  typedef ChangeTapDetectionSettingsRequest Table;
+struct ChangeTrackerActionSettingsRequestBuilder {
+  typedef ChangeTrackerActionSettingsRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_full_reset_delay(float full_reset_delay) {
-    fbb_.AddElement<float>(ChangeTapDetectionSettingsRequest::VT_FULL_RESET_DELAY, full_reset_delay);
+  void add_full_reset_action(flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> full_reset_action) {
+    fbb_.AddOffset(ChangeTrackerActionSettingsRequest::VT_FULL_RESET_ACTION, full_reset_action);
   }
-  void add_full_reset_enabled(bool full_reset_enabled) {
-    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_FULL_RESET_ENABLED, static_cast<uint8_t>(full_reset_enabled));
+  void add_yaw_reset_action(flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> yaw_reset_action) {
+    fbb_.AddOffset(ChangeTrackerActionSettingsRequest::VT_YAW_RESET_ACTION, yaw_reset_action);
   }
-  void add_full_reset_taps(uint8_t full_reset_taps) {
-    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_FULL_RESET_TAPS, full_reset_taps);
+  void add_mounting_reset_action(flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> mounting_reset_action) {
+    fbb_.AddOffset(ChangeTrackerActionSettingsRequest::VT_MOUNTING_RESET_ACTION, mounting_reset_action);
   }
-  void add_yaw_reset_delay(float yaw_reset_delay) {
-    fbb_.AddElement<float>(ChangeTapDetectionSettingsRequest::VT_YAW_RESET_DELAY, yaw_reset_delay);
+  void add_taps_trackers_over_threshold(uint8_t taps_trackers_over_threshold) {
+    fbb_.AddElement<uint8_t>(ChangeTrackerActionSettingsRequest::VT_TAPS_TRACKERS_OVER_THRESHOLD, taps_trackers_over_threshold, 0);
   }
-  void add_yaw_reset_enabled(bool yaw_reset_enabled) {
-    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_YAW_RESET_ENABLED, static_cast<uint8_t>(yaw_reset_enabled));
-  }
-  void add_yaw_reset_taps(uint8_t yaw_reset_taps) {
-    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_YAW_RESET_TAPS, yaw_reset_taps);
-  }
-  void add_mounting_reset_delay(float mounting_reset_delay) {
-    fbb_.AddElement<float>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_DELAY, mounting_reset_delay);
-  }
-  void add_mounting_reset_enabled(bool mounting_reset_enabled) {
-    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_ENABLED, static_cast<uint8_t>(mounting_reset_enabled));
-  }
-  void add_mounting_reset_taps(uint8_t mounting_reset_taps) {
-    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_TAPS, mounting_reset_taps);
-  }
-  void add_number_trackers_over_threshold(uint8_t number_trackers_over_threshold) {
-    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_NUMBER_TRACKERS_OVER_THRESHOLD, number_trackers_over_threshold);
-  }
-  void add_yaw_reset_tracker(solarxr_protocol::datatypes::BodyPart yaw_reset_tracker) {
-    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_YAW_RESET_TRACKER, static_cast<uint8_t>(yaw_reset_tracker));
-  }
-  void add_full_reset_tracker(solarxr_protocol::datatypes::BodyPart full_reset_tracker) {
-    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_FULL_RESET_TRACKER, static_cast<uint8_t>(full_reset_tracker));
-  }
-  void add_mounting_reset_tracker(solarxr_protocol::datatypes::BodyPart mounting_reset_tracker) {
-    fbb_.AddElement<uint8_t>(ChangeTapDetectionSettingsRequest::VT_MOUNTING_RESET_TRACKER, static_cast<uint8_t>(mounting_reset_tracker));
-  }
-  explicit ChangeTapDetectionSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ChangeTrackerActionSettingsRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ChangeTapDetectionSettingsRequest> Finish() {
+  flatbuffers::Offset<ChangeTrackerActionSettingsRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ChangeTapDetectionSettingsRequest>(end);
+    auto o = flatbuffers::Offset<ChangeTrackerActionSettingsRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ChangeTapDetectionSettingsRequest> CreateChangeTapDetectionSettingsRequest(
+inline flatbuffers::Offset<ChangeTrackerActionSettingsRequest> CreateChangeTrackerActionSettingsRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<float> full_reset_delay = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> full_reset_enabled = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> full_reset_taps = flatbuffers::nullopt,
-    flatbuffers::Optional<float> yaw_reset_delay = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> yaw_reset_enabled = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> yaw_reset_taps = flatbuffers::nullopt,
-    flatbuffers::Optional<float> mounting_reset_delay = flatbuffers::nullopt,
-    flatbuffers::Optional<bool> mounting_reset_enabled = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> mounting_reset_taps = flatbuffers::nullopt,
-    flatbuffers::Optional<uint8_t> number_trackers_over_threshold = flatbuffers::nullopt,
-    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> yaw_reset_tracker = flatbuffers::nullopt,
-    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> full_reset_tracker = flatbuffers::nullopt,
-    flatbuffers::Optional<solarxr_protocol::datatypes::BodyPart> mounting_reset_tracker = flatbuffers::nullopt) {
-  ChangeTapDetectionSettingsRequestBuilder builder_(_fbb);
-  if(mounting_reset_delay) { builder_.add_mounting_reset_delay(*mounting_reset_delay); }
-  if(yaw_reset_delay) { builder_.add_yaw_reset_delay(*yaw_reset_delay); }
-  if(full_reset_delay) { builder_.add_full_reset_delay(*full_reset_delay); }
-  if(mounting_reset_tracker) { builder_.add_mounting_reset_tracker(*mounting_reset_tracker); }
-  if(full_reset_tracker) { builder_.add_full_reset_tracker(*full_reset_tracker); }
-  if(yaw_reset_tracker) { builder_.add_yaw_reset_tracker(*yaw_reset_tracker); }
-  if(number_trackers_over_threshold) { builder_.add_number_trackers_over_threshold(*number_trackers_over_threshold); }
-  if(mounting_reset_taps) { builder_.add_mounting_reset_taps(*mounting_reset_taps); }
-  if(mounting_reset_enabled) { builder_.add_mounting_reset_enabled(*mounting_reset_enabled); }
-  if(yaw_reset_taps) { builder_.add_yaw_reset_taps(*yaw_reset_taps); }
-  if(yaw_reset_enabled) { builder_.add_yaw_reset_enabled(*yaw_reset_enabled); }
-  if(full_reset_taps) { builder_.add_full_reset_taps(*full_reset_taps); }
-  if(full_reset_enabled) { builder_.add_full_reset_enabled(*full_reset_enabled); }
+    flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> full_reset_action = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> yaw_reset_action = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettings> mounting_reset_action = 0,
+    uint8_t taps_trackers_over_threshold = 0) {
+  ChangeTrackerActionSettingsRequestBuilder builder_(_fbb);
+  builder_.add_mounting_reset_action(mounting_reset_action);
+  builder_.add_yaw_reset_action(yaw_reset_action);
+  builder_.add_full_reset_action(full_reset_action);
+  builder_.add_taps_trackers_over_threshold(taps_trackers_over_threshold);
   return builder_.Finish();
 }
 
-/// Sets the TapDetection setup mode.
-struct TapDetectionSetupModeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TapDetectionSetupModeRequestBuilder Builder;
+/// Sets the TrackerAction setup mode.
+struct TrackerActionSetupModeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerActionSetupModeRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_SETUP_MODE = 4
   };
-  /// When true, TapDetection triggering a tracker will assign it instead of doing a reset.
-  flatbuffers::Optional<bool> setup_mode() const {
-    return GetOptional<uint8_t, bool>(VT_SETUP_MODE);
+  /// When true, TrackerAction triggering a tracker will assign it instead of doing a reset.
+  bool setup_mode() const {
+    return GetField<uint8_t>(VT_SETUP_MODE, 0) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -14994,35 +16039,35 @@ struct TapDetectionSetupModeRequest FLATBUFFERS_FINAL_CLASS : private flatbuffer
   }
 };
 
-struct TapDetectionSetupModeRequestBuilder {
-  typedef TapDetectionSetupModeRequest Table;
+struct TrackerActionSetupModeRequestBuilder {
+  typedef TrackerActionSetupModeRequest Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_setup_mode(bool setup_mode) {
-    fbb_.AddElement<uint8_t>(TapDetectionSetupModeRequest::VT_SETUP_MODE, static_cast<uint8_t>(setup_mode));
+    fbb_.AddElement<uint8_t>(TrackerActionSetupModeRequest::VT_SETUP_MODE, static_cast<uint8_t>(setup_mode), 0);
   }
-  explicit TapDetectionSetupModeRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TrackerActionSetupModeRequestBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TapDetectionSetupModeRequest> Finish() {
+  flatbuffers::Offset<TrackerActionSetupModeRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TapDetectionSetupModeRequest>(end);
+    auto o = flatbuffers::Offset<TrackerActionSetupModeRequest>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TapDetectionSetupModeRequest> CreateTapDetectionSetupModeRequest(
+inline flatbuffers::Offset<TrackerActionSetupModeRequest> CreateTrackerActionSetupModeRequest(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Optional<bool> setup_mode = flatbuffers::nullopt) {
-  TapDetectionSetupModeRequestBuilder builder_(_fbb);
-  if(setup_mode) { builder_.add_setup_mode(*setup_mode); }
+    bool setup_mode = false) {
+  TrackerActionSetupModeRequestBuilder builder_(_fbb);
+  builder_.add_setup_mode(setup_mode);
   return builder_.Finish();
 }
 
-/// Indicates which tracker got triggered by TapDetection while setup mode is enabled
-struct TapDetectionSetupNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TapDetectionSetupNotificationBuilder Builder;
+/// Indicates which tracker got triggered by TrackerAction while setup mode is enabled
+struct TrackerActionSetupNotification FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackerActionSetupNotificationBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TRACKER_ID = 4
   };
@@ -15036,28 +16081,28 @@ struct TapDetectionSetupNotification FLATBUFFERS_FINAL_CLASS : private flatbuffe
   }
 };
 
-struct TapDetectionSetupNotificationBuilder {
-  typedef TapDetectionSetupNotification Table;
+struct TrackerActionSetupNotificationBuilder {
+  typedef TrackerActionSetupNotification Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_tracker_id(uint16_t tracker_id) {
-    fbb_.AddElement<uint16_t>(TapDetectionSetupNotification::VT_TRACKER_ID, tracker_id, 0);
+    fbb_.AddElement<uint16_t>(TrackerActionSetupNotification::VT_TRACKER_ID, tracker_id, 0);
   }
-  explicit TapDetectionSetupNotificationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TrackerActionSetupNotificationBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TapDetectionSetupNotification> Finish() {
+  flatbuffers::Offset<TrackerActionSetupNotification> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TapDetectionSetupNotification>(end);
+    auto o = flatbuffers::Offset<TrackerActionSetupNotification>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TapDetectionSetupNotification> CreateTapDetectionSetupNotification(
+inline flatbuffers::Offset<TrackerActionSetupNotification> CreateTrackerActionSetupNotification(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t tracker_id = 0) {
-  TapDetectionSetupNotificationBuilder builder_(_fbb);
+  TrackerActionSetupNotificationBuilder builder_(_fbb);
   builder_.add_tracker_id(tracker_id);
   return builder_.Finish();
 }
@@ -16515,7 +17560,7 @@ struct SettingsDefaultsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
     VT_SKELETON = 4,
     VT_RESETS = 6,
     VT_STAY_ALIGNED = 8,
-    VT_TAP_DETECTION = 10,
+    VT_TRACKER_ACTION = 10,
     VT_TIMEOUT = 12,
     VT_HID = 14,
     VT_DRIVER = 16,
@@ -16535,8 +17580,8 @@ struct SettingsDefaultsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
   const solarxr_protocol::rpc::StayAlignedSettingsResponse *stay_aligned() const {
     return GetPointer<const solarxr_protocol::rpc::StayAlignedSettingsResponse *>(VT_STAY_ALIGNED);
   }
-  const solarxr_protocol::rpc::TapDetectionSettingsResponse *tap_detection() const {
-    return GetPointer<const solarxr_protocol::rpc::TapDetectionSettingsResponse *>(VT_TAP_DETECTION);
+  const solarxr_protocol::rpc::TrackerActionSettingsResponse *tracker_action() const {
+    return GetPointer<const solarxr_protocol::rpc::TrackerActionSettingsResponse *>(VT_TRACKER_ACTION);
   }
   const solarxr_protocol::rpc::TimeoutSettingsResponse *timeout() const {
     return GetPointer<const solarxr_protocol::rpc::TimeoutSettingsResponse *>(VT_TIMEOUT);
@@ -16573,8 +17618,8 @@ struct SettingsDefaultsResponse FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
            verifier.VerifyTable(resets()) &&
            VerifyOffset(verifier, VT_STAY_ALIGNED) &&
            verifier.VerifyTable(stay_aligned()) &&
-           VerifyOffset(verifier, VT_TAP_DETECTION) &&
-           verifier.VerifyTable(tap_detection()) &&
+           VerifyOffset(verifier, VT_TRACKER_ACTION) &&
+           verifier.VerifyTable(tracker_action()) &&
            VerifyOffset(verifier, VT_TIMEOUT) &&
            verifier.VerifyTable(timeout()) &&
            VerifyOffset(verifier, VT_HID) &&
@@ -16610,8 +17655,8 @@ struct SettingsDefaultsResponseBuilder {
   void add_stay_aligned(flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettingsResponse> stay_aligned) {
     fbb_.AddOffset(SettingsDefaultsResponse::VT_STAY_ALIGNED, stay_aligned);
   }
-  void add_tap_detection(flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettingsResponse> tap_detection) {
-    fbb_.AddOffset(SettingsDefaultsResponse::VT_TAP_DETECTION, tap_detection);
+  void add_tracker_action(flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettingsResponse> tracker_action) {
+    fbb_.AddOffset(SettingsDefaultsResponse::VT_TRACKER_ACTION, tracker_action);
   }
   void add_timeout(flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettingsResponse> timeout) {
     fbb_.AddOffset(SettingsDefaultsResponse::VT_TIMEOUT, timeout);
@@ -16656,7 +17701,7 @@ inline flatbuffers::Offset<SettingsDefaultsResponse> CreateSettingsDefaultsRespo
     flatbuffers::Offset<solarxr_protocol::rpc::SkeletonSettingsResponse> skeleton = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::ResetsSettingsResponse> resets = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::StayAlignedSettingsResponse> stay_aligned = 0,
-    flatbuffers::Offset<solarxr_protocol::rpc::TapDetectionSettingsResponse> tap_detection = 0,
+    flatbuffers::Offset<solarxr_protocol::rpc::TrackerActionSettingsResponse> tracker_action = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::TimeoutSettingsResponse> timeout = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::HIDSettingsResponse> hid = 0,
     flatbuffers::Offset<solarxr_protocol::rpc::DriverSettingsResponse> driver = 0,
@@ -16676,7 +17721,7 @@ inline flatbuffers::Offset<SettingsDefaultsResponse> CreateSettingsDefaultsRespo
   builder_.add_driver(driver);
   builder_.add_hid(hid);
   builder_.add_timeout(timeout);
-  builder_.add_tap_detection(tap_detection);
+  builder_.add_tracker_action(tracker_action);
   builder_.add_stay_aligned(stay_aligned);
   builder_.add_resets(resets);
   builder_.add_skeleton(skeleton);
@@ -17541,54 +18586,44 @@ inline flatbuffers::Offset<EnableSteamVRDriverRequest> CreateEnableSteamVRDriver
   return builder_.Finish();
 }
 
-struct TrackingChecklistUnassignedReliableReference FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TrackingChecklistUnassignedReliableReferenceBuilder Builder;
+struct TrackingChecklistUnassignedHMD FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TrackingChecklistUnassignedHMDBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TRACKER_ID = 4,
-    VT_INTENDED_BODY_PART = 6
+    VT_TRACKER_ID = 4
   };
   uint16_t tracker_id() const {
     return GetField<uint16_t>(VT_TRACKER_ID, 0);
   }
-  solarxr_protocol::datatypes::BodyPart intended_body_part() const {
-    return static_cast<solarxr_protocol::datatypes::BodyPart>(GetField<uint8_t>(VT_INTENDED_BODY_PART, 0));
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
-           VerifyField<uint8_t>(verifier, VT_INTENDED_BODY_PART, 1) &&
            verifier.EndTable();
   }
 };
 
-struct TrackingChecklistUnassignedReliableReferenceBuilder {
-  typedef TrackingChecklistUnassignedReliableReference Table;
+struct TrackingChecklistUnassignedHMDBuilder {
+  typedef TrackingChecklistUnassignedHMD Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_tracker_id(uint16_t tracker_id) {
-    fbb_.AddElement<uint16_t>(TrackingChecklistUnassignedReliableReference::VT_TRACKER_ID, tracker_id, 0);
+    fbb_.AddElement<uint16_t>(TrackingChecklistUnassignedHMD::VT_TRACKER_ID, tracker_id, 0);
   }
-  void add_intended_body_part(solarxr_protocol::datatypes::BodyPart intended_body_part) {
-    fbb_.AddElement<uint8_t>(TrackingChecklistUnassignedReliableReference::VT_INTENDED_BODY_PART, static_cast<uint8_t>(intended_body_part), 0);
-  }
-  explicit TrackingChecklistUnassignedReliableReferenceBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TrackingChecklistUnassignedHMDBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TrackingChecklistUnassignedReliableReference> Finish() {
+  flatbuffers::Offset<TrackingChecklistUnassignedHMD> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TrackingChecklistUnassignedReliableReference>(end);
+    auto o = flatbuffers::Offset<TrackingChecklistUnassignedHMD>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TrackingChecklistUnassignedReliableReference> CreateTrackingChecklistUnassignedReliableReference(
+inline flatbuffers::Offset<TrackingChecklistUnassignedHMD> CreateTrackingChecklistUnassignedHMD(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t tracker_id = 0,
-    solarxr_protocol::datatypes::BodyPart intended_body_part = solarxr_protocol::datatypes::BodyPart::NONE) {
-  TrackingChecklistUnassignedReliableReferenceBuilder builder_(_fbb);
+    uint16_t tracker_id = 0) {
+  TrackingChecklistUnassignedHMDBuilder builder_(_fbb);
   builder_.add_tracker_id(tracker_id);
-  builder_.add_intended_body_part(intended_body_part);
   return builder_.Finish();
 }
 
@@ -17690,8 +18725,8 @@ struct TrackingChecklistStep FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *extra_data_as_TrackingChecklistSteamVRDisconnected() const {
     return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistSteamVRDisconnected ? static_cast<const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *>(extra_data()) : nullptr;
   }
-  const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *extra_data_as_TrackingChecklistUnassignedReliableReference() const {
-    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference ? static_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *>(extra_data()) : nullptr;
+  const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *extra_data_as_TrackingChecklistUnassignedHMD() const {
+    return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistUnassignedHMD ? static_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *>(extra_data()) : nullptr;
   }
   const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *extra_data_as_TrackingChecklistNeedCalibration() const {
     return extra_data_type() == solarxr_protocol::rpc::TrackingChecklistExtraData::TrackingChecklistNeedCalibration ? static_cast<const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *>(extra_data()) : nullptr;
@@ -17726,8 +18761,8 @@ template<> inline const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnec
   return extra_data_as_TrackingChecklistSteamVRDisconnected();
 }
 
-template<> inline const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference>() const {
-  return extra_data_as_TrackingChecklistUnassignedReliableReference();
+template<> inline const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistUnassignedHMD>() const {
+  return extra_data_as_TrackingChecklistUnassignedHMD();
 }
 
 template<> inline const solarxr_protocol::rpc::TrackingChecklistNeedCalibration *TrackingChecklistStep::extra_data_as<solarxr_protocol::rpc::TrackingChecklistNeedCalibration>() const {
@@ -18817,12 +19852,12 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   };
   /// Set by whoever originates this message, so a future reply can reference it.
   /// Absent for one-way notifications that expect no reply.
-  uint32_t tx_id() const {
-    return GetField<uint32_t>(VT_TX_ID, 0);
+  flatbuffers::Optional<uint32_t> tx_id() const {
+    return GetOptional<uint32_t, uint32_t>(VT_TX_ID);
   }
   /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
-  uint32_t reply_to() const {
-    return GetField<uint32_t>(VT_REPLY_TO, 0);
+  flatbuffers::Optional<uint32_t> reply_to() const {
+    return GetOptional<uint32_t, uint32_t>(VT_REPLY_TO);
   }
   solarxr_protocol::rpc::RpcMessage message_type() const {
     return static_cast<solarxr_protocol::rpc::RpcMessage>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
@@ -18885,17 +19920,17 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeUserHeightRequest *message_as_ChangeUserHeightRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeUserHeightRequest ? static_cast<const solarxr_protocol::rpc::ChangeUserHeightRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::TapDetectionSettingsRequest *message_as_TapDetectionSettingsRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::TapDetectionSettingsRequest ? static_cast<const solarxr_protocol::rpc::TapDetectionSettingsRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::TrackerActionSettingsRequest *message_as_TrackerActionSettingsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TrackerActionSettingsRequest ? static_cast<const solarxr_protocol::rpc::TrackerActionSettingsRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::TapDetectionSettingsResponse *message_as_TapDetectionSettingsResponse() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::TapDetectionSettingsResponse ? static_cast<const solarxr_protocol::rpc::TapDetectionSettingsResponse *>(message()) : nullptr;
+  const solarxr_protocol::rpc::TrackerActionSettingsResponse *message_as_TrackerActionSettingsResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TrackerActionSettingsResponse ? static_cast<const solarxr_protocol::rpc::TrackerActionSettingsResponse *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::ChangeTapDetectionSettingsRequest *message_as_ChangeTapDetectionSettingsRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeTapDetectionSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeTapDetectionSettingsRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::ChangeTrackerActionSettingsRequest *message_as_ChangeTrackerActionSettingsRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeTrackerActionSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeTrackerActionSettingsRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::TapDetectionSetupModeRequest *message_as_TapDetectionSetupModeRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::TapDetectionSetupModeRequest ? static_cast<const solarxr_protocol::rpc::TapDetectionSetupModeRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::TrackerActionSetupModeRequest *message_as_TrackerActionSetupModeRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TrackerActionSetupModeRequest ? static_cast<const solarxr_protocol::rpc::TrackerActionSetupModeRequest *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::ResetsSettingsRequest *message_as_ResetsSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ResetsSettingsRequest ? static_cast<const solarxr_protocol::rpc::ResetsSettingsRequest *>(message()) : nullptr;
@@ -18915,11 +19950,11 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest *message_as_ChangeStayAlignedSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeStayAlignedSettingsRequest ? static_cast<const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::ChangeStayAlignedEnabledRequest *message_as_ChangeStayAlignedEnabledRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::ChangeStayAlignedEnabledRequest ? static_cast<const solarxr_protocol::rpc::ChangeStayAlignedEnabledRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::StartStayAlignedPoseRecordingRequest *message_as_StartStayAlignedPoseRecordingRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StartStayAlignedPoseRecordingRequest ? static_cast<const solarxr_protocol::rpc::StartStayAlignedPoseRecordingRequest *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest *message_as_DetectStayAlignedRelaxedPoseRequest() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::DetectStayAlignedRelaxedPoseRequest ? static_cast<const solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest *>(message()) : nullptr;
+  const solarxr_protocol::rpc::CancelStayAlignedPoseRecordingRequest *message_as_CancelStayAlignedPoseRecordingRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::CancelStayAlignedPoseRecordingRequest ? static_cast<const solarxr_protocol::rpc::CancelStayAlignedPoseRecordingRequest *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *message_as_ResetStayAlignedRelaxedPoseRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::ResetStayAlignedRelaxedPoseRequest ? static_cast<const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *>(message()) : nullptr;
@@ -19023,8 +20058,8 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::LegTweaksTmpClear *message_as_LegTweaksTmpClear() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::LegTweaksTmpClear ? static_cast<const solarxr_protocol::rpc::LegTweaksTmpClear *>(message()) : nullptr;
   }
-  const solarxr_protocol::rpc::TapDetectionSetupNotification *message_as_TapDetectionSetupNotification() const {
-    return message_type() == solarxr_protocol::rpc::RpcMessage::TapDetectionSetupNotification ? static_cast<const solarxr_protocol::rpc::TapDetectionSetupNotification *>(message()) : nullptr;
+  const solarxr_protocol::rpc::TrackerActionSetupNotification *message_as_TrackerActionSetupNotification() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::TrackerActionSetupNotification ? static_cast<const solarxr_protocol::rpc::TrackerActionSetupNotification *>(message()) : nullptr;
   }
   const solarxr_protocol::rpc::SetPauseTrackingRequest *message_as_SetPauseTrackingRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::SetPauseTrackingRequest ? static_cast<const solarxr_protocol::rpc::SetPauseTrackingRequest *>(message()) : nullptr;
@@ -19293,6 +20328,27 @@ struct RpcMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const solarxr_protocol::rpc::LogFileChunkResponse *message_as_LogFileChunkResponse() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::LogFileChunkResponse ? static_cast<const solarxr_protocol::rpc::LogFileChunkResponse *>(message()) : nullptr;
   }
+  const solarxr_protocol::rpc::StayAlignedPoseRecordingStatusResponse *message_as_StayAlignedPoseRecordingStatusResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StayAlignedPoseRecordingStatusResponse ? static_cast<const solarxr_protocol::rpc::StayAlignedPoseRecordingStatusResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StartStayAlignedStatusRequest *message_as_StartStayAlignedStatusRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StartStayAlignedStatusRequest ? static_cast<const solarxr_protocol::rpc::StartStayAlignedStatusRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StopStayAlignedStatusRequest *message_as_StopStayAlignedStatusRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StopStayAlignedStatusRequest ? static_cast<const solarxr_protocol::rpc::StopStayAlignedStatusRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::StayAlignedStatusResponse *message_as_StayAlignedStatusResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::StayAlignedStatusResponse ? static_cast<const solarxr_protocol::rpc::StayAlignedStatusResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::FirmwareUpdatesRequest *message_as_FirmwareUpdatesRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::FirmwareUpdatesRequest ? static_cast<const solarxr_protocol::rpc::FirmwareUpdatesRequest *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::FirmwareUpdatesResponse *message_as_FirmwareUpdatesResponse() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::FirmwareUpdatesResponse ? static_cast<const solarxr_protocol::rpc::FirmwareUpdatesResponse *>(message()) : nullptr;
+  }
+  const solarxr_protocol::rpc::RecenterMocapModeRequest *message_as_RecenterMocapModeRequest() const {
+    return message_type() == solarxr_protocol::rpc::RpcMessage::RecenterMocapModeRequest ? static_cast<const solarxr_protocol::rpc::RecenterMocapModeRequest *>(message()) : nullptr;
+  }
   const solarxr_protocol::rpc::CustomOSCSettingsRequest *message_as_CustomOSCSettingsRequest() const {
     return message_type() == solarxr_protocol::rpc::RpcMessage::CustomOSCSettingsRequest ? static_cast<const solarxr_protocol::rpc::CustomOSCSettingsRequest *>(message()) : nullptr;
   }
@@ -19385,20 +20441,20 @@ template<> inline const solarxr_protocol::rpc::ChangeUserHeightRequest *RpcMessa
   return message_as_ChangeUserHeightRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::TapDetectionSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::TapDetectionSettingsRequest>() const {
-  return message_as_TapDetectionSettingsRequest();
+template<> inline const solarxr_protocol::rpc::TrackerActionSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackerActionSettingsRequest>() const {
+  return message_as_TrackerActionSettingsRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::TapDetectionSettingsResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TapDetectionSettingsResponse>() const {
-  return message_as_TapDetectionSettingsResponse();
+template<> inline const solarxr_protocol::rpc::TrackerActionSettingsResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackerActionSettingsResponse>() const {
+  return message_as_TrackerActionSettingsResponse();
 }
 
-template<> inline const solarxr_protocol::rpc::ChangeTapDetectionSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeTapDetectionSettingsRequest>() const {
-  return message_as_ChangeTapDetectionSettingsRequest();
+template<> inline const solarxr_protocol::rpc::ChangeTrackerActionSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeTrackerActionSettingsRequest>() const {
+  return message_as_ChangeTrackerActionSettingsRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::TapDetectionSetupModeRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::TapDetectionSetupModeRequest>() const {
-  return message_as_TapDetectionSetupModeRequest();
+template<> inline const solarxr_protocol::rpc::TrackerActionSetupModeRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackerActionSetupModeRequest>() const {
+  return message_as_TrackerActionSetupModeRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::ResetsSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetsSettingsRequest>() const {
@@ -19425,12 +20481,12 @@ template<> inline const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest 
   return message_as_ChangeStayAlignedSettingsRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::ChangeStayAlignedEnabledRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ChangeStayAlignedEnabledRequest>() const {
-  return message_as_ChangeStayAlignedEnabledRequest();
+template<> inline const solarxr_protocol::rpc::StartStayAlignedPoseRecordingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StartStayAlignedPoseRecordingRequest>() const {
+  return message_as_StartStayAlignedPoseRecordingRequest();
 }
 
-template<> inline const solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest>() const {
-  return message_as_DetectStayAlignedRelaxedPoseRequest();
+template<> inline const solarxr_protocol::rpc::CancelStayAlignedPoseRecordingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::CancelStayAlignedPoseRecordingRequest>() const {
+  return message_as_CancelStayAlignedPoseRecordingRequest();
 }
 
 template<> inline const solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::ResetStayAlignedRelaxedPoseRequest>() const {
@@ -19569,8 +20625,8 @@ template<> inline const solarxr_protocol::rpc::LegTweaksTmpClear *RpcMessageHead
   return message_as_LegTweaksTmpClear();
 }
 
-template<> inline const solarxr_protocol::rpc::TapDetectionSetupNotification *RpcMessageHeader::message_as<solarxr_protocol::rpc::TapDetectionSetupNotification>() const {
-  return message_as_TapDetectionSetupNotification();
+template<> inline const solarxr_protocol::rpc::TrackerActionSetupNotification *RpcMessageHeader::message_as<solarxr_protocol::rpc::TrackerActionSetupNotification>() const {
+  return message_as_TrackerActionSetupNotification();
 }
 
 template<> inline const solarxr_protocol::rpc::SetPauseTrackingRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::SetPauseTrackingRequest>() const {
@@ -19929,6 +20985,34 @@ template<> inline const solarxr_protocol::rpc::LogFileChunkResponse *RpcMessageH
   return message_as_LogFileChunkResponse();
 }
 
+template<> inline const solarxr_protocol::rpc::StayAlignedPoseRecordingStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::StayAlignedPoseRecordingStatusResponse>() const {
+  return message_as_StayAlignedPoseRecordingStatusResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::StartStayAlignedStatusRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StartStayAlignedStatusRequest>() const {
+  return message_as_StartStayAlignedStatusRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::StopStayAlignedStatusRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::StopStayAlignedStatusRequest>() const {
+  return message_as_StopStayAlignedStatusRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::StayAlignedStatusResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::StayAlignedStatusResponse>() const {
+  return message_as_StayAlignedStatusResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::FirmwareUpdatesRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::FirmwareUpdatesRequest>() const {
+  return message_as_FirmwareUpdatesRequest();
+}
+
+template<> inline const solarxr_protocol::rpc::FirmwareUpdatesResponse *RpcMessageHeader::message_as<solarxr_protocol::rpc::FirmwareUpdatesResponse>() const {
+  return message_as_FirmwareUpdatesResponse();
+}
+
+template<> inline const solarxr_protocol::rpc::RecenterMocapModeRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::RecenterMocapModeRequest>() const {
+  return message_as_RecenterMocapModeRequest();
+}
+
 template<> inline const solarxr_protocol::rpc::CustomOSCSettingsRequest *RpcMessageHeader::message_as<solarxr_protocol::rpc::CustomOSCSettingsRequest>() const {
   return message_as_CustomOSCSettingsRequest();
 }
@@ -19946,10 +21030,10 @@ struct RpcMessageHeaderBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_tx_id(uint32_t tx_id) {
-    fbb_.AddElement<uint32_t>(RpcMessageHeader::VT_TX_ID, tx_id, 0);
+    fbb_.AddElement<uint32_t>(RpcMessageHeader::VT_TX_ID, tx_id);
   }
   void add_reply_to(uint32_t reply_to) {
-    fbb_.AddElement<uint32_t>(RpcMessageHeader::VT_REPLY_TO, reply_to, 0);
+    fbb_.AddElement<uint32_t>(RpcMessageHeader::VT_REPLY_TO, reply_to);
   }
   void add_message_type(solarxr_protocol::rpc::RpcMessage message_type) {
     fbb_.AddElement<uint8_t>(RpcMessageHeader::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
@@ -19970,14 +21054,14 @@ struct RpcMessageHeaderBuilder {
 
 inline flatbuffers::Offset<RpcMessageHeader> CreateRpcMessageHeader(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint32_t tx_id = 0,
-    uint32_t reply_to = 0,
+    flatbuffers::Optional<uint32_t> tx_id = flatbuffers::nullopt,
+    flatbuffers::Optional<uint32_t> reply_to = flatbuffers::nullopt,
     solarxr_protocol::rpc::RpcMessage message_type = solarxr_protocol::rpc::RpcMessage::NONE,
     flatbuffers::Offset<void> message = 0) {
   RpcMessageHeaderBuilder builder_(_fbb);
   builder_.add_message(message);
-  builder_.add_reply_to(reply_to);
-  builder_.add_tx_id(tx_id);
+  if(reply_to) { builder_.add_reply_to(*reply_to); }
+  if(tx_id) { builder_.add_tx_id(*tx_id); }
   builder_.add_message_type(message_type);
   return builder_.Finish();
 }
@@ -20972,12 +22056,12 @@ struct DriverMessageHeader FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   };
   /// Set by whoever originates this message, so a future reply can reference it.
   /// Absent for one-way notifications that expect no reply.
-  uint32_t tx_id() const {
-    return GetField<uint32_t>(VT_TX_ID, 0);
+  flatbuffers::Optional<uint32_t> tx_id() const {
+    return GetOptional<uint32_t, uint32_t>(VT_TX_ID);
   }
   /// Set only on a reply, the tx_id of the request this answers. Never set together with tx_id.
-  uint32_t reply_to() const {
-    return GetField<uint32_t>(VT_REPLY_TO, 0);
+  flatbuffers::Optional<uint32_t> reply_to() const {
+    return GetOptional<uint32_t, uint32_t>(VT_REPLY_TO);
   }
   solarxr_protocol::driver_protocol::DriverMessage message_type() const {
     return static_cast<solarxr_protocol::driver_protocol::DriverMessage>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
@@ -21072,10 +22156,10 @@ struct DriverMessageHeaderBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_tx_id(uint32_t tx_id) {
-    fbb_.AddElement<uint32_t>(DriverMessageHeader::VT_TX_ID, tx_id, 0);
+    fbb_.AddElement<uint32_t>(DriverMessageHeader::VT_TX_ID, tx_id);
   }
   void add_reply_to(uint32_t reply_to) {
-    fbb_.AddElement<uint32_t>(DriverMessageHeader::VT_REPLY_TO, reply_to, 0);
+    fbb_.AddElement<uint32_t>(DriverMessageHeader::VT_REPLY_TO, reply_to);
   }
   void add_message_type(solarxr_protocol::driver_protocol::DriverMessage message_type) {
     fbb_.AddElement<uint8_t>(DriverMessageHeader::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
@@ -21096,14 +22180,14 @@ struct DriverMessageHeaderBuilder {
 
 inline flatbuffers::Offset<DriverMessageHeader> CreateDriverMessageHeader(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint32_t tx_id = 0,
-    uint32_t reply_to = 0,
+    flatbuffers::Optional<uint32_t> tx_id = flatbuffers::nullopt,
+    flatbuffers::Optional<uint32_t> reply_to = flatbuffers::nullopt,
     solarxr_protocol::driver_protocol::DriverMessage message_type = solarxr_protocol::driver_protocol::DriverMessage::NONE,
     flatbuffers::Offset<void> message = 0) {
   DriverMessageHeaderBuilder builder_(_fbb);
   builder_.add_message(message);
-  builder_.add_reply_to(reply_to);
-  builder_.add_tx_id(tx_id);
+  if(reply_to) { builder_.add_reply_to(*reply_to); }
+  if(tx_id) { builder_.add_tx_id(*tx_id); }
   builder_.add_message_type(message_type);
   return builder_.Finish();
 }
@@ -21359,6 +22443,35 @@ inline bool VerifyResetDetailVector(flatbuffers::Verifier &verifier, const flatb
   return true;
 }
 
+inline bool VerifyStayAlignedPoseRecordingDetail(flatbuffers::Verifier &verifier, const void *obj, StayAlignedPoseRecordingDetail type) {
+  switch (type) {
+    case StayAlignedPoseRecordingDetail::NONE: {
+      return true;
+    }
+    case StayAlignedPoseRecordingDetail::StayAlignedPoseCountdown: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StayAlignedPoseCountdown *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case StayAlignedPoseRecordingDetail::StayAlignedPoseWaiting: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StayAlignedPoseWaiting *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    default: return true;
+  }
+}
+
+inline bool VerifyStayAlignedPoseRecordingDetailVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<StayAlignedPoseRecordingDetail> *types) {
+  if (!values || !types) return !values && !types;
+  if (values->size() != types->size()) return false;
+  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+    if (!VerifyStayAlignedPoseRecordingDetail(
+        verifier,  values->Get(i), types->GetEnum<StayAlignedPoseRecordingDetail>(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
 inline bool VerifyTrackingChecklistExtraData(flatbuffers::Verifier &verifier, const void *obj, TrackingChecklistExtraData type) {
   switch (type) {
     case TrackingChecklistExtraData::NONE: {
@@ -21376,8 +22489,8 @@ inline bool VerifyTrackingChecklistExtraData(flatbuffers::Verifier &verifier, co
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistSteamVRDisconnected *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case TrackingChecklistExtraData::TrackingChecklistUnassignedReliableReference: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedReliableReference *>(obj);
+    case TrackingChecklistExtraData::TrackingChecklistUnassignedHMD: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackingChecklistUnassignedHMD *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case TrackingChecklistExtraData::TrackingChecklistNeedCalibration: {
@@ -21481,20 +22594,20 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeUserHeightRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::TapDetectionSettingsRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TapDetectionSettingsRequest *>(obj);
+    case RpcMessage::TrackerActionSettingsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackerActionSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::TapDetectionSettingsResponse: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TapDetectionSettingsResponse *>(obj);
+    case RpcMessage::TrackerActionSettingsResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackerActionSettingsResponse *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::ChangeTapDetectionSettingsRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeTapDetectionSettingsRequest *>(obj);
+    case RpcMessage::ChangeTrackerActionSettingsRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeTrackerActionSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::TapDetectionSetupModeRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TapDetectionSetupModeRequest *>(obj);
+    case RpcMessage::TrackerActionSetupModeRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackerActionSetupModeRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::ResetsSettingsRequest: {
@@ -21521,12 +22634,12 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeStayAlignedSettingsRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::ChangeStayAlignedEnabledRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::ChangeStayAlignedEnabledRequest *>(obj);
+    case RpcMessage::StartStayAlignedPoseRecordingRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StartStayAlignedPoseRecordingRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::DetectStayAlignedRelaxedPoseRequest: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::DetectStayAlignedRelaxedPoseRequest *>(obj);
+    case RpcMessage::CancelStayAlignedPoseRecordingRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::CancelStayAlignedPoseRecordingRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::ResetStayAlignedRelaxedPoseRequest: {
@@ -21665,8 +22778,8 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::LegTweaksTmpClear *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case RpcMessage::TapDetectionSetupNotification: {
-      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TapDetectionSetupNotification *>(obj);
+    case RpcMessage::TrackerActionSetupNotification: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::TrackerActionSetupNotification *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::SetPauseTrackingRequest: {
@@ -22023,6 +23136,34 @@ inline bool VerifyRpcMessage(flatbuffers::Verifier &verifier, const void *obj, R
     }
     case RpcMessage::LogFileChunkResponse: {
       auto ptr = reinterpret_cast<const solarxr_protocol::rpc::LogFileChunkResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StayAlignedPoseRecordingStatusResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StayAlignedPoseRecordingStatusResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StartStayAlignedStatusRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StartStayAlignedStatusRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StopStayAlignedStatusRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StopStayAlignedStatusRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::StayAlignedStatusResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::StayAlignedStatusResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::FirmwareUpdatesRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FirmwareUpdatesRequest *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::FirmwareUpdatesResponse: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::FirmwareUpdatesResponse *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case RpcMessage::RecenterMocapModeRequest: {
+      auto ptr = reinterpret_cast<const solarxr_protocol::rpc::RecenterMocapModeRequest *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case RpcMessage::CustomOSCSettingsRequest: {

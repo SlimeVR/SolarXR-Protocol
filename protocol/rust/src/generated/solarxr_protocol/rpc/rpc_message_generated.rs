@@ -12,10 +12,10 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_RPC_MESSAGE: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_RPC_MESSAGE: u8 = 157;
+pub const ENUM_MAX_RPC_MESSAGE: u8 = 164;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 158] = [
+pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 165] = [
   RpcMessage::NONE,
   RpcMessage::HeartbeatRequest,
   RpcMessage::HeartbeatResponse,
@@ -35,18 +35,18 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 158] = [
   RpcMessage::UserHeightRequest,
   RpcMessage::UserHeightResponse,
   RpcMessage::ChangeUserHeightRequest,
-  RpcMessage::TapDetectionSettingsRequest,
-  RpcMessage::TapDetectionSettingsResponse,
-  RpcMessage::ChangeTapDetectionSettingsRequest,
-  RpcMessage::TapDetectionSetupModeRequest,
+  RpcMessage::TrackerActionSettingsRequest,
+  RpcMessage::TrackerActionSettingsResponse,
+  RpcMessage::ChangeTrackerActionSettingsRequest,
+  RpcMessage::TrackerActionSetupModeRequest,
   RpcMessage::ResetsSettingsRequest,
   RpcMessage::ResetsSettingsResponse,
   RpcMessage::ChangeResetsSettingsRequest,
   RpcMessage::StayAlignedSettingsRequest,
   RpcMessage::StayAlignedSettingsResponse,
   RpcMessage::ChangeStayAlignedSettingsRequest,
-  RpcMessage::ChangeStayAlignedEnabledRequest,
-  RpcMessage::DetectStayAlignedRelaxedPoseRequest,
+  RpcMessage::StartStayAlignedPoseRecordingRequest,
+  RpcMessage::CancelStayAlignedPoseRecordingRequest,
   RpcMessage::ResetStayAlignedRelaxedPoseRequest,
   RpcMessage::HIDSettingsRequest,
   RpcMessage::HIDSettingsResponse,
@@ -81,7 +81,7 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 158] = [
   RpcMessage::ServerInfosResponse,
   RpcMessage::LegTweaksTmpChange,
   RpcMessage::LegTweaksTmpClear,
-  RpcMessage::TapDetectionSetupNotification,
+  RpcMessage::TrackerActionSetupNotification,
   RpcMessage::SetPauseTrackingRequest,
   RpcMessage::ClearMountingResetRequest,
   RpcMessage::AutoBoneApplyRequest,
@@ -171,6 +171,13 @@ pub const ENUM_VALUES_RPC_MESSAGE: [RpcMessage; 158] = [
   RpcMessage::LogStreamResponse,
   RpcMessage::LogFileChunkRequest,
   RpcMessage::LogFileChunkResponse,
+  RpcMessage::StayAlignedPoseRecordingStatusResponse,
+  RpcMessage::StartStayAlignedStatusRequest,
+  RpcMessage::StopStayAlignedStatusRequest,
+  RpcMessage::StayAlignedStatusResponse,
+  RpcMessage::FirmwareUpdatesRequest,
+  RpcMessage::FirmwareUpdatesResponse,
+  RpcMessage::RecenterMocapModeRequest,
   RpcMessage::CustomOSCSettingsRequest,
   RpcMessage::CustomOSCSettingsResponse,
   RpcMessage::ChangeCustomOSCSettingsRequest,
@@ -200,18 +207,18 @@ impl RpcMessage {
   pub const UserHeightRequest: Self = Self(16);
   pub const UserHeightResponse: Self = Self(17);
   pub const ChangeUserHeightRequest: Self = Self(18);
-  pub const TapDetectionSettingsRequest: Self = Self(19);
-  pub const TapDetectionSettingsResponse: Self = Self(20);
-  pub const ChangeTapDetectionSettingsRequest: Self = Self(21);
-  pub const TapDetectionSetupModeRequest: Self = Self(22);
+  pub const TrackerActionSettingsRequest: Self = Self(19);
+  pub const TrackerActionSettingsResponse: Self = Self(20);
+  pub const ChangeTrackerActionSettingsRequest: Self = Self(21);
+  pub const TrackerActionSetupModeRequest: Self = Self(22);
   pub const ResetsSettingsRequest: Self = Self(23);
   pub const ResetsSettingsResponse: Self = Self(24);
   pub const ChangeResetsSettingsRequest: Self = Self(25);
   pub const StayAlignedSettingsRequest: Self = Self(26);
   pub const StayAlignedSettingsResponse: Self = Self(27);
   pub const ChangeStayAlignedSettingsRequest: Self = Self(28);
-  pub const ChangeStayAlignedEnabledRequest: Self = Self(29);
-  pub const DetectStayAlignedRelaxedPoseRequest: Self = Self(30);
+  pub const StartStayAlignedPoseRecordingRequest: Self = Self(29);
+  pub const CancelStayAlignedPoseRecordingRequest: Self = Self(30);
   pub const ResetStayAlignedRelaxedPoseRequest: Self = Self(31);
   pub const HIDSettingsRequest: Self = Self(32);
   pub const HIDSettingsResponse: Self = Self(33);
@@ -246,7 +253,7 @@ impl RpcMessage {
   pub const ServerInfosResponse: Self = Self(62);
   pub const LegTweaksTmpChange: Self = Self(63);
   pub const LegTweaksTmpClear: Self = Self(64);
-  pub const TapDetectionSetupNotification: Self = Self(65);
+  pub const TrackerActionSetupNotification: Self = Self(65);
   pub const SetPauseTrackingRequest: Self = Self(66);
   pub const ClearMountingResetRequest: Self = Self(67);
   pub const AutoBoneApplyRequest: Self = Self(68);
@@ -336,12 +343,19 @@ impl RpcMessage {
   pub const LogStreamResponse: Self = Self(152);
   pub const LogFileChunkRequest: Self = Self(153);
   pub const LogFileChunkResponse: Self = Self(154);
-  pub const CustomOSCSettingsRequest: Self = Self(155);
-  pub const CustomOSCSettingsResponse: Self = Self(156);
-  pub const ChangeCustomOSCSettingsRequest: Self = Self(157);
+  pub const StayAlignedPoseRecordingStatusResponse: Self = Self(155);
+  pub const StartStayAlignedStatusRequest: Self = Self(156);
+  pub const StopStayAlignedStatusRequest: Self = Self(157);
+  pub const StayAlignedStatusResponse: Self = Self(158);
+  pub const FirmwareUpdatesRequest: Self = Self(159);
+  pub const FirmwareUpdatesResponse: Self = Self(160);
+  pub const RecenterMocapModeRequest: Self = Self(161);
+  pub const CustomOSCSettingsRequest: Self = Self(162);
+  pub const CustomOSCSettingsResponse: Self = Self(163);
+  pub const ChangeCustomOSCSettingsRequest: Self = Self(164);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 157;
+  pub const ENUM_MAX: u8 = 164;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::NONE,
     Self::HeartbeatRequest,
@@ -362,18 +376,18 @@ impl RpcMessage {
     Self::UserHeightRequest,
     Self::UserHeightResponse,
     Self::ChangeUserHeightRequest,
-    Self::TapDetectionSettingsRequest,
-    Self::TapDetectionSettingsResponse,
-    Self::ChangeTapDetectionSettingsRequest,
-    Self::TapDetectionSetupModeRequest,
+    Self::TrackerActionSettingsRequest,
+    Self::TrackerActionSettingsResponse,
+    Self::ChangeTrackerActionSettingsRequest,
+    Self::TrackerActionSetupModeRequest,
     Self::ResetsSettingsRequest,
     Self::ResetsSettingsResponse,
     Self::ChangeResetsSettingsRequest,
     Self::StayAlignedSettingsRequest,
     Self::StayAlignedSettingsResponse,
     Self::ChangeStayAlignedSettingsRequest,
-    Self::ChangeStayAlignedEnabledRequest,
-    Self::DetectStayAlignedRelaxedPoseRequest,
+    Self::StartStayAlignedPoseRecordingRequest,
+    Self::CancelStayAlignedPoseRecordingRequest,
     Self::ResetStayAlignedRelaxedPoseRequest,
     Self::HIDSettingsRequest,
     Self::HIDSettingsResponse,
@@ -408,7 +422,7 @@ impl RpcMessage {
     Self::ServerInfosResponse,
     Self::LegTweaksTmpChange,
     Self::LegTweaksTmpClear,
-    Self::TapDetectionSetupNotification,
+    Self::TrackerActionSetupNotification,
     Self::SetPauseTrackingRequest,
     Self::ClearMountingResetRequest,
     Self::AutoBoneApplyRequest,
@@ -498,6 +512,13 @@ impl RpcMessage {
     Self::LogStreamResponse,
     Self::LogFileChunkRequest,
     Self::LogFileChunkResponse,
+    Self::StayAlignedPoseRecordingStatusResponse,
+    Self::StartStayAlignedStatusRequest,
+    Self::StopStayAlignedStatusRequest,
+    Self::StayAlignedStatusResponse,
+    Self::FirmwareUpdatesRequest,
+    Self::FirmwareUpdatesResponse,
+    Self::RecenterMocapModeRequest,
     Self::CustomOSCSettingsRequest,
     Self::CustomOSCSettingsResponse,
     Self::ChangeCustomOSCSettingsRequest,
@@ -524,18 +545,18 @@ impl RpcMessage {
       Self::UserHeightRequest => Some("UserHeightRequest"),
       Self::UserHeightResponse => Some("UserHeightResponse"),
       Self::ChangeUserHeightRequest => Some("ChangeUserHeightRequest"),
-      Self::TapDetectionSettingsRequest => Some("TapDetectionSettingsRequest"),
-      Self::TapDetectionSettingsResponse => Some("TapDetectionSettingsResponse"),
-      Self::ChangeTapDetectionSettingsRequest => Some("ChangeTapDetectionSettingsRequest"),
-      Self::TapDetectionSetupModeRequest => Some("TapDetectionSetupModeRequest"),
+      Self::TrackerActionSettingsRequest => Some("TrackerActionSettingsRequest"),
+      Self::TrackerActionSettingsResponse => Some("TrackerActionSettingsResponse"),
+      Self::ChangeTrackerActionSettingsRequest => Some("ChangeTrackerActionSettingsRequest"),
+      Self::TrackerActionSetupModeRequest => Some("TrackerActionSetupModeRequest"),
       Self::ResetsSettingsRequest => Some("ResetsSettingsRequest"),
       Self::ResetsSettingsResponse => Some("ResetsSettingsResponse"),
       Self::ChangeResetsSettingsRequest => Some("ChangeResetsSettingsRequest"),
       Self::StayAlignedSettingsRequest => Some("StayAlignedSettingsRequest"),
       Self::StayAlignedSettingsResponse => Some("StayAlignedSettingsResponse"),
       Self::ChangeStayAlignedSettingsRequest => Some("ChangeStayAlignedSettingsRequest"),
-      Self::ChangeStayAlignedEnabledRequest => Some("ChangeStayAlignedEnabledRequest"),
-      Self::DetectStayAlignedRelaxedPoseRequest => Some("DetectStayAlignedRelaxedPoseRequest"),
+      Self::StartStayAlignedPoseRecordingRequest => Some("StartStayAlignedPoseRecordingRequest"),
+      Self::CancelStayAlignedPoseRecordingRequest => Some("CancelStayAlignedPoseRecordingRequest"),
       Self::ResetStayAlignedRelaxedPoseRequest => Some("ResetStayAlignedRelaxedPoseRequest"),
       Self::HIDSettingsRequest => Some("HIDSettingsRequest"),
       Self::HIDSettingsResponse => Some("HIDSettingsResponse"),
@@ -570,7 +591,7 @@ impl RpcMessage {
       Self::ServerInfosResponse => Some("ServerInfosResponse"),
       Self::LegTweaksTmpChange => Some("LegTweaksTmpChange"),
       Self::LegTweaksTmpClear => Some("LegTweaksTmpClear"),
-      Self::TapDetectionSetupNotification => Some("TapDetectionSetupNotification"),
+      Self::TrackerActionSetupNotification => Some("TrackerActionSetupNotification"),
       Self::SetPauseTrackingRequest => Some("SetPauseTrackingRequest"),
       Self::ClearMountingResetRequest => Some("ClearMountingResetRequest"),
       Self::AutoBoneApplyRequest => Some("AutoBoneApplyRequest"),
@@ -660,6 +681,13 @@ impl RpcMessage {
       Self::LogStreamResponse => Some("LogStreamResponse"),
       Self::LogFileChunkRequest => Some("LogFileChunkRequest"),
       Self::LogFileChunkResponse => Some("LogFileChunkResponse"),
+      Self::StayAlignedPoseRecordingStatusResponse => Some("StayAlignedPoseRecordingStatusResponse"),
+      Self::StartStayAlignedStatusRequest => Some("StartStayAlignedStatusRequest"),
+      Self::StopStayAlignedStatusRequest => Some("StopStayAlignedStatusRequest"),
+      Self::StayAlignedStatusResponse => Some("StayAlignedStatusResponse"),
+      Self::FirmwareUpdatesRequest => Some("FirmwareUpdatesRequest"),
+      Self::FirmwareUpdatesResponse => Some("FirmwareUpdatesResponse"),
+      Self::RecenterMocapModeRequest => Some("RecenterMocapModeRequest"),
       Self::CustomOSCSettingsRequest => Some("CustomOSCSettingsRequest"),
       Self::CustomOSCSettingsResponse => Some("CustomOSCSettingsResponse"),
       Self::ChangeCustomOSCSettingsRequest => Some("ChangeCustomOSCSettingsRequest"),

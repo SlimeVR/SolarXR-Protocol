@@ -12,16 +12,16 @@ use super::*;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 pub const ENUM_MIN_TRACKING_CHECKLIST_STEP_ID: u8 = 0;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
-pub const ENUM_MAX_TRACKING_CHECKLIST_STEP_ID: u8 = 14;
+pub const ENUM_MAX_TRACKING_CHECKLIST_STEP_ID: u8 = 15;
 #[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
 #[allow(non_camel_case_types)]
-pub const ENUM_VALUES_TRACKING_CHECKLIST_STEP_ID: [TrackingChecklistStepId; 15] = [
+pub const ENUM_VALUES_TRACKING_CHECKLIST_STEP_ID: [TrackingChecklistStepId; 16] = [
   TrackingChecklistStepId::UNKNOWN,
   TrackingChecklistStepId::TRACKERS_REST_CALIBRATION,
   TrackingChecklistStepId::FULL_RESET,
   TrackingChecklistStepId::VRCHAT_SETTINGS,
   TrackingChecklistStepId::STEAMVR_DISCONNECTED,
-  TrackingChecklistStepId::UNASSIGNED_RELIABLE_REFERENCE,
+  TrackingChecklistStepId::UNASSIGNED_HMD,
   TrackingChecklistStepId::TRACKER_ERROR,
   TrackingChecklistStepId::NETWORK_PROFILE_PUBLIC,
   TrackingChecklistStepId::MOUNTING_CALIBRATION,
@@ -31,6 +31,7 @@ pub const ENUM_VALUES_TRACKING_CHECKLIST_STEP_ID: [TrackingChecklistStepId; 15] 
   TrackingChecklistStepId::STANDABLE_INSTALLED,
   TrackingChecklistStepId::VRCHAT_OSC_TRACKING_DISABLED,
   TrackingChecklistStepId::MOUNTING_METHOD,
+  TrackingChecklistStepId::FIRMWARE_UPDATE,
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
@@ -43,7 +44,7 @@ impl TrackingChecklistStepId {
   pub const FULL_RESET: Self = Self(2);
   pub const VRCHAT_SETTINGS: Self = Self(3);
   pub const STEAMVR_DISCONNECTED: Self = Self(4);
-  pub const UNASSIGNED_RELIABLE_REFERENCE: Self = Self(5);
+  pub const UNASSIGNED_HMD: Self = Self(5);
   pub const TRACKER_ERROR: Self = Self(6);
   pub const NETWORK_PROFILE_PUBLIC: Self = Self(7);
   pub const MOUNTING_CALIBRATION: Self = Self(8);
@@ -53,16 +54,17 @@ impl TrackingChecklistStepId {
   pub const STANDABLE_INSTALLED: Self = Self(12);
   pub const VRCHAT_OSC_TRACKING_DISABLED: Self = Self(13);
   pub const MOUNTING_METHOD: Self = Self(14);
+  pub const FIRMWARE_UPDATE: Self = Self(15);
 
   pub const ENUM_MIN: u8 = 0;
-  pub const ENUM_MAX: u8 = 14;
+  pub const ENUM_MAX: u8 = 15;
   pub const ENUM_VALUES: &'static [Self] = &[
     Self::UNKNOWN,
     Self::TRACKERS_REST_CALIBRATION,
     Self::FULL_RESET,
     Self::VRCHAT_SETTINGS,
     Self::STEAMVR_DISCONNECTED,
-    Self::UNASSIGNED_RELIABLE_REFERENCE,
+    Self::UNASSIGNED_HMD,
     Self::TRACKER_ERROR,
     Self::NETWORK_PROFILE_PUBLIC,
     Self::MOUNTING_CALIBRATION,
@@ -72,6 +74,7 @@ impl TrackingChecklistStepId {
     Self::STANDABLE_INSTALLED,
     Self::VRCHAT_OSC_TRACKING_DISABLED,
     Self::MOUNTING_METHOD,
+    Self::FIRMWARE_UPDATE,
   ];
   /// Returns the variant's name or "" if unknown.
   pub fn variant_name(self) -> Option<&'static str> {
@@ -81,7 +84,7 @@ impl TrackingChecklistStepId {
       Self::FULL_RESET => Some("FULL_RESET"),
       Self::VRCHAT_SETTINGS => Some("VRCHAT_SETTINGS"),
       Self::STEAMVR_DISCONNECTED => Some("STEAMVR_DISCONNECTED"),
-      Self::UNASSIGNED_RELIABLE_REFERENCE => Some("UNASSIGNED_RELIABLE_REFERENCE"),
+      Self::UNASSIGNED_HMD => Some("UNASSIGNED_HMD"),
       Self::TRACKER_ERROR => Some("TRACKER_ERROR"),
       Self::NETWORK_PROFILE_PUBLIC => Some("NETWORK_PROFILE_PUBLIC"),
       Self::MOUNTING_CALIBRATION => Some("MOUNTING_CALIBRATION"),
@@ -91,6 +94,7 @@ impl TrackingChecklistStepId {
       Self::STANDABLE_INSTALLED => Some("STANDABLE_INSTALLED"),
       Self::VRCHAT_OSC_TRACKING_DISABLED => Some("VRCHAT_OSC_TRACKING_DISABLED"),
       Self::MOUNTING_METHOD => Some("MOUNTING_METHOD"),
+      Self::FIRMWARE_UPDATE => Some("FIRMWARE_UPDATE"),
       _ => None,
     }
   }

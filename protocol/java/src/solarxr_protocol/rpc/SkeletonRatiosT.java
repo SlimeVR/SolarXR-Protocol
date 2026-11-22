@@ -8,10 +8,20 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 public class SkeletonRatiosT {
+  private Float smoothingStrength;
+  private Float predictionStrength;
   private Float spineCurvature;
   private Float imputeSpineFromUpperToLower;
   private Float interpolateUpperLegsTwistWithLowerLegs;
   private Float skatingCorrectionStrength;
+
+  public Float getSmoothingStrength() { return smoothingStrength; }
+
+  public void setSmoothingStrength(Float smoothingStrength) { this.smoothingStrength = smoothingStrength; }
+
+  public Float getPredictionStrength() { return predictionStrength; }
+
+  public void setPredictionStrength(Float predictionStrength) { this.predictionStrength = predictionStrength; }
 
   public Float getSpineCurvature() { return spineCurvature; }
 
@@ -31,6 +41,8 @@ public class SkeletonRatiosT {
 
 
   public SkeletonRatiosT() {
+    this.smoothingStrength = null;
+    this.predictionStrength = null;
     this.spineCurvature = null;
     this.imputeSpineFromUpperToLower = null;
     this.interpolateUpperLegsTwistWithLowerLegs = null;

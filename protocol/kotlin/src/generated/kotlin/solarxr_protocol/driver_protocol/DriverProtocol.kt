@@ -435,8 +435,8 @@ public sealed interface DriverMessage {
 }
 
 public data class DriverMessageHeader(
-  public val txId: UInt = 0u,
-  public val replyTo: UInt = 0u,
+  public val txId: UInt? = null,
+  public val replyTo: UInt? = null,
   public val message: DriverMessage? = null,
 ) {
   public fun encode(builder: FlatBufferWriter): Int {
@@ -444,8 +444,8 @@ public data class DriverMessageHeader(
     val __type_message = message?.let { DriverMessage.typeIndex(it) } ?: 0.toUByte()
 
     builder.startTable(4)
-    builder.addInt(0, txId.toInt(), 0)
-    builder.addInt(1, replyTo.toInt(), 0)
+    if (txId != null) { builder.forceDefaults(true); builder.addInt(0, txId.toInt(), 0); builder.forceDefaults(false) }
+    if (replyTo != null) { builder.forceDefaults(true); builder.addInt(1, replyTo.toInt(), 0); builder.forceDefaults(false) }
     builder.addByte(2, __type_message.toByte(), 0)
     __off_message?.let { builder.addOffset(3, it, 0) }
     return builder.endTable()
@@ -462,8 +462,8 @@ public data class DriverMessageHeader(
       val __offset_message = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
 
       return DriverMessageHeader(
-              txId = if (__offset_txId != 0) bb.getInt(tableOffset + __offset_txId).toUInt() else 0u,
-              replyTo = if (__offset_replyTo != 0) bb.getInt(tableOffset + __offset_replyTo).toUInt() else 0u,
+              txId = if (__offset_txId != 0) bb.getInt(tableOffset + __offset_txId).toUInt() else null,
+              replyTo = if (__offset_replyTo != 0) bb.getInt(tableOffset + __offset_replyTo).toUInt() else null,
               message = if (__offset_message != 0) DriverMessage.decode(__type_message, bb, tableOffset + __offset_message + bb.getInt(tableOffset + __offset_message)) else null
           )
     }

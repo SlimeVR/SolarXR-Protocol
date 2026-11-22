@@ -1,5 +1,3 @@
-include "../datatypes/datatypes.fbs";
-
 namespace solarxr_protocol.rpc;
 
 enum TrackingChecklistStepId : uint8 {
@@ -8,7 +6,7 @@ enum TrackingChecklistStepId : uint8 {
     FULL_RESET = 2,
     VRCHAT_SETTINGS = 3,
     STEAMVR_DISCONNECTED = 4,
-    UNASSIGNED_RELIABLE_REFERENCE = 5,
+    UNASSIGNED_HMD = 5,
     TRACKER_ERROR = 6,
     NETWORK_PROFILE_PUBLIC = 7,
     MOUNTING_CALIBRATION = 8,
@@ -18,6 +16,7 @@ enum TrackingChecklistStepId : uint8 {
     STANDABLE_INSTALLED = 12,
     VRCHAT_OSC_TRACKING_DISABLED = 13,
     MOUNTING_METHOD = 14,
+    FIRMWARE_UPDATE = 15,
 }
 
 enum TrackingChecklistStepVisibility : uint8 {
@@ -52,9 +51,8 @@ table TrackingChecklistSteamVRDisconnected {
 
 table EnableSteamVRDriverRequest {}
 
-table TrackingChecklistUnassignedReliableReference {
+table TrackingChecklistUnassignedHMD {
     tracker_id: uint16;
-    intended_body_part: solarxr_protocol.datatypes.BodyPart;
 }
 
 table TrackingChecklistPublicNetworks {
@@ -65,7 +63,7 @@ union TrackingChecklistExtraData {
     TrackingChecklistTrackerReset,
     TrackingChecklistTrackerError,
     TrackingChecklistSteamVRDisconnected,
-    TrackingChecklistUnassignedReliableReference,
+    TrackingChecklistUnassignedHMD,
     TrackingChecklistNeedCalibration,
     TrackingChecklistPublicNetworks
 }
