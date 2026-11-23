@@ -11,7 +11,7 @@ public class SettingsDefaultsResponseT {
   private solarxr_protocol.rpc.SkeletonSettingsResponseT skeleton;
   private solarxr_protocol.rpc.ResetsSettingsResponseT resets;
   private solarxr_protocol.rpc.StayAlignedSettingsResponseT stayAligned;
-  private solarxr_protocol.rpc.TapDetectionSettingsResponseT tapDetection;
+  private solarxr_protocol.rpc.TrackerActionSettingsResponseT trackerAction;
   private solarxr_protocol.rpc.TimeoutSettingsResponseT timeout;
   private solarxr_protocol.rpc.HIDSettingsResponseT hid;
   private solarxr_protocol.rpc.DriverSettingsResponseT driver;
@@ -34,9 +34,9 @@ public class SettingsDefaultsResponseT {
 
   public void setStayAligned(solarxr_protocol.rpc.StayAlignedSettingsResponseT stayAligned) { this.stayAligned = stayAligned; }
 
-  public solarxr_protocol.rpc.TapDetectionSettingsResponseT getTapDetection() { return tapDetection; }
+  public solarxr_protocol.rpc.TrackerActionSettingsResponseT getTrackerAction() { return trackerAction; }
 
-  public void setTapDetection(solarxr_protocol.rpc.TapDetectionSettingsResponseT tapDetection) { this.tapDetection = tapDetection; }
+  public void setTrackerAction(solarxr_protocol.rpc.TrackerActionSettingsResponseT trackerAction) { this.trackerAction = trackerAction; }
 
   public solarxr_protocol.rpc.TimeoutSettingsResponseT getTimeout() { return timeout; }
 
@@ -79,7 +79,7 @@ public class SettingsDefaultsResponseT {
     this.skeleton = null;
     this.resets = null;
     this.stayAligned = null;
-    this.tapDetection = null;
+    this.trackerAction = null;
     this.timeout = null;
     this.hid = null;
     this.driver = null;

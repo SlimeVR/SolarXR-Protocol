@@ -11,10 +11,16 @@ table LogData {
 
 /// A list of error codes for error conditions on the device
 enum FirmwareErrorCode: uint8 {
-    Other = 0,
-    Disconnected,
-    Occluded,
-    ImuError,
+    OTHER = 0,
+    DISCONNECTED,
+    OCCLUDED,
+    IMU_ERROR,
+}
+
+enum TrackerActionMethod: uint8 {
+    TAP = 0,
+    BUTTON = 1,
+    BOTH = 2,
 }
 
 /// Different parts of the body. Maps to each possible bone in the skeleton.

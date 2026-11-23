@@ -19,7 +19,7 @@ public data class SettingsDefaultsResponse(
   public val skeleton: SkeletonSettingsResponse? = null,
   public val resets: ResetsSettingsResponse? = null,
   public val stayAligned: StayAlignedSettingsResponse? = null,
-  public val tapDetection: TapDetectionSettingsResponse? = null,
+  public val trackerAction: TrackerActionSettingsResponse? = null,
   public val timeout: TimeoutSettingsResponse? = null,
   public val hid: HIDSettingsResponse? = null,
   public val driver: DriverSettingsResponse? = null,
@@ -34,7 +34,7 @@ public data class SettingsDefaultsResponse(
     val __off_skeleton = skeleton?.encode(builder)
     val __off_resets = resets?.encode(builder)
     val __off_stayAligned = stayAligned?.encode(builder)
-    val __off_tapDetection = tapDetection?.encode(builder)
+    val __off_trackerAction = trackerAction?.encode(builder)
     val __off_timeout = timeout?.encode(builder)
     val __off_hid = hid?.encode(builder)
     val __off_driver = driver?.encode(builder)
@@ -49,7 +49,7 @@ public data class SettingsDefaultsResponse(
     __off_skeleton?.let { builder.addOffset(0, it, 0) }
     __off_resets?.let { builder.addOffset(1, it, 0) }
     __off_stayAligned?.let { builder.addOffset(2, it, 0) }
-    __off_tapDetection?.let { builder.addOffset(3, it, 0) }
+    __off_trackerAction?.let { builder.addOffset(3, it, 0) }
     __off_timeout?.let { builder.addOffset(4, it, 0) }
     __off_hid?.let { builder.addOffset(5, it, 0) }
     __off_driver?.let { builder.addOffset(6, it, 0) }
@@ -70,7 +70,7 @@ public data class SettingsDefaultsResponse(
       val __offset_skeleton = if (vtableSize > 4) bb.getShort(vtableOffset + 4).toInt() else 0
       val __offset_resets = if (vtableSize > 6) bb.getShort(vtableOffset + 6).toInt() else 0
       val __offset_stayAligned = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
-      val __offset_tapDetection = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
+      val __offset_trackerAction = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_timeout = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
       val __offset_hid = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
       val __offset_driver = if (vtableSize > 16) bb.getShort(vtableOffset + 16).toInt() else 0
@@ -85,7 +85,7 @@ public data class SettingsDefaultsResponse(
               skeleton = if (__offset_skeleton != 0) SkeletonSettingsResponse.decode(bb, tableOffset + __offset_skeleton + bb.getInt(tableOffset + __offset_skeleton)) else null,
               resets = if (__offset_resets != 0) ResetsSettingsResponse.decode(bb, tableOffset + __offset_resets + bb.getInt(tableOffset + __offset_resets)) else null,
               stayAligned = if (__offset_stayAligned != 0) StayAlignedSettingsResponse.decode(bb, tableOffset + __offset_stayAligned + bb.getInt(tableOffset + __offset_stayAligned)) else null,
-              tapDetection = if (__offset_tapDetection != 0) TapDetectionSettingsResponse.decode(bb, tableOffset + __offset_tapDetection + bb.getInt(tableOffset + __offset_tapDetection)) else null,
+              trackerAction = if (__offset_trackerAction != 0) TrackerActionSettingsResponse.decode(bb, tableOffset + __offset_trackerAction + bb.getInt(tableOffset + __offset_trackerAction)) else null,
               timeout = if (__offset_timeout != 0) TimeoutSettingsResponse.decode(bb, tableOffset + __offset_timeout + bb.getInt(tableOffset + __offset_timeout)) else null,
               hid = if (__offset_hid != 0) HIDSettingsResponse.decode(bb, tableOffset + __offset_hid + bb.getInt(tableOffset + __offset_hid)) else null,
               driver = if (__offset_driver != 0) DriverSettingsResponse.decode(bb, tableOffset + __offset_driver + bb.getInt(tableOffset + __offset_driver)) else null,

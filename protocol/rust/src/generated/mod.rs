@@ -61,8 +61,6 @@ pub mod solarxr_protocol {
       pub use self::imu_type_generated::*;
       mod board_type_generated;
       pub use self::board_type_generated::*;
-      mod tracker_data_type_generated;
-      pub use self::tracker_data_type_generated::*;
       mod hardware_address_generated;
       pub use self::hardware_address_generated::*;
       mod hardware_info_generated;
@@ -81,6 +79,8 @@ pub mod solarxr_protocol {
     } // math
     mod firmware_error_code_generated;
     pub use self::firmware_error_code_generated::*;
+    mod tracker_action_method_generated;
+    pub use self::tracker_action_method_generated::*;
     mod body_part_generated;
     pub use self::body_part_generated::*;
     mod tracker_status_generated;
@@ -521,16 +521,18 @@ pub mod solarxr_protocol {
     pub use self::update_tracker_request_generated::*;
     mod reset_tracker_assignments_generated;
     pub use self::reset_tracker_assignments_generated::*;
-    mod tap_detection_settings_request_generated;
-    pub use self::tap_detection_settings_request_generated::*;
-    mod tap_detection_settings_response_generated;
-    pub use self::tap_detection_settings_response_generated::*;
-    mod change_tap_detection_settings_request_generated;
-    pub use self::change_tap_detection_settings_request_generated::*;
-    mod tap_detection_setup_mode_request_generated;
-    pub use self::tap_detection_setup_mode_request_generated::*;
-    mod tap_detection_setup_notification_generated;
-    pub use self::tap_detection_setup_notification_generated::*;
+    mod tracker_action_settings_generated;
+    pub use self::tracker_action_settings_generated::*;
+    mod tracker_action_settings_request_generated;
+    pub use self::tracker_action_settings_request_generated::*;
+    mod tracker_action_settings_response_generated;
+    pub use self::tracker_action_settings_response_generated::*;
+    mod change_tracker_action_settings_request_generated;
+    pub use self::change_tracker_action_settings_request_generated::*;
+    mod tracker_action_setup_mode_request_generated;
+    pub use self::tracker_action_setup_mode_request_generated::*;
+    mod tracker_action_setup_notification_generated;
+    pub use self::tracker_action_setup_notification_generated::*;
     mod mag_toggle_request_generated;
     pub use self::mag_toggle_request_generated::*;
     mod mag_toggle_response_generated;

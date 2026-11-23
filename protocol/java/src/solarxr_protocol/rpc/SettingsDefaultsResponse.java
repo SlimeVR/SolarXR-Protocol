@@ -21,8 +21,8 @@ public final class SettingsDefaultsResponse extends Table {
   public solarxr_protocol.rpc.ResetsSettingsResponse resets(solarxr_protocol.rpc.ResetsSettingsResponse obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.StayAlignedSettingsResponse stayAligned() { return stayAligned(new solarxr_protocol.rpc.StayAlignedSettingsResponse()); }
   public solarxr_protocol.rpc.StayAlignedSettingsResponse stayAligned(solarxr_protocol.rpc.StayAlignedSettingsResponse obj) { int o = __offset(8); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public solarxr_protocol.rpc.TapDetectionSettingsResponse tapDetection() { return tapDetection(new solarxr_protocol.rpc.TapDetectionSettingsResponse()); }
-  public solarxr_protocol.rpc.TapDetectionSettingsResponse tapDetection(solarxr_protocol.rpc.TapDetectionSettingsResponse obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public solarxr_protocol.rpc.TrackerActionSettingsResponse trackerAction() { return trackerAction(new solarxr_protocol.rpc.TrackerActionSettingsResponse()); }
+  public solarxr_protocol.rpc.TrackerActionSettingsResponse trackerAction(solarxr_protocol.rpc.TrackerActionSettingsResponse obj) { int o = __offset(10); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.TimeoutSettingsResponse timeout() { return timeout(new solarxr_protocol.rpc.TimeoutSettingsResponse()); }
   public solarxr_protocol.rpc.TimeoutSettingsResponse timeout(solarxr_protocol.rpc.TimeoutSettingsResponse obj) { int o = __offset(12); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
   public solarxr_protocol.rpc.HIDSettingsResponse hid() { return hid(new solarxr_protocol.rpc.HIDSettingsResponse()); }
@@ -46,7 +46,7 @@ public final class SettingsDefaultsResponse extends Table {
       int skeletonOffset,
       int resetsOffset,
       int stayAlignedOffset,
-      int tapDetectionOffset,
+      int trackerActionOffset,
       int timeoutOffset,
       int hidOffset,
       int driverOffset,
@@ -66,7 +66,7 @@ public final class SettingsDefaultsResponse extends Table {
     SettingsDefaultsResponse.addDriver(builder, driverOffset);
     SettingsDefaultsResponse.addHid(builder, hidOffset);
     SettingsDefaultsResponse.addTimeout(builder, timeoutOffset);
-    SettingsDefaultsResponse.addTapDetection(builder, tapDetectionOffset);
+    SettingsDefaultsResponse.addTrackerAction(builder, trackerActionOffset);
     SettingsDefaultsResponse.addStayAligned(builder, stayAlignedOffset);
     SettingsDefaultsResponse.addResets(builder, resetsOffset);
     SettingsDefaultsResponse.addSkeleton(builder, skeletonOffset);
@@ -77,7 +77,7 @@ public final class SettingsDefaultsResponse extends Table {
   public static void addSkeleton(FlatBufferBuilder builder, int skeletonOffset) { builder.addOffset(0, skeletonOffset, 0); }
   public static void addResets(FlatBufferBuilder builder, int resetsOffset) { builder.addOffset(1, resetsOffset, 0); }
   public static void addStayAligned(FlatBufferBuilder builder, int stayAlignedOffset) { builder.addOffset(2, stayAlignedOffset, 0); }
-  public static void addTapDetection(FlatBufferBuilder builder, int tapDetectionOffset) { builder.addOffset(3, tapDetectionOffset, 0); }
+  public static void addTrackerAction(FlatBufferBuilder builder, int trackerActionOffset) { builder.addOffset(3, trackerActionOffset, 0); }
   public static void addTimeout(FlatBufferBuilder builder, int timeoutOffset) { builder.addOffset(4, timeoutOffset, 0); }
   public static void addHid(FlatBufferBuilder builder, int hidOffset) { builder.addOffset(5, hidOffset, 0); }
   public static void addDriver(FlatBufferBuilder builder, int driverOffset) { builder.addOffset(6, driverOffset, 0); }
@@ -110,8 +110,8 @@ public final class SettingsDefaultsResponse extends Table {
     else _o.setResets(null);
     if (stayAligned() != null) _o.setStayAligned(stayAligned().unpack());
     else _o.setStayAligned(null);
-    if (tapDetection() != null) _o.setTapDetection(tapDetection().unpack());
-    else _o.setTapDetection(null);
+    if (trackerAction() != null) _o.setTrackerAction(trackerAction().unpack());
+    else _o.setTrackerAction(null);
     if (timeout() != null) _o.setTimeout(timeout().unpack());
     else _o.setTimeout(null);
     if (hid() != null) _o.setHid(hid().unpack());
@@ -136,7 +136,7 @@ public final class SettingsDefaultsResponse extends Table {
     int _skeleton = _o.getSkeleton() == null ? 0 : solarxr_protocol.rpc.SkeletonSettingsResponse.pack(builder, _o.getSkeleton());
     int _resets = _o.getResets() == null ? 0 : solarxr_protocol.rpc.ResetsSettingsResponse.pack(builder, _o.getResets());
     int _stayAligned = _o.getStayAligned() == null ? 0 : solarxr_protocol.rpc.StayAlignedSettingsResponse.pack(builder, _o.getStayAligned());
-    int _tapDetection = _o.getTapDetection() == null ? 0 : solarxr_protocol.rpc.TapDetectionSettingsResponse.pack(builder, _o.getTapDetection());
+    int _trackerAction = _o.getTrackerAction() == null ? 0 : solarxr_protocol.rpc.TrackerActionSettingsResponse.pack(builder, _o.getTrackerAction());
     int _timeout = _o.getTimeout() == null ? 0 : solarxr_protocol.rpc.TimeoutSettingsResponse.pack(builder, _o.getTimeout());
     int _hid = _o.getHid() == null ? 0 : solarxr_protocol.rpc.HIDSettingsResponse.pack(builder, _o.getHid());
     int _driver = _o.getDriver() == null ? 0 : solarxr_protocol.rpc.DriverSettingsResponse.pack(builder, _o.getDriver());
@@ -151,7 +151,7 @@ public final class SettingsDefaultsResponse extends Table {
       _skeleton,
       _resets,
       _stayAligned,
-      _tapDetection,
+      _trackerAction,
       _timeout,
       _hid,
       _driver,

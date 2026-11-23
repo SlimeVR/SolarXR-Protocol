@@ -26,6 +26,7 @@ export { FirmwareErrorCode } from './solarxr-protocol/datatypes/firmware-error-c
 export { LogData, LogDataT } from './solarxr-protocol/datatypes/log-data.js';
 export { MagnetometerStatus } from './solarxr-protocol/datatypes/magnetometer-status.js';
 export { MountingMethod } from './solarxr-protocol/datatypes/mounting-method.js';
+export { TrackerActionMethod } from './solarxr-protocol/datatypes/tracker-action-method.js';
 export { TrackerStatus } from './solarxr-protocol/datatypes/tracker-status.js';
 export { BoardType } from './solarxr-protocol/datatypes/hardware-info/board-type.js';
 export { FirmwareStatusMask, FirmwareStatusMaskT } from './solarxr-protocol/datatypes/hardware-info/firmware-status-mask.js';
@@ -34,7 +35,6 @@ export { HardwareInfo, HardwareInfoT } from './solarxr-protocol/datatypes/hardwa
 export { HardwareStatus, HardwareStatusT } from './solarxr-protocol/datatypes/hardware-info/hardware-status.js';
 export { ImuType } from './solarxr-protocol/datatypes/hardware-info/imu-type.js';
 export { McuType } from './solarxr-protocol/datatypes/hardware-info/mcu-type.js';
-export { TrackerDataType } from './solarxr-protocol/datatypes/hardware-info/tracker-data-type.js';
 export { Quat, QuatT } from './solarxr-protocol/datatypes/math/quat.js';
 export { Vec3f, Vec3fT } from './solarxr-protocol/datatypes/math/vec3f.js';
 export { AddTrackerRequest, AddTrackerRequestT } from './solarxr-protocol/driver-protocol/add-tracker-request.js';
@@ -81,8 +81,8 @@ export { ChangeResetsSettingsRequest, ChangeResetsSettingsRequestT } from './sol
 export { ChangeSkeletonProportionsRequest, ChangeSkeletonProportionsRequestT } from './solarxr-protocol/rpc/change-skeleton-proportions-request.js';
 export { ChangeSkeletonSettingsRequest, ChangeSkeletonSettingsRequestT } from './solarxr-protocol/rpc/change-skeleton-settings-request.js';
 export { ChangeStayAlignedSettingsRequest, ChangeStayAlignedSettingsRequestT } from './solarxr-protocol/rpc/change-stay-aligned-settings-request.js';
-export { ChangeTapDetectionSettingsRequest, ChangeTapDetectionSettingsRequestT } from './solarxr-protocol/rpc/change-tap-detection-settings-request.js';
 export { ChangeTimeoutSettingsRequest, ChangeTimeoutSettingsRequestT } from './solarxr-protocol/rpc/change-timeout-settings-request.js';
+export { ChangeTrackerActionSettingsRequest, ChangeTrackerActionSettingsRequestT } from './solarxr-protocol/rpc/change-tracker-action-settings-request.js';
 export { ChangeUserHeightRequest, ChangeUserHeightRequestT } from './solarxr-protocol/rpc/change-user-height-request.js';
 export { ChangeVMCOSCSettingsRequest, ChangeVMCOSCSettingsRequestT } from './solarxr-protocol/rpc/change-vmcoscsettings-request.js';
 export { ChangeVRCOSCSettingsRequest, ChangeVRCOSCSettingsRequestT } from './solarxr-protocol/rpc/change-vrcoscsettings-request.js';
@@ -241,16 +241,17 @@ export { StopTrackerImuTelemetryRequest, StopTrackerImuTelemetryRequestT } from 
 export { StopWifiProvisioningRequest, StopWifiProvisioningRequestT } from './solarxr-protocol/rpc/stop-wifi-provisioning-request.js';
 export { StopWifiScanRequest, StopWifiScanRequestT } from './solarxr-protocol/rpc/stop-wifi-scan-request.js';
 export { SwitchProfileRequest, SwitchProfileRequestT } from './solarxr-protocol/rpc/switch-profile-request.js';
-export { TapDetectionSettingsRequest, TapDetectionSettingsRequestT } from './solarxr-protocol/rpc/tap-detection-settings-request.js';
-export { TapDetectionSettingsResponse, TapDetectionSettingsResponseT } from './solarxr-protocol/rpc/tap-detection-settings-response.js';
-export { TapDetectionSetupModeRequest, TapDetectionSetupModeRequestT } from './solarxr-protocol/rpc/tap-detection-setup-mode-request.js';
-export { TapDetectionSetupNotification, TapDetectionSetupNotificationT } from './solarxr-protocol/rpc/tap-detection-setup-notification.js';
 export { TelemetryGapEvent, TelemetryGapEventT } from './solarxr-protocol/rpc/telemetry-gap-event.js';
 export { TelemetryGapResponse, TelemetryGapResponseT } from './solarxr-protocol/rpc/telemetry-gap-response.js';
 export { TelemetrySample, TelemetrySampleT } from './solarxr-protocol/rpc/telemetry-sample.js';
 export { TelemetryUpdateResponse, TelemetryUpdateResponseT } from './solarxr-protocol/rpc/telemetry-update-response.js';
 export { TimeoutSettingsRequest, TimeoutSettingsRequestT } from './solarxr-protocol/rpc/timeout-settings-request.js';
 export { TimeoutSettingsResponse, TimeoutSettingsResponseT } from './solarxr-protocol/rpc/timeout-settings-response.js';
+export { TrackerActionSettings, TrackerActionSettingsT } from './solarxr-protocol/rpc/tracker-action-settings.js';
+export { TrackerActionSettingsRequest, TrackerActionSettingsRequestT } from './solarxr-protocol/rpc/tracker-action-settings-request.js';
+export { TrackerActionSettingsResponse, TrackerActionSettingsResponseT } from './solarxr-protocol/rpc/tracker-action-settings-response.js';
+export { TrackerActionSetupModeRequest, TrackerActionSetupModeRequestT } from './solarxr-protocol/rpc/tracker-action-setup-mode-request.js';
+export { TrackerActionSetupNotification, TrackerActionSetupNotificationT } from './solarxr-protocol/rpc/tracker-action-setup-notification.js';
 export { TrackerImuSample, TrackerImuSampleT } from './solarxr-protocol/rpc/tracker-imu-sample.js';
 export { TrackerImuTelemetryResponse, TrackerImuTelemetryResponseT } from './solarxr-protocol/rpc/tracker-imu-telemetry-response.js';
 export { TrackerProvisioningState, TrackerProvisioningStateT } from './solarxr-protocol/rpc/tracker-provisioning-state.js';

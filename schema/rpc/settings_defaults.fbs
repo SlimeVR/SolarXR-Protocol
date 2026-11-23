@@ -17,7 +17,7 @@ table SettingsDefaultsResponse {
     skeleton: SkeletonSettingsResponse;
     resets: ResetsSettingsResponse;
     stay_aligned: StayAlignedSettingsResponse;
-    tap_detection: TapDetectionSettingsResponse;
+    tracker_action: TrackerActionSettingsResponse;
     timeout: TimeoutSettingsResponse;
     hid: HIDSettingsResponse;
     driver: DriverSettingsResponse;

@@ -10,8 +10,8 @@ import { MagToggleResponse, MagToggleResponseT } from '../../solarxr-protocol/rp
 import { ResetsSettingsResponse, ResetsSettingsResponseT } from '../../solarxr-protocol/rpc/resets-settings-response.js';
 import { SkeletonSettingsResponse, SkeletonSettingsResponseT } from '../../solarxr-protocol/rpc/skeleton-settings-response.js';
 import { StayAlignedSettingsResponse, StayAlignedSettingsResponseT } from '../../solarxr-protocol/rpc/stay-aligned-settings-response.js';
-import { TapDetectionSettingsResponse, TapDetectionSettingsResponseT } from '../../solarxr-protocol/rpc/tap-detection-settings-response.js';
 import { TimeoutSettingsResponse, TimeoutSettingsResponseT } from '../../solarxr-protocol/rpc/timeout-settings-response.js';
+import { TrackerActionSettingsResponse, TrackerActionSettingsResponseT } from '../../solarxr-protocol/rpc/tracker-action-settings-response.js';
 import { VMCOSCSettingsResponse, VMCOSCSettingsResponseT } from '../../solarxr-protocol/rpc/vmcoscsettings-response.js';
 import { VRCOSCSettingsResponse, VRCOSCSettingsResponseT } from '../../solarxr-protocol/rpc/vrcoscsettings-response.js';
 import { VRMSettingsResponse, VRMSettingsResponseT } from '../../solarxr-protocol/rpc/vrmsettings-response.js';
@@ -50,9 +50,9 @@ stayAligned(obj?:StayAlignedSettingsResponse):StayAlignedSettingsResponse|null {
   return offset ? (obj || new StayAlignedSettingsResponse()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
-tapDetection(obj?:TapDetectionSettingsResponse):TapDetectionSettingsResponse|null {
+trackerAction(obj?:TrackerActionSettingsResponse):TrackerActionSettingsResponse|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? (obj || new TapDetectionSettingsResponse()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? (obj || new TrackerActionSettingsResponse()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
 timeout(obj?:TimeoutSettingsResponse):TimeoutSettingsResponse|null {
@@ -116,8 +116,8 @@ static addStayAligned(builder:flatbuffers.Builder, stayAlignedOffset:flatbuffers
   builder.addFieldOffset(2, stayAlignedOffset, 0);
 }
 
-static addTapDetection(builder:flatbuffers.Builder, tapDetectionOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, tapDetectionOffset, 0);
+static addTrackerAction(builder:flatbuffers.Builder, trackerActionOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(3, trackerActionOffset, 0);
 }
 
 static addTimeout(builder:flatbuffers.Builder, timeoutOffset:flatbuffers.Offset) {
@@ -167,7 +167,7 @@ unpack(): SettingsDefaultsResponseT {
     (this.skeleton() !== null ? this.skeleton()!.unpack() : null),
     (this.resets() !== null ? this.resets()!.unpack() : null),
     (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null),
-    (this.tapDetection() !== null ? this.tapDetection()!.unpack() : null),
+    (this.trackerAction() !== null ? this.trackerAction()!.unpack() : null),
     (this.timeout() !== null ? this.timeout()!.unpack() : null),
     (this.hid() !== null ? this.hid()!.unpack() : null),
     (this.driver() !== null ? this.driver()!.unpack() : null),
@@ -185,7 +185,7 @@ unpackTo(_o: SettingsDefaultsResponseT): void {
   _o.skeleton = (this.skeleton() !== null ? this.skeleton()!.unpack() : null);
   _o.resets = (this.resets() !== null ? this.resets()!.unpack() : null);
   _o.stayAligned = (this.stayAligned() !== null ? this.stayAligned()!.unpack() : null);
-  _o.tapDetection = (this.tapDetection() !== null ? this.tapDetection()!.unpack() : null);
+  _o.trackerAction = (this.trackerAction() !== null ? this.trackerAction()!.unpack() : null);
   _o.timeout = (this.timeout() !== null ? this.timeout()!.unpack() : null);
   _o.hid = (this.hid() !== null ? this.hid()!.unpack() : null);
   _o.driver = (this.driver() !== null ? this.driver()!.unpack() : null);
@@ -203,7 +203,7 @@ constructor(
   public skeleton: SkeletonSettingsResponseT|null = null,
   public resets: ResetsSettingsResponseT|null = null,
   public stayAligned: StayAlignedSettingsResponseT|null = null,
-  public tapDetection: TapDetectionSettingsResponseT|null = null,
+  public trackerAction: TrackerActionSettingsResponseT|null = null,
   public timeout: TimeoutSettingsResponseT|null = null,
   public hid: HIDSettingsResponseT|null = null,
   public driver: DriverSettingsResponseT|null = null,
@@ -220,7 +220,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   const skeleton = (this.skeleton !== null ? this.skeleton!.pack(builder) : 0);
   const resets = (this.resets !== null ? this.resets!.pack(builder) : 0);
   const stayAligned = (this.stayAligned !== null ? this.stayAligned!.pack(builder) : 0);
-  const tapDetection = (this.tapDetection !== null ? this.tapDetection!.pack(builder) : 0);
+  const trackerAction = (this.trackerAction !== null ? this.trackerAction!.pack(builder) : 0);
   const timeout = (this.timeout !== null ? this.timeout!.pack(builder) : 0);
   const hid = (this.hid !== null ? this.hid!.pack(builder) : 0);
   const driver = (this.driver !== null ? this.driver!.pack(builder) : 0);
@@ -235,7 +235,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   SettingsDefaultsResponse.addSkeleton(builder, skeleton);
   SettingsDefaultsResponse.addResets(builder, resets);
   SettingsDefaultsResponse.addStayAligned(builder, stayAligned);
-  SettingsDefaultsResponse.addTapDetection(builder, tapDetection);
+  SettingsDefaultsResponse.addTrackerAction(builder, trackerAction);
   SettingsDefaultsResponse.addTimeout(builder, timeout);
   SettingsDefaultsResponse.addHid(builder, hid);
   SettingsDefaultsResponse.addDriver(builder, driver);
