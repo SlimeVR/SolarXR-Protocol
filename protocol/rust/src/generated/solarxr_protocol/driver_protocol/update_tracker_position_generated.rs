@@ -12,7 +12,7 @@ use super::*;
 pub enum UpdateTrackerPositionOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-/// Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
+/// Update the rotation, position, (angular velocity, and/or linear velocity) or linear acceleration of a created tracker.
 /// Will be ignored if you have not successfully completed a handshake.
 pub struct UpdateTrackerPosition<'a> {
   pub _tab: flatbuffers::Table<'a>,
@@ -32,6 +32,7 @@ impl<'a> UpdateTrackerPosition<'a> {
   pub const VT_POSITION: flatbuffers::VOffsetT = 8;
   pub const VT_ANGULAR_VELOCITY: flatbuffers::VOffsetT = 10;
   pub const VT_LINEAR_VELOCITY: flatbuffers::VOffsetT = 12;
+  pub const VT_LINEAR_ACCELERATION: flatbuffers::VOffsetT = 14;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -43,6 +44,7 @@ impl<'a> UpdateTrackerPosition<'a> {
     args: &'args UpdateTrackerPositionArgs<'args>
   ) -> flatbuffers::WIPOffset<UpdateTrackerPosition<'bldr>> {
     let mut builder = UpdateTrackerPositionBuilder::new(_fbb);
+    if let Some(x) = args.linear_acceleration { builder.add_linear_acceleration(x); }
     if let Some(x) = args.linear_velocity { builder.add_linear_velocity(x); }
     if let Some(x) = args.angular_velocity { builder.add_angular_velocity(x); }
     if let Some(x) = args.position { builder.add_position(x); }
@@ -88,6 +90,13 @@ impl<'a> UpdateTrackerPosition<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<super::datatypes::math::Vec3f>(UpdateTrackerPosition::VT_LINEAR_VELOCITY, None)}
   }
+  #[inline]
+  pub fn linear_acceleration(&self) -> Option<&'a super::datatypes::math::Vec3f> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<super::datatypes::math::Vec3f>(UpdateTrackerPosition::VT_LINEAR_ACCELERATION, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for UpdateTrackerPosition<'_> {
@@ -102,6 +111,7 @@ impl flatbuffers::Verifiable for UpdateTrackerPosition<'_> {
      .visit_field::<super::datatypes::math::Vec3f>("position", Self::VT_POSITION, false)?
      .visit_field::<super::datatypes::math::Vec3f>("angular_velocity", Self::VT_ANGULAR_VELOCITY, false)?
      .visit_field::<super::datatypes::math::Vec3f>("linear_velocity", Self::VT_LINEAR_VELOCITY, false)?
+     .visit_field::<super::datatypes::math::Vec3f>("linear_acceleration", Self::VT_LINEAR_ACCELERATION, false)?
      .finish();
     Ok(())
   }
@@ -112,6 +122,7 @@ pub struct UpdateTrackerPositionArgs<'a> {
     pub position: Option<&'a super::datatypes::math::Vec3f>,
     pub angular_velocity: Option<&'a super::datatypes::math::Vec3f>,
     pub linear_velocity: Option<&'a super::datatypes::math::Vec3f>,
+    pub linear_acceleration: Option<&'a super::datatypes::math::Vec3f>,
 }
 impl<'a> Default for UpdateTrackerPositionArgs<'a> {
   #[inline]
@@ -122,6 +133,7 @@ impl<'a> Default for UpdateTrackerPositionArgs<'a> {
       position: None,
       angular_velocity: None,
       linear_velocity: None,
+      linear_acceleration: None,
     }
   }
 }
@@ -152,6 +164,10 @@ impl<'a: 'b, 'b> UpdateTrackerPositionBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<&super::datatypes::math::Vec3f>(UpdateTrackerPosition::VT_LINEAR_VELOCITY, linear_velocity);
   }
   #[inline]
+  pub fn add_linear_acceleration(&mut self, linear_acceleration: &super::datatypes::math::Vec3f) {
+    self.fbb_.push_slot_always::<&super::datatypes::math::Vec3f>(UpdateTrackerPosition::VT_LINEAR_ACCELERATION, linear_acceleration);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> UpdateTrackerPositionBuilder<'a, 'b> {
     let start = _fbb.start_table();
     UpdateTrackerPositionBuilder {
@@ -174,6 +190,7 @@ impl core::fmt::Debug for UpdateTrackerPosition<'_> {
       ds.field("position", &self.position());
       ds.field("angular_velocity", &self.angular_velocity());
       ds.field("linear_velocity", &self.linear_velocity());
+      ds.field("linear_acceleration", &self.linear_acceleration());
       ds.finish()
   }
 }

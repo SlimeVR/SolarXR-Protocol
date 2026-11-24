@@ -13,6 +13,7 @@ public class UpdateTrackerPositionT {
   private solarxr_protocol.datatypes.math.Vec3fT position;
   private solarxr_protocol.datatypes.math.Vec3fT angularVelocity;
   private solarxr_protocol.datatypes.math.Vec3fT linearVelocity;
+  private solarxr_protocol.datatypes.math.Vec3fT linearAcceleration;
 
   public int getTrackerId() { return trackerId; }
 
@@ -34,6 +35,10 @@ public class UpdateTrackerPositionT {
 
   public void setLinearVelocity(solarxr_protocol.datatypes.math.Vec3fT linearVelocity) { this.linearVelocity = linearVelocity; }
 
+  public solarxr_protocol.datatypes.math.Vec3fT getLinearAcceleration() { return linearAcceleration; }
+
+  public void setLinearAcceleration(solarxr_protocol.datatypes.math.Vec3fT linearAcceleration) { this.linearAcceleration = linearAcceleration; }
+
 
   public UpdateTrackerPositionT() {
     this.trackerId = 0;
@@ -41,6 +46,7 @@ public class UpdateTrackerPositionT {
     this.position = new solarxr_protocol.datatypes.math.Vec3fT();
     this.angularVelocity = new solarxr_protocol.datatypes.math.Vec3fT();
     this.linearVelocity = new solarxr_protocol.datatypes.math.Vec3fT();
+    this.linearAcceleration = new solarxr_protocol.datatypes.math.Vec3fT();
   }
 }
 

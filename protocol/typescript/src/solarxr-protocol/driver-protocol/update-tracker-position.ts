@@ -7,7 +7,7 @@ import { Vec3f, Vec3fT } from '../../solarxr-protocol/datatypes/math/vec3f.js';
 
 
 /**
- * Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
+ * Update the rotation, position, (angular velocity, and/or linear velocity) or linear acceleration of a created tracker.
  * Will be ignored if you have not successfully completed a handshake.
  */
 export class UpdateTrackerPosition implements flatbuffers.IUnpackableObject<UpdateTrackerPositionT> {
@@ -56,8 +56,13 @@ linearVelocity(obj?:Vec3f):Vec3f|null {
   return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+linearAcceleration(obj?:Vec3f):Vec3f|null {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
+  return offset ? (obj || new Vec3f()).__init(this.bb_pos + offset, this.bb!) : null;
+}
+
 static startUpdateTrackerPosition(builder:flatbuffers.Builder) {
-  builder.startObject(5);
+  builder.startObject(6);
 }
 
 static addTrackerId(builder:flatbuffers.Builder, trackerId:number) {
@@ -80,6 +85,10 @@ static addLinearVelocity(builder:flatbuffers.Builder, linearVelocityOffset:flatb
   builder.addFieldStruct(4, linearVelocityOffset, 0);
 }
 
+static addLinearAcceleration(builder:flatbuffers.Builder, linearAccelerationOffset:flatbuffers.Offset) {
+  builder.addFieldStruct(5, linearAccelerationOffset, 0);
+}
+
 static endUpdateTrackerPosition(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
@@ -92,7 +101,8 @@ unpack(): UpdateTrackerPositionT {
     (this.rotation() !== null ? this.rotation()!.unpack() : null),
     (this.position() !== null ? this.position()!.unpack() : null),
     (this.angularVelocity() !== null ? this.angularVelocity()!.unpack() : null),
-    (this.linearVelocity() !== null ? this.linearVelocity()!.unpack() : null)
+    (this.linearVelocity() !== null ? this.linearVelocity()!.unpack() : null),
+    (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null)
   );
 }
 
@@ -103,6 +113,7 @@ unpackTo(_o: UpdateTrackerPositionT): void {
   _o.position = (this.position() !== null ? this.position()!.unpack() : null);
   _o.angularVelocity = (this.angularVelocity() !== null ? this.angularVelocity()!.unpack() : null);
   _o.linearVelocity = (this.linearVelocity() !== null ? this.linearVelocity()!.unpack() : null);
+  _o.linearAcceleration = (this.linearAcceleration() !== null ? this.linearAcceleration()!.unpack() : null);
 }
 }
 
@@ -112,7 +123,8 @@ constructor(
   public rotation: QuatT|null = null,
   public position: Vec3fT|null = null,
   public angularVelocity: Vec3fT|null = null,
-  public linearVelocity: Vec3fT|null = null
+  public linearVelocity: Vec3fT|null = null,
+  public linearAcceleration: Vec3fT|null = null
 ){}
 
 
@@ -123,6 +135,7 @@ pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   UpdateTrackerPosition.addPosition(builder, (this.position !== null ? this.position!.pack(builder) : 0));
   UpdateTrackerPosition.addAngularVelocity(builder, (this.angularVelocity !== null ? this.angularVelocity!.pack(builder) : 0));
   UpdateTrackerPosition.addLinearVelocity(builder, (this.linearVelocity !== null ? this.linearVelocity!.pack(builder) : 0));
+  UpdateTrackerPosition.addLinearAcceleration(builder, (this.linearAcceleration !== null ? this.linearAcceleration!.pack(builder) : 0));
 
   return UpdateTrackerPosition.endUpdateTrackerPosition(builder);
 }

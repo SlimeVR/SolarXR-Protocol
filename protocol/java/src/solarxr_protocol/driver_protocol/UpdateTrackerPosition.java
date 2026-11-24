@@ -8,7 +8,7 @@ import java.util.*;
 import com.google.flatbuffers.*;
 
 /**
- * Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
+ * Update the rotation, position, (angular velocity, and/or linear velocity) or linear acceleration of a created tracker.
  * Will be ignored if you have not successfully completed a handshake.
  */
 @SuppressWarnings("unused")
@@ -31,13 +31,16 @@ public final class UpdateTrackerPosition extends Table {
   public solarxr_protocol.datatypes.math.Vec3f angularVelocity(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(10); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
   public solarxr_protocol.datatypes.math.Vec3f linearVelocity() { return linearVelocity(new solarxr_protocol.datatypes.math.Vec3f()); }
   public solarxr_protocol.datatypes.math.Vec3f linearVelocity(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(12); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
+  public solarxr_protocol.datatypes.math.Vec3f linearAcceleration() { return linearAcceleration(new solarxr_protocol.datatypes.math.Vec3f()); }
+  public solarxr_protocol.datatypes.math.Vec3f linearAcceleration(solarxr_protocol.datatypes.math.Vec3f obj) { int o = __offset(14); return o != 0 ? obj.__assign(o + bb_pos, bb) : null; }
 
-  public static void startUpdateTrackerPosition(FlatBufferBuilder builder) { builder.startTable(5); }
+  public static void startUpdateTrackerPosition(FlatBufferBuilder builder) { builder.startTable(6); }
   public static void addTrackerId(FlatBufferBuilder builder, int trackerId) { builder.addShort(0, (short) trackerId, (short) 0); }
   public static void addRotation(FlatBufferBuilder builder, int rotationOffset) { builder.addStruct(1, rotationOffset, 0); }
   public static void addPosition(FlatBufferBuilder builder, int positionOffset) { builder.addStruct(2, positionOffset, 0); }
   public static void addAngularVelocity(FlatBufferBuilder builder, int angularVelocityOffset) { builder.addStruct(3, angularVelocityOffset, 0); }
   public static void addLinearVelocity(FlatBufferBuilder builder, int linearVelocityOffset) { builder.addStruct(4, linearVelocityOffset, 0); }
+  public static void addLinearAcceleration(FlatBufferBuilder builder, int linearAccelerationOffset) { builder.addStruct(5, linearAccelerationOffset, 0); }
   public static int endUpdateTrackerPosition(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -65,6 +68,8 @@ public final class UpdateTrackerPosition extends Table {
     else _o.setAngularVelocity(null);
     if (linearVelocity() != null) linearVelocity().unpackTo(_o.getLinearVelocity());
     else _o.setLinearVelocity(null);
+    if (linearAcceleration() != null) linearAcceleration().unpackTo(_o.getLinearAcceleration());
+    else _o.setLinearAcceleration(null);
   }
   public static int pack(FlatBufferBuilder builder, UpdateTrackerPositionT _o) {
     if (_o == null) return 0;
@@ -74,6 +79,7 @@ public final class UpdateTrackerPosition extends Table {
     addPosition(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getPosition()));
     addAngularVelocity(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getAngularVelocity()));
     addLinearVelocity(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getLinearVelocity()));
+    addLinearAcceleration(builder, solarxr_protocol.datatypes.math.Vec3f.pack(builder, _o.getLinearAcceleration()));
     return endUpdateTrackerPosition(builder);
   }
 }

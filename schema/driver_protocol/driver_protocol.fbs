@@ -80,7 +80,7 @@ table UpdateTrackerBattery {
     charging: bool;
 }
 
-/// Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
+/// Update the rotation, position, (angular velocity, and/or linear velocity) or linear acceleration of a created tracker.
 /// Will be ignored if you have not successfully completed a handshake.
 table UpdateTrackerPosition {
     /// The ID of the tracker this is targeting. You should only target trackers you have created.
@@ -89,6 +89,7 @@ table UpdateTrackerPosition {
     position: solarxr_protocol.datatypes.math.Vec3f;
     angular_velocity: solarxr_protocol.datatypes.math.Vec3f;
     linear_velocity: solarxr_protocol.datatypes.math.Vec3f;
+    linear_acceleration: solarxr_protocol.datatypes.math.Vec3f;
 }
 
 /// The full skeleton is always provided in case a driver must always expose the full body skeleton, possibly alongside

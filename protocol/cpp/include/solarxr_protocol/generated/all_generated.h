@@ -21293,7 +21293,7 @@ inline flatbuffers::Offset<UpdateTrackerBattery> CreateUpdateTrackerBattery(
   return builder_.Finish();
 }
 
-/// Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
+/// Update the rotation, position, (angular velocity, and/or linear velocity) or linear acceleration of a created tracker.
 /// Will be ignored if you have not successfully completed a handshake.
 struct UpdateTrackerPosition FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UpdateTrackerPositionBuilder Builder;
@@ -21302,7 +21302,8 @@ struct UpdateTrackerPosition FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
     VT_ROTATION = 6,
     VT_POSITION = 8,
     VT_ANGULAR_VELOCITY = 10,
-    VT_LINEAR_VELOCITY = 12
+    VT_LINEAR_VELOCITY = 12,
+    VT_LINEAR_ACCELERATION = 14
   };
   /// The ID of the tracker this is targeting. You should only target trackers you have created.
   uint16_t tracker_id() const {
@@ -21320,6 +21321,9 @@ struct UpdateTrackerPosition FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
   const solarxr_protocol::datatypes::math::Vec3f *linear_velocity() const {
     return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_LINEAR_VELOCITY);
   }
+  const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration() const {
+    return GetStruct<const solarxr_protocol::datatypes::math::Vec3f *>(VT_LINEAR_ACCELERATION);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_TRACKER_ID, 2) &&
@@ -21327,6 +21331,7 @@ struct UpdateTrackerPosition FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tabl
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_POSITION, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_ANGULAR_VELOCITY, 4) &&
            VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_VELOCITY, 4) &&
+           VerifyField<solarxr_protocol::datatypes::math::Vec3f>(verifier, VT_LINEAR_ACCELERATION, 4) &&
            verifier.EndTable();
   }
 };
@@ -21350,6 +21355,9 @@ struct UpdateTrackerPositionBuilder {
   void add_linear_velocity(const solarxr_protocol::datatypes::math::Vec3f *linear_velocity) {
     fbb_.AddStruct(UpdateTrackerPosition::VT_LINEAR_VELOCITY, linear_velocity);
   }
+  void add_linear_acceleration(const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration) {
+    fbb_.AddStruct(UpdateTrackerPosition::VT_LINEAR_ACCELERATION, linear_acceleration);
+  }
   explicit UpdateTrackerPositionBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -21367,8 +21375,10 @@ inline flatbuffers::Offset<UpdateTrackerPosition> CreateUpdateTrackerPosition(
     const solarxr_protocol::datatypes::math::Quat *rotation = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *position = nullptr,
     const solarxr_protocol::datatypes::math::Vec3f *angular_velocity = nullptr,
-    const solarxr_protocol::datatypes::math::Vec3f *linear_velocity = nullptr) {
+    const solarxr_protocol::datatypes::math::Vec3f *linear_velocity = nullptr,
+    const solarxr_protocol::datatypes::math::Vec3f *linear_acceleration = nullptr) {
   UpdateTrackerPositionBuilder builder_(_fbb);
+  builder_.add_linear_acceleration(linear_acceleration);
   builder_.add_linear_velocity(linear_velocity);
   builder_.add_angular_velocity(angular_velocity);
   builder_.add_position(position);

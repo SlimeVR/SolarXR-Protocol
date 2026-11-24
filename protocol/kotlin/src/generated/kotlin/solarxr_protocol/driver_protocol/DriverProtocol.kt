@@ -277,7 +277,7 @@ public data class UpdateTrackerBattery(
 }
 
 /**
- * Update the rotation, position, angular velocity, and/or linear velocity of a created tracker.
+ * Update the rotation, position, (angular velocity, and/or linear velocity) or linear acceleration of a created tracker.
  * Will be ignored if you have not successfully completed a handshake.
  */
 public data class UpdateTrackerPosition(
@@ -286,15 +286,17 @@ public data class UpdateTrackerPosition(
   public val position: Vec3f? = null,
   public val angularVelocity: Vec3f? = null,
   public val linearVelocity: Vec3f? = null,
+  public val linearAcceleration: Vec3f? = null,
 ) : DriverMessage {
   public fun encode(builder: FlatBufferWriter): Int {
 
-    builder.startTable(5)
+    builder.startTable(6)
     builder.addShort(0, trackerId.toShort(), 0)
     rotation?.let { builder.addStruct(1, it.encode(builder), 0) }
     position?.let { builder.addStruct(2, it.encode(builder), 0) }
     angularVelocity?.let { builder.addStruct(3, it.encode(builder), 0) }
     linearVelocity?.let { builder.addStruct(4, it.encode(builder), 0) }
+    linearAcceleration?.let { builder.addStruct(5, it.encode(builder), 0) }
     return builder.endTable()
   }
 
@@ -308,13 +310,15 @@ public data class UpdateTrackerPosition(
       val __offset_position = if (vtableSize > 8) bb.getShort(vtableOffset + 8).toInt() else 0
       val __offset_angularVelocity = if (vtableSize > 10) bb.getShort(vtableOffset + 10).toInt() else 0
       val __offset_linearVelocity = if (vtableSize > 12) bb.getShort(vtableOffset + 12).toInt() else 0
+      val __offset_linearAcceleration = if (vtableSize > 14) bb.getShort(vtableOffset + 14).toInt() else 0
 
       return UpdateTrackerPosition(
               trackerId = if (__offset_trackerId != 0) bb.getShort(tableOffset + __offset_trackerId).toUShort() else 0.toUShort(),
               rotation = if (__offset_rotation != 0) Quat.decode(bb, tableOffset + __offset_rotation) else null,
               position = if (__offset_position != 0) Vec3f.decode(bb, tableOffset + __offset_position) else null,
               angularVelocity = if (__offset_angularVelocity != 0) Vec3f.decode(bb, tableOffset + __offset_angularVelocity) else null,
-              linearVelocity = if (__offset_linearVelocity != 0) Vec3f.decode(bb, tableOffset + __offset_linearVelocity) else null
+              linearVelocity = if (__offset_linearVelocity != 0) Vec3f.decode(bb, tableOffset + __offset_linearVelocity) else null,
+              linearAcceleration = if (__offset_linearAcceleration != 0) Vec3f.decode(bb, tableOffset + __offset_linearAcceleration) else null
           )
     }
   }
