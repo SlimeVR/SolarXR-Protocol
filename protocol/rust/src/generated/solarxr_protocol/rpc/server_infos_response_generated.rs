@@ -29,7 +29,7 @@ impl<'a> flatbuffers::Follow<'a> for ServerInfosResponse<'a> {
 }
 
 impl<'a> ServerInfosResponse<'a> {
-  pub const VT_LOCALIP: flatbuffers::VOffsetT = 4;
+  pub const VT_LOCAL_IP: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -41,17 +41,17 @@ impl<'a> ServerInfosResponse<'a> {
     args: &'args ServerInfosResponseArgs<'args>
   ) -> flatbuffers::WIPOffset<ServerInfosResponse<'bldr>> {
     let mut builder = ServerInfosResponseBuilder::new(_fbb);
-    if let Some(x) = args.localIp { builder.add_localIp(x); }
+    if let Some(x) = args.local_ip { builder.add_local_ip(x); }
     builder.finish()
   }
 
 
   #[inline]
-  pub fn localIp(&self) -> Option<&'a str> {
+  pub fn local_ip(&self) -> Option<&'a str> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(ServerInfosResponse::VT_LOCALIP, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(ServerInfosResponse::VT_LOCAL_IP, None)}
   }
 }
 
@@ -62,19 +62,19 @@ impl flatbuffers::Verifiable for ServerInfosResponse<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("localIp", Self::VT_LOCALIP, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("local_ip", Self::VT_LOCAL_IP, false)?
      .finish();
     Ok(())
   }
 }
 pub struct ServerInfosResponseArgs<'a> {
-    pub localIp: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub local_ip: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for ServerInfosResponseArgs<'a> {
   #[inline]
   fn default() -> Self {
     ServerInfosResponseArgs {
-      localIp: None,
+      local_ip: None,
     }
   }
 }
@@ -85,8 +85,8 @@ pub struct ServerInfosResponseBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> ServerInfosResponseBuilder<'a, 'b> {
   #[inline]
-  pub fn add_localIp(&mut self, localIp: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ServerInfosResponse::VT_LOCALIP, localIp);
+  pub fn add_local_ip(&mut self, local_ip: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ServerInfosResponse::VT_LOCAL_IP, local_ip);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ServerInfosResponseBuilder<'a, 'b> {
@@ -106,7 +106,7 @@ impl<'a: 'b, 'b> ServerInfosResponseBuilder<'a, 'b> {
 impl core::fmt::Debug for ServerInfosResponse<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ServerInfosResponse");
-      ds.field("localIp", &self.localIp());
+      ds.field("local_ip", &self.local_ip());
       ds.finish()
   }
 }

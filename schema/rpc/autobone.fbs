@@ -1,0 +1,44 @@
+namespace solarxr_protocol.rpc;
+
+enum AutoBoneProcessType: uint8 {
+    NONE = 0,
+    RECORD = 1,
+    SAVE = 2,
+    PROCESS = 3,
+}
+
+table AutoBoneProcessRequest {
+    process_type: AutoBoneProcessType;
+}
+
+table AutoBoneProcessStatusResponse {
+    process_type: AutoBoneProcessType;
+    /// The current count. This value is -1 if there is nothing to report.
+    current: uint32;
+    /// The total count. This value is -1 if there is nothing to report.
+    total: uint32;
+    /// True if the operation has completed with any result, successful or not.
+    completed: bool;
+    /// True if the completed operation was successful, only observe if `completed` is true.
+    success: bool;
+    /// The time remaining in seconds. This value is -1 if there is nothing to report.
+    eta: float32;
+}
+
+table AutoBoneEpochResponse {
+    current_epoch: uint32;
+    total_epochs: uint32;
+    /// The current error value. This can be any positive number, where lower is better.
+    epoch_error: float32;
+    /// A list of the current estimated body proportions.
+    adjusted_skeleton_parts: [SkeletonPart];
+}
+
+/// Applies the estimated proportions
+table AutoBoneApplyRequest {}
+
+/// Stops the current recording, using it as far as it has been recorded
+table AutoBoneStopRecordingRequest {}
+
+/// Cancels the current recording, aborting the process and discarding the data
+table AutoBoneCancelRecordingRequest {}

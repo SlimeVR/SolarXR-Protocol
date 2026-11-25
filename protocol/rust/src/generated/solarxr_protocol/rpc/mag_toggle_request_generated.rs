@@ -35,20 +35,20 @@ impl<'a> MagToggleRequest<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args MagToggleRequestArgs<'args>
+    args: &'args MagToggleRequestArgs
   ) -> flatbuffers::WIPOffset<MagToggleRequest<'bldr>> {
     let mut builder = MagToggleRequestBuilder::new(_fbb);
-    if let Some(x) = args.tracker_id { builder.add_tracker_id(x); }
+    builder.add_tracker_id(args.tracker_id);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn tracker_id(&self) -> Option<super::datatypes::TrackerId<'a>> {
+  pub fn tracker_id(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>(MagToggleRequest::VT_TRACKER_ID, None)}
+    unsafe { self._tab.get::<u16>(MagToggleRequest::VT_TRACKER_ID, Some(0)).unwrap()}
   }
 }
 
@@ -59,19 +59,19 @@ impl flatbuffers::Verifiable for MagToggleRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>("tracker_id", Self::VT_TRACKER_ID, false)?
+     .visit_field::<u16>("tracker_id", Self::VT_TRACKER_ID, false)?
      .finish();
     Ok(())
   }
 }
-pub struct MagToggleRequestArgs<'a> {
-    pub tracker_id: Option<flatbuffers::WIPOffset<super::datatypes::TrackerId<'a>>>,
+pub struct MagToggleRequestArgs {
+    pub tracker_id: u16,
 }
-impl<'a> Default for MagToggleRequestArgs<'a> {
+impl<'a> Default for MagToggleRequestArgs {
   #[inline]
   fn default() -> Self {
     MagToggleRequestArgs {
-      tracker_id: None,
+      tracker_id: 0,
     }
   }
 }
@@ -82,8 +82,8 @@ pub struct MagToggleRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> MagToggleRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<super::datatypes::TrackerId<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::TrackerId>>(MagToggleRequest::VT_TRACKER_ID, tracker_id);
+  pub fn add_tracker_id(&mut self, tracker_id: u16) {
+    self.fbb_.push_slot::<u16>(MagToggleRequest::VT_TRACKER_ID, tracker_id, 0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> MagToggleRequestBuilder<'a, 'b> {

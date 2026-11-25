@@ -49,6 +49,9 @@ recommended(obj?:VRCConfigRecommendedValues):VRCConfigRecommendedValues|null {
   return offset ? (obj || new VRCConfigRecommendedValues()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 }
 
+/**
+ * Just a list of keys from the VRCConfigValidity table.
+ */
 muted(index: number):string
 muted(index: number,optionalEncoding:flatbuffers.Encoding):string|Uint8Array
 muted(index: number,optionalEncoding?:any):string|Uint8Array|null {

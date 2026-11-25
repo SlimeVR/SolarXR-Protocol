@@ -33,8 +33,18 @@ value():number {
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
+minValue():number {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
+}
+
+maxValue():number {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
+}
+
 static startSkeletonPart(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(4);
 }
 
 static addBone(builder:flatbuffers.Builder, bone:SkeletonBone) {
@@ -45,22 +55,34 @@ static addValue(builder:flatbuffers.Builder, value:number) {
   builder.addFieldFloat32(1, value, 0.0);
 }
 
+static addMinValue(builder:flatbuffers.Builder, minValue:number) {
+  builder.addFieldFloat32(2, minValue, 0.0);
+}
+
+static addMaxValue(builder:flatbuffers.Builder, maxValue:number) {
+  builder.addFieldFloat32(3, maxValue, 0.0);
+}
+
 static endSkeletonPart(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createSkeletonPart(builder:flatbuffers.Builder, bone:SkeletonBone, value:number):flatbuffers.Offset {
+static createSkeletonPart(builder:flatbuffers.Builder, bone:SkeletonBone, value:number, minValue:number, maxValue:number):flatbuffers.Offset {
   SkeletonPart.startSkeletonPart(builder);
   SkeletonPart.addBone(builder, bone);
   SkeletonPart.addValue(builder, value);
+  SkeletonPart.addMinValue(builder, minValue);
+  SkeletonPart.addMaxValue(builder, maxValue);
   return SkeletonPart.endSkeletonPart(builder);
 }
 
 unpack(): SkeletonPartT {
   return new SkeletonPartT(
     this.bone(),
-    this.value()
+    this.value(),
+    this.minValue(),
+    this.maxValue()
   );
 }
 
@@ -68,20 +90,26 @@ unpack(): SkeletonPartT {
 unpackTo(_o: SkeletonPartT): void {
   _o.bone = this.bone();
   _o.value = this.value();
+  _o.minValue = this.minValue();
+  _o.maxValue = this.maxValue();
 }
 }
 
 export class SkeletonPartT implements flatbuffers.IGeneratedObject {
 constructor(
   public bone: SkeletonBone = SkeletonBone.NONE,
-  public value: number = 0.0
+  public value: number = 0.0,
+  public minValue: number = 0.0,
+  public maxValue: number = 0.0
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return SkeletonPart.createSkeletonPart(builder,
     this.bone,
-    this.value
+    this.value,
+    this.minValue,
+    this.maxValue
   );
 }
 }

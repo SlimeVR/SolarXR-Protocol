@@ -1,0 +1,23 @@
+namespace solarxr_protocol.rpc;
+
+/// Whether the user agreed to send error reports and diagnostics.
+/// The server owns this value and every layer (server, gui, electron) follows it.
+enum ErrorReportingConsent: uint8 {
+    UNDECIDED = 0,
+    ALLOWED = 1,
+    DENIED = 2
+}
+
+table ErrorReportingSettingsRequest {}
+
+table ErrorReportingSettingsResponse {
+    consent: ErrorReportingConsent;
+    /// Random id reports are attached to, not tied to the user's identity.
+    user_id: string;
+    /// Random id of this server run, so gui and server reports of one run can be matched.
+    session_id: string;
+}
+
+table ChangeErrorReportingSettingsRequest {
+    consent: ErrorReportingConsent;
+}

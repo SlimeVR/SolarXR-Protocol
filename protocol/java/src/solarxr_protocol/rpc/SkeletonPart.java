@@ -17,19 +17,27 @@ public final class SkeletonPart extends Table {
 
   public int bone() { int o = __offset(4); return o != 0 ? bb.get(o + bb_pos) & 0xFF : 0; }
   public float value() { int o = __offset(6); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float minValue() { int o = __offset(8); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
+  public float maxValue() { int o = __offset(10); return o != 0 ? bb.getFloat(o + bb_pos) : 0.0f; }
 
   public static int createSkeletonPart(FlatBufferBuilder builder,
       int bone,
-      float value) {
-    builder.startTable(2);
+      float value,
+      float minValue,
+      float maxValue) {
+    builder.startTable(4);
+    SkeletonPart.addMaxValue(builder, maxValue);
+    SkeletonPart.addMinValue(builder, minValue);
     SkeletonPart.addValue(builder, value);
     SkeletonPart.addBone(builder, bone);
     return SkeletonPart.endSkeletonPart(builder);
   }
 
-  public static void startSkeletonPart(FlatBufferBuilder builder) { builder.startTable(2); }
+  public static void startSkeletonPart(FlatBufferBuilder builder) { builder.startTable(4); }
   public static void addBone(FlatBufferBuilder builder, int bone) { builder.addByte(0, (byte) bone, (byte) 0); }
   public static void addValue(FlatBufferBuilder builder, float value) { builder.addFloat(1, value, 0.0f); }
+  public static void addMinValue(FlatBufferBuilder builder, float minValue) { builder.addFloat(2, minValue, 0.0f); }
+  public static void addMaxValue(FlatBufferBuilder builder, float maxValue) { builder.addFloat(3, maxValue, 0.0f); }
   public static int endSkeletonPart(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -51,13 +59,19 @@ public final class SkeletonPart extends Table {
     _o.setBone(_oBone);
     float _oValue = value();
     _o.setValue(_oValue);
+    float _oMinValue = minValue();
+    _o.setMinValue(_oMinValue);
+    float _oMaxValue = maxValue();
+    _o.setMaxValue(_oMaxValue);
   }
   public static int pack(FlatBufferBuilder builder, SkeletonPartT _o) {
     if (_o == null) return 0;
     return createSkeletonPart(
       builder,
       _o.getBone(),
-      _o.getValue());
+      _o.getValue(),
+      _o.getMinValue(),
+      _o.getMaxValue());
   }
 }
 

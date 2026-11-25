@@ -2,6 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { SerialConsoleStatus } from '../../solarxr-protocol/rpc/serial-console-status.js';
 import { SerialDevice, SerialDeviceT } from '../../solarxr-protocol/rpc/serial-device.js';
 
 
@@ -23,37 +24,43 @@ static getSizePrefixedRootAsSerialUpdateResponse(bb:flatbuffers.ByteBuffer, obj?
   return (obj || new SerialUpdateResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+status():SerialConsoleStatus {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : SerialConsoleStatus.OPEN;
+}
+
+/**
+ * The port this console is on, null while the port is not present
+ */
+device(obj?:SerialDevice):SerialDevice|null {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? (obj || new SerialDevice()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+}
+
+/**
+ * Newline terminated log lines, one or more per message
+ */
 log():string|null
 log(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 log(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
-}
-
-closed():boolean {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
-}
-
-device(obj?:SerialDevice):SerialDevice|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new SerialDevice()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 static startSerialUpdateResponse(builder:flatbuffers.Builder) {
   builder.startObject(3);
 }
 
-static addLog(builder:flatbuffers.Builder, logOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, logOffset, 0);
-}
-
-static addClosed(builder:flatbuffers.Builder, closed:boolean) {
-  builder.addFieldInt8(1, +closed, +false);
+static addStatus(builder:flatbuffers.Builder, status:SerialConsoleStatus) {
+  builder.addFieldInt8(0, status, SerialConsoleStatus.OPEN);
 }
 
 static addDevice(builder:flatbuffers.Builder, deviceOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, deviceOffset, 0);
+  builder.addFieldOffset(1, deviceOffset, 0);
+}
+
+static addLog(builder:flatbuffers.Builder, logOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, logOffset, 0);
 }
 
 static endSerialUpdateResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -64,36 +71,36 @@ static endSerialUpdateResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
 
 unpack(): SerialUpdateResponseT {
   return new SerialUpdateResponseT(
-    this.log(),
-    this.closed(),
-    (this.device() !== null ? this.device()!.unpack() : null)
+    this.status(),
+    (this.device() !== null ? this.device()!.unpack() : null),
+    this.log()
   );
 }
 
 
 unpackTo(_o: SerialUpdateResponseT): void {
-  _o.log = this.log();
-  _o.closed = this.closed();
+  _o.status = this.status();
   _o.device = (this.device() !== null ? this.device()!.unpack() : null);
+  _o.log = this.log();
 }
 }
 
 export class SerialUpdateResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public log: string|Uint8Array|null = null,
-  public closed: boolean = false,
-  public device: SerialDeviceT|null = null
+  public status: SerialConsoleStatus = SerialConsoleStatus.OPEN,
+  public device: SerialDeviceT|null = null,
+  public log: string|Uint8Array|null = null
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
-  const log = (this.log !== null ? builder.createString(this.log!) : 0);
   const device = (this.device !== null ? this.device!.pack(builder) : 0);
+  const log = (this.log !== null ? builder.createString(this.log!) : 0);
 
   SerialUpdateResponse.startSerialUpdateResponse(builder);
-  SerialUpdateResponse.addLog(builder, log);
-  SerialUpdateResponse.addClosed(builder, this.closed);
+  SerialUpdateResponse.addStatus(builder, this.status);
   SerialUpdateResponse.addDevice(builder, device);
+  SerialUpdateResponse.addLog(builder, log);
 
   return SerialUpdateResponse.endSerialUpdateResponse(builder);
 }

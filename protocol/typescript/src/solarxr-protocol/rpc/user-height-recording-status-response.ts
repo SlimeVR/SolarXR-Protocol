@@ -23,7 +23,7 @@ static getSizePrefixedRootAsUserHeightRecordingStatusResponse(bb:flatbuffers.Byt
   return (obj || new UserHeightRecordingStatusResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-hmdHeight():number {
+headHeight():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
@@ -37,8 +37,8 @@ static startUserHeightRecordingStatusResponse(builder:flatbuffers.Builder) {
   builder.startObject(2);
 }
 
-static addHmdHeight(builder:flatbuffers.Builder, hmdHeight:number) {
-  builder.addFieldFloat32(0, hmdHeight, 0.0);
+static addHeadHeight(builder:flatbuffers.Builder, headHeight:number) {
+  builder.addFieldFloat32(0, headHeight, 0.0);
 }
 
 static addStatus(builder:flatbuffers.Builder, status:UserHeightCalibrationStatus) {
@@ -50,37 +50,37 @@ static endUserHeightRecordingStatusResponse(builder:flatbuffers.Builder):flatbuf
   return offset;
 }
 
-static createUserHeightRecordingStatusResponse(builder:flatbuffers.Builder, hmdHeight:number, status:UserHeightCalibrationStatus):flatbuffers.Offset {
+static createUserHeightRecordingStatusResponse(builder:flatbuffers.Builder, headHeight:number, status:UserHeightCalibrationStatus):flatbuffers.Offset {
   UserHeightRecordingStatusResponse.startUserHeightRecordingStatusResponse(builder);
-  UserHeightRecordingStatusResponse.addHmdHeight(builder, hmdHeight);
+  UserHeightRecordingStatusResponse.addHeadHeight(builder, headHeight);
   UserHeightRecordingStatusResponse.addStatus(builder, status);
   return UserHeightRecordingStatusResponse.endUserHeightRecordingStatusResponse(builder);
 }
 
 unpack(): UserHeightRecordingStatusResponseT {
   return new UserHeightRecordingStatusResponseT(
-    this.hmdHeight(),
+    this.headHeight(),
     this.status()
   );
 }
 
 
 unpackTo(_o: UserHeightRecordingStatusResponseT): void {
-  _o.hmdHeight = this.hmdHeight();
+  _o.headHeight = this.headHeight();
   _o.status = this.status();
 }
 }
 
 export class UserHeightRecordingStatusResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public hmdHeight: number = 0.0,
+  public headHeight: number = 0.0,
   public status: UserHeightCalibrationStatus = UserHeightCalibrationStatus.NONE
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
   return UserHeightRecordingStatusResponse.createUserHeightRecordingStatusResponse(builder,
-    this.hmdHeight,
+    this.headHeight,
     this.status
   );
 }

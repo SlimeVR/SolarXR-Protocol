@@ -1,0 +1,22 @@
+include "../datatypes/datatypes.fbs";
+
+namespace solarxr_protocol.rpc;
+
+table StartTrackerImuTelemetryRequest {
+    tracker_id: uint16;
+}
+
+table StopTrackerImuTelemetryRequest {}
+
+table TrackerImuSample {
+    time: uint64;
+    raw_rotation: solarxr_protocol.datatypes.math.Quat;
+    rotation: solarxr_protocol.datatypes.math.Quat;
+    raw_acceleration: solarxr_protocol.datatypes.math.Vec3f;
+    linear_acceleration: solarxr_protocol.datatypes.math.Vec3f;
+}
+
+table TrackerImuTelemetryResponse {
+    tracker_id: uint16;
+    samples: [TrackerImuSample];
+}

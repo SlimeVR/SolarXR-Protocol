@@ -2,7 +2,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { WifiProvisioningStatus } from '../../solarxr-protocol/rpc/wifi-provisioning-status.js';
+import { TrackerProvisioningState, TrackerProvisioningStateT } from '../../solarxr-protocol/rpc/tracker-provisioning-state.js';
 
 
 export class WifiProvisioningStatusResponse implements flatbuffers.IUnpackableObject<WifiProvisioningStatusResponseT> {
@@ -23,17 +23,34 @@ static getSizePrefixedRootAsWifiProvisioningStatusResponse(bb:flatbuffers.ByteBu
   return (obj || new WifiProvisioningStatusResponse()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-status():WifiProvisioningStatus {
+trackers(index: number, obj?:TrackerProvisioningState):TrackerProvisioningState|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : WifiProvisioningStatus.NONE;
+  return offset ? (obj || new TrackerProvisioningState()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+}
+
+trackersLength():number {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
 static startWifiProvisioningStatusResponse(builder:flatbuffers.Builder) {
   builder.startObject(1);
 }
 
-static addStatus(builder:flatbuffers.Builder, status:WifiProvisioningStatus) {
-  builder.addFieldInt8(0, status, WifiProvisioningStatus.NONE);
+static addTrackers(builder:flatbuffers.Builder, trackersOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, trackersOffset, 0);
+}
+
+static createTrackersVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
+  builder.startVector(4, data.length, 4);
+  for (let i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]!);
+  }
+  return builder.endVector();
+}
+
+static startTrackersVector(builder:flatbuffers.Builder, numElems:number) {
+  builder.startVector(4, numElems, 4);
 }
 
 static endWifiProvisioningStatusResponse(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -41,33 +58,35 @@ static endWifiProvisioningStatusResponse(builder:flatbuffers.Builder):flatbuffer
   return offset;
 }
 
-static createWifiProvisioningStatusResponse(builder:flatbuffers.Builder, status:WifiProvisioningStatus):flatbuffers.Offset {
+static createWifiProvisioningStatusResponse(builder:flatbuffers.Builder, trackersOffset:flatbuffers.Offset):flatbuffers.Offset {
   WifiProvisioningStatusResponse.startWifiProvisioningStatusResponse(builder);
-  WifiProvisioningStatusResponse.addStatus(builder, status);
+  WifiProvisioningStatusResponse.addTrackers(builder, trackersOffset);
   return WifiProvisioningStatusResponse.endWifiProvisioningStatusResponse(builder);
 }
 
 unpack(): WifiProvisioningStatusResponseT {
   return new WifiProvisioningStatusResponseT(
-    this.status()
+    this.bb!.createObjList<TrackerProvisioningState, TrackerProvisioningStateT>(this.trackers.bind(this), this.trackersLength())
   );
 }
 
 
 unpackTo(_o: WifiProvisioningStatusResponseT): void {
-  _o.status = this.status();
+  _o.trackers = this.bb!.createObjList<TrackerProvisioningState, TrackerProvisioningStateT>(this.trackers.bind(this), this.trackersLength());
 }
 }
 
 export class WifiProvisioningStatusResponseT implements flatbuffers.IGeneratedObject {
 constructor(
-  public status: WifiProvisioningStatus = WifiProvisioningStatus.NONE
+  public trackers: (TrackerProvisioningStateT)[] = []
 ){}
 
 
 pack(builder:flatbuffers.Builder): flatbuffers.Offset {
+  const trackers = WifiProvisioningStatusResponse.createTrackersVector(builder, builder.createObjectOffsetList(this.trackers));
+
   return WifiProvisioningStatusResponse.createWifiProvisioningStatusResponse(builder,
-    this.status
+    trackers
   );
 }
 }

@@ -16,25 +16,21 @@ public final class OpenSerialRequest extends Table {
   public OpenSerialRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   /**
-   * Automatically pick the first serial device available
+   * Location of the port to open, as listed in SerialDevicesResponse
    */
-  public boolean auto() { int o = __offset(4); return o != 0 ? 0!=bb.get(o + bb_pos) : false; }
-  public String port() { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; }
-  public ByteBuffer portAsByteBuffer() { return __vector_as_bytebuffer(6, 1); }
-  public ByteBuffer portInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 6, 1); }
+  public String port() { int o = __offset(4); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer portAsByteBuffer() { return __vector_as_bytebuffer(4, 1); }
+  public ByteBuffer portInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 4, 1); }
 
   public static int createOpenSerialRequest(FlatBufferBuilder builder,
-      boolean auto,
       int portOffset) {
-    builder.startTable(2);
+    builder.startTable(1);
     OpenSerialRequest.addPort(builder, portOffset);
-    OpenSerialRequest.addAuto(builder, auto);
     return OpenSerialRequest.endOpenSerialRequest(builder);
   }
 
-  public static void startOpenSerialRequest(FlatBufferBuilder builder) { builder.startTable(2); }
-  public static void addAuto(FlatBufferBuilder builder, boolean auto) { builder.addBoolean(0, auto, false); }
-  public static void addPort(FlatBufferBuilder builder, int portOffset) { builder.addOffset(1, portOffset, 0); }
+  public static void startOpenSerialRequest(FlatBufferBuilder builder) { builder.startTable(1); }
+  public static void addPort(FlatBufferBuilder builder, int portOffset) { builder.addOffset(0, portOffset, 0); }
   public static int endOpenSerialRequest(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;
@@ -52,8 +48,6 @@ public final class OpenSerialRequest extends Table {
     return _o;
   }
   public void unpackTo(OpenSerialRequestT _o) {
-    boolean _oAuto = auto();
-    _o.setAuto(_oAuto);
     String _oPort = port();
     _o.setPort(_oPort);
   }
@@ -62,7 +56,6 @@ public final class OpenSerialRequest extends Table {
     int _port = _o.getPort() == null ? 0 : builder.createString(_o.getPort());
     return createOpenSerialRequest(
       builder,
-      _o.getAuto(),
       _port);
   }
 }

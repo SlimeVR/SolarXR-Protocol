@@ -25,7 +25,7 @@ impl<'a> flatbuffers::Follow<'a> for ForgetDeviceRequest<'a> {
 }
 
 impl<'a> ForgetDeviceRequest<'a> {
-  pub const VT_MAC_ADDRESS: flatbuffers::VOffsetT = 4;
+  pub const VT_HARDWARE_ID: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -37,17 +37,17 @@ impl<'a> ForgetDeviceRequest<'a> {
     args: &'args ForgetDeviceRequestArgs<'args>
   ) -> flatbuffers::WIPOffset<ForgetDeviceRequest<'bldr>> {
     let mut builder = ForgetDeviceRequestBuilder::new(_fbb);
-    if let Some(x) = args.mac_address { builder.add_mac_address(x); }
+    if let Some(x) = args.hardware_id { builder.add_hardware_id(x); }
     builder.finish()
   }
 
 
   #[inline]
-  pub fn mac_address(&self) -> Option<&'a str> {
+  pub fn hardware_id(&self) -> Option<&'a str> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(ForgetDeviceRequest::VT_MAC_ADDRESS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(ForgetDeviceRequest::VT_HARDWARE_ID, None)}
   }
 }
 
@@ -58,19 +58,19 @@ impl flatbuffers::Verifiable for ForgetDeviceRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("mac_address", Self::VT_MAC_ADDRESS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("hardware_id", Self::VT_HARDWARE_ID, false)?
      .finish();
     Ok(())
   }
 }
 pub struct ForgetDeviceRequestArgs<'a> {
-    pub mac_address: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub hardware_id: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for ForgetDeviceRequestArgs<'a> {
   #[inline]
   fn default() -> Self {
     ForgetDeviceRequestArgs {
-      mac_address: None,
+      hardware_id: None,
     }
   }
 }
@@ -81,8 +81,8 @@ pub struct ForgetDeviceRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> ForgetDeviceRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_mac_address(&mut self, mac_address: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ForgetDeviceRequest::VT_MAC_ADDRESS, mac_address);
+  pub fn add_hardware_id(&mut self, hardware_id: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ForgetDeviceRequest::VT_HARDWARE_ID, hardware_id);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> ForgetDeviceRequestBuilder<'a, 'b> {
@@ -102,7 +102,7 @@ impl<'a: 'b, 'b> ForgetDeviceRequestBuilder<'a, 'b> {
 impl core::fmt::Debug for ForgetDeviceRequest<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("ForgetDeviceRequest");
-      ds.field("mac_address", &self.mac_address());
+      ds.field("hardware_id", &self.hardware_id());
       ds.finish()
   }
 }

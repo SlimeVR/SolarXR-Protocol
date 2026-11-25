@@ -36,21 +36,21 @@ impl<'a> ChangeMagToggleRequest<'a> {
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
-    args: &'args ChangeMagToggleRequestArgs<'args>
+    args: &'args ChangeMagToggleRequestArgs
   ) -> flatbuffers::WIPOffset<ChangeMagToggleRequest<'bldr>> {
     let mut builder = ChangeMagToggleRequestBuilder::new(_fbb);
-    if let Some(x) = args.tracker_id { builder.add_tracker_id(x); }
+    builder.add_tracker_id(args.tracker_id);
     builder.add_enable(args.enable);
     builder.finish()
   }
 
 
   #[inline]
-  pub fn tracker_id(&self) -> Option<super::datatypes::TrackerId<'a>> {
+  pub fn tracker_id(&self) -> u16 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>(ChangeMagToggleRequest::VT_TRACKER_ID, None)}
+    unsafe { self._tab.get::<u16>(ChangeMagToggleRequest::VT_TRACKER_ID, Some(0)).unwrap()}
   }
   #[inline]
   pub fn enable(&self) -> bool {
@@ -68,21 +68,21 @@ impl flatbuffers::Verifiable for ChangeMagToggleRequest<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<super::datatypes::TrackerId>>("tracker_id", Self::VT_TRACKER_ID, false)?
+     .visit_field::<u16>("tracker_id", Self::VT_TRACKER_ID, false)?
      .visit_field::<bool>("enable", Self::VT_ENABLE, false)?
      .finish();
     Ok(())
   }
 }
-pub struct ChangeMagToggleRequestArgs<'a> {
-    pub tracker_id: Option<flatbuffers::WIPOffset<super::datatypes::TrackerId<'a>>>,
+pub struct ChangeMagToggleRequestArgs {
+    pub tracker_id: u16,
     pub enable: bool,
 }
-impl<'a> Default for ChangeMagToggleRequestArgs<'a> {
+impl<'a> Default for ChangeMagToggleRequestArgs {
   #[inline]
   fn default() -> Self {
     ChangeMagToggleRequestArgs {
-      tracker_id: None,
+      tracker_id: 0,
       enable: false,
     }
   }
@@ -94,8 +94,8 @@ pub struct ChangeMagToggleRequestBuilder<'a: 'b, 'b> {
 }
 impl<'a: 'b, 'b> ChangeMagToggleRequestBuilder<'a, 'b> {
   #[inline]
-  pub fn add_tracker_id(&mut self, tracker_id: flatbuffers::WIPOffset<super::datatypes::TrackerId<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<super::datatypes::TrackerId>>(ChangeMagToggleRequest::VT_TRACKER_ID, tracker_id);
+  pub fn add_tracker_id(&mut self, tracker_id: u16) {
+    self.fbb_.push_slot::<u16>(ChangeMagToggleRequest::VT_TRACKER_ID, tracker_id, 0);
   }
   #[inline]
   pub fn add_enable(&mut self, enable: bool) {
