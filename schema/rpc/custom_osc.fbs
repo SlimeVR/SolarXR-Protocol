@@ -1,0 +1,43 @@
+namespace solarxr_protocol.rpc;
+
+enum CustomOSCAxisSource : ubyte {
+    POSITION_X = 0,
+    POSITION_Y,
+    POSITION_Z,
+    ROTATION_PITCH,
+    ROTATION_YAW,
+    ROTATION_ROLL,
+    QUAT_X,
+    QUAT_Y,
+    QUAT_Z,
+    QUAT_W,
+}
+
+table CustomOSCParamMapping {
+    axis: CustomOSCAxisSource;
+    address: string;
+}
+
+table CustomOSCTrackerMapping {
+    body_part: ubyte;  // solarxr_protocol.datatypes.BodyPart
+    params: [CustomOSCParamMapping];
+}
+
+table CustomOSCProfile {
+    id: string;
+    name: string;
+    enabled: bool;
+    address: string;
+    port: uint16;
+    trackers: [CustomOSCTrackerMapping];
+}
+
+table CustomOSCSettingsRequest {}
+table CustomOSCSettingsResponse {
+    enabled: bool;
+    profiles: [CustomOSCProfile];
+}
+table ChangeCustomOSCSettingsRequest {
+    enabled: bool;
+    profiles: [CustomOSCProfile];
+}

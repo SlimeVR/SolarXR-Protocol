@@ -178,6 +178,9 @@ public sealed interface RpcMessage {
       159 -> FirmwareUpdatesRequest.decode(bb, offset)
       160 -> FirmwareUpdatesResponse.decode(bb, offset)
       161 -> RecenterMocapModeRequest.decode(bb, offset)
+      162 -> CustomOSCSettingsRequest.decode(bb, offset)
+      163 -> CustomOSCSettingsResponse.decode(bb, offset)
+      164 -> ChangeCustomOSCSettingsRequest.decode(bb, offset)
       else -> null
     }
 
@@ -343,6 +346,9 @@ public sealed interface RpcMessage {
       is FirmwareUpdatesRequest -> 159.toUByte()
       is FirmwareUpdatesResponse -> 160.toUByte()
       is RecenterMocapModeRequest -> 161.toUByte()
+      is CustomOSCSettingsRequest -> 162.toUByte()
+      is CustomOSCSettingsResponse -> 163.toUByte()
+      is ChangeCustomOSCSettingsRequest -> 164.toUByte()
     }
 
     public fun encode(`value`: RpcMessage, builder: FlatBufferWriter): Int = when (value) {
@@ -507,6 +513,9 @@ public sealed interface RpcMessage {
       is FirmwareUpdatesRequest -> value.encode(builder)
       is FirmwareUpdatesResponse -> value.encode(builder)
       is RecenterMocapModeRequest -> value.encode(builder)
+      is CustomOSCSettingsRequest -> value.encode(builder)
+      is CustomOSCSettingsResponse -> value.encode(builder)
+      is ChangeCustomOSCSettingsRequest -> value.encode(builder)
     }
   }
 }

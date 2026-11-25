@@ -182,6 +182,9 @@ public class RpcMessageUnion {
   public solarxr_protocol.rpc.FirmwareUpdatesRequestT asFirmwareUpdatesRequest() { return (solarxr_protocol.rpc.FirmwareUpdatesRequestT) value; }
   public solarxr_protocol.rpc.FirmwareUpdatesResponseT asFirmwareUpdatesResponse() { return (solarxr_protocol.rpc.FirmwareUpdatesResponseT) value; }
   public solarxr_protocol.rpc.RecenterMocapModeRequestT asRecenterMocapModeRequest() { return (solarxr_protocol.rpc.RecenterMocapModeRequestT) value; }
+  public solarxr_protocol.rpc.CustomOSCSettingsRequestT asCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.CustomOSCSettingsRequestT) value; }
+  public solarxr_protocol.rpc.CustomOSCSettingsResponseT asCustomOSCSettingsResponse() { return (solarxr_protocol.rpc.CustomOSCSettingsResponseT) value; }
+  public solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT asChangeCustomOSCSettingsRequest() { return (solarxr_protocol.rpc.ChangeCustomOSCSettingsRequestT) value; }
 
   public static int pack(FlatBufferBuilder builder, RpcMessageUnion _o) {
     switch (_o.type) {
@@ -346,6 +349,9 @@ public class RpcMessageUnion {
       case RpcMessage.FirmwareUpdatesRequest: return solarxr_protocol.rpc.FirmwareUpdatesRequest.pack(builder, _o.asFirmwareUpdatesRequest());
       case RpcMessage.FirmwareUpdatesResponse: return solarxr_protocol.rpc.FirmwareUpdatesResponse.pack(builder, _o.asFirmwareUpdatesResponse());
       case RpcMessage.RecenterMocapModeRequest: return solarxr_protocol.rpc.RecenterMocapModeRequest.pack(builder, _o.asRecenterMocapModeRequest());
+      case RpcMessage.CustomOSCSettingsRequest: return solarxr_protocol.rpc.CustomOSCSettingsRequest.pack(builder, _o.asCustomOSCSettingsRequest());
+      case RpcMessage.CustomOSCSettingsResponse: return solarxr_protocol.rpc.CustomOSCSettingsResponse.pack(builder, _o.asCustomOSCSettingsResponse());
+      case RpcMessage.ChangeCustomOSCSettingsRequest: return solarxr_protocol.rpc.ChangeCustomOSCSettingsRequest.pack(builder, _o.asChangeCustomOSCSettingsRequest());
       default: return 0;
     }
   }
